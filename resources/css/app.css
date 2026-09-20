@@ -15,8 +15,8 @@
     }
 
     .dark .cg-card {
-        background-color: #252525;
-        border-color: #383838;
+        background-color: #252525 !important;
+        border-color: #383838 !important;
     }
 
     /* Tables */
@@ -69,8 +69,8 @@
 
     .dark .cg-select,
     .dark .cg-input {
-        background-color: #181818;
-        border-color: #414141;
+        background-color: #181818 !important;
+        border-color: #414141 !important;
     }
 
     /* Forms */
@@ -90,6 +90,9 @@
     .dark .dark\:bg-gray-700 { background-color: #343434 !important; }
     .dark .dark\:border-gray-700,
     .dark .dark\:border-gray-600 { border-color: #414141 !important; }
+    .dark .cg-card { background-color: #252525 !important; }
+    .dark .cg-input,
+    .dark .cg-select { background-color: #181818 !important; }
     .dark .text-gray-400 { color: #a3a3a3 !important; }
     .dark .text-gray-500 { color: #8f8f8f !important; }
     .dark input::placeholder,
