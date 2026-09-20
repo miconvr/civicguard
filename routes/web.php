@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\AuditLogController;
+use App\Http\Controllers\Admin\ConsolidatedReportController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\ChatbotController;
@@ -36,6 +37,8 @@ Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name(
     Route::patch('/reports/{report}/assign', [DashboardController::class, 'assign'])->name('reports.assign');
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
     Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('auditLogs');
+    Route::get('/reports/consolidated', [ConsolidatedReportController::class, 'index'])->name('consolidatedReports');
+    Route::get('/reports/consolidated/export/pdf', [ConsolidatedReportController::class, 'exportPdf'])->name('consolidatedReports.exportPdf');
     Route::get('/reports/{report}/curfew-details', [DashboardController::class, 'showCurfewDetails'])->name('reports.curfewDetails');
 });
 
