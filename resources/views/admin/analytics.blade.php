@@ -34,6 +34,33 @@
                 </ul>
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="cg-card">
+                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">AI Summary</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300">{{ $analysisSummary }}</p>
+                </div>
+                <div class="cg-card">
+                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Observed Patterns</h3>
+                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                        @forelse ($patterns as $pattern)
+                            <li class="flex gap-2"><span class="text-maroon-700">&bull;</span><span>{{ $pattern }}</span></li>
+                        @empty
+                            <li class="text-gray-500 dark:text-gray-400">No patterns detected yet.</li>
+                        @endforelse
+                    </ul>
+                </div>
+                <div class="cg-card">
+                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Risk Flags</h3>
+                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                        @forelse ($riskFlags as $riskFlag)
+                            <li class="flex gap-2"><span class="text-red-600">&bull;</span><span>{{ $riskFlag }}</span></li>
+                        @empty
+                            <li class="text-gray-500 dark:text-gray-400">No risk flags detected.</li>
+                        @endforelse
+                    </ul>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="cg-card">
                     <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Reports by Category</h3>
