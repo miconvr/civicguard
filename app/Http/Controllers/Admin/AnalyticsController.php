@@ -38,22 +38,26 @@ class AnalyticsController extends Controller
         $pendingCount = $byStatus->get('pending')->total ?? 0;
         $resolvedCount = $byStatus->get('resolved')->total ?? 0;
         $curfewCount = CurfewLog::count();
-        $recommendations = $this->buildRecommendations(
+        $insights = $this->buildInsights(
             $byCategory,
             $bySeverity,
             $byStatus,
             $last14Days,
             $curfewCount
         );
+        $recommendations = $insights['recommendations'];
+        $analysisSummary = $insights['analysisSummary'];
+        $patterns = $insights['patterns'];
+        $riskFlags = $insights['riskFlags'];
 
         return view('admin.analytics', compact(
             'byCategory', 'bySeverity', 'byStatus', 'last14Days',
             'totalReports', 'pendingCount', 'resolvedCount', 'curfewCount',
-            'recommendations'
+            'recommendations', 'analysisSummary', 'patterns', 'riskFlags'
         ));
     }
 
-    private function buildRecommendations($byCategory, $bySeverity, $byStatus, $last14Days, int $curfewCount): array
+    private function buildInsights($byCategory, $bySeverity, $byStatus, $last14Days, int $curfewCount): array
     {
         $metrics = [
             'total_reports' => $byCategory->sum('total'),
@@ -74,7 +78,7 @@ class AnalyticsController extends Controller
                         'contents' => [[
                             'role' => 'user',
                             'parts' => [[
-                                'text' => "You are advising barangay officials. Based only on these CivicGuard metrics, return exactly three concise, practical follow-up recommendations as a JSON array of strings. Do not include markdown or extra text. Metrics: " . json_encode($metrics),
+                                'text' => "You are analyzing CivicGuard data for barangay officials. Based only on these metrics, return valid JSON with exactly these keys: summary (one concise sentence), patterns (an array of up to three observed patterns), risk_flags (an array of up to three risks), and recommendations (an array of exactly three concise practical follow-up actions). Do not include markdown or extra text. Metrics: " . json_encode($metrics),
                             ]],
                         ]],
                     ]
@@ -83,23 +87,59 @@ class AnalyticsController extends Controller
                 $text = trim($response->json('candidates.0.content.parts.0.text') ?? '');
                 $decoded = json_decode($text, true);
 
-                if (is_array($decoded) && count($decoded) > 0 && collect($decoded)->every('is_string')) {
-                    return array_values(array_slice($decoded, 0, 3));
+                if (
+                    is_array($decoded)
+                    && is_string($decoded['summary'] ?? null)
+                    && is_array($decoded['patterns'] ?? null)
+                    && is_array($decoded['risk_flags'] ?? null)
+                    && is_array($decoded['recommendations'] ?? null)
+                ) {
+                    return [
+                        'recommendations' => array_values(array_slice(array_filter($decoded['recommendations'], 'is_string'), 0, 3)),
+                        'analysisSummary' => $decoded['summary'],
+                        'patterns' => array_values(array_slice(array_filter($decoded['patterns'], 'is_string'), 0, 3)),
+                        'riskFlags' => array_values(array_slice(array_filter($decoded['risk_flags'], 'is_string'), 0, 3)),
+                    ];
                 }
             } catch (\Throwable $exception) {
                 // Use local recommendations when the AI service is unavailable.
             }
         }
 
-        return $this->fallbackRecommendations($bySeverity, $byStatus, $last14Days, $curfewCount);
+        return $this->fallbackInsights($byCategory, $bySeverity, $byStatus, $last14Days, $curfewCount);
     }
 
-    private function fallbackRecommendations($bySeverity, $byStatus, $last14Days, int $curfewCount): array
+    private function fallbackInsights($byCategory, $bySeverity, $byStatus, $last14Days, int $curfewCount): array
     {
         $recommendations = [];
+        $patterns = [];
+        $riskFlags = [];
         $pendingCount = $byStatus->get('pending')->total ?? 0;
         $criticalCount = ($bySeverity->get('critical')->total ?? 0) + ($bySeverity->get('high')->total ?? 0);
         $recentCount = $last14Days->sum('total');
+        $topCategory = $byCategory->first();
+
+        if ($topCategory) {
+            $patterns[] = "{$topCategory->name} is the most frequently reported category with {$topCategory->total} report(s).";
+        }
+
+        $patterns[] = "{$recentCount} report(s) were filed during the last 14 days.";
+
+        if ($curfewCount > 0) {
+            $patterns[] = "Curfew monitoring contains {$curfewCount} logged violation(s).";
+        }
+
+        if ($pendingCount > 0) {
+            $riskFlags[] = "{$pendingCount} report(s) remain pending.";
+        }
+
+        if ($criticalCount > 0) {
+            $riskFlags[] = "{$criticalCount} report(s) are high or critical severity.";
+        }
+
+        if ($curfewCount > 0) {
+            $riskFlags[] = 'Curfew records should be reviewed for repeat violations and safeguarding needs.';
+        }
 
         if ($pendingCount > 0) {
             $recommendations[] = "Review {$pendingCount} pending report(s) and assign urgent cases first.";
@@ -117,6 +157,11 @@ class AnalyticsController extends Controller
             $recommendations[] = "Continue monitoring the {$recentCount} report(s) recorded in the last 14 days for emerging patterns.";
         }
 
-        return array_slice($recommendations, 0, 3);
+        return [
+            'recommendations' => array_slice($recommendations, 0, 3),
+            'analysisSummary' => "CivicGuard recorded {$recentCount} report(s) in the last 14 days with {$pendingCount} still pending.",
+            'patterns' => array_slice($patterns, 0, 3),
+            'riskFlags' => array_slice($riskFlags, 0, 3),
+        ];
     }
 }
