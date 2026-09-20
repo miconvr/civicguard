@@ -12,6 +12,8 @@ class CurfewLog extends Model
         'minor_age',
         'guardian_name',
         'guardian_contact',
+        'guardian_notified',
+        'referral_action',
         'apprehension_datetime',
         'apprehension_location',
         'prior_violations_count',
@@ -20,6 +22,7 @@ class CurfewLog extends Model
     ];
 
     protected $casts = [
+        'guardian_notified' => 'boolean',
         'apprehension_datetime' => 'datetime',
     ];
 

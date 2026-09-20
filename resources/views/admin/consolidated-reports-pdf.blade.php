@@ -33,24 +33,24 @@
 
     <h2>Incident Summary</h2>
     <table class="data">
-        <thead><tr><th>Date</th><th>Category</th><th>Reported By</th><th>Severity</th><th>Status</th><th>Assigned To</th></tr></thead>
+        <thead><tr><th>Date</th><th>Category</th><th>Reported By</th><th>Severity</th><th>Status</th><th>Assigned To</th><th>Coordinates</th><th>Photo</th></tr></thead>
         <tbody>
             @forelse ($reports as $report)
-                <tr><td>{{ $report->created_at->format('M d, Y g:i A') }}</td><td>{{ $report->category->name }}</td><td>{{ $report->user->name }}</td><td>{{ ucfirst($report->severity) }}</td><td>{{ ucwords(str_replace('_', ' ', $report->status)) }}</td><td>{{ $report->assignedTo->name ?? '-' }}</td></tr>
+                <tr><td>{{ $report->created_at->format('M d, Y g:i A') }}</td><td>{{ $report->category->name }}</td><td>{{ $report->user->name }}</td><td>{{ ucfirst($report->severity) }}</td><td>{{ ucwords(str_replace('_', ' ', $report->status)) }}</td><td>{{ $report->assignedTo->name ?? '-' }}</td><td>{{ $report->latitude !== null && $report->longitude !== null ? $report->latitude . ', ' . $report->longitude : '-' }}</td><td>@if ($report->photo_path && file_exists(public_path('storage/' . $report->photo_path)))<img src="{{ public_path('storage/' . $report->photo_path) }}" alt="Incident photo" style="width: 42px; height: 32px; object-fit: cover;">@else - @endif</td></tr>
             @empty
-                <tr><td colspan="6">No incident reports yet.</td></tr>
+                <tr><td colspan="8">No incident reports yet.</td></tr>
             @endforelse
         </tbody>
     </table>
 
     <h2>Curfew Monitoring</h2>
     <table class="data">
-        <thead><tr><th>Date</th><th>Minor</th><th>Age</th><th>Location</th><th>Prior Violations</th><th>Logged By</th></tr></thead>
+        <thead><tr><th>Date</th><th>Minor</th><th>Age</th><th>Location</th><th>Prior Violations</th><th>Guardian Notified</th><th>Follow-up</th><th>Logged By</th></tr></thead>
         <tbody>
             @forelse ($curfewLogs as $log)
-                <tr><td>{{ $log->apprehension_datetime->format('M d, Y g:i A') }}</td><td>{{ $log->minor_name }}</td><td>{{ $log->minor_age ?? '-' }}</td><td>{{ $log->apprehension_location }}</td><td>{{ $log->prior_violations_count }}</td><td>{{ $log->tanod->name ?? '-' }}</td></tr>
+                <tr><td>{{ $log->apprehension_datetime->format('M d, Y g:i A') }}</td><td>{{ $log->minor_name }}</td><td>{{ $log->minor_age ?? '-' }}</td><td>{{ $log->apprehension_location }}</td><td>{{ $log->prior_violations_count }}</td><td>{{ $log->guardian_notified ? 'Yes' : 'No' }}</td><td>{{ $log->referral_action ?? '-' }}</td><td>{{ $log->tanod->name ?? '-' }}</td></tr>
             @empty
-                <tr><td colspan="6">No curfew logs yet.</td></tr>
+                <tr><td colspan="8">No curfew logs yet.</td></tr>
             @endforelse
         </tbody>
     </table>

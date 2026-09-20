@@ -28,6 +28,14 @@
                             <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $report->curfewLog->guardian_contact ?? '-' }}</dd>
                         </div>
                         <div class="py-3 flex justify-between">
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Guardian Notified</dt>
+                            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $report->curfewLog->guardian_notified ? 'Yes' : 'No' }}</dd>
+                        </div>
+                        <div class="py-3 flex justify-between">
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Referral / Follow-up</dt>
+                            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $report->curfewLog->referral_action ?? '-' }}</dd>
+                        </div>
+                        <div class="py-3 flex justify-between">
                             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Apprehension Date/Time</dt>
                             <dd class="text-sm text-gray-900 dark:text-gray-100">{{ \Carbon\Carbon::parse($report->curfewLog->apprehension_datetime)->format('M d, Y g:i A') }}</dd>
                         </div>
