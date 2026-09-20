@@ -16,7 +16,7 @@
     </head>
     <body class="font-sans text-gray-900 antialiased bg-gradient-to-br from-gray-50 to-maroon-50/30 dark:from-gray-900 dark:to-gray-800">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
-            
+
             <!-- Sleek Logo and Title -->
             <div class="text-center mb-4">
                 <a href="/">
@@ -37,11 +37,11 @@
                     <p class="text-[10px] text-gray-400 dark:text-gray-500 text-center tracking-widest uppercase mb-2 font-semibold">Proudly Developed By</p>
                     <div class="flex flex-wrap justify-center gap-x-2 gap-y-1 text-xs text-gray-600 dark:text-gray-300 font-medium">
                         <span>Mico Gerard Navarro</span>
-                        <span class="text-gray-300 dark:text-gray-600">•</span>
+                        <span class="text-gray-300 dark:text-gray-600">&bull;</span>
                         <span>Franz Mikey Reyes</span>
-                        <span class="text-gray-300 dark:text-gray-600">•</span>
+                        <span class="text-gray-300 dark:text-gray-600">&bull;</span>
                         <span>Carl Spencer</span>
-                        <span class="text-gray-300 dark:text-gray-600">•</span>
+                        <span class="text-gray-300 dark:text-gray-600">&bull;</span>
                         <span>Adriann Enriquez</span>
                     </div>
                 </div>
