@@ -7,8 +7,21 @@
 
         <title>{{ config('app.name', 'CivicGuard') }}</title>
 
+        <style>
+            html, body { background-color: #f9fafb; }
+            html.dark, html.dark body { background-color: #111827; }
+        </style>
+        <script>
+            try {
+                if (localStorage.getItem('darkMode') === 'true') {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (error) {}
+        </script>
+
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+        <noscript><link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" /></noscript>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
