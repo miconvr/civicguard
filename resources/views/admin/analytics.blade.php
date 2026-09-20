@@ -23,6 +23,17 @@
                 </div>
             </div>
 
+            <div class="cg-card">
+                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Recommended Follow-up Actions</h3>
+                <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                    @forelse ($recommendations as $recommendation)
+                        <li class="flex gap-2"><span class="text-maroon-700">&bull;</span><span>{{ $recommendation }}</span></li>
+                    @empty
+                        <li class="text-gray-500 dark:text-gray-400">No recommendations available yet.</li>
+                    @endforelse
+                </ul>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="cg-card">
                     <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Reports by Category</h3>
