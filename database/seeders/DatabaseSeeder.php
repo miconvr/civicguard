@@ -2,22 +2,25 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\ReportCategory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $categories = [
+            ['name' => 'Stray Animal', 'default_severity' => 'low'],
+            ['name' => 'Public Disturbance', 'default_severity' => 'moderate'],
+            ['name' => 'Dispute', 'default_severity' => 'moderate'],
+            ['name' => 'Curfew Violation', 'default_severity' => 'high'],
+            ['name' => 'Noise Complaint', 'default_severity' => 'low'],
+            ['name' => 'Vandalism', 'default_severity' => 'moderate'],
+            ['name' => 'Other', 'default_severity' => 'low'],
+        ];
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ($categories as $category) {
+            ReportCategory::firstOrCreate(['name' => $category['name']], $category);
+        }
     }
 }
