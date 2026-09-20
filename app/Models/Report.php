@@ -34,8 +34,13 @@ class Report extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function assignedTo()
+        public function assignedTo()
     {
         return $this->belongsTo(User::class, 'assigned_to');
+    }
+
+    public function curfewLog()
+    {
+        return $this->hasOne(CurfewLog::class, 'report_id');
     }
 }
