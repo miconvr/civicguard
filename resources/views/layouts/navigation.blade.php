@@ -12,8 +12,41 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    @if (Auth::user()->role !== 'tanod')
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (Auth::user()->role === 'resident')
+                        <x-nav-link :href="route('reports.create')" :active="request()->routeIs('reports.create')">
+                            {{ __('Report Incident') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')">
+                            {{ __('My Reports') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (in_array(Auth::user()->role, ['admin', 'official']))
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                            {{ __('All Reports') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (Auth::user()->role === 'admin')
+                        <x-nav-link :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
+                            {{ __('Add Staff') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (in_array(Auth::user()->role, ['tanod', 'admin']))
+                        <x-nav-link :href="route('curfew.create')" :active="request()->routeIs('curfew.create')">
+                            {{ __('Log Curfew') }}
+                        </x-nav-link>
+                    @endif
+
+                    <x-nav-link :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
+                        {{ __('Assistant') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -67,8 +100,41 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            @if (Auth::user()->role !== 'tanod')
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if (Auth::user()->role === 'resident')
+                <x-responsive-nav-link :href="route('reports.create')" :active="request()->routeIs('reports.create')">
+                    {{ __('Report Incident') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')">
+                    {{ __('My Reports') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if (in_array(Auth::user()->role, ['admin', 'official']))
+                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                    {{ __('All Reports') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if (Auth::user()->role === 'admin')
+                <x-responsive-nav-link :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
+                    {{ __('Add Staff') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if (in_array(Auth::user()->role, ['tanod', 'admin']))
+                <x-responsive-nav-link :href="route('curfew.create')" :active="request()->routeIs('curfew.create')">
+                    {{ __('Log Curfew') }}
+                </x-responsive-nav-link>
+            @endif
+
+            <x-responsive-nav-link :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
+                {{ __('Assistant') }}
             </x-responsive-nav-link>
         </div>
 
