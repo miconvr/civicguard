@@ -1,12 +1,14 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 border-t-4 border-t-maroon-700 shadow-sm">
+<nav x-data="{ open: false }" class="border-t-4 border-t-maroon-700 border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur dark:border-gray-700 dark:bg-gray-800/95">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex h-[4.5rem] items-center justify-between">
             <div class="flex min-w-0 flex-1">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
-                        <x-application-logo class="block h-9 w-auto text-maroon-700" />
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5">
+                        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-maroon-50 ring-1 ring-inset ring-maroon-100 dark:bg-maroon-900/30 dark:ring-maroon-800">
+                            <x-application-logo class="block h-7 w-auto text-maroon-700" />
+                        </span>
                         <span class="hidden lg:block leading-tight">
                             <span class="block font-bold text-sm text-maroon-800 dark:text-maroon-800">CivicGuard</span>                            <span class="block text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Brgy. Maimpis</span>
                         </span>
@@ -14,7 +16,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden gap-5 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden items-center gap-1.5 sm:ms-8 sm:flex">
                     @if (Auth::user()->role === 'resident')
                         <x-nav-link :href="route('reports.create')" :active="request()->routeIs('reports.create')">
                             {{ __('Report Incident') }}
@@ -57,11 +59,11 @@
             </div>
 
             <!-- Right Side: AI Assistant, Notifications, Dark Mode, Profile -->
-            <div class="hidden shrink-0 sm:ms-6 sm:flex sm:items-center sm:gap-3">
+            <div class="hidden shrink-0 items-center gap-1.5 rounded-xl border border-gray-200 bg-gray-50/80 p-1 dark:border-gray-700 dark:bg-gray-900/40 sm:ms-6 sm:flex">
                 
                 @if (in_array(Auth::user()->role, ['resident', 'admin', 'official']))
                     <!-- AI Assistant Link (No icon, just styled text) -->
-                    <a href="{{ route('chatbot.widget') }}" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-maroon-700 dark:hover:text-maroon-800 transition">
+                    <a href="{{ route('chatbot.widget') }}" class="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-white hover:text-maroon-700 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-maroon-300">
                         <span class="font-bold text-maroon-700 dark:text-maroon-800">{{ __('AI') }}</span> {{ __('Assistant') }}
                     </a>
                 @endif
@@ -87,7 +89,7 @@
                     </svg>
                 </button>
 
-                <select aria-label="Language" onchange="window.location.href = this.value" class="h-9 shrink-0 rounded-md border-gray-300 text-xs dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                <select aria-label="Language" onchange="window.location.href = this.value" class="h-9 shrink-0 rounded-lg border-gray-300 bg-transparent text-xs dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300">
                     <option value="{{ route('locale.switch', 'en') }}" @selected(app()->getLocale() === 'en')>{{ __('English') }}</option>
                     <option value="{{ route('locale.switch', 'tl') }}" @selected(app()->getLocale() === 'tl')>{{ __('Tagalog') }}</option>
                 </select>
