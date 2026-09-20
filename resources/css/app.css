@@ -31,15 +31,14 @@
     .cg-badge-pending,
     .cg-badge-in_progress,
     .cg-badge-resolved {
-        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-500 text-white;
+        @apply inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-500 text-white;
     }
-
-    /* Dark mode: thin maroon border */
+        /* Dark mode: no border */
     .dark .cg-badge-status,
     .dark .cg-badge-pending,
     .dark .cg-badge-in_progress,
     .dark .cg-badge-resolved {
-        @apply bg-gray-600 text-white border border-[#7f1d1d];
+        @apply bg-gray-600 text-white;
     }
 
     .cg-badge-red    { @apply bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300; }
