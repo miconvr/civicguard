@@ -38,11 +38,9 @@
                         <label class="cg-label">Location</label>
                         <input type="text" name="location_text" value="{{ old('location_text') }}" placeholder="e.g. Purok 3, near the basketball court" class="cg-input">
                         @error('location_text') <p class="cg-error">{{ $message }}</p> @enderror
-                        <div class="mt-2 flex gap-2">
-                            <input type="number" name="latitude" value="{{ old('latitude') }}" step="any" min="-90" max="90" placeholder="Latitude" class="cg-input">
-                            <input type="number" name="longitude" value="{{ old('longitude') }}" step="any" min="-180" max="180" placeholder="Longitude" class="cg-input">
-                        </div>
-                        <button type="button" id="use-location" class="mt-2 text-sm text-maroon-700 font-semibold hover:underline">Use Current Location</button>
+                        <input type="hidden" name="latitude" value="{{ old('latitude') }}">
+                        <input type="hidden" name="longitude" value="{{ old('longitude') }}">
+                        <button type="button" id="use-location" class="mt-2 text-sm text-maroon-700 font-semibold hover:underline">Use My Current Location (Optional)</button>
                         <p id="location-status" class="mt-1 text-xs text-gray-500 dark:text-gray-400"></p>
                         @error('latitude') <p class="cg-error">{{ $message }}</p> @enderror
                         @error('longitude') <p class="cg-error">{{ $message }}</p> @enderror
@@ -74,7 +72,7 @@
                 position => {
                     document.querySelector('input[name="latitude"]').value = position.coords.latitude.toFixed(7);
                     document.querySelector('input[name="longitude"]').value = position.coords.longitude.toFixed(7);
-                    status.textContent = 'Coordinates captured.';
+                    status.textContent = 'Location captured. You can still describe it above.';
                 },
                 () => {
                     status.textContent = 'Unable to access location. You can enter coordinates manually.';
