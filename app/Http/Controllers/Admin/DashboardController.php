@@ -25,7 +25,7 @@ class DashboardController extends Controller
         return view('admin.dashboard', compact('reports'));
     }
 
-    public function updateStatus(Request $request, Report $report)
+     public function updateStatus(Request $request, Report $report)
     {
         $validated = $request->validate([
             'status' => ['required', 'in:pending,in_progress,resolved'],
@@ -36,6 +36,11 @@ class DashboardController extends Controller
             'resolved_at' => $validated['status'] === 'resolved' ? now() : null,
         ]);
 
+        \App\Models\AppNotification::create([
+            'user_id' => $report->user_id,
+            'report_id' => $report->id,
+            'message' => "Your report (\"{$report->category->name}\") status changed to " . ucfirst(str_replace('_', ' ', $validated['status'])) . '.',
+        ]);
+
         return redirect()->back()->with('status', 'Report status updated.');
     }
-}
