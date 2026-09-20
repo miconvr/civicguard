@@ -8,7 +8,7 @@
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5">
                         <x-application-logo class="block h-9 w-auto text-maroon-700" />
                         <span class="hidden lg:block leading-tight">
-                            <span class="block font-bold text-sm text-maroon-800 dark:text-[#d7b3a9]">CivicGuard</span>                            <span class="block text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Brgy. Maimpis</span>
+                            <span class="block font-bold text-sm text-maroon-800 dark:text-gray-100">CivicGuard</span>                            <span class="block text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Brgy. Maimpis</span>
                         </span>
                     </a>
                 </div>
@@ -62,7 +62,7 @@
                 @if (in_array(Auth::user()->role, ['resident', 'admin', 'official']))
                     <!-- AI Assistant Link (No icon, just styled text) -->
                     <a href="{{ route('chatbot.widget') }}" class="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-white hover:text-maroon-700 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-maroon-300">
-                        <span class="font-bold text-maroon-700 dark:text-[#d7b3a9]">{{ __('AI') }}</span> {{ __('Assistant') }}
+                        <span class="font-bold text-maroon-700 dark:text-gray-100">{{ __('AI') }}</span> {{ __('Assistant') }}
                     </a>
                 @endif
 
@@ -177,7 +177,7 @@
             @if (Auth::user()->role === 'resident')
                 <!-- AI Assistant Mobile -->
                 <x-responsive-nav-link :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
-                        <span class="font-bold text-maroon-700 dark:text-[#d7b3a9]">{{ __('AI') }}</span> {{ __('Assistant') }}
+                        <span class="font-bold text-maroon-700 dark:text-gray-100">{{ __('AI') }}</span> {{ __('Assistant') }}
                 </x-responsive-nav-link>
             @endif
 

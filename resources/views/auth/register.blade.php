@@ -48,7 +48,7 @@
     <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700 text-center">
         <p class="text-sm text-gray-600 dark:text-gray-400">
             Already have an account? 
-            <a href="{{ route('login') }}" class="font-semibold text-maroon-700 dark:text-maroon-400 hover:underline">
+            <a href="{{ route('login') }}" class="font-semibold text-maroon-700 dark:text-gray-200 hover:underline">
                 Log in here
             </a>
         </p>

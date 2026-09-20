@@ -9,7 +9,7 @@
 
         <style>
             html, body { background-color: #f9fafb; }
-            html.dark, html.dark body { background-color: #111827; }
+            html.dark, html.dark body { background-color: #1f1f1f; }
         </style>
         <script>
             try {

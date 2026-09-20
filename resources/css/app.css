@@ -71,3 +71,11 @@
         @apply inline-flex items-center bg-maroon-700 text-white px-5 py-2.5 rounded-lg shadow-sm hover:bg-maroon-800 hover:shadow-md transition font-medium;
     }
 }
+
+@layer utilities {
+    .dark .dark\:bg-gray-900 { background-color: #1f1f1f !important; }
+    .dark .dark\:bg-gray-800 { background-color: #292929 !important; }
+    .dark .dark\:bg-gray-700 { background-color: #343434 !important; }
+    .dark .dark\:border-gray-700,
+    .dark .dark\:border-gray-600 { border-color: #414141 !important; }
+}
