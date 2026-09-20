@@ -8,12 +8,14 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request)
+       public function index(Request $request)
     {
         $query = Report::with(['category', 'user', 'assignedTo']);
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
+        } else {
+            $query->where('status', '!=', 'resolved');
         }
 
         if ($request->filled('severity')) {
