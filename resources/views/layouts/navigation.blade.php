@@ -6,18 +6,11 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
+                        <x-application-logo class="block h-9 w-auto text-maroon-700" />                    </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                     @if (!in_array(Auth::user()->role, ['tanod', 'resident']))
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
-                        </x-nav-link>
-                    @endif
-
                     @if (Auth::user()->role === 'resident')
                         <x-nav-link :href="route('reports.create')" :active="request()->routeIs('reports.create')">
                             {{ __('Report Incident') }}
@@ -30,6 +23,12 @@
                     @if (in_array(Auth::user()->role, ['admin', 'official']))
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                             {{ __('All Reports') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (in_array(Auth::user()->role, ['admin', 'official']))
+                        <x-nav-link :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics')">
+                            {{ __('Analytics') }}
                         </x-nav-link>
                     @endif
 
@@ -116,12 +115,6 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            @if (!in_array(Auth::user()->role, ['tanod', 'resident']))
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
-                </x-responsive-nav-link>
-            @endif
-
             @if (Auth::user()->role === 'resident')
                 <x-responsive-nav-link :href="route('reports.create')" :active="request()->routeIs('reports.create')">
                     {{ __('Report Incident') }}
@@ -134,6 +127,12 @@
             @if (in_array(Auth::user()->role, ['admin', 'official']))
                 <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                     {{ __('All Reports') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if (in_array(Auth::user()->role, ['admin', 'official']))
+                <x-responsive-nav-link :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics')">
+                    {{ __('Analytics') }}
                 </x-responsive-nav-link>
             @endif
 

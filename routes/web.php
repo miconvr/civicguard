@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\ChatbotController;
@@ -31,6 +32,7 @@ Route::middleware(['auth', 'role:admin,official'])->prefix('admin')->name('admin
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::patch('/reports/{report}/status', [DashboardController::class, 'updateStatus'])->name('reports.updateStatus');
     Route::patch('/reports/{report}/assign', [DashboardController::class, 'assign'])->name('reports.assign');
+    Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
 });
 
 Route::middleware(['auth'])->group(function () {
