@@ -5,14 +5,14 @@
     <title>CivicGuard Consolidated Report</title>
     <style>
         body { font-family: DejaVu Sans, sans-serif; color: #1f2937; font-size: 8px; }
-        h1 { color: #7f1d1d; font-size: 17px; margin: 0 0 2px; }
-        h2 { color: #7f1d1d; font-size: 11px; margin: 14px 0 5px; }
+        h1 { color: #5f1f24; font-size: 17px; margin: 0 0 2px; }
+        h2 { color: #5f1f24; font-size: 11px; margin: 14px 0 5px; }
         .generated { color: #6b7280; margin-bottom: 8px; }
         .summary { width: 100%; margin-bottom: 8px; }
         .summary td { background: #f3f4f6; padding: 5px; text-align: center; }
-        .summary strong { display: block; color: #7f1d1d; font-size: 13px; }
+        .summary strong { display: block; color: #5f1f24; font-size: 13px; }
         table.data { width: 100%; border-collapse: collapse; }
-        table.data th { background: #7f1d1d; color: #fff; text-align: left; }
+        table.data th { background: #5f1f24; color: #fff; text-align: left; }
         table.data th, table.data td { border: 1px solid #d1d5db; padding: 3px; vertical-align: top; }
         table.data tr:nth-child(even) { background: #f9fafb; }
     </style>
