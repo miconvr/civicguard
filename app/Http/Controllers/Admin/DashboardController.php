@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request)
+        public function index(Request $request)
     {
         $query = Report::with(['category', 'user', 'assignedTo']);
 
@@ -23,7 +23,13 @@ class DashboardController extends Controller
         $reports = $query->latest()->paginate(15);
         $tanods = \App\Models\User::where('role', 'tanod')->get();
 
-        return view('admin.dashboard', compact('reports', 'tanods'));
+        $resolvedReports = Report::with(['category', 'user', 'assignedTo'])
+            ->where('status', 'resolved')
+            ->latest('resolved_at')
+            ->limit(10)
+            ->get();
+
+        return view('admin.dashboard', compact('reports', 'tanods', 'resolvedReports'));
     }
 
     public function updateStatus(Request $request, Report $report)
