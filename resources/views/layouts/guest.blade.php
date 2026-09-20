@@ -14,15 +14,15 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased bg-gradient-to-br from-gray-50 to-maroon-50/30 dark:from-gray-900 dark:to-gray-800">
+    <body class="font-sans text-gray-900 antialiased bg-gradient-to-br from-gray-50 to-gray-100 dark:from-[#1f1f1f] dark:to-[#292929]">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
 
             <!-- Sleek Logo and Title -->
             <div class="text-center mb-4">
                 <a href="/">
-                    <x-application-logo class="w-16 h-16 fill-current text-maroon-700 dark:text-maroon-400 mx-auto" />
+                    <x-application-logo class="w-16 h-16 fill-current text-maroon-700 dark:text-gray-100 mx-auto" />
                 </a>
-                <h1 class="mt-2 text-3xl font-bold text-maroon-700 dark:text-maroon-400 tracking-tight">CivicGuard</h1>
+                <h1 class="mt-2 text-3xl font-bold text-maroon-700 dark:text-gray-100 tracking-tight">CivicGuard</h1>
                 <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1 font-semibold uppercase tracking-widest">Barangay Maimpis Incident Management</p>
             </div>
 

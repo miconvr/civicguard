@@ -63,7 +63,7 @@
                 @endif
 
                 <div class="mt-6">
-                    <a href="{{ route('admin.dashboard') }}" class="text-maroon-700 dark:text-maroon-400 text-sm font-semibold hover:underline">
+                    <a href="{{ route('admin.dashboard') }}" class="text-maroon-700 dark:text-gray-200 text-sm font-semibold hover:underline">
                         &larr; Back to Dashboard
                     </a>
                 </div>

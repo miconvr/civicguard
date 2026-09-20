@@ -87,7 +87,7 @@
             card.className = 'border-2 border-maroon-700 rounded-lg p-4 bg-maroon-50 dark:bg-gray-900 space-y-2';
 
             const title = document.createElement('p');
-            title.className = 'text-xs font-semibold uppercase tracking-wider text-maroon-700 dark:text-maroon-400';
+            title.className = 'text-xs font-semibold uppercase tracking-wider text-maroon-700 dark:text-gray-200';
             title.textContent = 'Review Before Submitting';
             card.appendChild(title);
 
