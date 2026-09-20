@@ -1,10 +1,4 @@
 @php
-    $sevClass = [
-        'low' => 'cg-badge-gray',
-        'moderate' => 'cg-badge-yellow',
-        'high' => 'cg-badge-orange',
-        'critical' => 'cg-badge-red',
-    ];
     $statusClass = [
         'pending' => 'cg-badge-status',
         'in_progress' => 'cg-badge-status',
@@ -43,6 +37,12 @@
                         <option value="critical" {{ request('severity') === 'critical' ? 'selected' : '' }}>Critical</option>
                     </select>
                 </form>
+
+                <div class="mb-6 flex justify-end">
+                    <a href="{{ route('admin.reports.exportPdf', request()->only(['status', 'severity'])) }}" class="inline-flex items-center bg-maroon-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm hover:bg-maroon-800 hover:shadow-md transition">
+                        Export PDF
+                    </a>
+                </div>
 
                 <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
                     <table class="cg-table">
@@ -97,7 +97,7 @@
                                             @csrf
                                             @method('PATCH')
                                             <select name="assigned_to" class="cg-select">
-                                                <option value="">Assign tanod...</option>
+                                                <option value="">Assign Tanod</option>
                                                 @foreach ($tanods as $tanod)
                                                     <option value="{{ $tanod->id }}" {{ $report->assigned_to === $tanod->id ? 'selected' : '' }}>
                                                         {{ $tanod->name }}
@@ -124,7 +124,12 @@
             </div>
 
             <div class="cg-card p-8 mt-6">
-                <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-100 mb-4">Recently Resolved</h3>
+                <div class="flex items-center justify-between gap-4 mb-4">
+                    <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-100">Recently Resolved</h3>
+                    <a href="{{ route('admin.reports.exportPdf', ['status' => 'resolved']) }}" class="inline-flex items-center bg-maroon-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm hover:bg-maroon-800 hover:shadow-md transition">
+                        Export PDF
+                    </a>
+                </div>
 
                 <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
                     <table class="cg-table">

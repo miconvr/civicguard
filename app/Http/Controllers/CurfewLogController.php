@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CurfewLog;
+use App\Models\AuditLog;
 use App\Models\Report;
 use App\Models\ReportCategory;
 use Illuminate\Http\Request;
@@ -58,6 +59,19 @@ class CurfewLogController extends Controller
                 'prior_violations_count' => $validated['prior_violations_count'],
                 'tanod_id' => Auth::id(),
                 'notes' => $validated['notes'] ?? null,
+            ]);
+
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'action' => 'curfew_logged',
+                'auditable_type' => Report::class,
+                'auditable_id' => $report->id,
+                'description' => 'Curfew violation logged.',
+                'metadata' => [
+                    'minor_age' => $validated['minor_age'] ?? null,
+                    'prior_violations_count' => $validated['prior_violations_count'],
+                    'severity' => $severity,
+                ],
             ]);
         });
 
