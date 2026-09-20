@@ -10,7 +10,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="cg-card text-center">
-                    <p class="text-3xl font-bold text-maroon-700 dark:text-gold-400">{{ $totalReports }}</p>
+                    <p class="text-3xl font-bold text-maroon-700">{{ $totalReports }}</p>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Total Reports</p>
                 </div>
                 <div class="cg-card text-center">
@@ -45,8 +45,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <script>
         const isDark = () => document.documentElement.classList.contains('dark');
-        const accent = () => isDark() ? '#d4af37' : '#7f1d1d';
-        const accentFill = () => isDark() ? 'rgba(212,175,55,0.15)' : 'rgba(127,29,29,0.1)';
+        const accent = () => isDark() ? '#7f1d1d' : '#7f1d1d';
+        const accentFill = () => isDark() ? 'rgba(127,29,29,0.15)' : 'rgba(127,29,29,0.1)';
 
         const categoryLabels = @json($byCategory->pluck('name'));
         const categoryData = @json($byCategory->pluck('total'));

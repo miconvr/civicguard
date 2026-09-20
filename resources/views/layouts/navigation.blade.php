@@ -8,7 +8,7 @@
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
                         <x-application-logo class="block h-9 w-auto text-maroon-700" />
                         <span class="hidden lg:block leading-tight">
-                            <span class="block font-bold text-sm text-maroon-800 dark:text-gold-400">CivicGuard</span>
+                            <span class="block font-bold text-sm text-maroon-800">CivicGuard</span>
                             <span class="block text-[10px] uppercase tracking-wider text-gray-500">Brgy. Maimpis</span>
                         </span>
                     </a>
