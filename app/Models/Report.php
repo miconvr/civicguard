@@ -20,6 +20,10 @@ class Report extends Model
         'resolved_at',
     ];
 
+    protected $casts = [
+        'resolved_at' => 'datetime',
+    ];
+
     public function category()
     {
         return $this->belongsTo(ReportCategory::class, 'category_id');
