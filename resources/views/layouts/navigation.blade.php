@@ -48,6 +48,14 @@
                     <x-nav-link :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
                         {{ __('Assistant') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('notifications.index')" :active="request()->routeIs('notifications.index')">
+                        {{ __('Notifications') }}
+                        @php $unreadCount = \App\Models\AppNotification::where('user_id', auth()->id())->where('is_read', false)->count(); @endphp
+                        @if ($unreadCount > 0)
+                            <span class="ml-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">{{ $unreadCount }}</span>
+                        @endif
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -135,6 +143,14 @@
 
             <x-responsive-nav-link :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
                 {{ __('Assistant') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('notifications.index')" :active="request()->routeIs('notifications.index')">
+                {{ __('Notifications') }}
+                @php $unreadCount = \App\Models\AppNotification::where('user_id', auth()->id())->where('is_read', false)->count(); @endphp
+                @if ($unreadCount > 0)
+                    <span class="ml-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">{{ $unreadCount }}</span>
+                @endif
             </x-responsive-nav-link>
         </div>
 
