@@ -1,10 +1,4 @@
 @php
-    $sevClass = [
-        'low' => 'cg-badge-gray',
-        'moderate' => 'cg-badge-yellow',
-        'high' => 'cg-badge-orange',
-        'critical' => 'cg-badge-red',
-    ];
     $statusClass = [
         'pending' => 'cg-badge-status',
         'in_progress' => 'cg-badge-status',

@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Report;
 use App\Models\ReportCategory;
+use App\Models\AuditLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
@@ -39,7 +39,7 @@ class ReportController extends Controller
             $photoPath = $request->file('photo')->store('report-photos', 'public');
         }
 
-        Report::create([
+        $report = Report::create([
             'user_id' => Auth::id(),
             'category_id' => $category->id,
             'description' => $validated['description'],
@@ -47,6 +47,18 @@ class ReportController extends Controller
             'photo_path' => $photoPath,
             'severity' => $severity,
             'status' => 'pending',
+        ]);
+
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'report_submitted',
+            'auditable_type' => Report::class,
+            'auditable_id' => $report->id,
+            'description' => 'Incident report submitted.',
+            'metadata' => [
+                'category' => $category->name,
+                'severity' => $severity,
+            ],
         ]);
 
         return redirect()->route('reports.create')->with('status', 'Your report has been submitted. Severity: ' . ucfirst($severity));
