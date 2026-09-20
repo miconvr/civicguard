@@ -9,7 +9,7 @@
 
         <style>
             html, body { background-color: #f9fafb; }
-            html.dark, html.dark body { background-color: #1f1f1f; }
+            html.dark, html.dark body { background-color: #181818; }
         </style>
         <script>
             try {
@@ -26,11 +26,11 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div class="min-h-screen bg-gray-50 dark:bg-[#181818]">
             @include('layouts.navigation')
 
             @isset($header)
-                <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                <header class="bg-white dark:bg-[#202020] border-b border-gray-200 dark:border-gray-700">
                     <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
                         <div class="border-l-4 border-maroon-700 dark:border-white pl-4">
                             {{ $header }}
