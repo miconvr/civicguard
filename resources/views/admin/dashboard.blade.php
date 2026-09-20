@@ -6,9 +6,9 @@
         'critical' => 'cg-badge-red',
     ];
     $statusClass = [
-        'pending' => 'cg-badge-gray',
-        'in_progress' => 'cg-badge-blue',
-        'resolved' => 'cg-badge-green',
+        'pending' => 'cg-badge-status',
+        'in_progress' => 'cg-badge-status',
+        'resolved' => 'cg-badge-status',
     ];
 @endphp
 <x-app-layout>
@@ -68,8 +68,8 @@
                                         <span class="cg-sev cg-sev-{{ $report->severity }}">{{ ucfirst($report->severity) }}</span>
                                     </td>
                                     <td>
-                                        <span class="cg-badge {{ $statusClass[$report->status] ?? 'cg-badge-gray' }}">
-                                            {{ ucfirst(str_replace('_', ' ', $report->status)) }}
+                                        <span class="cg-badge {{ $statusClass[$report->status] ?? 'cg-badge-status' }}">
+                                            {{ ucwords(str_replace('_', ' ', $report->status)) }}
                                         </span>
                                     </td>
                                     <td>{{ $report->assignedTo->name ?? '-' }}</td>
@@ -117,3 +117,4 @@
         </div>
     </div>
 </x-app-layout>
+

@@ -6,14 +6,14 @@
         'critical' => 'cg-badge-red',
     ];
     $statusClass = [
-        'pending' => 'cg-badge-gray',
-        'in_progress' => 'cg-badge-blue',
-        'resolved' => 'cg-badge-green',
+        'pending' => 'cg-badge-status',
+        'in_progress' => 'cg-badge-status',
+        'resolved' => 'cg-badge-status',
     ];
 @endphp
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
             My Reports
         </h2>
     </x-slot>
@@ -50,8 +50,8 @@
                                         <span class="cg-sev cg-sev-{{ $report->severity }}">{{ ucfirst($report->severity) }}</span>
                                     </td>
                                     <td>
-                                        <span class="cg-badge {{ $statusClass[$report->status] ?? 'cg-badge-gray' }}">
-                                            {{ ucfirst(str_replace('_', ' ', $report->status)) }}
+                                        <span class="cg-badge {{ $statusClass[$report->status] ?? 'cg-badge-status' }}">
+                                            {{ ucwords(str_replace('_', ' ', $report->status)) }}
                                         </span>
                                     </td>
                                     <td class="whitespace-nowrap">{{ $report->created_at->format('M d, Y g:i A') }}</td>
@@ -71,3 +71,4 @@
         </div>
     </div>
 </x-app-layout>
+
