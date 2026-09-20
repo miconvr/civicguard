@@ -62,7 +62,7 @@
                 @if (in_array(Auth::user()->role, ['resident', 'admin', 'official']))
                     <!-- AI Assistant Link (No icon, just styled text) -->
                     <a href="{{ route('chatbot.widget') }}" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-maroon-700 dark:hover:text-maroon-800 transition">
-                        <span class="font-bold text-maroon-700 dark:text-maroon-800">AI</span> Assistant
+                        <span class="font-bold text-maroon-700 dark:text-maroon-800">{{ __('AI') }}</span> {{ __('Assistant') }}
                     </a>
                 @endif
 
@@ -202,6 +202,13 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                <div class="px-4 py-2">
+                    <label for="mobile-language" class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('Language') }}</label>
+                    <select id="mobile-language" onchange="window.location.href = this.value" class="w-full text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 rounded-md">
+                        <option value="{{ route('locale.switch', 'en') }}" @selected(app()->getLocale() === 'en')>{{ __('English') }}</option>
+                        <option value="{{ route('locale.switch', 'tl') }}" @selected(app()->getLocale() === 'tl')>{{ __('Tagalog') }}</option>
+                    </select>
+                </div>
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
