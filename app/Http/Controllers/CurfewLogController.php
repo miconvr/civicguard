@@ -7,6 +7,7 @@ use App\Models\Report;
 use App\Models\ReportCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CurfewLogController extends Controller
 {
@@ -28,35 +29,37 @@ class CurfewLogController extends Controller
             'notes' => ['nullable', 'string', 'max:2000'],
         ]);
 
-        $category = ReportCategory::firstOrCreate(
-            ['name' => 'Curfew Violation'],
-            ['default_severity' => 'high']
-        );
+        DB::transaction(function () use ($validated) {
+            $category = ReportCategory::firstOrCreate(
+                ['name' => 'Curfew Violation'],
+                ['default_severity' => 'high']
+            );
 
-        $severity = $validated['prior_violations_count'] >= 2 ? 'critical' : 'high';
+            $severity = $validated['prior_violations_count'] >= 2 ? 'critical' : 'high';
 
-        $report = Report::create([
-            'user_id' => Auth::id(),
-            'category_id' => $category->id,
-            'description' => "Curfew violation involving minor: {$validated['minor_name']}. "
-                . ($validated['notes'] ?? 'No additional notes.'),
-            'location_text' => $validated['apprehension_location'],
-            'severity' => $severity,
-            'status' => 'pending',
-        ]);
+            $report = Report::create([
+                'user_id' => Auth::id(),
+                'category_id' => $category->id,
+                'description' => "Curfew violation involving minor: {$validated['minor_name']}. "
+                    . ($validated['notes'] ?? 'No additional notes.'),
+                'location_text' => $validated['apprehension_location'],
+                'severity' => $severity,
+                'status' => 'pending',
+            ]);
 
-        CurfewLog::create([
-            'report_id' => $report->id,
-            'minor_name' => $validated['minor_name'],
-            'minor_age' => $validated['minor_age'] ?? null,
-            'guardian_name' => $validated['guardian_name'] ?? null,
-            'guardian_contact' => $validated['guardian_contact'] ?? null,
-            'apprehension_datetime' => $validated['apprehension_datetime'],
-            'apprehension_location' => $validated['apprehension_location'],
-            'prior_violations_count' => $validated['prior_violations_count'],
-            'tanod_id' => Auth::id(),
-            'notes' => $validated['notes'] ?? null,
-        ]);
+            CurfewLog::create([
+                'report_id' => $report->id,
+                'minor_name' => $validated['minor_name'],
+                'minor_age' => $validated['minor_age'] ?? null,
+                'guardian_name' => $validated['guardian_name'] ?? null,
+                'guardian_contact' => $validated['guardian_contact'] ?? null,
+                'apprehension_datetime' => $validated['apprehension_datetime'],
+                'apprehension_location' => $validated['apprehension_location'],
+                'prior_violations_count' => $validated['prior_violations_count'],
+                'tanod_id' => Auth::id(),
+                'notes' => $validated['notes'] ?? null,
+            ]);
+        });
 
         return redirect()->route('curfew.create')->with('status', 'Curfew violation logged successfully.');
     }
