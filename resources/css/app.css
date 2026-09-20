@@ -11,6 +11,12 @@
     /* Content box */
     .cg-card {
         @apply bg-white dark:bg-gray-800 p-6 shadow-md rounded-xl border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-200;
+        background-color: #ffffff;
+    }
+
+    .dark .cg-card {
+        background-color: #252525;
+        border-color: #383838;
     }
 
     /* Tables */
@@ -61,6 +67,12 @@
         @apply border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200 rounded-lg shadow-sm text-sm focus:border-maroon-500 focus:ring-maroon-500 transition;
     }
 
+    .dark .cg-select,
+    .dark .cg-input {
+        background-color: #181818;
+        border-color: #414141;
+    }
+
     /* Forms */
     .cg-label { @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1; }
     .cg-input {
@@ -78,4 +90,6 @@
     .dark .dark\:bg-gray-700 { background-color: #343434 !important; }
     .dark .dark\:border-gray-700,
     .dark .dark\:border-gray-600 { border-color: #414141 !important; }
+    .dark .text-gray-400 { color: #a3a3a3 !important; }
+    .dark .text-gray-500 { color: #8f8f8f !important; }
 }

@@ -5,8 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-8">
+        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="cg-card p-8">
 
                 @if (session('status'))
@@ -41,7 +41,7 @@
                         @error('location_text') <p class="cg-error">{{ $message }}</p> @enderror
                         <input type="hidden" name="latitude" value="{{ old('latitude') }}">
                         <input type="hidden" name="longitude" value="{{ old('longitude') }}">
-                        <button type="button" id="use-location" class="mt-2 inline-flex items-center rounded-md px-3 py-1.5 text-xs font-semibold text-gray-700 transition hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-gray-800">{{ __('Use My Current Location (Optional)') }}</button>
+                        <button type="button" id="use-location" class="mt-2 inline-flex select-none items-center rounded-md px-3 py-1.5 text-xs font-semibold text-gray-700 transition hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-gray-800">{{ __('Use My Current Location (Optional)') }}</button>
                         <p id="location-status" class="mt-1 text-xs text-gray-500 dark:text-gray-400"></p>
                         @error('latitude') <p class="cg-error">{{ $message }}</p> @enderror
                         @error('longitude') <p class="cg-error">{{ $message }}</p> @enderror
