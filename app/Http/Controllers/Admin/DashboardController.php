@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-        public function index(Request $request)
+    public function index(Request $request)
     {
         $query = Report::with(['category', 'user', 'assignedTo']);
 
@@ -75,5 +75,11 @@ class DashboardController extends Controller
         ]);
 
         return redirect()->back()->with('status', 'Tanod assigned successfully.');
+    }
+
+    public function showCurfewDetails(Report $report)
+    {
+        $report->load('curfewLog');
+        return view('admin.curfew-details', compact('report'));
     }
 }
