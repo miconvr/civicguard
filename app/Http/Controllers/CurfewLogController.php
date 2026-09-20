@@ -24,6 +24,8 @@ class CurfewLogController extends Controller
             'minor_age' => ['nullable', 'integer', 'min:0', 'max:17'],
             'guardian_name' => ['nullable', 'string', 'max:255'],
             'guardian_contact' => ['nullable', 'string', 'max:50'],
+            'guardian_notified' => ['nullable', 'boolean'],
+            'referral_action' => ['nullable', 'string', 'max:255'],
             'apprehension_datetime' => ['required', 'date'],
             'apprehension_location' => ['required', 'string', 'max:255'],
             'prior_violations_count' => ['required', 'integer', 'min:0'],
@@ -54,6 +56,8 @@ class CurfewLogController extends Controller
                 'minor_age' => $validated['minor_age'] ?? null,
                 'guardian_name' => $validated['guardian_name'] ?? null,
                 'guardian_contact' => $validated['guardian_contact'] ?? null,
+                'guardian_notified' => $validated['guardian_notified'] ?? false,
+                'referral_action' => $validated['referral_action'] ?? null,
                 'apprehension_datetime' => $validated['apprehension_datetime'],
                 'apprehension_location' => $validated['apprehension_location'],
                 'prior_violations_count' => $validated['prior_violations_count'],
@@ -71,6 +75,8 @@ class CurfewLogController extends Controller
                     'minor_age' => $validated['minor_age'] ?? null,
                     'prior_violations_count' => $validated['prior_violations_count'],
                     'severity' => $severity,
+                    'guardian_notified' => (bool) ($validated['guardian_notified'] ?? false),
+                    'referral_action' => $validated['referral_action'] ?? null,
                 ],
             ]);
         });

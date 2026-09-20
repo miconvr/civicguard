@@ -48,7 +48,7 @@
                 <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-100 mb-4">Curfew Monitoring</h3>
                 <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
                     <table class="cg-table">
-                        <thead><tr><th>Date</th><th>Minor</th><th>Age</th><th>Location</th><th>Prior Violations</th><th>Logged By</th></tr></thead>
+                        <thead><tr><th>Date</th><th>Minor</th><th>Age</th><th>Location</th><th>Prior Violations</th><th>Guardian Notified</th><th>Follow-up</th><th>Logged By</th></tr></thead>
                         <tbody>
                             @forelse ($curfewLogs as $log)
                                 <tr>
@@ -57,10 +57,12 @@
                                     <td>{{ $log->minor_age ?? '-' }}</td>
                                     <td>{{ $log->apprehension_location }}</td>
                                     <td>{{ $log->prior_violations_count }}</td>
+                                    <td>{{ $log->guardian_notified ? 'Yes' : 'No' }}</td>
+                                    <td>{{ $log->referral_action ?? '-' }}</td>
                                     <td>{{ $log->tanod->name ?? '-' }}</td>
                                 </tr>
                             @empty
-                                <tr><td colspan="6" class="py-8 text-center text-gray-500">No curfew logs yet.</td></tr>
+                                <tr><td colspan="8" class="py-8 text-center text-gray-500">No curfew logs yet.</td></tr>
                             @endforelse
                         </tbody>
                     </table>

@@ -28,6 +28,8 @@ class ReportController extends Controller
             'category_id' => ['required', 'exists:report_categories,id'],
             'description' => ['required', 'string', 'max:2000'],
             'location_text' => ['required', 'string', 'max:255'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'photo' => ['nullable', 'image', 'max:5120'],
         ]);
 
@@ -44,6 +46,8 @@ class ReportController extends Controller
             'category_id' => $category->id,
             'description' => $validated['description'],
             'location_text' => $validated['location_text'],
+            'latitude' => $validated['latitude'] ?? null,
+            'longitude' => $validated['longitude'] ?? null,
             'photo_path' => $photoPath,
             'severity' => $severity,
             'status' => 'pending',
