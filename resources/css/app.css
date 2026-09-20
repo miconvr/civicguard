@@ -51,7 +51,7 @@
     /* Severity: small colored dot + plain text */
     .cg-sev { @apply inline-flex items-center gap-2 text-sm; }
     .cg-sev::after { content: ''; @apply h-2.5 w-2.5 shrink-0 rounded-full; }
-    .cg-sev-low::after      { @apply bg-gray-400; }
+    .cg-sev-low::after      { @apply bg-green-500; }
     .cg-sev-moderate::after { @apply bg-yellow-400; }
     .cg-sev-high::after     { @apply bg-orange-500; }
     .cg-sev-critical::after { @apply bg-red-600; }
