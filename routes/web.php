@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CurfewLogController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,10 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'role:tanod,admin'])->group(function () {
     Route::get('/curfew/create', [CurfewLogController::class, 'create'])->name('curfew.create');
     Route::post('/curfew', [CurfewLogController::class, 'store'])->name('curfew.store');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 });
 
 require __DIR__.'/auth.php';
