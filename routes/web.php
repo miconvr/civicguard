@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AnalyticsController;
+use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\ChatbotController;
@@ -28,21 +29,23 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
 });
 
-Route::middleware(['auth', 'role:admin,official'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/reports/export/pdf', [DashboardController::class, 'exportReportsPdf'])->name('reports.exportPdf');
     Route::patch('/reports/{report}/status', [DashboardController::class, 'updateStatus'])->name('reports.updateStatus');
     Route::patch('/reports/{report}/assign', [DashboardController::class, 'assign'])->name('reports.assign');
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+    Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('auditLogs');
     Route::get('/reports/{report}/curfew-details', [DashboardController::class, 'showCurfewDetails'])->name('reports.curfewDetails');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role:resident,admin,official'])->group(function () {
     Route::get('/reports/create', [ReportController::class, 'create'])->name('reports.create');
     Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
     Route::get('/reports', [ReportController::class, 'myReports'])->name('reports.index');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role:resident,admin,official'])->group(function () {
     Route::get('/chatbot', [ChatbotController::class, 'widget'])->name('chatbot.widget');
     Route::post('/chatbot/send', [ChatbotController::class, 'send'])->name('chatbot.send');
 });
