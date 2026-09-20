@@ -30,6 +30,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 Route::middleware(['auth', 'role:admin,official'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::patch('/reports/{report}/status', [DashboardController::class, 'updateStatus'])->name('reports.updateStatus');
+    Route::patch('/reports/{report}/assign', [DashboardController::class, 'assign'])->name('reports.assign');
 });
 
 Route::middleware(['auth'])->group(function () {
