@@ -75,7 +75,7 @@
                                             <option value="in_progress" {{ $report->status === 'in_progress' ? 'selected' : '' }}>In Progress</option>
                                             <option value="resolved" {{ $report->status === 'resolved' ? 'selected' : '' }}>Resolved</option>
                                         </select>
-                                        <button type="submit" class="text-indigo-600 text-sm font-medium">Update</button>
+                                        <button type="submit" class="text-maroon-600 text-sm font-medium">Update</button>
                                     </form>
                                     <form method="POST" action="{{ route('admin.reports.assign', $report) }}" class="flex gap-2">
                                         @csrf
@@ -88,7 +88,7 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <button type="submit" class="text-indigo-600 text-sm font-medium">Assign</button>
+                                        <button type="submit" class="text-maroon-600 text-sm font-medium">Assign</button>
                                     </form>
                                 </td>
                             </tr>

@@ -11,7 +11,7 @@
 
                 <div class="space-y-3">
                     @forelse ($notifications as $notification)
-                        <div class="p-3 rounded-md {{ $notification->is_read ? 'bg-gray-50' : 'bg-indigo-50' }}">
+                        <div class="p-3 rounded-md {{ $notification->is_read ? 'bg-gray-50' : 'bg-maroon-50' }}">
                             <p class="text-sm text-gray-800">{{ $notification->message }}</p>
                             <p class="text-xs text-gray-500 mt-1">{{ $notification->created_at->diffForHumans() }}</p>
                         </div>

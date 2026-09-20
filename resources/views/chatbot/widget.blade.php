@@ -17,7 +17,7 @@
 
                 <form id="chat-form" class="flex gap-2">
                     <input type="text" id="chat-input" placeholder="Type your message..." class="flex-1 border-gray-300 rounded-md shadow-sm" autocomplete="off">
-                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md">Send</button>
+                    <button type="submit" class="bg-maroon-600 text-white px-4 py-2 rounded-md">Send</button>
                 </form>
 
             </div>
@@ -35,7 +35,7 @@
             const message = input.value.trim();
             if (!message) return;
 
-            log.innerHTML += `<div class="text-sm text-right"><span class="bg-indigo-100 px-3 py-1 rounded-lg inline-block">${message}</span></div>`;
+            log.innerHTML += `<div class="text-sm text-right"><span class="bg-maroon-100 px-3 py-1 rounded-lg inline-block">${message}</span></div>`;
             input.value = '';
             log.scrollTop = log.scrollHeight;
 

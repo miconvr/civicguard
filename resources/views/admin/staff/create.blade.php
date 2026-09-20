@@ -50,7 +50,7 @@
                         @error('password') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
 
-                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md">
+                    <button type="submit" class="bg-maroon-600 text-white px-4 py-2 rounded-md">
                         Create Account
                     </button>
                 </form>
