@@ -1,4 +1,4 @@
-@php
+﻿@php
     $sevClass = [
         'low' => 'cg-badge-gray',
         'moderate' => 'cg-badge-yellow',
