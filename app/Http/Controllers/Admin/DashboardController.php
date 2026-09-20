@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuditLog;
 use App\Models\Report;
 use Illuminate\Http\Request;
 
@@ -34,6 +35,25 @@ class DashboardController extends Controller
         return view('admin.dashboard', compact('reports', 'tanods', 'resolvedReports'));
     }
 
+    public function exportReportsPdf(Request $request)
+    {
+        $query = Report::with(['category', 'user', 'assignedTo']);
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('severity')) {
+            $query->where('severity', $request->severity);
+        }
+
+        $reports = $query->latest()->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.reports-pdf', compact('reports'));
+
+        return $pdf->download('civicguard-reports-' . now()->format('Y-m-d') . '.pdf');
+    }
+
     public function updateStatus(Request $request, Report $report)
     {
         $validated = $request->validate([
@@ -43,6 +63,17 @@ class DashboardController extends Controller
         $report->update([
             'status' => $validated['status'],
             'resolved_at' => $validated['status'] === 'resolved' ? now() : null,
+        ]);
+
+        AuditLog::create([
+            'user_id' => auth()->id(),
+            'action' => $validated['status'] === 'resolved' ? 'report_resolved' : 'report_status_changed',
+            'auditable_type' => Report::class,
+            'auditable_id' => $report->id,
+            'description' => 'Report status changed to ' . str_replace('_', ' ', $validated['status']) . '.',
+            'metadata' => [
+                'status' => $validated['status'],
+            ],
         ]);
 
         \App\Models\AppNotification::create([
@@ -68,6 +99,17 @@ class DashboardController extends Controller
             'assigned_by' => auth()->id(),
             'assigned_at' => now(),
             'status' => 'assigned',
+        ]);
+
+        AuditLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'report_assigned',
+            'auditable_type' => Report::class,
+            'auditable_id' => $report->id,
+            'description' => 'Report assigned to a tanod.',
+            'metadata' => [
+                'assigned_to' => $validated['assigned_to'],
+            ],
         ]);
 
         \App\Models\AppNotification::create([

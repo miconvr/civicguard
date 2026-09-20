@@ -24,15 +24,18 @@
                         </x-nav-link>
                     @endif
 
-                    @if (in_array(Auth::user()->role, ['admin', 'official']))
+                    @if (in_array(Auth::user()->role, ['tanod', 'admin', 'official']))
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                             {{ __('All Reports') }}
                         </x-nav-link>
                     @endif
 
-                    @if (in_array(Auth::user()->role, ['admin', 'official']))
+                    @if (in_array(Auth::user()->role, ['tanod', 'admin', 'official']))
                         <x-nav-link :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics')">
                             {{ __('Analytics') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
+                            {{ __('Audit Logs') }}
                         </x-nav-link>
                     @endif
 
@@ -53,10 +56,12 @@
             <!-- Right Side: AI Assistant, Notifications, Dark Mode, Profile -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
                 
-                <!-- AI Assistant Link (No icon, just styled text) -->
-                <a href="{{ route('chatbot.widget') }}" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-maroon-700 dark:hover:text-maroon-800 transition">
-                    <span class="font-bold text-maroon-700 dark:text-maroon-800">AI</span> Assistant
-                </a>
+                @if (in_array(Auth::user()->role, ['resident', 'admin', 'official']))
+                    <!-- AI Assistant Link (No icon, just styled text) -->
+                    <a href="{{ route('chatbot.widget') }}" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-maroon-700 dark:hover:text-maroon-800 transition">
+                        <span class="font-bold text-maroon-700 dark:text-maroon-800">AI</span> Assistant
+                    </a>
+                @endif
 
                 <!-- Notifications Bell Icon -->
                 <a href="{{ route('notifications.index') }}" class="relative text-gray-500 dark:text-gray-400 hover:text-maroon-700 dark:hover:text-maroon-800 transition">
@@ -122,7 +127,7 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            @if (Auth::user()->role === 'resident')
+            @if (in_array(Auth::user()->role, ['resident', 'admin', 'official']))
                 <x-responsive-nav-link :href="route('reports.create')" :active="request()->routeIs('reports.create')">
                     {{ __('Report Incident') }}
                 </x-responsive-nav-link>
@@ -131,15 +136,18 @@
                 </x-responsive-nav-link>
             @endif
 
-            @if (in_array(Auth::user()->role, ['admin', 'official']))
+            @if (in_array(Auth::user()->role, ['tanod', 'admin', 'official']))
                 <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                     {{ __('All Reports') }}
                 </x-responsive-nav-link>
             @endif
 
-            @if (in_array(Auth::user()->role, ['admin', 'official']))
+            @if (in_array(Auth::user()->role, ['tanod', 'admin', 'official']))
                 <x-responsive-nav-link :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics')">
                     {{ __('Analytics') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
+                    {{ __('Audit Logs') }}
                 </x-responsive-nav-link>
             @endif
 
@@ -155,10 +163,12 @@
                 </x-responsive-nav-link>
             @endif
 
-            <!-- AI Assistant Mobile -->
-            <x-responsive-nav-link :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
-                <span class="font-bold text-maroon-700 dark:text-maroon-800">AI</span> Assistant
-            </x-responsive-nav-link>
+            @if (Auth::user()->role === 'resident')
+                <!-- AI Assistant Mobile -->
+                <x-responsive-nav-link :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
+                    <span class="font-bold text-maroon-700 dark:text-maroon-800">AI</span> Assistant
+                </x-responsive-nav-link>
+            @endif
 
             <!-- Notifications Mobile -->
             <x-responsive-nav-link :href="route('notifications.index')" :active="request()->routeIs('notifications.index')">
