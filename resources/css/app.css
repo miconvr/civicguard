@@ -25,6 +25,23 @@
 
     /* Status badges */
     .cg-badge { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold; }
+    
+    /* Unified Status Badges (Pending, In Progress, Resolved) */
+    .cg-badge-status,
+    .cg-badge-pending,
+    .cg-badge-in_progress,
+    .cg-badge-resolved {
+        @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-500 text-white whitespace-nowrap;
+    }
+
+    /* Dark mode: darker gray, no border */
+    .dark .cg-badge-status,
+    .dark .cg-badge-pending,
+    .dark .cg-badge-in_progress,
+    .dark .cg-badge-resolved {
+        @apply bg-gray-600 text-white;
+    }
+
     .cg-badge-red    { @apply bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300; }
     .cg-badge-orange { @apply bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300; }
     .cg-badge-yellow { @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300; }
@@ -55,4 +72,3 @@
         @apply inline-flex items-center bg-maroon-700 text-white px-5 py-2.5 rounded-lg shadow-sm hover:bg-maroon-800 hover:shadow-md transition font-medium;
     }
 }
-

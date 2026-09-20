@@ -4,6 +4,7 @@ import forms from '@tailwindcss/forms';
 /** @type {import('tailwindcss').Config} */
 export default {
         darkMode: 'class',
+    safelist: ['cg-sev-low', 'cg-sev-moderate', 'cg-sev-high', 'cg-sev-critical'],
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
