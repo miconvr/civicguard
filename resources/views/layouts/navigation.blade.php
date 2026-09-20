@@ -6,9 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5">
-                        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-maroon-50 ring-1 ring-inset ring-maroon-100 dark:bg-maroon-900/30 dark:ring-maroon-800">
-                            <x-application-logo class="block h-7 w-auto text-maroon-700" />
-                        </span>
+                        <x-application-logo class="block h-9 w-auto text-maroon-700" />
                         <span class="hidden lg:block leading-tight">
                             <span class="block font-bold text-sm text-maroon-800 dark:text-maroon-800">CivicGuard</span>                            <span class="block text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Brgy. Maimpis</span>
                         </span>
@@ -59,7 +57,7 @@
             </div>
 
             <!-- Right Side: AI Assistant, Notifications, Dark Mode, Profile -->
-            <div class="hidden shrink-0 items-center gap-1.5 rounded-xl border border-gray-200 bg-gray-50/80 p-1 dark:border-gray-700 dark:bg-gray-900/40 sm:ms-6 sm:flex">
+            <div class="hidden shrink-0 items-center gap-2 sm:ms-6 sm:flex">
                 
                 @if (in_array(Auth::user()->role, ['resident', 'admin', 'official']))
                     <!-- AI Assistant Link (No icon, just styled text) -->
