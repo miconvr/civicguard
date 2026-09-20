@@ -92,4 +92,10 @@
     .dark .dark\:border-gray-600 { border-color: #414141 !important; }
     .dark .text-gray-400 { color: #a3a3a3 !important; }
     .dark .text-gray-500 { color: #8f8f8f !important; }
+    .dark input::placeholder,
+    .dark textarea::placeholder,
+    .dark select::placeholder,
+    .dark .cg-input::placeholder { color: #858585 !important; opacity: 1; }
+    .dark select option { background-color: #181818; color: #e5e5e5; }
+    .dark select option:disabled { color: #858585; }
 }
