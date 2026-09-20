@@ -65,9 +65,7 @@
                                     <td>{{ $report->user->name }}</td>
                                     <td>{{ $report->location_text }}</td>
                                     <td>
-                                        <span class="cg-badge {{ $sevClass[$report->severity] ?? 'cg-badge-gray' }}">
-                                            {{ ucfirst($report->severity) }}
-                                        </span>
+                                        <span class="cg-sev cg-sev-{{ $report->severity }}">{{ ucfirst($report->severity) }}</span>
                                     </td>
                                     <td>
                                         <span class="cg-badge {{ $statusClass[$report->status] ?? 'cg-badge-gray' }}">
@@ -85,7 +83,7 @@
                                                 <option value="in_progress" {{ $report->status === 'in_progress' ? 'selected' : '' }}>In Progress</option>
                                                 <option value="resolved" {{ $report->status === 'resolved' ? 'selected' : '' }}>Resolved</option>
                                             </select>
-                                            <button type="submit" class="text-maroon-700 dark:text-gold-400 text-sm font-semibold hover:underline transition">Update</button>
+                                            <button type="submit" class="text-maroon-700 text-sm font-semibold hover:underline transition">Update</button>
                                         </form>
                                         <form method="POST" action="{{ route('admin.reports.assign', $report) }}" class="flex gap-2">
                                             @csrf
@@ -98,7 +96,7 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <button type="submit" class="text-maroon-700 dark:text-gold-400 text-sm font-semibold hover:underline transition">Assign</button>
+                                            <button type="submit" class="text-maroon-700 text-sm font-semibold hover:underline transition">Assign</button>
                                         </form>
                                     </td>
                                 </tr>

@@ -1,4 +1,4 @@
-﻿@php
+@php
     $sevClass = [
         'low' => 'cg-badge-gray',
         'moderate' => 'cg-badge-yellow',
@@ -47,9 +47,7 @@
                                     <td class="max-w-xs truncate">{{ $report->description }}</td>
                                     <td>{{ $report->location_text }}</td>
                                     <td>
-                                        <span class="cg-badge {{ $sevClass[$report->severity] ?? 'cg-badge-gray' }}">
-                                            {{ ucfirst($report->severity) }}
-                                        </span>
+                                        <span class="cg-sev cg-sev-{{ $report->severity }}">{{ ucfirst($report->severity) }}</span>
                                     </td>
                                     <td>
                                         <span class="cg-badge {{ $statusClass[$report->status] ?? 'cg-badge-gray' }}">
