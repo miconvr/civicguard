@@ -87,6 +87,11 @@
                     </svg>
                 </button>
 
+                <select aria-label="Language" onchange="window.location.href = this.value" class="text-xs border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 rounded-md">
+                    <option value="{{ route('locale.switch', 'en') }}" @selected(app()->getLocale() === 'en')>{{ __('English') }}</option>
+                    <option value="{{ route('locale.switch', 'tl') }}" @selected(app()->getLocale() === 'tl')>{{ __('Tagalog') }}</option>
+                </select>
+
                 <!-- Settings Dropdown -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -172,7 +177,7 @@
             @if (Auth::user()->role === 'resident')
                 <!-- AI Assistant Mobile -->
                 <x-responsive-nav-link :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
-                    <span class="font-bold text-maroon-700 dark:text-maroon-800">AI</span> Assistant
+                        <span class="font-bold text-maroon-700 dark:text-maroon-800">{{ __('AI') }}</span> {{ __('Assistant') }}
                 </x-responsive-nav-link>
             @endif
 
