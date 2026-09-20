@@ -21,11 +21,12 @@ class DashboardController extends Controller
         }
 
         $reports = $query->latest()->paginate(15);
+        $tanods = \App\Models\User::where('role', 'tanod')->get();
 
-        return view('admin.dashboard', compact('reports'));
+        return view('admin.dashboard', compact('reports', 'tanods'));
     }
 
-     public function updateStatus(Request $request, Report $report)
+    public function updateStatus(Request $request, Report $report)
     {
         $validated = $request->validate([
             'status' => ['required', 'in:pending,in_progress,resolved'],
@@ -44,3 +45,29 @@ class DashboardController extends Controller
 
         return redirect()->back()->with('status', 'Report status updated.');
     }
+
+    public function assign(Request $request, Report $report)
+    {
+        $validated = $request->validate([
+            'assigned_to' => ['required', 'exists:users,id'],
+        ]);
+
+        $report->update(['assigned_to' => $validated['assigned_to']]);
+
+        \App\Models\CaseAssignment::create([
+            'report_id' => $report->id,
+            'assigned_to' => $validated['assigned_to'],
+            'assigned_by' => auth()->id(),
+            'assigned_at' => now(),
+            'status' => 'assigned',
+        ]);
+
+        \App\Models\AppNotification::create([
+            'user_id' => $validated['assigned_to'],
+            'report_id' => $report->id,
+            'message' => "You've been assigned to a report: \"{$report->category->name}\" at {$report->location_text}.",
+        ]);
+
+        return redirect()->back()->with('status', 'Tanod assigned successfully.');
+    }
+}
