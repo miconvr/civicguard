@@ -5,10 +5,10 @@
     <title>CivicGuard Reports</title>
     <style>
         body { font-family: DejaVu Sans, sans-serif; color: #1f2937; font-size: 9px; }
-        h1 { color: #5f1f24; font-size: 16px; margin-bottom: 2px; }
+        h1 { color: #7f1d1d; font-size: 16px; margin-bottom: 2px; }
         .generated { color: #6b7280; margin-bottom: 10px; }
         table { width: 100%; border-collapse: collapse; }
-        th { background: #5f1f24; color: #fff; text-align: left; }
+        th { background: #7f1d1d; color: #fff; text-align: left; }
         th, td { border: 1px solid #d1d5db; padding: 4px; vertical-align: top; }
         tr:nth-child(even) { background: #f9fafb; }
     </style>
