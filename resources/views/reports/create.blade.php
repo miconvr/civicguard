@@ -21,6 +21,7 @@
                     <div>
                         <label class="cg-label">Category</label>
                         <select name="category_id" class="cg-input">
+                            <option value="" disabled {{ old('category_id') ? '' : 'selected' }}>Choose a category</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                             @endforeach
