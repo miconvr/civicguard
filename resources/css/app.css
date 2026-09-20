@@ -93,6 +93,15 @@
     .dark .cg-card { background-color: #252525 !important; }
     .dark .cg-input,
     .dark .cg-select { background-color: #181818 !important; }
+    .dark [class*="dark:bg-gray-900"] { background-color: #1f1f1f !important; }
+    .dark [class*="dark:bg-gray-800"] { background-color: #252525 !important; }
+    .dark [class*="dark:bg-gray-700"] { background-color: #343434 !important; }
+    .dark [class*="dark:hover:bg-gray-900"]:hover,
+    .dark [class*="dark:focus:bg-gray-900"]:focus { background-color: #292929 !important; }
+    .dark [class*="dark:hover:bg-gray-700"]:hover,
+    .dark [class*="dark:focus:bg-gray-700"]:focus { background-color: #343434 !important; }
+    .dark [class*="dark:border-gray-700"],
+    .dark [class*="dark:border-gray-600"] { border-color: #414141 !important; }
     .dark .text-gray-400 { color: #a3a3a3 !important; }
     .dark .text-gray-500 { color: #8f8f8f !important; }
     .dark input::placeholder,
