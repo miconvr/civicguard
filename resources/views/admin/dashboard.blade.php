@@ -77,7 +77,7 @@
                                         {{ $report->created_at->format('M d, Y g:i A') }}
                                         @if ($report->category->name === 'Curfew Violation')
                                             <br>
-                                            <a href="{{ route('admin.reports.curfewDetails', $report) }}" class="text-xs text-maroon-700 dark:text-maroon-400 font-semibold hover:underline">
+                                                <a href="{{ route('admin.reports.curfewDetails', $report) }}" class="text-xs text-maroon-700 dark:text-maroon-700 font-semibold hover:underline">
                                                 View Details
                                             </a>
                                         @endif
