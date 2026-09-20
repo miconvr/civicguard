@@ -109,12 +109,49 @@
                     </table>
                 </div>
 
-                <div class="mt-4">
+                                <div class="mt-4">
                     {{ $reports->links() }}
                 </div>
 
             </div>
+
+            <div class="cg-card p-8 mt-6">
+                <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-100 mb-4">Recently Resolved</h3>
+
+                <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
+                    <table class="cg-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Reported By</th>
+                                <th>Location</th>
+                                <th>Severity</th>
+                                <th>Assigned To</th>
+                                <th>Resolved On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($resolvedReports as $report)
+                                <tr>
+                                    <td class="font-medium">{{ $report->category->name }}</td>
+                                    <td>{{ $report->user->name }}</td>
+                                    <td>{{ $report->location_text }}</td>
+                                    <td>
+                                        <span class="cg-sev cg-sev-{{ $report->severity }}">{{ ucfirst($report->severity) }}</span>
+                                    </td>
+                                    <td>{{ $report->assignedTo->name ?? '-' }}</td>
+                                    <td class="whitespace-nowrap">{{ $report->resolved_at?->format('M d, Y g:i A') ?? '-' }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="py-8 text-center text-gray-500 dark:text-gray-400">No resolved reports yet.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 </x-app-layout>
-
