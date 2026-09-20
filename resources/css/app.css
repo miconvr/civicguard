@@ -16,14 +16,14 @@
     /* Tables */
     .cg-table { @apply min-w-full text-sm text-left; }
     .cg-table thead th {
-        @apply px-4 py-3 bg-maroon-50 dark:bg-gray-700 text-maroon-800 dark:text-gold-300 text-xs font-semibold uppercase tracking-wider;
+        @apply px-4 py-3 bg-maroon-50 dark:bg-maroon-800 text-maroon-800 dark:text-white text-xs font-semibold uppercase tracking-wider;
     }
     .cg-table tbody td {
         @apply px-4 py-3 text-gray-700 dark:text-gray-300 border-t border-gray-100 dark:border-gray-700;
     }
     .cg-table tbody tr:hover { @apply bg-gray-50 dark:bg-gray-700/50; }
 
-    /* Status / severity badges */
+    /* Status badges */
     .cg-badge { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold; }
     .cg-badge-red    { @apply bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300; }
     .cg-badge-orange { @apply bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300; }
@@ -31,6 +31,14 @@
     .cg-badge-green  { @apply bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300; }
     .cg-badge-blue   { @apply bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300; }
     .cg-badge-gray   { @apply bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300; }
+
+    /* Severity: small colored dot + plain text */
+    .cg-sev { @apply inline-flex items-center gap-2 text-sm; }
+    .cg-sev::after { content: ''; @apply h-2.5 w-2.5 shrink-0 rounded-full; }
+    .cg-sev-low::after      { @apply bg-gray-400; }
+    .cg-sev-moderate::after { @apply bg-yellow-400; }
+    .cg-sev-high::after     { @apply bg-orange-500; }
+    .cg-sev-critical::after { @apply bg-red-600; }
 
     /* Selects and small form controls */
     .cg-select {
