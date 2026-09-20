@@ -26,6 +26,8 @@
                 <th>Severity</th>
                 <th>Status</th>
                 <th>Assigned To</th>
+                <th>Coordinates</th>
+                <th>Photo</th>
                 <th>Date Filed</th>
             </tr>
         </thead>
@@ -38,11 +40,19 @@
                     <td>{{ ucfirst($report->severity) }}</td>
                     <td>{{ ucwords(str_replace('_', ' ', $report->status)) }}</td>
                     <td>{{ $report->assignedTo->name ?? '-' }}</td>
+                    <td>{{ $report->latitude !== null && $report->longitude !== null ? $report->latitude . ', ' . $report->longitude : '-' }}</td>
+                    <td>
+                        @if ($report->photo_path && file_exists(public_path('storage/' . $report->photo_path)))
+                            <img src="{{ public_path('storage/' . $report->photo_path) }}" alt="Incident photo" style="width: 48px; height: 36px; object-fit: cover;">
+                        @else
+                            -
+                        @endif
+                    </td>
                     <td>{{ $report->created_at->format('M d, Y g:i A') }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7">No reports found.</td>
+                    <td colspan="9">No reports found.</td>
                 </tr>
             @endforelse
         </tbody>
