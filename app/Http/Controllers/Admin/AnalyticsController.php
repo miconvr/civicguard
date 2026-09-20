@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CurfewLog;
 use App\Models\Report;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
@@ -38,13 +39,20 @@ class AnalyticsController extends Controller
         $pendingCount = $byStatus->get('pending')->total ?? 0;
         $resolvedCount = $byStatus->get('resolved')->total ?? 0;
         $curfewCount = CurfewLog::count();
-        $insights = $this->buildInsights(
+        $insightCacheKey = 'analytics-insights-' . md5(serialize([
+            $byCategory->pluck('total', 'name')->all(),
+            $bySeverity->map(fn ($item) => $item->total)->all(),
+            $byStatus->map(fn ($item) => $item->total)->all(),
+            $last14Days->pluck('total')->all(),
+            $curfewCount,
+        ]));
+        $insights = Cache::remember($insightCacheKey, now()->addMinutes(10), fn () => $this->buildInsights(
             $byCategory,
             $bySeverity,
             $byStatus,
             $last14Days,
             $curfewCount
-        );
+        ));
         $recommendations = $insights['recommendations'];
         $analysisSummary = $insights['analysisSummary'];
         $patterns = $insights['patterns'];
