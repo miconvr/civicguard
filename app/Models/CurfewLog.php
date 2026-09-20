@@ -19,6 +19,10 @@ class CurfewLog extends Model
         'notes',
     ];
 
+    protected $casts = [
+        'apprehension_datetime' => 'datetime',
+    ];
+
     public function report()
     {
         return $this->belongsTo(Report::class);

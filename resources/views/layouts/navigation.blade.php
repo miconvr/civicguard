@@ -34,6 +34,9 @@
                         <x-nav-link :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics')">
                             {{ __('Analytics') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.consolidatedReports')" :active="request()->routeIs('admin.consolidatedReports')">
+                            {{ __('Reports') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
                             {{ __('Audit Logs') }}
                         </x-nav-link>
@@ -145,6 +148,9 @@
             @if (in_array(Auth::user()->role, ['tanod', 'admin', 'official']))
                 <x-responsive-nav-link :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics')">
                     {{ __('Analytics') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.consolidatedReports')" :active="request()->routeIs('admin.consolidatedReports')">
+                    {{ __('Reports') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
                     {{ __('Audit Logs') }}
