@@ -54,9 +54,9 @@
             <!-- Right Side: AI Assistant, Notifications, Dark Mode, Profile -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
                 
-                <!-- AI Assistant Link -->
+                <!-- AI Assistant Link (No icon, just styled text) -->
                 <a href="{{ route('chatbot.widget') }}" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-maroon-700 dark:hover:text-maroon-400 transition">
-                    AI Assistant
+                    <span class="font-bold text-maroon-700 dark:text-maroon-400">AI</span> Assistant
                 </a>
 
                 <!-- Notifications Bell Icon -->
@@ -156,10 +156,12 @@
                 </x-responsive-nav-link>
             @endif
 
+            <!-- AI Assistant Mobile -->
             <x-responsive-nav-link :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
-                {{ __('AI Assistant') }}
+                <span class="font-bold text-maroon-700 dark:text-maroon-400">AI</span> Assistant
             </x-responsive-nav-link>
 
+            <!-- Notifications Mobile -->
             <x-responsive-nav-link :href="route('notifications.index')" :active="request()->routeIs('notifications.index')">
                 <div class="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
