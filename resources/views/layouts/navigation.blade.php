@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="border-t-4 border-t-maroon-700 border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur dark:border-gray-700 dark:bg-gray-800/95">
+<nav x-data="{ open: false }" class="border-t-4 border-t-maroon-700 border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur dark:border-gray-700 dark:bg-[#202020]">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex h-[4.5rem] items-center justify-between">
@@ -87,7 +87,7 @@
                     </svg>
                 </button>
 
-                <select aria-label="Language" onchange="window.location.href = this.value" class="h-9 shrink-0 rounded-lg border-gray-300 bg-transparent text-xs dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                <select aria-label="Language" onchange="window.location.href = this.value" class="h-9 shrink-0 rounded-lg border-gray-300 bg-transparent text-xs dark:border-gray-600 dark:bg-[#202020] dark:text-gray-300">
                     <option value="{{ route('locale.switch', 'en') }}" @selected(app()->getLocale() === 'en')>{{ __('English') }}</option>
                     <option value="{{ route('locale.switch', 'tl') }}" @selected(app()->getLocale() === 'tl')>{{ __('Tagalog') }}</option>
                 </select>
@@ -95,7 +95,7 @@
                 <!-- Settings Dropdown -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex h-9 items-center rounded-md border border-transparent px-3 text-sm font-medium leading-4 text-gray-500 transition hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300">
+                        <button class="inline-flex h-9 items-center rounded-md border border-transparent px-3 text-sm font-medium leading-4 text-gray-500 transition hover:text-gray-700 focus:outline-none dark:bg-[#202020] dark:text-gray-400 dark:hover:text-gray-300">
                             <div>{{ Auth::user()->name }}</div>
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -204,7 +204,7 @@
             <div class="mt-3 space-y-1">
                 <div class="px-4 py-2">
                     <label for="mobile-language" class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('Language') }}</label>
-                    <select id="mobile-language" onchange="window.location.href = this.value" class="w-full text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 rounded-md">
+                    <select id="mobile-language" onchange="window.location.href = this.value" class="w-full text-sm border-gray-300 dark:border-gray-600 dark:bg-[#202020] dark:text-gray-300 rounded-md">
                         <option value="{{ route('locale.switch', 'en') }}" @selected(app()->getLocale() === 'en')>{{ __('English') }}</option>
                         <option value="{{ route('locale.switch', 'tl') }}" @selected(app()->getLocale() === 'tl')>{{ __('Tagalog') }}</option>
                     </select>
