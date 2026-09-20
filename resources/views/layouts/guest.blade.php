@@ -27,7 +27,7 @@
             </div>
 
             <!-- Auth Card -->
-            <div class="w-full sm:max-w-md mt-2 px-6 py-8 bg-white dark:bg-gray-800 shadow-lg overflow-hidden sm:rounded-xl border border-gray-100 dark:border-gray-700">
+            <div class="w-full sm:max-w-md mt-2 px-6 py-8 bg-white dark:bg-[#252525] shadow-lg overflow-hidden sm:rounded-xl border border-gray-100 dark:border-gray-700">
                 {{ $slot }}
             </div>
 
