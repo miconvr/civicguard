@@ -8,8 +8,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
-            My Reports
-                {{ __('My Reports') }}
+            {{ __('My Reports') }}
         </h2>
     </x-slot>
 
@@ -19,8 +18,7 @@
 
                 <div class="mb-5">
                     <a href="{{ route('reports.create') }}" class="inline-flex items-center bg-maroon-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm hover:bg-maroon-800 hover:shadow-md transition">
-                        + Report New Incident
-                            {{ __('+ Report New Incident') }}
+                        {{ __('+ Report New Incident') }}
                     </a>
                 </div>
 
@@ -28,18 +26,12 @@
                     <table class="cg-table">
                         <thead>
                             <tr>
-                                <th>Category</th>
-                                <th>Description</th>
-                                <th>Location</th>
-                                <th>Severity</th>
-                                <th>Status</th>
-                                <th>Date Filed</th>
-                                    <th>{{ __('Category') }}</th>
-                                    <th>{{ __('Description') }}</th>
-                                    <th>{{ __('Location') }}</th>
-                                    <th>{{ __('Severity') }}</th>
-                                    <th>{{ __('Status') }}</th>
-                                    <th>{{ __('Date Filed') }}</th>
+                                <th>{{ __('Category') }}</th>
+                                <th>{{ __('Description') }}</th>
+                                <th>{{ __('Location') }}</th>
+                                <th>{{ __('Severity') }}</th>
+                                <th>{{ __('Status') }}</th>
+                                <th>{{ __('Date Filed') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,13 +41,11 @@
                                     <td class="max-w-xs truncate">{{ $report->description }}</td>
                                     <td>{{ $report->location_text }}</td>
                                     <td>
-                                        <span class="cg-sev cg-sev-{{ $report->severity }}">{{ ucfirst($report->severity) }}</span>
-                                            <span class="cg-sev cg-sev-{{ $report->severity }}">{{ __(ucfirst($report->severity)) }}</span>
+                                        <span class="cg-sev cg-sev-{{ $report->severity }}">{{ __(ucfirst($report->severity)) }}</span>
                                     </td>
                                     <td>
                                         <span class="cg-badge {{ $statusClass[$report->status] ?? 'cg-badge-status' }}">
-                                            {{ ucwords(str_replace('_', ' ', $report->status)) }}
-                                                {{ __(ucwords(str_replace('_', ' ', $report->status))) }}
+                                            {{ __(ucwords(str_replace('_', ' ', $report->status))) }}
                                         </span>
                                     </td>
                                     <td class="whitespace-nowrap">{{ $report->created_at->format('M d, Y g:i A') }}</td>
@@ -63,8 +53,7 @@
                             @empty
                                 <tr>
                                     <td colspan="6" class="py-8 text-center text-gray-500 dark:text-gray-400">
-                                        You haven't filed any reports yet.
-                                            {{ __('You haven\'t filed any reports yet.') }}
+                                        {{ __('You haven\'t filed any reports yet.') }}
                                     </td>
                                 </tr>
                             @endforelse
