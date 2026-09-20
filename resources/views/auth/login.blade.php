@@ -44,4 +44,14 @@
             </x-primary-button>
         </div>
     </form>
+
+    <!-- Register Link -->
+    <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700 text-center">
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+            New to CivicGuard? 
+            <a href="{{ route('register') }}" class="font-semibold text-maroon-700 dark:text-maroon-400 hover:underline">
+                Create an account
+            </a>
+        </p>
+    </div>
 </x-guest-layout>
