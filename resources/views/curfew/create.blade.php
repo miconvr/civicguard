@@ -40,6 +40,25 @@
                         <input type="text" name="guardian_contact" value="{{ old('guardian_contact') }}" class="cg-input">
                     </div>
 
+                    <label class="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                        <input type="checkbox" name="guardian_notified" value="1" {{ old('guardian_notified') ? 'checked' : '' }}>
+                        Guardian notified
+                    </label>
+
+                    <div>
+                        <label class="cg-label">Referral or Follow-up Action</label>
+                        <select name="referral_action" class="cg-input">
+                            <option value="">Select action...</option>
+                            <option value="Released to guardian" {{ old('referral_action') === 'Released to guardian' ? 'selected' : '' }}>Released to guardian</option>
+                            <option value="Referred to social-welfare personnel" {{ old('referral_action') === 'Referred to social-welfare personnel' ? 'selected' : '' }}>Referred to social-welfare personnel</option>
+                            <option value="Referred to barangay official" {{ old('referral_action') === 'Referred to barangay official' ? 'selected' : '' }}>Referred to barangay official</option>
+                            <option value="Other" {{ old('referral_action') === 'Other' ? 'selected' : '' }}>Other</option>
+                        </select>
+                        @error('referral_action') <p class="cg-error">{{ $message }}</p> @enderror
+                    </div>
+
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Record safeguarding actions factually and follow current barangay and social-welfare procedures for minors.</p>
+
                     <div>
                         <label class="cg-label">Date & Time of Apprehension</label>
                         <input type="datetime-local" name="apprehension_datetime" value="{{ old('apprehension_datetime') }}" class="cg-input">
