@@ -10,7 +10,7 @@
             <div class="bg-white p-6 shadow sm:rounded-lg">
 
                 <div class="mb-4">
-                    <a href="{{ route('reports.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm">
+                    <a href="{{ route('reports.create') }}" class="bg-maroon-600 text-white px-4 py-2 rounded-md text-sm">
                         + Report New Incident
                     </a>
                 </div>

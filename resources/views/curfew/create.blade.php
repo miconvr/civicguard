@@ -63,7 +63,7 @@
                         <textarea name="notes" rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">{{ old('notes') }}</textarea>
                     </div>
 
-                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md">
+                    <button type="submit" class="bg-maroon-600 text-white px-4 py-2 rounded-md">
                         Log Violation
                     </button>
                 </form>
