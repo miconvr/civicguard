@@ -2,7 +2,7 @@
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            <div class="flex">
+            <div class="flex min-w-0 flex-1">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
@@ -14,7 +14,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-6 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden gap-5 sm:-my-px sm:ms-10 sm:flex">
                     @if (Auth::user()->role === 'resident')
                         <x-nav-link :href="route('reports.create')" :active="request()->routeIs('reports.create')">
                             {{ __('Report Incident') }}
@@ -57,7 +57,7 @@
             </div>
 
             <!-- Right Side: AI Assistant, Notifications, Dark Mode, Profile -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
+            <div class="hidden shrink-0 sm:ms-6 sm:flex sm:items-center sm:gap-3">
                 
                 @if (in_array(Auth::user()->role, ['resident', 'admin', 'official']))
                     <!-- AI Assistant Link (No icon, just styled text) -->
@@ -67,7 +67,7 @@
                 @endif
 
                 <!-- Notifications Bell Icon -->
-                <a href="{{ route('notifications.index') }}" class="relative text-gray-500 dark:text-gray-400 hover:text-maroon-700 dark:hover:text-maroon-800 transition">
+                <a href="{{ route('notifications.index') }}" class="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-gray-500 transition hover:bg-gray-100 hover:text-maroon-700 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-maroon-800">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
@@ -78,7 +78,7 @@
                 </a>
 
                 <!-- Dark Mode Toggle -->
-                <button @click="darkMode = !darkMode" class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 transition">
+                <button @click="darkMode = !darkMode" aria-label="Toggle dark mode" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-gray-500 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-900">
                     <svg x-show="!darkMode" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                     </svg>
@@ -87,7 +87,7 @@
                     </svg>
                 </button>
 
-                <select aria-label="Language" onchange="window.location.href = this.value" class="text-xs border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 rounded-md">
+                <select aria-label="Language" onchange="window.location.href = this.value" class="h-9 shrink-0 rounded-md border-gray-300 text-xs dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300">
                     <option value="{{ route('locale.switch', 'en') }}" @selected(app()->getLocale() === 'en')>{{ __('English') }}</option>
                     <option value="{{ route('locale.switch', 'tl') }}" @selected(app()->getLocale() === 'tl')>{{ __('Tagalog') }}</option>
                 </select>
@@ -95,7 +95,7 @@
                 <!-- Settings Dropdown -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex h-9 items-center rounded-md border border-transparent px-3 text-sm font-medium leading-4 text-gray-500 transition hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300">
                             <div>{{ Auth::user()->name }}</div>
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
