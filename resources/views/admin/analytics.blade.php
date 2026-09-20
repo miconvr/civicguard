@@ -9,33 +9,33 @@
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-white p-6 shadow sm:rounded-lg text-center">
-                    <p class="text-3xl font-bold text-maroon-700">{{ $totalReports }}</p>
-                    <p class="text-sm text-gray-500 mt-1">Total Reports</p>
+                <div class="cg-card text-center">
+                    <p class="text-3xl font-bold text-maroon-700 dark:text-gold-400">{{ $totalReports }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Total Reports</p>
                 </div>
-                <div class="bg-white p-6 shadow sm:rounded-lg text-center">
-                    <p class="text-3xl font-bold text-yellow-600">{{ $pendingCount }}</p>
-                    <p class="text-sm text-gray-500 mt-1">Pending</p>
+                <div class="cg-card text-center">
+                    <p class="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{{ $pendingCount }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Pending</p>
                 </div>
-                <div class="bg-white p-6 shadow sm:rounded-lg text-center">
-                    <p class="text-3xl font-bold text-green-600">{{ $resolvedCount }}</p>
-                    <p class="text-sm text-gray-500 mt-1">Resolved</p>
+                <div class="cg-card text-center">
+                    <p class="text-3xl font-bold text-green-600 dark:text-green-400">{{ $resolvedCount }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Resolved</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white p-6 shadow sm:rounded-lg">
-                    <h3 class="text-sm font-medium text-gray-700 mb-4">Reports by Category</h3>
+                <div class="cg-card">
+                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Reports by Category</h3>
                     <canvas id="categoryChart"></canvas>
                 </div>
-                <div class="bg-white p-6 shadow sm:rounded-lg">
-                    <h3 class="text-sm font-medium text-gray-700 mb-4">Reports by Severity</h3>
+                <div class="cg-card">
+                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Reports by Severity</h3>
                     <canvas id="severityChart"></canvas>
                 </div>
             </div>
 
-            <div class="bg-white p-6 shadow sm:rounded-lg">
-                <h3 class="text-sm font-medium text-gray-700 mb-4">Reports Over Last 14 Days</h3>
+            <div class="cg-card">
+                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Reports Over Last 14 Days</h3>
                 <canvas id="trendChart"></canvas>
             </div>
 
@@ -44,36 +44,55 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <script>
+        const isDark = () => document.documentElement.classList.contains('dark');
+        const accent = () => isDark() ? '#d4af37' : '#7f1d1d';
+        const accentFill = () => isDark() ? 'rgba(212,175,55,0.15)' : 'rgba(127,29,29,0.1)';
+
         const categoryLabels = @json($byCategory->pluck('name'));
         const categoryData = @json($byCategory->pluck('total'));
-        new Chart(document.getElementById('categoryChart'), {
+        const severityMap = @json($bySeverity);
+        const severityLabels = ['low', 'moderate', 'high', 'critical'];
+        const severityData = severityLabels.map(s => severityMap[s]?.total ?? 0);
+        const trendLabels = @json($last14Days->pluck('day'));
+        const trendData = @json($last14Days->pluck('total'));
+
+        const categoryChart = new Chart(document.getElementById('categoryChart'), {
             type: 'bar',
             data: {
                 labels: categoryLabels,
-                datasets: [{ label: 'Reports', data: categoryData, backgroundColor: '#7f1d1d' }]
+                datasets: [{ label: 'Reports', data: categoryData, backgroundColor: accent() }]
             },
-            options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+            options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
         });
 
-        const severityLabels = ['low', 'moderate', 'high', 'critical'];
-        const severityData = severityLabels.map(s => {{ Illuminate\Support\Js::from($bySeverity) }}[s]?.total ?? 0);
-        new Chart(document.getElementById('severityChart'), {
+        const severityChart = new Chart(document.getElementById('severityChart'), {
             type: 'doughnut',
             data: {
                 labels: severityLabels.map(s => s.charAt(0).toUpperCase() + s.slice(1)),
-                datasets: [{ data: severityData, backgroundColor: ['#9ca3af', '#eab308', '#f97316', '#dc2626'] }]
+                datasets: [{ data: severityData, backgroundColor: ['#9ca3af', '#eab308', '#f97316', '#dc2626'], borderWidth: 0 }]
             }
         });
 
-        const trendLabels = @json($last14Days->pluck('day'));
-        const trendData = @json($last14Days->pluck('total'));
-        new Chart(document.getElementById('trendChart'), {
+        const trendChart = new Chart(document.getElementById('trendChart'), {
             type: 'line',
             data: {
                 labels: trendLabels,
-                datasets: [{ label: 'Reports Filed', data: trendData, borderColor: '#7f1d1d', backgroundColor: 'rgba(127,29,29,0.1)', fill: true, tension: 0.3 }]
+                datasets: [{ label: 'Reports Filed', data: trendData, borderColor: accent(), backgroundColor: accentFill(), fill: true, tension: 0.3 }]
             },
-            options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+            options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
         });
+
+        function applyTheme() {
+            Chart.defaults.color = isDark() ? '#d1d5db' : '#4b5563';
+            Chart.defaults.borderColor = isDark() ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+            categoryChart.data.datasets[0].backgroundColor = accent();
+            trendChart.data.datasets[0].borderColor = accent();
+            trendChart.data.datasets[0].backgroundColor = accentFill();
+            [categoryChart, severityChart, trendChart].forEach(c => c.update());
+        }
+
+        applyTheme();
+        // Re-color the charts whenever the dark mode toggle flips the class on <html>
+        new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     </script>
 </x-app-layout>
