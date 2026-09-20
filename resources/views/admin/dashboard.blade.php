@@ -39,6 +39,7 @@
                             <th class="px-3 py-2">Location</th>
                             <th class="px-3 py-2">Severity</th>
                             <th class="px-3 py-2">Status</th>
+                            <th class="px-3 py-2">Assigned To</th>
                             <th class="px-3 py-2">Date</th>
                             <th class="px-3 py-2">Action</th>
                         </tr>
@@ -61,9 +62,12 @@
                                     </span>
                                 </td>
                                 <td class="px-3 py-2">{{ ucfirst(str_replace('_', ' ', $report->status)) }}</td>
+                                <td class="px-3 py-2">
+                                    {{ $report->assignedTo->name ?? '—' }}
+                                </td>
                                 <td class="px-3 py-2">{{ $report->created_at->format('M d, Y g:i A') }}</td>
                                 <td class="px-3 py-2">
-                                    <form method="POST" action="{{ route('admin.reports.updateStatus', $report) }}" class="flex gap-2">
+                                    <form method="POST" action="{{ route('admin.reports.updateStatus', $report) }}" class="flex gap-2 mb-2">
                                         @csrf
                                         @method('PATCH')
                                         <select name="status" class="text-sm border-gray-300 rounded-md">
@@ -73,11 +77,24 @@
                                         </select>
                                         <button type="submit" class="text-indigo-600 text-sm font-medium">Update</button>
                                     </form>
+                                    <form method="POST" action="{{ route('admin.reports.assign', $report) }}" class="flex gap-2">
+                                        @csrf
+                                        @method('PATCH')
+                                        <select name="assigned_to" class="text-sm border-gray-300 rounded-md">
+                                            <option value="">Assign tanod...</option>
+                                            @foreach ($tanods as $tanod)
+                                                <option value="{{ $tanod->id }}" {{ $report->assigned_to === $tanod->id ? 'selected' : '' }}>
+                                                    {{ $tanod->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <button type="submit" class="text-indigo-600 text-sm font-medium">Assign</button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-3 py-6 text-center text-gray-500">No reports yet.</td>
+                                <td colspan="8" class="px-3 py-6 text-center text-gray-500">No reports yet.</td>
                             </tr>
                         @endforelse
                     </tbody>
