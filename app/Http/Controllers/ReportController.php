@@ -18,7 +18,7 @@ class ReportController extends Controller
 
     public function create()
     {
-        $categories = ReportCategory::orderBy('name')->get();
+        $categories = ReportCategory::orderByRaw("name = 'Other'")->orderBy('name')->get();
         return view('reports.create', compact('categories'));
     }
 
@@ -63,6 +63,46 @@ class ReportController extends Controller
     }
 
     protected function classifySeverity(ReportCategory $category, string $description): string
+    {
+        $aiResult = $this->classifySeverityWithAI($category, $description);
+
+        return $aiResult ?? $this->classifySeverityWithKeywords($category, $description);
+    }
+
+    protected function classifySeverityWithAI(ReportCategory $category, string $description): ?string
+    {
+        $apiKey = config('services.gemini.key');
+
+        $prompt = "You are a severity classifier for a barangay incident reporting system. "
+            . "Given the category and description below, respond with EXACTLY ONE WORD: "
+            . "low, moderate, high, or critical. No punctuation, no explanation, just the single word.\n\n"
+            . "Category: {$category->name}\n"
+            . "Default severity for this category: {$category->default_severity}\n"
+            . "Description: {$description}";
+
+        try {
+            $response = \Illuminate\Support\Facades\Http::timeout(8)->post(
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={$apiKey}",
+                [
+                    'contents' => [
+                        ['role' => 'user', 'parts' => [['text' => $prompt]]],
+                    ],
+                ]
+            );
+
+            $text = strtolower(trim($response->json('candidates.0.content.parts.0.text') ?? ''));
+
+            if (in_array($text, ['low', 'moderate', 'high', 'critical'])) {
+                return $text;
+            }
+        } catch (\Exception $e) {
+            // Fall through to keyword-based fallback below
+        }
+
+        return null;
+    }
+
+    protected function classifySeverityWithKeywords(ReportCategory $category, string $description): string
     {
         $text = strtolower($description);
         $levels = ['low' => 0, 'moderate' => 1, 'high' => 2, 'critical' => 3];
