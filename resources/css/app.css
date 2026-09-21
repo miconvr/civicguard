@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    h1, h2, h3 { @apply tracking-tight; }
+    .dark header h2 { @apply text-gray-100; }
+}
+
+@layer components {
+    /* Content box */
+    .cg-card {
+        @apply bg-white dark:bg-gray-800 p-6 shadow-md rounded-xl border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-200;
+        background-color: #ffffff;
+    }
+
+    .dark .cg-card {
+        background-color: #252525 !important;
+        border-color: #383838 !important;
+    }
+
+    /* Tables */
+    .cg-table { @apply min-w-full text-sm text-left; }
+    .cg-table thead th {
+        @apply px-4 py-3 bg-maroon-50 dark:bg-maroon-800 text-maroon-800 dark:text-white text-xs font-semibold uppercase tracking-wider;
+    }
+    .cg-table tbody td {
+        @apply px-4 py-3 text-gray-700 dark:text-gray-300 border-t border-gray-100 dark:border-gray-700;
+    }
+    .cg-table tbody tr:hover { @apply bg-gray-50 dark:bg-gray-700/50; }
+
+    /* Status badges */
+    .cg-badge { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold; }
+    
+    /* Unified Status Badges (Pending, In Progress, Resolved) */
+    .cg-badge-status,
+    .cg-badge-pending,
+    .cg-badge-in_progress,
+    .cg-badge-resolved {
+        @apply inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-500 text-white;
+    }
+        /* Dark mode: no border */
+    .dark .cg-badge-status,
+    .dark .cg-badge-pending,
+    .dark .cg-badge-in_progress,
+    .dark .cg-badge-resolved {
+        @apply bg-gray-600 text-white;
+    }
+
+    .cg-badge-red    { @apply bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300; }
+    .cg-badge-orange { @apply bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300; }
+    .cg-badge-yellow { @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300; }
+    .cg-badge-green  { @apply bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300; }
+    .cg-badge-blue   { @apply bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300; }
+    .cg-badge-gray   { @apply bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300; }
+
+    /* Severity: small colored dot + plain text */
+    .cg-sev { @apply inline-flex items-center gap-2 text-sm; }
+    .cg-sev::after { content: ''; @apply h-2.5 w-2.5 shrink-0 rounded-full; }
+    .cg-sev-low::after      { @apply bg-green-500; }
+    .cg-sev-moderate::after { @apply bg-yellow-400; }
+    .cg-sev-high::after     { @apply bg-orange-500; }
+    .cg-sev-critical::after { @apply bg-red-600; }
+
+    /* Selects and small form controls */
+    .cg-select {
+        @apply border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200 rounded-lg shadow-sm text-sm focus:border-maroon-500 focus:ring-maroon-500 transition;
+    }
+
+    .dark .cg-select,
+    .dark .cg-input {
+        background-color: #181818 !important;
+        border-color: #414141 !important;
+    }
+
+    /* Forms */
+    .cg-label { @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1; }
+    .cg-input {
+        @apply block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200 rounded-lg shadow-sm px-3 py-2 focus:border-maroon-500 focus:ring-maroon-500 transition;
+    }
+    .cg-error { @apply text-red-600 dark:text-red-400 text-sm mt-1; }
+    .cg-btn {
+        @apply inline-flex items-center bg-maroon-700 text-white px-5 py-2.5 rounded-lg shadow-sm hover:bg-maroon-800 hover:shadow-md transition font-medium;
+    }
+}
+
+@layer utilities {
+    .dark .dark\:bg-gray-900 { background-color: #1f1f1f !important; }
+    .dark .dark\:bg-gray-800 { background-color: #292929 !important; }
+    .dark .dark\:bg-gray-700 { background-color: #343434 !important; }
+    .dark .dark\:border-gray-700,
+    .dark .dark\:border-gray-600 { border-color: #414141 !important; }
+    .dark .cg-card { background-color: #252525 !important; }
+    .dark .cg-input,
+    .dark .cg-select { background-color: #181818 !important; }
+    .dark [class*="dark:bg-gray-900"] { background-color: #1f1f1f !important; }
+    .dark [class*="dark:bg-gray-800"] { background-color: #252525 !important; }
+    .dark [class*="dark:bg-gray-700"] { background-color: #343434 !important; }
+    .dark [class*="dark:hover:bg-gray-900"]:hover,
+    .dark [class*="dark:focus:bg-gray-900"]:focus { background-color: #292929 !important; }
+    .dark [class*="dark:hover:bg-gray-700"]:hover,
+    .dark [class*="dark:focus:bg-gray-700"]:focus { background-color: #343434 !important; }
+    .dark [class*="dark:border-gray-700"],
+    .dark [class*="dark:border-gray-600"] { border-color: #414141 !important; }
+    .dark .text-gray-400 { color: #a3a3a3 !important; }
+    .dark .text-gray-500 { color: #8f8f8f !important; }
+    .dark input::placeholder,
+    .dark textarea::placeholder,
+    .dark select::placeholder,
+    .dark .cg-input::placeholder { color: #858585 !important; opacity: 1; }
+    .dark select option { background-color: #181818; color: #e5e5e5; }
+    .dark select option:disabled { color: #858585; }
+}
