@@ -98,7 +98,7 @@ class ReportController extends Controller
 
         try {
             $response = \Illuminate\Support\Facades\Http::timeout(8)->post(
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={$apiKey}",
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={$apiKey}",
                 [
                     'contents' => [
                         ['role' => 'user', 'parts' => [['text' => $prompt]]],

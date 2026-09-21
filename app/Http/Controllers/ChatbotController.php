@@ -51,7 +51,7 @@ class ChatbotController extends Controller
             try {
                 $response = Http::timeout(8)->withHeaders([
                     'Content-Type' => 'application/json',
-                ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={$apiKey}", [
+                ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={$apiKey}", [
                     'contents' => [
                         [
                             'role' => 'user',
