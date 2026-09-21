@@ -38,11 +38,15 @@
                     </select>
                 </form>
 
-                <div class="mb-6 flex justify-end">
-                    <a href="{{ route('admin.reports.exportPdf', request()->only(['status', 'severity'])) }}" class="inline-flex items-center bg-maroon-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm hover:bg-maroon-800 hover:shadow-md transition">
+                <form method="GET" action="{{ route('admin.reports.exportPdf') }}" class="mb-6 flex justify-end items-center gap-2">
+                    <select name="group" class="cg-select">
+                        <option value="active">Active Reports (Pending &amp; In Progress)</option>
+                        <option value="resolved">Resolved Reports</option>
+                    </select>
+                    <button type="submit" class="inline-flex items-center bg-maroon-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm hover:bg-maroon-800 hover:shadow-md transition">
                         Export PDF
-                    </a>
-                </div>
+                    </button>
+                </form>
 
                 <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
                     <table class="cg-table">
@@ -126,9 +130,6 @@
             <div class="cg-card p-8 mt-6">
                 <div class="flex items-center justify-between gap-4 mb-4">
                     <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-100">Recently Resolved</h3>
-                    <a href="{{ route('admin.reports.exportPdf', ['status' => 'resolved']) }}" class="inline-flex items-center bg-maroon-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm hover:bg-maroon-800 hover:shadow-md transition">
-                        Export PDF
-                    </a>
                 </div>
 
                 <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
