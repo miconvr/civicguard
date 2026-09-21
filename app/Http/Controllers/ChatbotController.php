@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ReportCategory;
+use App\Services\GeminiClient;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class ChatbotController extends Controller
@@ -14,7 +14,7 @@ class ChatbotController extends Controller
         return view('chatbot.widget');
     }
 
-    public function send(Request $request)
+    public function send(Request $request, GeminiClient $gemini)
     {
         $validated = $request->validate([
             'message' => ['required', 'string', 'max:1000'],
@@ -43,30 +43,10 @@ class ChatbotController extends Controller
             . "Answer FAQ questions using this approved context:\n{$faqContext}";
 
         $conversationHistory = $validated['history'] ?? '';
-        $apiKey = config('services.gemini.key');
 
-        $rawReply = null;
-
-        if ($apiKey) {
-            try {
-                $response = Http::timeout(8)->withHeaders([
-                    'Content-Type' => 'application/json',
-                ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={$apiKey}", [
-                    'contents' => [
-                        [
-                            'role' => 'user',
-                            'parts' => [
-                                ['text' => $systemPrompt . "\n\nConversation so far:\n" . $conversationHistory . "\n\nResident's latest message: " . $validated['message']],
-                            ],
-                        ],
-                    ],
-                ]);
-
-                $rawReply = $response->json('candidates.0.content.parts.0.text');
-            } catch (\Throwable $exception) {
-                $rawReply = null;
-            }
-        }
+        $rawReply = $gemini->generateText(
+            $systemPrompt . "\n\nConversation so far:\n" . $conversationHistory . "\n\nResident's latest message: " . $validated['message']
+        );
 
         $rawReply = $rawReply ?: $this->faqFallback($validated['message']);
 
