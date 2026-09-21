@@ -1,5 +1,4 @@
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" {{ $attributes }}>
-    <path fill="currentColor" d="M50 2 L90 18 V45 C90 68 73 87 50 98 C27 87 10 68 10 45 V18 Z" />
-    <path fill="white" d="M50 12 L80 25 V45 C80 63 68 78 50 87 C32 78 20 63 20 45 V25 Z" opacity="0.15" />
-    <path fill="white" d="M35 50 L45 60 L67 36" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {{ $attributes }}>
+  <path d="M12 2.25l7.5 3v6.75a11.25 11.25 0 01-7.5 10.5 11.25 11.25 0 01-7.5-10.5V5.25l7.5-3z" fill="#991b1b" stroke="#b91c1c" stroke-width="1.5"/>
+  <path d="M9 12.75l2.25 2.25L15 9.75" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
