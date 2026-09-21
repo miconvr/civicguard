@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Report;
 use App\Models\ReportCategory;
 use App\Models\AuditLog;
+use App\Services\GeminiClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +23,7 @@ class ReportController extends Controller
         return view('reports.create', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, GeminiClient $gemini)
     {
         $validated = $request->validate([
             'category_id' => ['required', 'exists:report_categories,id'],
@@ -34,7 +35,7 @@ class ReportController extends Controller
         ]);
 
         $category = ReportCategory::findOrFail($validated['category_id']);
-        $severity = $this->classifySeverity($category, $validated['description']);
+        $severity = $this->classifySeverity($category, $validated['description'], $gemini);
 
         $photoPath = null;
         if ($request->hasFile('photo')) {
@@ -78,17 +79,8 @@ class ReportController extends Controller
         return view('reports.index', compact('reports'));
     }
 
-    protected function classifySeverity(ReportCategory $category, string $description): string
+    protected function classifySeverity(ReportCategory $category, string $description, GeminiClient $gemini): string
     {
-        $aiResult = $this->classifySeverityWithAI($category, $description);
-
-        return $aiResult ?? $this->classifySeverityWithKeywords($category, $description);
-    }
-
-    protected function classifySeverityWithAI(ReportCategory $category, string $description): ?string
-    {
-        $apiKey = config('services.gemini.key');
-
         $prompt = "You are a severity classifier for a barangay incident reporting system. "
             . "Given the category and description below, respond with EXACTLY ONE WORD: "
             . "low, moderate, high, or critical. No punctuation, no explanation, just the single word.\n\n"
@@ -96,26 +88,14 @@ class ReportController extends Controller
             . "Default severity for this category: {$category->default_severity}\n"
             . "Description: {$description}";
 
-        try {
-            $response = \Illuminate\Support\Facades\Http::timeout(8)->post(
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={$apiKey}",
-                [
-                    'contents' => [
-                        ['role' => 'user', 'parts' => [['text' => $prompt]]],
-                    ],
-                ]
-            );
+        $aiText = $gemini->generateText($prompt);
+        $aiResult = $aiText ? strtolower(trim($aiText)) : null;
 
-            $text = strtolower(trim($response->json('candidates.0.content.parts.0.text') ?? ''));
-
-            if (in_array($text, ['low', 'moderate', 'high', 'critical'])) {
-                return $text;
-            }
-        } catch (\Exception $e) {
-            // Fall through to keyword-based fallback below
+        if (in_array($aiResult, ['low', 'moderate', 'high', 'critical'])) {
+            return $aiResult;
         }
 
-        return null;
+        return $this->classifySeverityWithKeywords($category, $description);
     }
 
     protected function classifySeverityWithKeywords(ReportCategory $category, string $description): string
