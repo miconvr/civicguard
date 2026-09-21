@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CivicGuard Reports</title>
+    <title>{{ $title }}</title>
     <style>
         body { font-family: DejaVu Sans, sans-serif; color: #1f2937; font-size: 9px; }
         h1 { color: #7f1d1d; font-size: 16px; margin-bottom: 2px; }
@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-    <h1>CivicGuard Incident Reports</h1>
+    <h1>CivicGuard {{ $title }}</h1>
     <div class="generated">Generated {{ now()->format('M d, Y g:i A') }}</div>
 
     <table>
@@ -24,11 +24,13 @@
                 <th>Reported By</th>
                 <th>Location</th>
                 <th>Severity</th>
-                <th>Status</th>
+                @if (!$isResolved)
+                    <th>Status</th>
+                @endif
                 <th>Assigned To</th>
                 <th>Coordinates</th>
                 <th>Photo</th>
-                <th>Date Filed</th>
+                <th>{{ $isResolved ? 'Resolved On' : 'Date Filed' }}</th>
             </tr>
         </thead>
         <tbody>
@@ -38,7 +40,9 @@
                     <td>{{ $report->user->name }}</td>
                     <td>{{ $report->location_text }}</td>
                     <td>{{ ucfirst($report->severity) }}</td>
-                    <td>{{ ucwords(str_replace('_', ' ', $report->status)) }}</td>
+                    @if (!$isResolved)
+                        <td>{{ ucwords(str_replace('_', ' ', $report->status)) }}</td>
+                    @endif
                     <td>{{ $report->assignedTo->name ?? '-' }}</td>
                     <td>{{ $report->latitude !== null && $report->longitude !== null ? $report->latitude . ', ' . $report->longitude : '-' }}</td>
                     <td>
@@ -48,11 +52,11 @@
                             -
                         @endif
                     </td>
-                    <td>{{ $report->created_at->format('M d, Y g:i A') }}</td>
+                    <td>{{ $isResolved ? ($report->resolved_at?->format('M d, Y g:i A') ?? '-') : $report->created_at->format('M d, Y g:i A') }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="9">No reports found.</td>
+                    <td colspan="8">No reports found.</td>
                 </tr>
             @endforelse
         </tbody>

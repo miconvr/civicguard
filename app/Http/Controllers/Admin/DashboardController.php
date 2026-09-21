@@ -37,21 +37,27 @@ class DashboardController extends Controller
 
     public function exportReportsPdf(Request $request)
     {
-        $query = Report::with(['category', 'user', 'assignedTo']);
+        $isResolved = $request->query('group') === 'resolved';
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
+        $query = Report::with(['category', 'user', 'assignedTo']);
 
         if ($request->filled('severity')) {
             $query->where('severity', $request->severity);
         }
 
-        $reports = $query->latest()->get();
+        if ($isResolved) {
+            $reports = $query->where('status', 'resolved')->latest('resolved_at')->get();
+            $title = 'Resolved Reports';
+            $filename = 'civicguard-resolved-reports-' . now()->format('Y-m-d') . '.pdf';
+        } else {
+            $reports = $query->where('status', '!=', 'resolved')->latest()->get();
+            $title = 'Pending & In Progress Reports';
+            $filename = 'civicguard-active-reports-' . now()->format('Y-m-d') . '.pdf';
+        }
 
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.reports-pdf', compact('reports'));
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.reports-pdf', compact('reports', 'title', 'isResolved'));
 
-        return $pdf->download('civicguard-reports-' . now()->format('Y-m-d') . '.pdf');
+        return $pdf->download($filename);
     }
 
     public function updateStatus(Request $request, Report $report)
