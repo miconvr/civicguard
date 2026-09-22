@@ -1,6 +1,6 @@
 ﻿<x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
             {{ __('Report an Incident') }}
         </h2>
     </x-slot>
@@ -9,18 +9,16 @@
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="cg-card p-8">
 
-                @if (session('status'))
-                    <div class="mb-4 font-medium text-sm text-green-700 bg-green-50 dark:bg-green-900/30 dark:text-green-300 px-4 py-3 rounded-lg">
-                        {{ session('status') }}
-                    </div>
-                @endif
+                <p class="mb-6 text-sm text-gray-600 dark:text-gray-400">
+                    {{ __('Describe what happened and where. Barangay staff will review it and update the status on My Reports.') }}
+                </p>
 
                 <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-5">
                     @csrf
 
                     <div>
-                        <label class="cg-label">{{ __('Category') }}</label>
-                        <select name="category_id" class="cg-input">
+                        <label for="category_id" class="cg-label">{{ __('Category') }}</label>
+                        <select id="category_id" name="category_id" required class="cg-input">
                             <option value="" disabled {{ old('category_id') ? '' : 'selected' }}>{{ __('Choose a category') }}</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
@@ -30,14 +28,14 @@
                     </div>
 
                     <div>
-                        <label class="cg-label">{{ __('Description') }}</label>
-                        <textarea name="description" rows="4" class="cg-input">{{ old('description') }}</textarea>
+                        <label for="description" class="cg-label">{{ __('Description') }}</label>
+                        <textarea id="description" name="description" rows="4" required class="cg-input" placeholder="{{ __('What happened, who was involved, and any details staff should know.') }}">{{ old('description') }}</textarea>
                         @error('description') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="cg-label">{{ __('Location') }}</label>
-                        <input type="text" name="location_text" value="{{ old('location_text') }}" placeholder="e.g. Purok 3, near the basketball court" class="cg-input">
+                        <label for="location_text" class="cg-label">{{ __('Location') }}</label>
+                        <input id="location_text" type="text" name="location_text" value="{{ old('location_text') }}" required placeholder="e.g. Purok 3, near the basketball court" class="cg-input">
                         @error('location_text') <p class="cg-error">{{ $message }}</p> @enderror
                         <input type="hidden" name="latitude" value="{{ old('latitude') }}">
                         <input type="hidden" name="longitude" value="{{ old('longitude') }}">
