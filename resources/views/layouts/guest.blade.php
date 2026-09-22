@@ -22,7 +22,7 @@
                 <a href="/">
                     <x-application-logo class="w-16 h-16 fill-current text-maroon-700 dark:text-gray-100 mx-auto" />
                 </a>
-                <h1 class="mt-2 text-3xl font-serif font-bold text-maroon-700 dark:text-gray-100 tracking-tight">CivicGuard</h1>
+                <h1 class="mt-2 text-3xl font-bold text-maroon-700 dark:text-gray-100 tracking-tight">CivicGuard</h1>
                 <p class="text-sm text-stone-500 dark:text-gray-400 mt-1">Barangay Maimpis Incident Management</p>
             </div>
 
@@ -32,7 +32,7 @@
 
             <div class="mt-8 w-full max-w-md px-4">
                 <div class="border-t border-stone-300 dark:border-gray-700 pt-4">
-                    <p class="text-xs text-stone-400 dark:text-gray-500 text-center mb-2">Built by</p>
+                    <p class="text-xs text-stone-400 dark:text-gray-500 text-center mb-2">Developed by</p>
                     <div class="flex flex-wrap justify-center gap-x-2 gap-y-1 text-xs text-stone-600 dark:text-gray-300 font-medium">
                         <span>Mico Gerard Navarro</span>
                         <span class="text-stone-300 dark:text-gray-600">&bull;</span>
