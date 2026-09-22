@@ -63,6 +63,57 @@ class AnalyticsController extends Controller
         ));
     }
 
+    public function exportPdf(GeminiClient $gemini)
+    {
+        $byCategory = Report::join('report_categories', 'reports.category_id', '=', 'report_categories.id')
+            ->select('report_categories.name', DB::raw('count(*) as total'))
+            ->groupBy('report_categories.name')
+            ->orderByDesc('total')
+            ->get();
+
+        $bySeverity = Report::select('severity', DB::raw('count(*) as total'))
+            ->groupBy('severity')
+            ->get()
+            ->keyBy('severity');
+
+        $byStatus = Report::select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->get()
+            ->keyBy('status');
+
+        $last14Days = Report::where('created_at', '>=', now()->subDays(14))
+            ->select(DB::raw('DATE(created_at) as day'), DB::raw('count(*) as total'))
+            ->groupBy('day')
+            ->orderBy('day')
+            ->get();
+
+        $totalReports = Report::count();
+        $pendingCount = $byStatus->get('pending')->total ?? 0;
+        $resolvedCount = $byStatus->get('resolved')->total ?? 0;
+        $curfewCount = CurfewLog::count();
+
+        $insights = Cache::remember('analytics-insights', now()->addMinutes(30), fn () => $this->buildInsights(
+            $byCategory, $bySeverity, $byStatus, $last14Days, $curfewCount, $gemini
+        ));
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.analytics-pdf', [
+            'byCategory' => $byCategory,
+            'bySeverity' => $bySeverity,
+            'byStatus' => $byStatus,
+            'last14Days' => $last14Days,
+            'totalReports' => $totalReports,
+            'pendingCount' => $pendingCount,
+            'resolvedCount' => $resolvedCount,
+            'curfewCount' => $curfewCount,
+            'recommendations' => $insights['recommendations'],
+            'analysisSummary' => $insights['analysisSummary'],
+            'patterns' => $insights['patterns'],
+            'riskFlags' => $insights['riskFlags'],
+        ]);
+
+        return $pdf->download('civicguard-analytics-' . now()->format('Y-m-d') . '.pdf');
+    }
+
     private function buildInsights($byCategory, $bySeverity, $byStatus, $last14Days, int $curfewCount, GeminiClient $gemini): array
     {
         $metrics = [

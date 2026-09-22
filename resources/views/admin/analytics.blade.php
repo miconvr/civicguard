@@ -8,6 +8,11 @@
     <div class="py-12">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
+            <div class="flex justify-end">
+                <a href="{{ route('admin.analytics.exportPdf') }}" class="inline-flex items-center bg-maroon-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm hover:bg-maroon-800 hover:shadow-md transition">
+                    Export PDF
+                </a>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="cg-card text-center">
                     <p class="text-3xl font-bold text-maroon-700">{{ $totalReports }}</p>
