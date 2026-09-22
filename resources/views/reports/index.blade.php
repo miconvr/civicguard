@@ -16,6 +16,12 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="cg-card p-8">
 
+                @if (session('status'))
+                    <div class="mb-4 font-medium text-sm text-green-700 bg-green-50 dark:bg-green-900/30 dark:text-green-300 px-4 py-3 rounded-lg">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
                 <div class="mb-5">
                     <a href="{{ route('reports.create') }}" class="inline-flex items-center bg-maroon-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm hover:bg-maroon-800 hover:shadow-md transition">
                         {{ __('+ Report New Incident') }}
@@ -52,8 +58,12 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="py-8 text-center text-gray-500 dark:text-gray-400">
-                                        {{ __('You haven\'t filed any reports yet.') }}
+                                    <td colspan="6" class="py-10 text-center">
+                                        <p class="text-gray-500 dark:text-gray-400">{{ __('You haven\'t filed any reports yet.') }}</p>
+                                        <p class="mt-1 text-sm text-gray-400 dark:text-gray-500">{{ __('File your first incident so barangay staff can follow up.') }}</p>
+                                        <a href="{{ route('reports.create') }}" class="mt-4 inline-flex items-center text-sm font-medium text-maroon-700 hover:text-maroon-800 dark:text-maroon-300">
+                                            {{ __('Report an Incident') }}
+                                        </a>
                                     </td>
                                 </tr>
                             @endforelse
