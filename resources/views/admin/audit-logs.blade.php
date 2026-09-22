@@ -8,6 +8,11 @@
     <div class="py-12">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="cg-card p-8">
+                <div class="flex justify-end mb-4">
+                    <a href="{{ route('admin.auditLogs.exportPdf') }}" class="inline-flex items-center bg-maroon-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm hover:bg-maroon-800 hover:shadow-md transition">
+                        Export PDF
+                    </a>
+                </div>
                 <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
                     <table class="cg-table">
                         <thead>
