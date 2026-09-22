@@ -66,7 +66,12 @@ class ReportController extends Controller
             ],
         ]);
 
-        return redirect()->route('reports.create')->with('status', 'Your report has been submitted. Severity: ' . ucfirst($severity));
+        return redirect()->route('reports.index')->with(
+            'status',
+            __('Your report has been submitted. Severity: :severity', [
+                'severity' => __(ucfirst($severity)),
+            ])
+        );
     }
 
     public function myReports()
