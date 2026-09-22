@@ -80,10 +80,9 @@
         </div>
     </div>
 
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <script defer>
-        const isDark = () => document.documentElement.classList.contains('dark');
-        const accent = () => '#7f1d1d';
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script>
+        const isDark = () => document.documentElement.classList.contains('dark');        const accent = () => '#7f1d1d';
         const accentFill = () => isDark() ? 'rgba(127,29,29,0.24)' : 'rgba(127,29,29,0.1)';
 
         const categoryLabels = @json($byCategory->pluck('name'));
