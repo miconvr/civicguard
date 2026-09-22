@@ -41,6 +41,7 @@ Daily Development Workflow
 
 When you return to work on the project on subsequent days, use these quick commands in your terminal:
 
+* Start Working: cd ~/civicguard
 * Start Working: ./vendor/bin/sail up -d
 * Run Vite Frontend: ./vendor/bin/sail npm run dev
 * Stop Working: ./vendor/bin/sail stop
