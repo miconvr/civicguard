@@ -47,6 +47,7 @@ Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name(
     Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('auditLogs');
     Route::get('/reports/consolidated', [ConsolidatedReportController::class, 'index'])->name('consolidatedReports');
     Route::get('/reports/consolidated/export/pdf', [ConsolidatedReportController::class, 'exportPdf'])->name('consolidatedReports.exportPdf');
+        Route::get('/reports/{report}/details', [DashboardController::class, 'showDetails'])->name('reports.details');
     Route::get('/reports/{report}/curfew-details', [DashboardController::class, 'showCurfewDetails'])->name('reports.curfewDetails');
 });
 

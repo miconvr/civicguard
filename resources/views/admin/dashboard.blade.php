@@ -79,12 +79,10 @@
                                     <td>{{ $report->assignedTo->name ?? '-' }}</td>
                                     <td class="whitespace-nowrap">
                                         {{ $report->created_at->format('M d, Y g:i A') }}
-                                        @if ($report->category->name === 'Curfew Violation')
-                                            <br>
-                                                <a href="{{ route('admin.reports.curfewDetails', $report) }}" class="text-xs text-maroon-700 dark:text-maroon-700 font-semibold hover:underline">
-                                                View Details
-                                            </a>
-                                        @endif
+                                        <br>
+                                        <a href="{{ route('admin.reports.details', $report) }}" class="text-xs text-maroon-700 dark:text-maroon-700 font-semibold hover:underline">
+                                            View Details
+                                        </a>
                                     </td>
                                     <td>
                                         <form method="POST" action="{{ route('admin.reports.updateStatus', $report) }}" class="flex gap-2 mb-2">
