@@ -44,11 +44,12 @@ Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name(
     Route::patch('/reports/{report}/status', [DashboardController::class, 'updateStatus'])->name('reports.updateStatus');
     Route::patch('/reports/{report}/assign', [DashboardController::class, 'assign'])->name('reports.assign');
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
-        Route::get('/analytics/export/pdf', [AnalyticsController::class, 'exportPdf'])->name('analytics.exportPdf');
+    Route::get('/analytics/export/pdf', [AnalyticsController::class, 'exportPdf'])->name('analytics.exportPdf');
     Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('auditLogs');
+    Route::get('/audit-logs/export/pdf', [AuditLogController::class, 'exportPdf'])->name('auditLogs.exportPdf');
     Route::get('/reports/consolidated', [ConsolidatedReportController::class, 'index'])->name('consolidatedReports');
     Route::get('/reports/consolidated/export/pdf', [ConsolidatedReportController::class, 'exportPdf'])->name('consolidatedReports.exportPdf');
-        Route::get('/reports/{report}/details', [DashboardController::class, 'showDetails'])->name('reports.details');
+    Route::get('/reports/{report}/details', [DashboardController::class, 'showDetails'])->name('reports.details');
     Route::get('/reports/{report}/curfew-details', [DashboardController::class, 'showCurfewDetails'])->name('reports.curfewDetails');
 });
 
