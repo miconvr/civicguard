@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CurfewLog;
 use App\Models\Report;
+use App\Services\GeminiClient;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 
 class AnalyticsController extends Controller
 {
-    public function index()
+    public function index(GeminiClient $gemini)
     {
         $byCategory = Report::join('report_categories', 'reports.category_id', '=', 'report_categories.id')
             ->select('report_categories.name', DB::raw('count(*) as total'))
@@ -39,20 +39,18 @@ class AnalyticsController extends Controller
         $pendingCount = $byStatus->get('pending')->total ?? 0;
         $resolvedCount = $byStatus->get('resolved')->total ?? 0;
         $curfewCount = CurfewLog::count();
-        $insightCacheKey = 'analytics-insights-' . md5(serialize([
-            $byCategory->pluck('total', 'name')->all(),
-            $bySeverity->map(fn ($item) => $item->total)->all(),
-            $byStatus->map(fn ($item) => $item->total)->all(),
-            $last14Days->pluck('total')->all(),
-            $curfewCount,
-        ]));
-        $insights = Cache::remember($insightCacheKey, now()->addMinutes(10), fn () => $this->buildInsights(
+
+        // Fixed cache key with a real time window, so repeated visits actually reuse the cached AI result
+        // instead of regenerating every time the underlying data changes by even one row.
+        $insights = Cache::remember('analytics-insights', now()->addMinutes(30), fn () => $this->buildInsights(
             $byCategory,
             $bySeverity,
             $byStatus,
             $last14Days,
-            $curfewCount
+            $curfewCount,
+            $gemini
         ));
+
         $recommendations = $insights['recommendations'];
         $analysisSummary = $insights['analysisSummary'];
         $patterns = $insights['patterns'];
@@ -65,7 +63,7 @@ class AnalyticsController extends Controller
         ));
     }
 
-    private function buildInsights($byCategory, $bySeverity, $byStatus, $last14Days, int $curfewCount): array
+    private function buildInsights($byCategory, $bySeverity, $byStatus, $last14Days, int $curfewCount, GeminiClient $gemini): array
     {
         $metrics = [
             'total_reports' => $byCategory->sum('total'),
@@ -76,41 +74,26 @@ class AnalyticsController extends Controller
             'curfew_logs' => $curfewCount,
         ];
 
-        $apiKey = config('services.gemini.key');
+        $prompt = "You are analyzing CivicGuard data for barangay officials. Based only on these metrics, return valid JSON with exactly these keys: summary (one concise sentence), patterns (an array of up to three observed patterns), risk_flags (an array of up to three risks), and recommendations (an array of exactly three concise practical follow-up actions). Do not include markdown or extra text. Metrics: " . json_encode($metrics);
 
-        if ($apiKey) {
-            try {
-                $response = Http::timeout(8)->post(
-                    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={$apiKey}",
-                    [
-                        'contents' => [[
-                            'role' => 'user',
-                            'parts' => [[
-                                'text' => "You are analyzing CivicGuard data for barangay officials. Based only on these metrics, return valid JSON with exactly these keys: summary (one concise sentence), patterns (an array of up to three observed patterns), risk_flags (an array of up to three risks), and recommendations (an array of exactly three concise practical follow-up actions). Do not include markdown or extra text. Metrics: " . json_encode($metrics),
-                            ]],
-                        ]],
-                    ]
-                );
+        $text = $gemini->generateText($prompt, 10);
 
-                $text = trim($response->json('candidates.0.content.parts.0.text') ?? '');
-                $decoded = json_decode($text, true);
+        if ($text) {
+            $decoded = json_decode(trim($text), true);
 
-                if (
-                    is_array($decoded)
-                    && is_string($decoded['summary'] ?? null)
-                    && is_array($decoded['patterns'] ?? null)
-                    && is_array($decoded['risk_flags'] ?? null)
-                    && is_array($decoded['recommendations'] ?? null)
-                ) {
-                    return [
-                        'recommendations' => array_values(array_slice(array_filter($decoded['recommendations'], 'is_string'), 0, 3)),
-                        'analysisSummary' => $decoded['summary'],
-                        'patterns' => array_values(array_slice(array_filter($decoded['patterns'], 'is_string'), 0, 3)),
-                        'riskFlags' => array_values(array_slice(array_filter($decoded['risk_flags'], 'is_string'), 0, 3)),
-                    ];
-                }
-            } catch (\Throwable $exception) {
-                // Use local recommendations when the AI service is unavailable.
+            if (
+                is_array($decoded)
+                && is_string($decoded['summary'] ?? null)
+                && is_array($decoded['patterns'] ?? null)
+                && is_array($decoded['risk_flags'] ?? null)
+                && is_array($decoded['recommendations'] ?? null)
+            ) {
+                return [
+                    'recommendations' => array_values(array_slice(array_filter($decoded['recommendations'], 'is_string'), 0, 3)),
+                    'analysisSummary' => $decoded['summary'],
+                    'patterns' => array_values(array_slice(array_filter($decoded['patterns'], 'is_string'), 0, 3)),
+                    'riskFlags' => array_values(array_slice(array_filter($decoded['risk_flags'], 'is_string'), 0, 3)),
+                ];
             }
         }
 
