@@ -126,7 +126,11 @@ class DashboardController extends Controller
 
         return redirect()->back()->with('status', 'Tanod assigned successfully.');
     }
-
+        public function showDetails(Report $report)
+    {
+        $report->load(['category', 'user', 'assignedTo', 'curfewLog']);
+        return view('admin.report-details', compact('report'));
+    }
     public function showCurfewDetails(Report $report)
     {
         $report->load('curfewLog');
