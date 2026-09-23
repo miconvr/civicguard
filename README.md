@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./path/to/your/favicon.svg" alt="Project Logo" width="100"/>
+</p>
+
 # CivicGuard
 
 Requirements
