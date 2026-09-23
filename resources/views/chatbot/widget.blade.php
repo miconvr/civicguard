@@ -34,7 +34,13 @@
 
                 <form id="chat-form" class="flex gap-2">
                     <input type="text" id="chat-input" placeholder="Type your message..." class="cg-input flex-1" autocomplete="off">
-                    <button type="submit" id="chat-send" class="cg-btn">Send</button>
+                    <button type="submit" id="chat-send" class="cg-btn">
+                        <span id="chat-send-label">Send</span>
+                        <svg id="chat-send-spinner" class="hidden animate-spin h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                        </svg>
+                    </button>
                 </form>
 
             </div>
@@ -127,10 +133,35 @@
             log.appendChild(row);
             log.scrollTop = log.scrollHeight;
         }
+        function showSuccessCard() {
+            const row = document.createElement('div');
+            row.className = 'text-left';
 
+            const card = document.createElement('div');
+            card.className = 'border-2 border-green-600 rounded-lg p-4 bg-green-50 dark:bg-gray-900 flex items-start gap-3';
+
+            const icon = document.createElement('div');
+            icon.innerHTML = '<svg class="h-6 w-6 text-green-600 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>';
+
+            const textWrap = document.createElement('div');
+            const title = document.createElement('p');
+            title.className = 'text-sm font-semibold text-green-800 dark:text-green-300';
+            title.textContent = 'Report Submitted';
+            const desc = document.createElement('p');
+            desc.className = 'text-sm text-gray-700 dark:text-gray-200 mt-1';
+            desc.textContent = 'You can check its status under "My Reports."';
+
+            textWrap.appendChild(title);
+            textWrap.appendChild(desc);
+            card.appendChild(icon);
+            card.appendChild(textWrap);
+            row.appendChild(card);
+            log.appendChild(row);
+            log.scrollTop = log.scrollHeight;
+        }
         async function submitReport(data, btn) {
             btn.disabled = true;
-            btn.textContent = 'Submitting...';
+            btn.innerHTML = '<span class="inline-flex items-center gap-2">Submitting<svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg></span>';
 
             const formData = new FormData();
             formData.append('_token', document.querySelector('meta[name="csrf-token"]')?.content);
@@ -146,7 +177,8 @@
                 });
 
                 if (response.ok || response.redirected) {
-                    addMessage('Your report has been submitted successfully. You can check its status under "My Reports."', 'bot');
+                    btn.innerHTML = '<span class="inline-flex items-center gap-2">Submitted<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></span>';
+                    showSuccessCard();
                 } else {
                     addMessage('Something went wrong submitting the report. Please try the incident report form directly.', 'bot');
                 }
@@ -165,6 +197,8 @@
             input.value = '';
             input.disabled = true;
             sendBtn.disabled = true;
+            document.getElementById('chat-send-label').textContent = 'Thinking';
+            document.getElementById('chat-send-spinner').classList.remove('hidden');
             showTyping();
 
             try {
@@ -192,6 +226,8 @@
             } finally {
                 input.disabled = false;
                 sendBtn.disabled = false;
+                document.getElementById('chat-send-label').textContent = 'Send';
+                document.getElementById('chat-send-spinner').classList.add('hidden');
                 input.focus();
             }
         });
