@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./favicon.png" alt="CivicGuard Logo" width="100"/>
+  <img src="./public/favicon.svg" alt="CivicGuard Logo" width="100"/>
 </p>
 
 # CivicGuard
