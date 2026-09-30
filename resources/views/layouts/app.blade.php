@@ -11,6 +11,7 @@
         <style>
             html, body { background-color: #f5f1ea; }
             html.dark, html.dark body { background-color: #181818; }
+            [x-cloak] { display: none !important; }
         </style>
         <script>
             try {
@@ -27,26 +28,30 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-paper dark:bg-[#181818]">
-            @include('layouts.navigation')
+        <div class="min-h-screen flex flex-col lg:flex-row bg-paper dark:bg-[#181818]">
+            <div class="sticky top-0 z-30 lg:static lg:z-auto lg:shrink-0">
+                @include('layouts.navigation')
+            </div>
 
-            @isset($header)
-                <header class="bg-paper dark:bg-[#202020] border-b border-stone-300 dark:border-gray-700">
-                    <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
-                        <div class="border-l-4 border-maroon-700 dark:border-white pl-4">
-                            {{ $header }}
+            <div class="flex-1 min-w-0 flex flex-col">
+                @isset($header)
+                    <header class="bg-paper dark:bg-[#202020] border-b border-stone-300 dark:border-gray-700">
+                        <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
+                            <div class="pl-0">
+                                {{ $header }}
+                            </div>
                         </div>
-                    </div>
-                </header>
-            @endisset
+                    </header>
+                @endisset
 
-            <main>
-                {{ $slot }}
-            </main>
+                <main class="flex-1">
+                    {{ $slot }}
+                </main>
 
-            <footer class="py-6 text-center text-xs text-stone-400 dark:text-gray-500">
-                CivicGuard &middot; Barangay Maimpis Incident Management System
-            </footer>
+                <footer class="py-6 text-center text-xs text-stone-400 dark:text-gray-500">
+                    CivicGuard &middot; Barangay Maimpis Incident Management System
+                </footer>
+            </div>
         </div>
     </body>
 </html>
