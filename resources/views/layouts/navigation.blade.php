@@ -1,225 +1,162 @@
-<nav x-data="{ open: false }" class="border-t-4 border-t-maroon-700 border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur dark:border-gray-700 dark:bg-[#202020]">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex h-[4.5rem] items-center justify-between">
-            <div class="flex min-w-0 flex-1">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5">
-                        <x-application-logo class="block h-9 w-auto text-maroon-700" />
-                        <span class="hidden lg:block leading-tight">
-                            <span class="block font-bold text-sm text-maroon-800 dark:text-gray-100">CivicGuard</span>                            <span class="block text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Brgy. Maimpis</span>
-                        </span>
-                    </a>
-                </div>
-
-                <!-- Navigation Links -->
-                <div class="hidden items-center gap-1.5 sm:ms-8 sm:flex">
-                    @if (Auth::user()->role === 'resident')
-                        <x-nav-link :href="route('reports.create')" :active="request()->routeIs('reports.create')">
-                            {{ __('Report Incident') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')">
-                            {{ __('My Reports') }}
-                        </x-nav-link>
-                    @endif
-
-                    @if (in_array(Auth::user()->role, ['tanod', 'admin', 'official']))
-                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                            {{ __('All Reports') }}
-                        </x-nav-link>
-                    @endif
-
-                    @if (in_array(Auth::user()->role, ['tanod', 'admin', 'official']))
-                        <x-nav-link :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics')">
-                            {{ __('Analytics') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('admin.consolidatedReports')" :active="request()->routeIs('admin.consolidatedReports')">
-                            {{ __('Reports') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
-                            {{ __('Audit Logs') }}
-                        </x-nav-link>
-                    @endif
-
-                    @if (Auth::user()->role === 'admin')
-                        <x-nav-link :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
-                            {{ __('Add Staff') }}
-                        </x-nav-link>
-                    @endif
-
-                    @if (in_array(Auth::user()->role, ['tanod', 'admin']))
-                        <x-nav-link :href="route('curfew.create')" :active="request()->routeIs('curfew.create')">
-                            {{ __('Log Curfew') }}
-                        </x-nav-link>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Right Side: AI Assistant, Notifications, Dark Mode, Profile -->
-            <div class="hidden shrink-0 items-center gap-2 sm:ms-6 sm:flex">
-                
-                @if (in_array(Auth::user()->role, ['resident', 'admin', 'official']))
-                    <!-- AI Assistant Link (No icon, just styled text) -->
-                    <a href="{{ route('chatbot.widget') }}" class="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-white hover:text-maroon-700 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-maroon-300">
-                        <span class="font-bold text-maroon-700 dark:text-gray-100">{{ __('AI') }}</span> {{ __('Assistant') }}
-                    </a>
-                @endif
-
-                <!-- Notifications Bell Icon -->
-                <a href="{{ route('notifications.index') }}" class="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-gray-500 transition hover:bg-gray-100 hover:text-maroon-700 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-maroon-800">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
-                    @php $unreadCount = \App\Models\AppNotification::where('user_id', auth()->id())->where('is_read', false)->count(); @endphp
-                    @if ($unreadCount > 0)
-                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">{{ $unreadCount }}</span>
-                    @endif
-                </a>
-
-                <!-- Dark Mode Toggle -->
-                <button @click="darkMode = !darkMode" aria-label="Toggle dark mode" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-gray-500 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-900">
-                    <svg x-show="!darkMode" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
-                    <svg x-show="darkMode" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                </button>
-
-                <select aria-label="Language" onchange="window.location.href = this.value" class="h-9 shrink-0 rounded-lg border-gray-300 bg-transparent text-xs dark:border-gray-600 dark:bg-[#202020] dark:text-gray-300">
-                    <option value="{{ route('locale.switch', 'en') }}" @selected(app()->getLocale() === 'en')>{{ __('English') }}</option>
-                    <option value="{{ route('locale.switch', 'tl') }}" @selected(app()->getLocale() === 'tl')>{{ __('Tagalog') }}</option>
-                </select>
-
-                <!-- Settings Dropdown -->
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex h-9 items-center rounded-md border border-transparent px-3 text-sm font-medium leading-4 text-gray-500 transition hover:text-gray-700 focus:outline-none dark:bg-[#202020] dark:text-gray-400 dark:hover:text-gray-300">
-                            <div>{{ Auth::user()->name }}</div>
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault(); this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-        </div>
+<div x-data="{ open: false }"
+     x-effect="document.body.classList.toggle('overflow-hidden', open)"
+     @keydown.escape.window="open = false"
+     @resize.window="if (window.innerWidth >= 1024) open = false"
+     class="lg:h-full">
+    <!-- Mobile top bar -->
+    <div class="lg:hidden flex items-center gap-2 h-16 px-3 border-b border-stone-300 dark:border-stone-800/50 bg-[#ebe5d8] dark:bg-[#121212]">
+        <button @click="open = true" aria-label="Open menu" class="p-2.5 rounded-md text-stone-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5">
+            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
+            <x-application-logo class="h-8 w-auto text-maroon-700" />
+            <span class="font-bold text-sm text-maroon-800 dark:text-gray-100">CivicGuard</span>
+        </a>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            @if (in_array(Auth::user()->role, ['resident', 'admin', 'official']))
-                <x-responsive-nav-link :href="route('reports.create')" :active="request()->routeIs('reports.create')">
+    <!-- Mobile overlay -->
+    <div x-show="open" x-cloak x-transition.opacity @click="open = false" class="fixed inset-0 bg-black/40 z-40 lg:hidden"></div>
+
+    <!-- Sidebar: hidden on mobile until opened, always visible on desktop -->
+    <aside
+        x-show="open"
+        x-cloak
+        x-transition:enter="transition-transform duration-200 ease-out"
+        x-transition:enter-start="-translate-x-full"
+        x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition-transform duration-150 ease-in"
+        x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="-translate-x-full"
+        class="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] flex flex-col border-r-0/50 bg-[#ebe5d8] dark:bg-[#121212] lg:!flex lg:w-64 lg:max-w-none lg:sticky lg:top-0 lg:h-screen"
+    >
+        <!-- Brand -->
+        <div class="h-16 flex items-center justify-between px-5 shrink-0">
+            <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5">
+                <x-application-logo class="h-8 w-auto text-maroon-700" />
+                <span class="leading-tight">
+                    <span class="block font-sans font-bold text-sm text-maroon-800 dark:text-gray-100">CivicGuard</span>
+                    <span class="block text-[10px] uppercase tracking-wider text-stone-500 dark:text-gray-500">Brgy. Maimpis</span>
+                </span>
+            </a>
+            <button @click="open = false" aria-label="Close menu" class="lg:hidden p-2 -mr-2 text-stone-400 hover:text-stone-600 dark:hover:text-gray-200">
+                <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Nav links -->
+        <nav class="flex-1 overflow-y-auto overscroll-contain px-3 py-3 space-y-0.5">
+            @if (Auth::user()->role === 'resident')
+                <x-sidebar-link icon="plus" :href="route('reports.create')" :active="request()->routeIs('reports.create')">
                     {{ __('Report Incident') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')">
+                </x-sidebar-link>
+                <x-sidebar-link icon="list" :href="route('reports.index')" :active="request()->routeIs('reports.index')">
                     {{ __('My Reports') }}
-                </x-responsive-nav-link>
+                </x-sidebar-link>
             @endif
 
             @if (in_array(Auth::user()->role, ['tanod', 'admin', 'official']))
-                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                <x-sidebar-link icon="list" :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                     {{ __('All Reports') }}
-                </x-responsive-nav-link>
-            @endif
-
-            @if (in_array(Auth::user()->role, ['tanod', 'admin', 'official']))
-                <x-responsive-nav-link :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics')">
+                </x-sidebar-link>
+                <x-sidebar-link icon="chart" :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics')">
                     {{ __('Analytics') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('admin.consolidatedReports')" :active="request()->routeIs('admin.consolidatedReports')">
+                </x-sidebar-link>
+                <x-sidebar-link icon="document" :href="route('admin.consolidatedReports')" :active="request()->routeIs('admin.consolidatedReports')">
                     {{ __('Reports') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
+                </x-sidebar-link>
+                <x-sidebar-link icon="shield" :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
                     {{ __('Audit Logs') }}
-                </x-responsive-nav-link>
+                </x-sidebar-link>
             @endif
 
             @if (Auth::user()->role === 'admin')
-                <x-responsive-nav-link :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
+                <x-sidebar-link icon="user-plus" :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
                     {{ __('Add Staff') }}
-                </x-responsive-nav-link>
+                </x-sidebar-link>
             @endif
 
             @if (in_array(Auth::user()->role, ['tanod', 'admin']))
-                <x-responsive-nav-link :href="route('curfew.create')" :active="request()->routeIs('curfew.create')">
+                <x-sidebar-link icon="moon" :href="route('curfew.create')" :active="request()->routeIs('curfew.create')">
                     {{ __('Log Curfew') }}
-                </x-responsive-nav-link>
+                </x-sidebar-link>
             @endif
 
-            @if (Auth::user()->role === 'resident')
-                <!-- AI Assistant Mobile -->
-                <x-responsive-nav-link :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
-                        <span class="font-bold text-maroon-700 dark:text-gray-100">{{ __('AI') }}</span> {{ __('Assistant') }}
-                </x-responsive-nav-link>
+            @if (in_array(Auth::user()->role, ['resident', 'admin', 'official']))
+                <x-sidebar-link icon="sparkles" :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
+                    <span class="font-bold text-maroon-700 dark:text-gray-100">{{ __('AI') }}</span> {{ __('Assistant') }}
+                </x-sidebar-link>
             @endif
 
-            <!-- Notifications Mobile -->
-            <x-responsive-nav-link :href="route('notifications.index')" :active="request()->routeIs('notifications.index')">
-                <div class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-                    {{ __('Notifications') }}
+            <x-sidebar-link icon="bell" :href="route('notifications.index')" :active="request()->routeIs('notifications.index')">
+                <span class="flex items-center justify-between">
+                    <span>{{ __('Notifications') }}</span>
                     @php $unreadCount = \App\Models\AppNotification::where('user_id', auth()->id())->where('is_read', false)->count(); @endphp
                     @if ($unreadCount > 0)
-                        <span class="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-0.5">{{ $unreadCount }}</span>
+                        <span class="bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[1rem] h-4 px-1 flex items-center justify-center">{{ $unreadCount }}</span>
                     @endif
-                </div>
-            </x-responsive-nav-link>
-        </div>
+                </span>
+            </x-sidebar-link>
+        </nav>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+        <!-- Bottom section -->
+        <div class="border-t border-stone-300/70 dark:border-stone-800/50 p-3 space-y-2 shrink-0">
+            <div class="flex items-center gap-2">
+                <select aria-label="Language" onchange="window.location.href = this.value" class="flex-1 h-10 lg:h-9 rounded-lg border-stone-300 bg-transparent text-xs text-stone-700 dark:border-gray-700 dark:bg-[#121212] dark:text-gray-300">
+                    <option value="{{ route('locale.switch', 'en') }}" @selected(app()->getLocale() === 'en')>{{ __('English') }}</option>
+                    <option value="{{ route('locale.switch', 'tl') }}" @selected(app()->getLocale() === 'tl')>{{ __('Tagalog') }}</option>
+                </select>
+                <button @click="darkMode = !darkMode" aria-label="Toggle dark mode" class="flex h-10 w-10 lg:h-9 lg:w-9 shrink-0 items-center justify-center rounded-lg text-stone-500 transition hover:bg-black/5 dark:text-gray-400 dark:hover:bg-white/5">
+                    <svg x-show="!darkMode" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                    <svg x-show="darkMode" x-cloak class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
             </div>
 
-            <div class="mt-3 space-y-1">
-                <div class="px-4 py-2">
-                    <label for="mobile-language" class="block text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('Language') }}</label>
-                    <select id="mobile-language" onchange="window.location.href = this.value" class="w-full text-sm border-gray-300 dark:border-gray-600 dark:bg-[#202020] dark:text-gray-300 rounded-md">
-                        <option value="{{ route('locale.switch', 'en') }}" @selected(app()->getLocale() === 'en')>{{ __('English') }}</option>
-                        <option value="{{ route('locale.switch', 'tl') }}" @selected(app()->getLocale() === 'tl')>{{ __('Tagalog') }}</option>
-                    </select>
+            @php
+                $roleLabel = match (Auth::user()->role) {
+                    'official' => __('Barangay Official'),
+                    'tanod'    => __('Tanod'),
+                    'admin'    => __('Admin'),
+                    'resident' => __('Resident'),
+                    default    => ucfirst(Auth::user()->role),
+                };
+            @endphp
+
+            <!-- Profile (menu opens upward) -->
+            <div x-data="{ menu: false }" @click.outside="menu = false" @keydown.escape.window="menu = false" class="relative">
+                <div x-show="menu" x-cloak x-transition.origin.bottom
+                     class="absolute bottom-full left-0 right-0 mb-2 rounded-xl border border-stone-200 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-[#202020]">
+                    <a href="{{ route('profile.edit') }}" class="block px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
+                        {{ __('Profile') }}
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="block w-full px-4 py-3 lg:py-2 text-left text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
+                            {{ __('Log Out') }}
+                        </button>
+                    </form>
                 </div>
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
+
+                <button @click="menu = !menu" class="w-full flex items-center gap-3 rounded-lg px-2 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 transition">
+                    <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-sm font-semibold text-white">
+                        {{ strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}
+                    </span>
+                    <span class="min-w-0 flex-1 leading-tight">
+                        <span class="block truncate text-sm font-semibold text-stone-800 dark:text-gray-100">{{ Auth::user()->name }}</span>
+                        <span class="block truncate text-xs font-medium text-maroon-700 dark:text-rose-300">{{ $roleLabel }}</span>
+                    </span>
+                    <svg class="h-4 w-4 shrink-0 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                    </svg>
+                </button>
             </div>
         </div>
-    </div>
-</nav>
+    </aside>
+</div>
