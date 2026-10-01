@@ -42,7 +42,7 @@ class ChatbotController extends Controller
             . "Do not include the marker until you truly have all three pieces of information. Never make up information the resident hasn't given you. "
             . "Answer FAQ questions using this approved context:\n{$faqContext}";
 
-        $conversationHistory = $validated['history'] ?? '';
+        $conversationHistory = mb_substr($validated['history'] ?? '', -6000);
 
         $rawReply = $gemini->generateText(
             $systemPrompt . "\n\nConversation so far:\n" . $conversationHistory . "\n\nResident's latest message: " . $validated['message']
