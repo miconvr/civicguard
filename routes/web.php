@@ -43,6 +43,7 @@ Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name(
     Route::get('/reports/export/pdf', [DashboardController::class, 'exportReportsPdf'])->name('reports.exportPdf');
     Route::patch('/reports/{report}/status', [DashboardController::class, 'updateStatus'])->name('reports.updateStatus');
     Route::patch('/reports/{report}/assign', [DashboardController::class, 'assign'])->name('reports.assign');
+    Route::patch('/reports/{report}/severity', [DashboardController::class, 'updateSeverity'])->name('reports.updateSeverity')->middleware('role:admin,official');
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
     Route::get('/analytics/insights', [AnalyticsController::class, 'insights'])->name('analytics.insights');
     Route::get('/analytics/export/pdf', [AnalyticsController::class, 'exportPdf'])->name('analytics.exportPdf');
