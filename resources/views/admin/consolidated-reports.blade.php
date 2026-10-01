@@ -8,9 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="flex justify-end">
-                <a href="{{ route('admin.consolidatedReports.exportPdf') }}" class="inline-flex items-center bg-maroon-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm hover:bg-maroon-800 hover:shadow-md transition">
-                    Export PDF
-                </a>
+                <x-export-button :href="route('admin.consolidatedReports.exportPdf')" />
             </div>
 
             <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
