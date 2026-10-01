@@ -11,12 +11,22 @@
                 <x-export-button :href="route('admin.consolidatedReports.exportPdf')" />
             </div>
 
+            @php
+                $summaryKpis = [
+                    ['Total Reports', $totalReports, 'text-red-700 dark:text-red-400'],
+                    ['Resolved', $resolvedCount, 'text-green-700 dark:text-green-400'],
+                    ['Assigned', $assignedCount, 'text-blue-700 dark:text-blue-400'],
+                    ['Curfew Logs', $curfewCount, 'text-orange-700 dark:text-orange-400'],
+                    ['Avg. Resolution', $averageResponseHours !== null ? $averageResponseHours . 'h' : '-', 'text-gray-700 dark:text-gray-200'],
+                ];
+            @endphp
             <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
-                <div class="cg-card"><p class="text-2xl font-bold text-maroon-700">{{ $totalReports }}</p><p class="text-xs text-gray-500">Total Reports</p></div>
-                <div class="cg-card"><p class="text-2xl font-bold text-green-600">{{ $resolvedCount }}</p><p class="text-xs text-gray-500">Resolved</p></div>
-                <div class="cg-card"><p class="text-2xl font-bold text-blue-600">{{ $assignedCount }}</p><p class="text-xs text-gray-500">Assigned</p></div>
-                <div class="cg-card"><p class="text-2xl font-bold text-orange-600">{{ $curfewCount }}</p><p class="text-xs text-gray-500">Curfew Logs</p></div>
-                <div class="cg-card"><p class="text-2xl font-bold text-gray-700">{{ $averageResponseHours !== null ? $averageResponseHours . 'h' : '-' }}</p><p class="text-xs text-gray-500">Avg. Resolution</p></div>
+                @foreach ($summaryKpis as [$label, $value, $color])
+                    <div class="cg-card text-center">
+                        <p class="text-3xl font-bold {{ $color }}">{{ $value }}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">{{ $label }}</p>
+                    </div>
+                @endforeach
             </div>
 
             <div class="cg-card p-6">
