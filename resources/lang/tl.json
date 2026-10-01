@@ -113,5 +113,12 @@
     "Received": "Natanggap",
     "Assigned": "Naitalaga",
     "In progress": "Isinasagawa",
-    "Export PDF": "I-export ang PDF"
+    "Export PDF": "I-export ang PDF",
+    "Was this fixed?": "Naayos ba ito?",
+    "Yes, it's fixed": "Oo, naayos na",
+    "No, it's still a problem": "Hindi, problema pa rin",
+    "Confirmed fixed": "Kinumpirmang naayos",
+    "You can respond until": "Maaari kang sumagot hanggang",
+    "Thank you for confirming.": "Salamat sa pagkumpirma.",
+    "Your report was reopened. Staff have been notified.": "Muling binuksan ang iyong ulat. Naabisuhan na ang staff."
 }

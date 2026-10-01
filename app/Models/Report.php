@@ -18,10 +18,13 @@ class Report extends Model
         'status',
         'assigned_to',
         'resolved_at',
+        'confirmed_at',
+        'reopen_count',
     ];
 
     protected $casts = [
         'resolved_at' => 'datetime',
+        'confirmed_at' => 'datetime',
     ];
 
     public function category()

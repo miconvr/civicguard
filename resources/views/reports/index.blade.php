@@ -61,6 +61,26 @@
                                     </li>
                                 @endforeach
                             </ol>
+                        @if ($report->status === 'resolved' && $report->resolved_at)
+                                @if ($report->confirmed_at)
+                                    <p class="mt-4 rounded-lg bg-green-50 dark:bg-green-900/30 px-3 py-2 text-sm text-green-800 dark:text-green-300">{{ __('Confirmed fixed') }} &middot; {{ $report->confirmed_at->format('M d, Y') }}</p>
+                                @elseif ($report->resolved_at->gt(now()->subDays(7)))
+                                    <div class="mt-4 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+                                        <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('Was this fixed?') }}</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('You can respond until') }} {{ $report->resolved_at->copy()->addDays(7)->format('M d') }}.</p>
+                                        <div class="mt-2 flex flex-wrap gap-2">
+                                            <form method="POST" action="{{ route('reports.confirm', $report) }}">
+                                                @csrf
+                                                <button class="min-h-[44px] rounded-lg bg-maroon-700 px-4 py-2 text-sm font-medium text-white hover:bg-maroon-800">{{ __("Yes, it's fixed") }}</button>
+                                            </form>
+                                            <form method="POST" action="{{ route('reports.reopen', $report) }}">
+                                                @csrf
+                                                <button class="min-h-[44px] rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800">{{ __("No, it's still a problem") }}</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
                         </article>
                     @empty
                         <div class="py-10 text-center">

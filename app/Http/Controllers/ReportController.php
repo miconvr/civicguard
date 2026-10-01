@@ -96,6 +96,66 @@ class ReportController extends Controller
         ]);
     }
 
+    protected function authorizeFeedback(Report $report): void
+    {
+        abort_unless($report->user_id === Auth::id(), 403);
+        abort_unless($report->status === 'resolved' && $report->resolved_at, 422, 'This report is not resolved.');
+        abort_unless($report->resolved_at->gt(now()->subDays(7)), 422, 'The 7-day window to respond has passed. Please file a new report.');
+        abort_if($report->confirmed_at, 422, 'You already confirmed this report.');
+    }
+
+    public function confirmFixed(Report $report)
+    {
+        $this->authorizeFeedback($report);
+
+        $report->update(['confirmed_at' => now()]);
+
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'report_confirmed_fixed',
+            'auditable_type' => Report::class,
+            'auditable_id' => $report->id,
+            'description' => 'Resident confirmed the issue was fixed.',
+        ]);
+
+        return redirect()->route('reports.index')->with('status', __('Thank you for confirming.'));
+    }
+
+    public function reopen(Report $report)
+    {
+        $this->authorizeFeedback($report);
+
+        $report->update([
+            'status' => 'pending',
+            'resolved_at' => null,
+            'confirmed_at' => null,
+            'reopen_count' => $report->reopen_count + 1,
+        ]);
+
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'report_reopened',
+            'auditable_type' => Report::class,
+            'auditable_id' => $report->id,
+            'description' => 'Resident said the issue is not fixed. Report reopened.',
+            'metadata' => ['status' => 'pending', 'reopen_count' => $report->reopen_count],
+        ]);
+
+        $recipients = \App\Models\User::whereIn('role', ['admin', 'official'])->pluck('id');
+        if ($report->assigned_to) {
+            $recipients->push($report->assigned_to);
+        }
+        foreach ($recipients->unique() as $userId) {
+            \App\Models\AppNotification::create([
+                'user_id' => $userId,
+                'report_id' => $report->id,
+                'message' => "Report #{$report->id} ({$report->category->name}) was reopened: the resident says it is not fixed.",
+            ]);
+        }
+
+        return redirect()->route('reports.index')->with('status', __('Your report was reopened. Staff have been notified.'));
+    }
+
     public function myReports()
     {
         $reports = Report::where('user_id', Auth::id())
