@@ -46,8 +46,7 @@
                         <a href="{{ route('admin.dashboard', request()->except('assignee', 'page')) }}"
                            class="text-xs rounded-full bg-amber-100 text-amber-800 px-3 py-1">Unassigned only ✕</a>
                     @endif
-                    <a href="{{ route('admin.reports.exportPdf', array_filter(['group' => $tab === 'resolved' ? 'resolved' : 'active', 'severity' => request('severity')])) }}"
-                       class="ml-auto text-sm text-gray-600 dark:text-gray-300 underline hover:text-maroon-700">Export PDF</a>
+                    <x-export-button class="ml-auto" :href="route('admin.reports.exportPdf', array_filter(['group' => $tab === 'resolved' ? 'resolved' : 'active', 'severity' => request('severity')]))" />
                 </form>
 
                 {{-- Status tabs --}}
