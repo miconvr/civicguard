@@ -15,9 +15,15 @@ class AnalyticsController extends Controller
     {
         [$byCategory, $bySeverity, $byStatus, $last14Days, $totalReports, $pendingCount, $resolvedCount, $curfewCount] = $this->gatherMetrics();
 
+        $inProgressCount = Report::where('status', 'in_progress')->count();
+        $avgResolveHours = Report::whereNotNull('resolved_at')
+            ->selectRaw('AVG(TIMESTAMPDIFF(HOUR, created_at, resolved_at)) as h')
+            ->value('h');
+
         return view('admin.analytics', compact(
             'byCategory', 'bySeverity', 'byStatus', 'last14Days',
-            'totalReports', 'pendingCount', 'resolvedCount', 'curfewCount'
+            'totalReports', 'pendingCount', 'resolvedCount', 'curfewCount',
+            'inProgressCount', 'avgResolveHours'
         ));
     }
 
@@ -76,11 +82,17 @@ class AnalyticsController extends Controller
             ->get()
             ->keyBy('status');
 
-        $last14Days = Report::where('created_at', '>=', now()->subDays(14))
+        $dailyCounts = Report::where('created_at', '>=', now()->subDays(13)->startOfDay())
             ->select(DB::raw('DATE(created_at) as day'), DB::raw('count(*) as total'))
             ->groupBy('day')
-            ->orderBy('day')
-            ->get();
+            ->pluck('total', 'day');
+
+        // One entry per day for the last 14 days, zeros included.
+        $last14Days = collect(range(13, 0))->map(function ($i) use ($dailyCounts) {
+            $day = now()->subDays($i)->toDateString();
+
+            return new \ArrayObject(['day' => $day, 'total' => (int) ($dailyCounts[$day] ?? 0)], \ArrayObject::ARRAY_AS_PROPS);
+        });
 
         $totalReports = Report::count();
         $pendingCount = $byStatus->get('pending')->total ?? 0;
