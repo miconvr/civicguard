@@ -91,6 +91,7 @@
                                         'description' => $report->description,
                                         'severity' => ucfirst($report->severity),
                                         'sev' => $report->severity,
+                                        'canStatus' => auth()->user()->role !== 'tanod' || (int) $report->assigned_to === (int) auth()->id(),
                                         'sevClass' => 'cg-sev-' . $report->severity,
                                         'status' => $report->status,
                                         'assigned_to' => (string) $report->assigned_to,
@@ -196,7 +197,7 @@
                     @endif
 
                     {{-- Status --}}
-                    <form method="POST" :action="'{{ url('/admin/reports') }}/' + r.id + '/status'" class="space-y-2">
+                    <form method="POST" :action="'{{ url('/admin/reports') }}/' + r.id + '/status'" x-show="r.canStatus" class="space-y-2">
                         @csrf @method('PATCH')
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
                         <div class="flex gap-2">
@@ -209,7 +210,10 @@
                         </div>
                     </form>
 
+                    <p x-show="!r.canStatus" x-cloak class="text-sm text-gray-500 dark:text-gray-400">Only the assigned tanod or an admin can update this report.</p>
+
                     {{-- Assign --}}
+                    @if (in_array(auth()->user()->role, ['admin', 'official']))
                     <form method="POST" :action="'{{ url('/admin/reports') }}/' + r.id + '/assign'" class="space-y-2">
                         @csrf @method('PATCH')
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Assigned tanod</label>
@@ -223,6 +227,8 @@
                             <button class="bg-maroon-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-maroon-800">Assign</button>
                         </div>
                     </form>
+
+                    @endif
 
                     <a :href="r.details" class="block text-sm text-gray-500 dark:text-gray-400 hover:underline">Open full details page</a>
                 </div>
