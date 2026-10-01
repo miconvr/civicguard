@@ -29,7 +29,7 @@
                     </div>
                 </a>
 
-                <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">{{ __('Fields marked') }} <span class="text-red-600">*</span> {{ __('are required.') }}</p>
+                <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">{!! __('Fields marked :star are required.', ['star' => '<span class="text-red-600">*</span>']) !!}</p>
 
                 <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-6"
                       x-data="{ cat: '{{ old('category_id') }}', descs: {{ Js::from($categories->pluck('description', 'id')) }}, len: {{ strlen(old('description', '')) }}, preview: null, tooBig: false, suggested: false, timer: null,
