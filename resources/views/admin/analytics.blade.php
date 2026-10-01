@@ -11,21 +11,24 @@
             <div class="flex justify-end">
                 <x-export-button :href="route('admin.analytics.exportPdf')" />
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="cg-card text-center">
-                    <p class="text-3xl font-bold text-maroon-700">{{ $totalReports }}</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Total Reports</p>
-                </div>
-                <div class="cg-card text-center">
-                    <p class="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{{ $pendingCount }}</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Pending</p>
-                </div>
-                <div class="cg-card text-center">
-                    <p class="text-3xl font-bold text-green-600 dark:text-green-400">{{ $resolvedCount }}</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Resolved</p>
-                </div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                @php
+                    $avg = $avgResolveHours === null ? '-' : ($avgResolveHours < 48 ? round($avgResolveHours) . ' h' : round($avgResolveHours / 24, 1) . ' days');
+                    $kpis = [
+                        ['Total Reports', $totalReports, 'all', 'text-maroon-700 dark:text-maroon-300', null],
+                        ['Pending', $pendingCount, 'pending', 'text-yellow-700 dark:text-yellow-400', null],
+                        ['In Progress', $inProgressCount, 'in_progress', 'text-blue-700 dark:text-blue-400', null],
+                        ['Resolved', $resolvedCount, 'resolved', 'text-green-700 dark:text-green-400', 'Avg. ' . $avg . ' to resolve'],
+                    ];
+                @endphp
+                @foreach ($kpis as [$label, $value, $tab, $color, $note])
+                    <a href="{{ route('admin.dashboard', ['tab' => $tab]) }}" class="cg-card block text-center transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-maroon-600">
+                        <p class="text-3xl font-bold {{ $color }}">{{ $value }}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">{{ $label }}</p>
+                        @if ($note)<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ $note }}</p>@endif
+                    </a>
+                @endforeach
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="cg-card">
                     <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Reports by Category</h3>
@@ -85,16 +88,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <script>
         const isDark = () => document.documentElement.classList.contains('dark');
-        const accent = () => '#7f1d1d';
-        const accentFill = () => isDark() ? 'rgba(127,29,29,0.24)' : 'rgba(127,29,29,0.1)';
+        const accent = () => isDark() ? '#e06b6b' : '#7f1d1d';
+        const accentFill = () => isDark() ? 'rgba(224,107,107,0.22)' : 'rgba(127,29,29,0.1)';
+        function setChartDefaults() {
+            Chart.defaults.color = isDark() ? '#d1d5db' : '#4b5563';
+            Chart.defaults.borderColor = isDark() ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)';
+            Chart.defaults.font.size = 12;
+        }
+        setChartDefaults();
 
         const categoryLabels = @json($byCategory->pluck('name'));
         const categoryData = @json($byCategory->pluck('total'));
         const severityMap = @json($bySeverity);
         const severityLabels = ['low', 'moderate', 'high', 'critical'];
         const severityData = severityLabels.map(s => severityMap[s]?.total ?? 0);
-        const trendLabels = @json($last14Days->pluck('day'));
-        const trendData = @json($last14Days->pluck('total'));
+        const trendLabels = @json($last14Days->pluck('day')->values()).map(d => new Date(d + 'T00:00:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric' }));
+        const trendData = @json($last14Days->pluck('total')->values());
 
         const categoryChart = new Chart(document.getElementById('categoryChart'), {
             type: 'bar',
@@ -102,22 +111,23 @@
                 labels: categoryLabels,
                 datasets: [{ label: 'Reports', data: categoryData, backgroundColor: accent() }]
             },
-            options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+            options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
         });
 
         const severityChart = new Chart(document.getElementById('severityChart'), {
             type: 'doughnut',
             data: {
-                labels: severityLabels.map(s => s.charAt(0).toUpperCase() + s.slice(1)),
+                labels: severityLabels.map((s, i) => s.charAt(0).toUpperCase() + s.slice(1) + ' (' + severityData[i] + ')'),
                 datasets: [{ data: severityData, backgroundColor: ['#9ca3af', '#eab308', '#f97316', '#dc2626'], borderWidth: 0 }]
-            }
+            },
+            options: { plugins: { legend: { position: 'bottom' } } }
         });
 
         const trendChart = new Chart(document.getElementById('trendChart'), {
             type: 'line',
             data: {
                 labels: trendLabels,
-                datasets: [{ label: 'Reports Filed', data: trendData, borderColor: accent(), backgroundColor: accentFill(), fill: true, tension: 0.3 }]
+                datasets: [{ label: 'Reports Filed', data: trendData, borderColor: accent(), backgroundColor: accentFill(), fill: true, tension: 0, pointRadius: 3 }]
             },
             options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
         });
