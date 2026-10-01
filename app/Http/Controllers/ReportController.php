@@ -103,6 +103,26 @@ class ReportController extends Controller
             ->latest()
             ->get();
 
+        $logs = AuditLog::where('auditable_type', Report::class)
+            ->whereIn('auditable_id', $reports->pluck('id'))
+            ->whereIn('action', ['report_assigned', 'report_status_changed'])
+            ->orderBy('created_at')
+            ->get()
+            ->groupBy('auditable_id');
+
+        foreach ($reports as $report) {
+            $mine = $logs->get($report->id, collect());
+            $assigned = $mine->firstWhere('action', 'report_assigned');
+            $started = $mine->first(fn ($l) => ($l->metadata['status'] ?? null) === 'in_progress');
+
+            $report->timeline = [
+                ['label' => 'Received', 'done' => true, 'at' => $report->created_at],
+                ['label' => 'Assigned', 'done' => (bool) ($assigned || $report->assigned_to), 'at' => $assigned?->created_at],
+                ['label' => 'In progress', 'done' => (bool) ($started || $report->resolved_at || $report->status === 'in_progress'), 'at' => $started?->created_at],
+                ['label' => 'Resolved', 'done' => $report->status === 'resolved', 'at' => $report->resolved_at],
+            ];
+        }
+
         return view('reports.index', compact('reports'));
     }
 
