@@ -79,6 +79,10 @@ class DashboardController extends Controller
             'status' => ['required', 'in:pending,in_progress,resolved'],
         ]);
 
+        if (auth()->user()->role === 'tanod' && (int) $report->assigned_to !== (int) auth()->id()) {
+            abort(403, 'You can only update reports assigned to you.');
+        }
+
         $from = $report->status;
 
         $report->update([
