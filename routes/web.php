@@ -57,6 +57,7 @@ Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name(
 Route::middleware(['auth', 'role:resident,admin,official'])->group(function () {
     Route::get('/reports/create', [ReportController::class, 'create'])->name('reports.create');
     Route::post('/reports', [ReportController::class, 'store'])->name('reports.store')->middleware('throttle:10,1');
+    Route::post('/reports/suggest-category', [ReportController::class, 'suggestCategory'])->name('reports.suggestCategory')->middleware('throttle:20,1');
     Route::get('/reports', [ReportController::class, 'myReports'])->name('reports.index');
 });
 

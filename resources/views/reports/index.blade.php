@@ -35,7 +35,6 @@
                                 <th>{{ __('Category') }}</th>
                                 <th>{{ __('Description') }}</th>
                                 <th>{{ __('Location') }}</th>
-                                <th>{{ __('Severity') }}</th>
                                 <th>{{ __('Status') }}</th>
                                 <th>{{ __('Date Filed') }}</th>
                             </tr>
@@ -47,9 +46,6 @@
                                     <td class="max-w-xs truncate">{{ $report->description }}</td>
                                     <td>{{ $report->location_text }}</td>
                                     <td>
-                                        <span class="cg-sev cg-sev-{{ $report->severity }}">{{ __(ucfirst($report->severity)) }}</span>
-                                    </td>
-                                    <td>
                                         <span class="cg-badge {{ $statusClass[$report->status] ?? 'cg-badge-status' }}">
                                             {{ __(ucwords(str_replace('_', ' ', $report->status))) }}
                                         </span>
@@ -58,7 +54,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="py-10 text-center">
+                                    <td colspan="5" class="py-10 text-center">
                                         <p class="text-gray-500 dark:text-gray-400">{{ __('You haven\'t filed any reports yet.') }}</p>
                                         <p class="mt-1 text-sm text-gray-400 dark:text-gray-500">{{ __('File your first incident so barangay staff can follow up.') }}</p>
                                         <a href="{{ route('reports.create') }}" class="mt-4 inline-flex items-center text-sm font-medium text-maroon-700 hover:text-maroon-800 dark:text-maroon-300">
