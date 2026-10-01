@@ -20,7 +20,7 @@ class GeminiClient
             return null;
         }
 
-        foreach ($fast ? array_slice($this->models, 0, 1) : $this->models as $model) {
+        foreach ($fast ? ['gemini-flash-lite-latest', 'gemini-flash-latest'] : $this->models as $model) {
             for ($attempt = 1; $attempt <= ($fast ? 1 : 2); $attempt++) {
                 try {
                     $response = Http::timeout($timeout)->post(
@@ -39,6 +39,7 @@ class GeminiClient
                         }
                     }
 
+                    if ($fast) { \Illuminate\Support\Facades\Log::warning("Gemini fast {$model}: HTTP " . $response->status() . ' ' . substr($response->body(), 0, 200)); }
                     if ($response->status() === 503 && $attempt === 1) {
                         sleep(1);
                         continue;
