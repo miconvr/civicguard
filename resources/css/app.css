@@ -110,4 +110,4 @@
     .dark .cg-input::placeholder { color: #858585 !important; opacity: 1; }
     .dark select option { background-color: #181818; color: #e5e5e5; }
     .dark select option:disabled { color: #858585; }
-}
+}[x-cloak] { display: none !important; }
