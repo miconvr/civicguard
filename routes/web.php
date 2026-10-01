@@ -76,6 +76,8 @@ Route::middleware(['auth', 'role:tanod,admin'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.readAll');
+    Route::post('/notifications/{notification}/open', [NotificationController::class, 'open'])->name('notifications.open');
 });
 
 require __DIR__.'/auth.php';
