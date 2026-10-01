@@ -129,13 +129,18 @@
                     <a href="{{ route('profile.edit') }}" class="block px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
                         {{ __('Profile') }}
                     </a>
-                    <p class="px-4 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400">{{ __('Language') }}</p>
+                    <div class="my-1 border-t border-stone-200 dark:border-gray-700"></div>
+                    <div class="flex items-center gap-2 px-4 pt-1 pb-1">
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400">{{ __('Language') }}</span>
+                        <span class="h-px flex-1 bg-stone-200 dark:bg-gray-700" aria-hidden="true"></span>
+                    </div>
                     @foreach (['en' => __('English'), 'tl' => __('Tagalog')] as $code => $name)
                         <a href="{{ route('locale.switch', $code) }}" class="flex items-center justify-between px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5" @if (app()->getLocale() === $code) aria-current="true" @endif>
                             <span>{{ $name }}</span>
                             @if (app()->getLocale() === $code) <span aria-hidden="true">&#10003;</span> @endif
                         </a>
                     @endforeach
+                    <div class="my-1 border-t border-stone-200 dark:border-gray-700"></div>
                     <button type="button" role="switch" :aria-checked="darkMode.toString()" @click="darkMode = !darkMode" class="flex w-full items-center justify-between px-4 py-3 lg:py-2 text-left text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
                         <span>{{ __('Dark mode') }}</span>
                         <span class="text-xs text-stone-500 dark:text-gray-400" x-text="darkMode ? 'On' : 'Off'"></span>
