@@ -12,7 +12,7 @@ class GeminiClient
         'gemini-flash-lite-latest',
     ];
 
-    public function generateText(string $prompt, int $timeout = 15): ?string
+    public function generateText(string $prompt, int $timeout = 15, bool $fast = false): ?string
     {
         $apiKey = config('services.gemini.key');
 
@@ -20,8 +20,8 @@ class GeminiClient
             return null;
         }
 
-        foreach ($this->models as $model) {
-            for ($attempt = 1; $attempt <= 2; $attempt++) {
+        foreach ($fast ? array_slice($this->models, 0, 1) : $this->models as $model) {
+            for ($attempt = 1; $attempt <= ($fast ? 1 : 2); $attempt++) {
                 try {
                     $response = Http::timeout($timeout)->post(
                         "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}",
