@@ -30,7 +30,7 @@
                                 'resolved' => 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300',
                             ][$report->status];
                         @endphp
-                        <article class="rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                        <article id="report-{{ $report->id }}" class="scroll-mt-20 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                             <div class="flex items-start justify-between gap-3">
                                 <div class="min-w-0">
                                     <h3 class="font-semibold text-gray-900 dark:text-gray-100">
