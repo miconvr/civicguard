@@ -88,6 +88,7 @@ class DashboardController extends Controller
         $report->update([
             'status' => $validated['status'],
             'resolved_at' => $validated['status'] === 'resolved' ? now() : null,
+            'confirmed_at' => null,
         ]);
 
         AuditLog::create([
