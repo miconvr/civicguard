@@ -63,7 +63,7 @@
 
                 {{-- Table --}}
                 <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
-                    <table class="cg-table">
+                    <table class="cg-table cg-queue">
                         <thead>
                             <tr>
                                 <th>Severity</th>
