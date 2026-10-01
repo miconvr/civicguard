@@ -112,3 +112,21 @@
     .dark select option:disabled { color: #858585; }
 }
 [x-cloak] { display: none !important; }
+
+/* Admin queue: rows become cards on phones */
+@media (max-width: 767px) {
+    table.cg-queue thead { display: none; }
+    table.cg-queue,
+    table.cg-queue tbody,
+    table.cg-queue tr,
+    table.cg-queue td { display: block; width: 100%; }
+    table.cg-queue tr {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.75rem;
+        margin-bottom: 0.75rem;
+        padding: 0.75rem 1rem;
+    }
+    table.cg-queue td { border: 0; padding: 0.25rem 0; text-align: left; }
+    table.cg-queue td:last-child { display: none; }
+    .dark table.cg-queue tr { border-color: #374151; }
+}
