@@ -90,6 +90,7 @@
                                         'location' => $report->location_text,
                                         'description' => $report->description,
                                         'severity' => ucfirst($report->severity),
+                                        'sev' => $report->severity,
                                         'sevClass' => 'cg-sev-' . $report->severity,
                                         'status' => $report->status,
                                         'assigned_to' => (string) $report->assigned_to,
@@ -175,6 +176,24 @@
                     </template>
 
                     <hr class="border-gray-200 dark:border-gray-700">
+
+                    {{-- Severity --}}
+                    @if (in_array(auth()->user()->role, ['admin', 'official']))
+                        <form method="POST" :action="'{{ url('/admin/reports') }}/' + r.id + '/severity'" class="space-y-2">
+                            @csrf @method('PATCH')
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Severity</label>
+                            <div class="flex gap-2">
+                                <select name="severity" x-model="r.sev" class="cg-select flex-1">
+                                    <option value="low">Low</option>
+                                    <option value="moderate">Moderate</option>
+                                    <option value="high">High</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                                <button class="bg-maroon-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-maroon-800">Save</button>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Set automatically from the report text. Correct it if it is wrong.</p>
+                        </form>
+                    @endif
 
                     {{-- Status --}}
                     <form method="POST" :action="'{{ url('/admin/reports') }}/' + r.id + '/status'" class="space-y-2">
