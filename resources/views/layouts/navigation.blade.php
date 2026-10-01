@@ -48,8 +48,14 @@
         </div>
 
         <!-- Nav links -->
-        <nav class="flex-1 overflow-y-auto overscroll-contain px-3 py-3 space-y-0.5">
-            @if (Auth::user()->role === 'resident')
+        @php
+            $role = Auth::user()->role;
+            $isStaff = in_array($role, ['tanod', 'admin', 'official']);
+            $unreadCount = \App\Models\AppNotification::where('user_id', auth()->id())->where('is_read', false)->count();
+            $groupLabel = 'px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400';
+        @endphp
+        <nav class="flex-1 overflow-y-auto overscroll-contain px-3 py-3 space-y-0.5" aria-label="{{ __('Main menu') }}">
+            @if ($role === 'resident')
                 <x-sidebar-link icon="plus" :href="route('reports.create')" :active="request()->routeIs('reports.create')">
                     {{ __('Report Incident') }}
                 </x-sidebar-link>
@@ -58,34 +64,37 @@
                 </x-sidebar-link>
             @endif
 
-            @if (in_array(Auth::user()->role, ['tanod', 'admin', 'official']))
-                <x-sidebar-link icon="list" :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                    {{ __('All Reports') }}
+            @if ($isStaff)
+                <p class="{{ $groupLabel }}">{{ __('Incidents') }}</p>
+                <x-sidebar-link icon="list" :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard', 'admin.reports.details', 'admin.reports.curfewDetails')">
+                    {{ __('Incident Queue') }}
                 </x-sidebar-link>
                 <x-sidebar-link icon="chart" :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics')">
                     {{ __('Analytics') }}
                 </x-sidebar-link>
                 <x-sidebar-link icon="document" :href="route('admin.consolidatedReports')" :active="request()->routeIs('admin.consolidatedReports')">
-                    {{ __('Reports') }}
+                    {{ __('Summary Reports') }}
                 </x-sidebar-link>
+                @if (in_array($role, ['tanod', 'admin']))
+                    <x-sidebar-link icon="moon" :href="route('curfew.create')" :active="request()->routeIs('curfew.create')">
+                        {{ __('Log Curfew') }}
+                    </x-sidebar-link>
+                @endif
+
+                <p class="{{ $groupLabel }} pt-4">{{ __('Administration') }}</p>
                 <x-sidebar-link icon="shield" :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
                     {{ __('Audit Logs') }}
                 </x-sidebar-link>
+                @if ($role === 'admin')
+                    <x-sidebar-link icon="user-plus" :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
+                        {{ __('Add Staff') }}
+                    </x-sidebar-link>
+                @endif
+
+                <p class="{{ $groupLabel }} pt-4">{{ __('General') }}</p>
             @endif
 
-            @if (Auth::user()->role === 'admin')
-                <x-sidebar-link icon="user-plus" :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
-                    {{ __('Add Staff') }}
-                </x-sidebar-link>
-            @endif
-
-            @if (in_array(Auth::user()->role, ['tanod', 'admin']))
-                <x-sidebar-link icon="moon" :href="route('curfew.create')" :active="request()->routeIs('curfew.create')">
-                    {{ __('Log Curfew') }}
-                </x-sidebar-link>
-            @endif
-
-            @if (in_array(Auth::user()->role, ['resident', 'admin', 'official']))
+            @if (in_array($role, ['resident', 'admin', 'official']))
                 <x-sidebar-link icon="sparkles" :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
                     <span class="font-bold text-maroon-700 dark:text-gray-100">{{ __('AI') }}</span> {{ __('Assistant') }}
                 </x-sidebar-link>
@@ -94,9 +103,8 @@
             <x-sidebar-link icon="bell" :href="route('notifications.index')" :active="request()->routeIs('notifications.index')">
                 <span class="flex items-center justify-between">
                     <span>{{ __('Notifications') }}</span>
-                    @php $unreadCount = \App\Models\AppNotification::where('user_id', auth()->id())->where('is_read', false)->count(); @endphp
                     @if ($unreadCount > 0)
-                        <span class="bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[1rem] h-4 px-1 flex items-center justify-center">{{ $unreadCount }}</span>
+                        <span class="bg-red-600 text-white text-[11px] font-bold rounded-full min-w-[1.25rem] h-5 px-1.5 flex items-center justify-center">{{ $unreadCount > 99 ? '99+' : $unreadCount }}<span class="sr-only"> {{ __('unread') }}</span></span>
                     @endif
                 </span>
             </x-sidebar-link>
@@ -104,21 +112,6 @@
 
         <!-- Bottom section -->
         <div class="border-t border-stone-300/70 dark:border-stone-800/50 p-3 space-y-2 shrink-0">
-            <div class="flex items-center gap-2">
-                <select aria-label="Language" onchange="window.location.href = this.value" class="flex-1 h-10 lg:h-9 rounded-lg border-stone-300 bg-transparent text-xs text-stone-700 dark:border-gray-700 dark:bg-[#121212] dark:text-gray-300">
-                    <option value="{{ route('locale.switch', 'en') }}" @selected(app()->getLocale() === 'en')>{{ __('English') }}</option>
-                    <option value="{{ route('locale.switch', 'tl') }}" @selected(app()->getLocale() === 'tl')>{{ __('Tagalog') }}</option>
-                </select>
-                <button @click="darkMode = !darkMode" aria-label="Toggle dark mode" class="flex h-10 w-10 lg:h-9 lg:w-9 shrink-0 items-center justify-center rounded-lg text-stone-500 transition hover:bg-black/5 dark:text-gray-400 dark:hover:bg-white/5">
-                    <svg x-show="!darkMode" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
-                    <svg x-show="darkMode" x-cloak class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                </button>
-            </div>
-
             @php
                 $roleLabel = match (Auth::user()->role) {
                     'official' => __('Barangay Official'),
@@ -136,6 +129,18 @@
                     <a href="{{ route('profile.edit') }}" class="block px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
                         {{ __('Profile') }}
                     </a>
+                    <p class="px-4 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400">{{ __('Language') }}</p>
+                    @foreach (['en' => __('English'), 'tl' => __('Tagalog')] as $code => $name)
+                        <a href="{{ route('locale.switch', $code) }}" class="flex items-center justify-between px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5" @if (app()->getLocale() === $code) aria-current="true" @endif>
+                            <span>{{ $name }}</span>
+                            @if (app()->getLocale() === $code) <span aria-hidden="true">&#10003;</span> @endif
+                        </a>
+                    @endforeach
+                    <button type="button" role="switch" :aria-checked="darkMode.toString()" @click="darkMode = !darkMode" class="flex w-full items-center justify-between px-4 py-3 lg:py-2 text-left text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
+                        <span>{{ __('Dark mode') }}</span>
+                        <span class="text-xs text-stone-500 dark:text-gray-400" x-text="darkMode ? 'On' : 'Off'"></span>
+                    </button>
+                    <div class="my-1 border-t border-stone-200 dark:border-gray-700"></div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="block w-full px-4 py-3 lg:py-2 text-left text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
@@ -144,7 +149,7 @@
                     </form>
                 </div>
 
-                <button @click="menu = !menu" class="w-full flex items-center gap-3 rounded-lg px-2 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 transition">
+                <button @click="menu = !menu" :aria-expanded="menu.toString()" aria-haspopup="true" class="w-full flex items-center gap-3 rounded-lg px-2 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 transition">
                     <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-sm font-semibold text-white">
                         {{ strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}
                     </span>
