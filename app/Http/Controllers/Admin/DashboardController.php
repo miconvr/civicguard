@@ -107,6 +107,33 @@ class DashboardController extends Controller
         return redirect()->back()->with('status', 'Report status updated.');
     }
 
+    public function updateSeverity(Request $request, Report $report)
+    {
+        $validated = $request->validate([
+            'severity' => ['required', 'in:low,moderate,high,critical'],
+        ]);
+
+        $from = $report->severity;
+
+        if ($from !== $validated['severity']) {
+            $report->update(['severity' => $validated['severity']]);
+
+            AuditLog::create([
+                'user_id' => auth()->id(),
+                'action' => 'report_severity_changed',
+                'auditable_type' => Report::class,
+                'auditable_id' => $report->id,
+                'description' => "Severity changed from {$from} to {$validated['severity']}.",
+                'metadata' => [
+                    'from' => $from,
+                    'to' => $validated['severity'],
+                ],
+            ]);
+        }
+
+        return redirect()->back()->with('status', 'Severity updated.');
+    }
+
     public function assign(Request $request, Report $report)
     {
         $validated = $request->validate([
