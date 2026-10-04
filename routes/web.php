@@ -40,6 +40,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
 Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/map', [DashboardController::class, 'map'])->name('map');
     Route::get('/reports/export/pdf', [DashboardController::class, 'exportReportsPdf'])->name('reports.exportPdf');
     Route::patch('/reports/{report}/status', [DashboardController::class, 'updateStatus'])->name('reports.updateStatus');
     Route::patch('/reports/{report}/assign', [DashboardController::class, 'assign'])->name('reports.assign')->middleware('role:admin,official');
