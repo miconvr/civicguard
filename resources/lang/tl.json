@@ -141,11 +141,5 @@
     "Welcome back": "Maligayang pagbabalik",
     "Log in to report or follow up on an incident.": "Mag-log in para mag-ulat o subaybayan ang isang insidente.",
     "New to CivicGuard?": "Bago sa CivicGuard?",
-    "Create an account": "Gumawa ng account",
-    "Incident Map": "Mapa ng Insidente",
-    "Map": "Mapa",
-    "Active reports only": "Aktibong ulat lang",
-    "reports shown.": "ulat ang ipinapakita.",
-    "open report(s) have no pinned location and are not on the map.": "na bukas na ulat ang walang naka-pin na lokasyon kaya wala sa mapa.",
-    "Open report": "Buksan ang ulat"
+    "Create an account": "Gumawa ng account"
 }

@@ -72,9 +72,6 @@
                 <x-sidebar-link icon="chart" :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics')">
                     {{ __('Analytics') }}
                 </x-sidebar-link>
-                <x-sidebar-link icon="map" :href="route('admin.map')" :active="request()->routeIs('admin.map')">
-                    {{ __('Map') }}
-                </x-sidebar-link>
                 <x-sidebar-link icon="document" :href="route('admin.consolidatedReports')" :active="request()->routeIs('admin.consolidatedReports')">
                     {{ __('Summary Reports') }}
                 </x-sidebar-link>
