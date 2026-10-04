@@ -124,5 +124,18 @@
     "Mark all as read": "Markahan lahat bilang nabasa na",
     "You're all caught up.": "Wala ka nang hindi nababasa.",
     "No notifications yet.": "Wala pang mga abiso.",
-    "Unread": "Hindi pa nababasa"
+    "Unread": "Hindi pa nababasa",
+    "Home": "Home",
+    "Good day,": "Magandang araw,",
+    "Report an incident": "Mag-ulat ng insidente",
+    "It takes about a minute.": "Mga isang minuto lang ito.",
+    "resolved report(s) are waiting for your answer.": "na nalutas na ulat ang naghihintay ng iyong sagot.",
+    "Latest reports": "Mga huling ulat",
+    "View all": "Tingnan lahat",
+    "My assigned reports": "Mga nakatalaga sa akin",
+    "Nothing assigned to you right now.": "Wala kang nakatalagang ulat ngayon.",
+    "Needs attention": "Kailangan ng aksyon",
+    "Open incident queue": "Buksan ang pila ng insidente",
+    "Unassigned": "Walang nakatalaga",
+    "No open reports.": "Walang bukas na ulat."
 }
