@@ -175,6 +175,39 @@ class DashboardController extends Controller
         return redirect()->back()->with('status', 'Tanod assigned successfully.');
     }
 
+    public function map()
+    {
+        $pins = Report::with('category')
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->latest()
+            ->limit(500)
+            ->get()
+            ->map(fn ($r) => [
+                'id' => $r->id,
+                'lat' => (float) $r->latitude,
+                'lng' => (float) $r->longitude,
+                'category' => $r->category->name,
+                'location' => $r->location_text,
+                'severity' => $r->severity,
+                'status' => $r->status,
+                'age' => $r->created_at->diffForHumans(),
+                'url' => route('admin.reports.details', $r),
+            ])
+            ->values();
+
+        $missing = Report::whereIn('status', ['pending', 'in_progress'])
+            ->where(fn ($q) => $q->whereNull('latitude')->orWhereNull('longitude'))
+            ->count();
+
+        return view('admin.map', [
+            'pins' => $pins,
+            'missing' => $missing,
+            'center' => [15.0685, 120.6532],
+            'boundaryUrl' => file_exists(public_path('maimpis.geojson')) ? asset('maimpis.geojson') : null,
+        ]);
+    }
+
     public function showDetails(Report $report)
     {
         $report->load(['category', 'user', 'assignedTo', 'curfewLog']);
