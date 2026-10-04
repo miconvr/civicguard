@@ -141,5 +141,18 @@
     "Welcome back": "Maligayang pagbabalik",
     "Log in to report or follow up on an incident.": "Mag-log in para mag-ulat o subaybayan ang isang insidente.",
     "New to CivicGuard?": "Bago sa CivicGuard?",
-    "Create an account": "Gumawa ng account"
+    "Create an account": "Gumawa ng account",
+    "Report Details": "Detalye ng Ulat",
+    "What happened": "Ang nangyari",
+    "Photo": "Larawan",
+    "Open in Maps": "Buksan sa Maps",
+    "Reported by": "Iniulat ni",
+    "Assigned to": "Nakatalaga kay",
+    "Not yet assigned": "Wala pang nakatalaga",
+    "Reopened": "Muling binuksan",
+    "History": "Kasaysayan",
+    "System": "Sistema",
+    "No activity yet.": "Wala pang aktibidad.",
+    "Back to Incident Queue": "Bumalik sa Pila ng Insidente",
+    "View Curfew Violation Details": "Tingnan ang Detalye ng Paglabag sa Curfew"
 }
