@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +7,15 @@
 
         <title>{{ config('app.name', 'CivicGuard') }}</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+
+        <style>
+            html, body { background-color: #f5f1ea; }
+            html.dark, html.dark body { background-color: #181818; }
+            [x-cloak] { display: none !important; }
+        </style>
+        <script>
+            try { if (localStorage.getItem('darkMode') === 'true') { document.documentElement.classList.add('dark'); } } catch (e) {}
+        </script>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
