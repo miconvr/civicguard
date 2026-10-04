@@ -178,7 +178,14 @@ class DashboardController extends Controller
     public function showDetails(Report $report)
     {
         $report->load(['category', 'user', 'assignedTo', 'curfewLog']);
-        return view('admin.report-details', compact('report'));
+
+        $history = AuditLog::with('user:id,name')
+            ->where('auditable_type', Report::class)
+            ->where('auditable_id', $report->id)
+            ->oldest()
+            ->get();
+
+        return view('admin.report-details', compact('report', 'history'));
     }
 
     public function showCurfewDetails(Report $report)
