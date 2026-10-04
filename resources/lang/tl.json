@@ -137,5 +137,9 @@
     "Needs attention": "Kailangan ng aksyon",
     "Open incident queue": "Buksan ang pila ng insidente",
     "Unassigned": "Walang nakatalaga",
-    "No open reports.": "Walang bukas na ulat."
+    "No open reports.": "Walang bukas na ulat.",
+    "Welcome back": "Maligayang pagbabalik",
+    "Log in to report or follow up on an incident.": "Mag-log in para mag-ulat o subaybayan ang isang insidente.",
+    "New to CivicGuard?": "Bago sa CivicGuard?",
+    "Create an account": "Gumawa ng account"
 }
