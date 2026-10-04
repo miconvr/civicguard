@@ -130,3 +130,28 @@
     table.cg-queue td:last-child { display: none; }
     .dark table.cg-queue tr { border-color: #374151; }
 }
+
+/* ---- Design system additions ---- */
+@layer base {
+    :focus-visible { outline: 2px solid #a52a2a; outline-offset: 2px; }
+    .dark :focus-visible { outline-color: #f0a0a0; }
+}
+
+@layer components {
+    .cg-btn-secondary {
+        @apply inline-flex min-h-[40px] items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:border-maroon-700 hover:text-maroon-700 dark:border-gray-600 dark:bg-transparent dark:text-gray-200 dark:hover:text-white;
+    }
+    .cg-pill { @apply inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium; }
+    .cg-pill-pending { @apply bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300; }
+    .cg-pill-in_progress { @apply bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300; }
+    .cg-pill-resolved { @apply bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300; }
+    .cg-muted { @apply text-gray-600 dark:text-gray-400; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *:not(.animate-spin), *:not(.animate-spin)::before, *:not(.animate-spin)::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
