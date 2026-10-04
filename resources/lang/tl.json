@@ -154,5 +154,10 @@
     "System": "Sistema",
     "No activity yet.": "Wala pang aktibidad.",
     "Back to Incident Queue": "Bumalik sa Pila ng Insidente",
-    "View Curfew Violation Details": "Tingnan ang Detalye ng Paglabag sa Curfew"
+    "View Curfew Violation Details": "Tingnan ang Detalye ng Paglabag sa Curfew",
+    "Create your account": "Gawin ang iyong account",
+    "Sign up to report incidents and follow their progress.": "Mag-sign up para mag-ulat ng insidente at subaybayan ang progreso nito.",
+    "Use at least 8 characters.": "Gumamit ng hindi bababa sa 8 character.",
+    "Already have an account?": "May account ka na?",
+    "Log in here": "Mag-log in dito"
 }
