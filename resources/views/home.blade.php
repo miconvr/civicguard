@@ -85,9 +85,9 @@
 
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     @foreach ([
-                        ['Critical open', $stats['critical'], ['tab' => 'active', 'severity' => 'critical'], 'text-red-700 dark:text-red-400'],
-                        ['Unassigned', $stats['unassigned'], ['tab' => 'active', 'assignee' => 'none'], 'text-amber-700 dark:text-amber-400'],
-                        ['Pending 48h+', $stats['overdue'], ['tab' => 'pending'], 'text-orange-700 dark:text-orange-400'],
+                        ['Critical open', $stats['critical'], ['tab' => 'active', 'severity' => 'critical'], 'cg-kpi'],
+                        ['Unassigned', $stats['unassigned'], ['tab' => 'active', 'assignee' => 'none'], 'cg-kpi'],
+                        ['Pending 48h+', $stats['overdue'], ['tab' => 'pending'], 'cg-kpi'],
                     ] as [$label, $count, $params, $color])
                         <a href="{{ route('admin.dashboard', $params) }}" class="cg-card block transition hover:shadow-md">
                             <p class="text-sm cg-muted">{{ $label }}</p>
@@ -111,7 +111,7 @@
                                     </span>
                                     <span class="flex items-center gap-3">
                                         <span class="cg-sev cg-sev-{{ $report->severity }}">{{ __(ucfirst($report->severity)) }}</span>
-                                        @unless ($report->assigned_to)<span class="rounded bg-amber-50 px-2 py-0.5 text-xs text-amber-800">{{ __('Unassigned') }}</span>@endunless
+                                        @unless ($report->assigned_to)<span class="rounded bg-amber-50 px-2 py-0.5 text-xs text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">{{ __('Unassigned') }}</span>@endunless
                                     </span>
                                 </a>
                             </li>
