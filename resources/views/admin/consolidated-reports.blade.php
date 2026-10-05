@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="headerWidth">max-w-7xl</x-slot>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
             {{ __('Summary Reports') }}
@@ -13,11 +14,11 @@
 
             @php
                 $summaryKpis = [
-                    ['Total Reports', $totalReports, 'text-red-700 dark:text-red-400'],
-                    ['Resolved', $resolvedCount, 'text-green-700 dark:text-green-400'],
-                    ['Assigned', $assignedCount, 'text-blue-700 dark:text-blue-400'],
-                    ['Curfew Logs', $curfewCount, 'text-orange-700 dark:text-orange-400'],
-                    ['Avg. Resolution', $averageResponseHours !== null ? $averageResponseHours . 'h' : '-', 'text-gray-700 dark:text-gray-200'],
+                    ['Total Reports', $totalReports, 'cg-kpi'],
+                    ['Resolved', $resolvedCount, 'cg-kpi'],
+                    ['Assigned', $assignedCount, 'cg-kpi'],
+                    ['Curfew Logs', $curfewCount, 'cg-kpi'],
+                    ['Avg. Resolution', $averageResponseHours !== null ? $averageResponseHours . 'h' : '-', 'cg-kpi'],
                 ];
             @endphp
             <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
