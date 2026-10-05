@@ -44,7 +44,7 @@
                     </select>
                     @if (request('assignee') === 'none')
                         <a href="{{ route('admin.dashboard', request()->except('assignee', 'page')) }}"
-                           class="text-xs rounded-full bg-amber-100 text-amber-800 px-3 py-1">Unassigned only ✕</a>
+                           class="text-xs rounded-full bg-amber-100 text-amber-800 px-3 py-1 dark:bg-amber-900/40 dark:text-amber-300">Unassigned only ✕</a>
                     @endif
                     <x-export-button class="ml-auto" :href="route('admin.reports.exportPdf', array_filter(['group' => $tab === 'resolved' ? 'resolved' : 'active', 'severity' => request('severity')]))" />
                 </form>
@@ -121,7 +121,7 @@
                                         @if ($report->assignedTo)
                                             {{ $report->assignedTo->name }}
                                         @elseif ($report->status !== 'resolved')
-                                            <span class="rounded bg-amber-50 text-amber-800 px-2 py-0.5 text-xs">Unassigned</span>
+                                            <span class="rounded bg-amber-50 text-amber-800 px-2 py-0.5 text-xs dark:bg-amber-900/40 dark:text-amber-300">Unassigned</span>
                                         @else
                                             -
                                         @endif

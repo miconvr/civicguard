@@ -55,6 +55,10 @@
             $groupLabel = 'px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400';
         @endphp
         <nav class="flex-1 overflow-y-auto overscroll-contain px-3 py-3 space-y-0.5" aria-label="{{ __('Main menu') }}">
+            <x-sidebar-link icon="home" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Home') }}
+            </x-sidebar-link>
+
             @if ($role === 'resident')
                 <x-sidebar-link icon="plus" :href="route('reports.create')" :active="request()->routeIs('reports.create')">
                     {{ __('Report Incident') }}
@@ -65,7 +69,7 @@
             @endif
 
             @if ($isStaff)
-                <p class="{{ $groupLabel }}">{{ __('Incidents') }}</p>
+                <p class="{{ $groupLabel }} pt-4">{{ __('Incidents') }}</p>
                 <x-sidebar-link icon="list" :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard', 'admin.reports.details', 'admin.reports.curfewDetails')">
                     {{ __('Incident Queue') }}
                 </x-sidebar-link>
