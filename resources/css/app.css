@@ -149,7 +149,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    *:not(.animate-spin), *:not(.animate-spin)::before, *:not(.animate-spin)::after {
+    *:not(.animate-spin):not(.typing-dot), *:not(.animate-spin):not(.typing-dot)::before, *:not(.animate-spin):not(.typing-dot)::after {
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
