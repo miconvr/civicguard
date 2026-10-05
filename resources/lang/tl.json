@@ -159,5 +159,18 @@
     "Sign up to report incidents and follow their progress.": "Mag-sign up para mag-ulat ng insidente at subaybayan ang progreso nito.",
     "Use at least 8 characters.": "Gumamit ng hindi bababa sa 8 character.",
     "Already have an account?": "May account ka na?",
-    "Log in here": "Mag-log in dito"
+    "Log in here": "Mag-log in dito",
+    "CivicGuard AI Assistant": "CivicGuard AI Assistant",
+    "Conversation": "Usapan",
+    "Hi! Tell me what happened and I can help you put together a clear incident report.": "Kumusta! Ikuwento mo ang nangyari at tutulungan kitang gumawa ng malinaw na ulat.",
+    "I want to report an incident": "Gusto kong mag-ulat ng insidente",
+    "How do I track my report?": "Paano ko masusubaybayan ang aking ulat?",
+    "What counts as an emergency?": "Ano ang maituturing na emergency?",
+    "What do the urgency levels mean?": "Ano ang ibig sabihin ng mga antas ng pagiging kagyat?",
+    "Type your message...": "I-type ang iyong mensahe...",
+    "Send": "Ipadala",
+    "Sorry, something went wrong. Please try again.": "Paumanhin, may nangyaring mali. Pakisubukan muli.",
+    "That took too long. Please try again.": "Natagalan ito. Pakisubukan muli.",
+    "You are sending messages too quickly. Please wait a moment.": "Masyadong mabilis ang pagpapadala mo ng mensahe. Maghintay sandali.",
+    "Try again": "Subukan muli"
 }

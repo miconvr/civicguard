@@ -45,7 +45,9 @@ class ChatbotController extends Controller
         $conversationHistory = mb_substr($validated['history'] ?? '', -6000);
 
         $rawReply = $gemini->generateText(
-            $systemPrompt . "\n\nConversation so far:\n" . $conversationHistory . "\n\nResident's latest message: " . $validated['message']
+            $systemPrompt . "\n\nConversation so far:\n" . $conversationHistory . "\n\nResident's latest message: " . $validated['message'],
+            12,
+            true
         );
 
         $rawReply = $rawReply ?: $this->faqFallback($validated['message']);
