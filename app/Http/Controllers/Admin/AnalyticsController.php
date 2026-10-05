@@ -16,14 +16,12 @@ class AnalyticsController extends Controller
         [$byCategory, $bySeverity, $byStatus, $last14Days, $totalReports, $pendingCount, $resolvedCount, $curfewCount] = $this->gatherMetrics();
 
         $inProgressCount = Report::where('status', 'in_progress')->count();
-        $avgResolveHours = Report::whereNotNull('resolved_at')
-            ->selectRaw('AVG(TIMESTAMPDIFF(HOUR, created_at, resolved_at)) as h')
-            ->value('h');
+        $avgResolve = \App\Support\Duration::human(Report::averageResolutionMinutes());
 
         return view('admin.analytics', compact(
             'byCategory', 'bySeverity', 'byStatus', 'last14Days',
             'totalReports', 'pendingCount', 'resolvedCount', 'curfewCount',
-            'inProgressCount', 'avgResolveHours'
+            'inProgressCount', 'avgResolve'
         ));
     }
 

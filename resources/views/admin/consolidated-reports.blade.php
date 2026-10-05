@@ -18,7 +18,7 @@
                     ['Resolved', $resolvedCount, 'cg-kpi'],
                     ['Assigned', $assignedCount, 'cg-kpi'],
                     ['Curfew Logs', $curfewCount, 'cg-kpi'],
-                    ['Avg. Resolution', $averageResponseHours !== null ? $averageResponseHours . 'h' : '-', 'cg-kpi'],
+                    ['Avg. Resolution', $averageResolution, 'cg-kpi'],
                 ];
             @endphp
             <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">

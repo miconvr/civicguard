@@ -42,6 +42,16 @@ class Report extends Model
         return $this->belongsTo(User::class, 'assigned_to');
     }
 
+    public static function averageResolutionMinutes(): ?float
+    {
+        $times = static::where('status', 'resolved')
+            ->whereNotNull('resolved_at')
+            ->get(['created_at', 'resolved_at'])
+            ->map(fn ($r) => $r->created_at->diffInMinutes($r->resolved_at));
+
+        return $times->isNotEmpty() ? (float) $times->average() : null;
+    }
+
     public function curfewLog()
     {
         return $this->hasOne(CurfewLog::class, 'report_id');
