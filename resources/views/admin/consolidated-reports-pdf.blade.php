@@ -27,7 +27,7 @@
             <td><strong>{{ $resolvedCount }}</strong>Resolved</td>
             <td><strong>{{ $assignedCount }}</strong>Assigned</td>
             <td><strong>{{ $curfewCount }}</strong>Curfew Logs</td>
-            <td><strong>{{ $averageResponseHours !== null ? $averageResponseHours . 'h' : '-' }}</strong>Avg. Resolution</td>
+            <td><strong>{{ $averageResolution }}</strong>Avg. Resolution</td>
         </tr>
     </table>
 

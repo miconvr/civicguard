@@ -13,7 +13,7 @@
             </div>
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 @php
-                    $avg = $avgResolveHours === null ? '-' : ($avgResolveHours < 48 ? round($avgResolveHours) . ' h' : round($avgResolveHours / 24, 1) . ' days');
+                    $avg = $avgResolve;
                     $kpis = [
                         ['Total Reports', $totalReports, 'all', 'cg-kpi', null],
                         ['Pending', $pendingCount, 'pending', 'cg-kpi', null],
