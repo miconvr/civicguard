@@ -47,6 +47,7 @@ class ConsolidatedReportController extends Controller
             'resolvedCount' => $resolvedReports->count(),
             'assignedCount' => $reports->whereNotNull('assigned_to')->count(),
             'curfewCount' => $curfewLogs->count(),
+            'averageResolution' => \App\Support\Duration::human(Report::averageResolutionMinutes()),
             'averageResponseHours' => $responseTimes->isNotEmpty()
                 ? round($responseTimes->average() / 60, 1)
                 : null,
