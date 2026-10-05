@@ -15,10 +15,10 @@
                 @php
                     $avg = $avgResolveHours === null ? '-' : ($avgResolveHours < 48 ? round($avgResolveHours) . ' h' : round($avgResolveHours / 24, 1) . ' days');
                     $kpis = [
-                        ['Total Reports', $totalReports, 'all', 'text-red-700 dark:text-red-400', null],
-                        ['Pending', $pendingCount, 'pending', 'text-yellow-700 dark:text-yellow-400', null],
-                        ['In Progress', $inProgressCount, 'in_progress', 'text-blue-700 dark:text-blue-400', null],
-                        ['Resolved', $resolvedCount, 'resolved', 'text-green-700 dark:text-green-400', 'Avg. ' . $avg . ' to resolve'],
+                        ['Total Reports', $totalReports, 'all', 'cg-kpi', null],
+                        ['Pending', $pendingCount, 'pending', 'cg-kpi', null],
+                        ['In Progress', $inProgressCount, 'in_progress', 'cg-kpi', null],
+                        ['Resolved', $resolvedCount, 'resolved', 'cg-kpi', 'Avg. ' . $avg . ' to resolve'],
                     ];
                 @endphp
                 @foreach ($kpis as [$label, $value, $tab, $color, $note])

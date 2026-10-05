@@ -155,3 +155,7 @@
         scroll-behavior: auto !important;
     }
 }
+
+@layer components {
+    .cg-kpi { @apply text-maroon-700 dark:text-maroon-300; }
+}
