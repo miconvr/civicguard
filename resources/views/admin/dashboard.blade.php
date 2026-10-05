@@ -15,10 +15,10 @@
             {{-- Summary cards (each one is a filter) --}}
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach ([
-                    ['Critical open', $stats['critical'], ['tab' => 'active', 'severity' => 'critical'], 'text-red-700 dark:text-red-400'],
-                    ['Unassigned', $stats['unassigned'], ['tab' => 'active', 'assignee' => 'none'], 'text-amber-700 dark:text-amber-400'],
-                    ['Pending 48h+', $stats['overdue'], ['tab' => 'pending'], 'text-orange-700 dark:text-orange-400'],
-                    ['Resolved this week', $stats['resolved'], ['tab' => 'resolved'], 'text-green-700 dark:text-green-400'],
+                    ['Critical open', $stats['critical'], ['tab' => 'active', 'severity' => 'critical'], 'cg-kpi'],
+                    ['Unassigned', $stats['unassigned'], ['tab' => 'active', 'assignee' => 'none'], 'cg-kpi'],
+                    ['Pending 48h+', $stats['overdue'], ['tab' => 'pending'], 'cg-kpi'],
+                    ['Resolved this week', $stats['resolved'], ['tab' => 'resolved'], 'cg-kpi'],
                 ] as [$label, $count, $params, $color])
                     <a href="{{ route('admin.dashboard', $params) }}" class="cg-card p-4 hover:shadow-md transition focus:outline-none focus:ring-2 focus:ring-maroon-600">
                         <div class="text-sm text-gray-600 dark:text-gray-400">{{ $label }}</div>
