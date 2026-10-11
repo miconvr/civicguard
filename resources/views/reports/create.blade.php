@@ -21,7 +21,7 @@
                 </p>
 
                 <a href="{{ route('chatbot.widget') }}" class="mb-6 flex items-center gap-3 rounded-lg border border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-700 p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                    <svg class="h-6 w-6 text-maroon-700 dark:text-maroon-400 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <svg class="h-6 w-6 text-maroon-700 dark:text-[#c27872] shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
                     <div>
@@ -54,13 +54,13 @@
                             @endforeach
                         </select>
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400" x-show="cat && descs[cat]" x-text="descs[cat]"></p>
-                        <p class="mt-1 text-sm font-medium text-maroon-700 dark:text-maroon-300" x-show="suggested" x-cloak>{{ __('Suggested from your description. Change it if it is not right.') }}</p>
+                        <p class="mt-1 text-sm font-medium text-maroon-700 dark:text-[#c27872]" x-show="suggested" x-cloak>{{ __('Suggested from your description. Change it if it is not right.') }}</p>
                         @error('category_id') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label for="location_text" class="cg-label">{{ __('Location') }} <span class="text-red-600" aria-hidden="true">*</span></label>
-                        <input id="location_text" type="text" name="location_text" value="{{ old('location_text') }}" required placeholder="{{ __('e.g. Purok 3, near the basketball court') }}" class="cg-input min-h-[44px]">
+                        <input id="location_text" type="text" name="location_text" value="{{ old('location_text') }}" required placeholder="{{ __('Enter the purok, street, or a nearby landmark') }}" class="cg-input min-h-[44px] w-full">
                         @error('location_text') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                         <input type="hidden" name="latitude" value="{{ old('latitude') }}">
                         <input type="hidden" name="longitude" value="{{ old('longitude') }}">
@@ -75,7 +75,7 @@
                     <div>
                         <span class="cg-label">{{ __('Photo (optional)') }}</span>
                         <label for="photo" class="mt-1 flex min-h-[72px] cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 p-3 text-center text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus-within:ring-2 focus-within:ring-maroon-600 transition">
-                            <svg class="h-5 w-5 text-maroon-700 dark:text-maroon-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"/><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z"/></svg>
+                            <svg class="h-5 w-5 text-maroon-700 dark:text-[#c27872]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"/><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z"/></svg>
                             <span class="font-medium text-gray-800 dark:text-gray-200">{{ __('Tap to add a photo') }}</span>
                             <span>{{ __('Images only, up to 5 MB') }}</span>
                             <input id="photo" type="file" name="photo" accept="image/*" x-on:change="pick($event)" class="sr-only">

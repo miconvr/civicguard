@@ -51,7 +51,7 @@
                 </div>
 
                 <form id="chat-form" class="flex gap-2">
-                    <input type="text" id="chat-input" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Type your message...') }}" placeholder="{{ __('Type your message...') }}" class="cg-input flex-1 min-h-[44px]" autocomplete="off">
+                    <input type="text" id="chat-input" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Describe your concern or ask a question…') }}" class="cg-input min-w-0 flex-1 min-h-[44px]" autocomplete="off">
                     <button type="submit" id="chat-send" class="cg-btn min-h-[44px] disabled:opacity-60">{{ __('Send') }}</button>
                 </form>
 

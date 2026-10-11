@@ -11,7 +11,6 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $open = ['pending', 'in_progress'];
-        $bySeverity = "FIELD(severity, 'critical', 'high', 'moderate', 'low')";
         $data = ['user' => $user];
 
         if ($user->role === 'resident') {
@@ -25,7 +24,7 @@ class HomeController extends Controller
             $data['assigned'] = Report::with('category')
                 ->where('assigned_to', $user->id)
                 ->whereIn('status', $open)
-                ->orderByRaw($bySeverity)
+                ->orderByUrgency()
                 ->oldest()
                 ->limit(10)
                 ->get();
@@ -37,7 +36,7 @@ class HomeController extends Controller
             ];
             $data['urgent'] = Report::with('category')
                 ->whereIn('status', $open)
-                ->orderByRaw($bySeverity)
+                ->orderByUrgency()
                 ->oldest()
                 ->limit(5)
                 ->get();

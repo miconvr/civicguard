@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
             Analytics
         </h2>
     </x-slot>
@@ -47,7 +47,7 @@
 
             <div id="ai-insights-section" class="cg-card">
                 <div id="ai-insights-prompt" class="text-center py-6">
-                    <svg class="h-8 w-8 text-maroon-700 dark:text-maroon-400 mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <svg class="h-8 w-8 text-maroon-700 dark:text-[#c27872] mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Get AI-generated patterns, risks, and recommendations based on this data.</p>
@@ -88,8 +88,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <script>
         const isDark = () => document.documentElement.classList.contains('dark');
-        const accent = () => isDark() ? '#e06b6b' : '#7f1d1d';
-        const accentFill = () => isDark() ? 'rgba(224,107,107,0.22)' : 'rgba(127,29,29,0.1)';
+        const accent = () => isDark() ? '#b56764' : '#7f1d1d';
+        const accentFill = () => isDark() ? 'rgba(181,103,100,0.18)' : 'rgba(127,29,29,0.1)';
         function setChartDefaults() {
             Chart.defaults.color = isDark() ? '#d1d5db' : '#4b5563';
             Chart.defaults.borderColor = isDark() ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)';

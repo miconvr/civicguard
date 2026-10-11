@@ -51,7 +51,7 @@
                             <ol class="mt-4 grid grid-cols-4 gap-2" aria-label="{{ __('Progress') }}">
                                 @foreach ($report->timeline as $step)
                                     <li>
-                                        <div class="h-1.5 rounded-full {{ $step['done'] ? 'bg-maroon-700 dark:bg-maroon-400' : 'bg-gray-200 dark:bg-gray-700' }}"></div>
+                                        <div class="h-1.5 rounded-full {{ $step['done'] ? 'bg-maroon-700 dark:bg-[#b56764]' : 'bg-gray-200 dark:bg-gray-700' }}"></div>
                                         <p class="mt-1.5 text-xs {{ $step['done'] ? 'font-semibold text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400' }}">
                                             {{ __($step['label']) }}
                                             <span class="sr-only">{{ $step['done'] ? __('(done)') : __('(not yet)') }}</span>
@@ -87,7 +87,7 @@
                         <div class="py-10 text-center">
                             <p class="text-gray-500 dark:text-gray-400">{{ __('You haven\'t filed any reports yet.') }}</p>
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ __('File your first incident so barangay staff can follow up.') }}</p>
-                            <a href="{{ route('reports.create') }}" class="mt-4 inline-flex min-h-[44px] items-center text-sm font-medium text-maroon-700 hover:text-maroon-800 dark:text-maroon-300">
+                            <a href="{{ route('reports.create') }}" class="mt-4 inline-flex min-h-[44px] items-center text-sm font-medium text-maroon-700 hover:text-maroon-800 dark:text-[#c27872]">
                                 {{ __('Report an Incident') }}
                             </a>
                         </div>
