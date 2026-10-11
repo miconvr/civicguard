@@ -6,9 +6,9 @@
     :root {
         color-scheme: light;
         --cg-canvas: #f7f3ed;
-        --cg-surface: #ffffff;
-        --cg-surface-raised: #ffffff;
-        --cg-border: #e8e0d8;
+        --cg-surface: #f2ede7;
+        --cg-surface-raised: #eee9e1;
+        --cg-border: #e3dbd0;
         --cg-ink: #24191d;
         --cg-muted: #71666a;
         --cg-accent: #951f3d;
@@ -59,6 +59,12 @@
 }
 
 @layer components {
+    .cg-canvas { background-color: var(--cg-canvas); }
+    .cg-canvas-tint { background-color: color-mix(in srgb, var(--cg-canvas) 92%, transparent); }
+    .cg-surface { background-color: var(--cg-surface); }
+    .cg-surface-raised { background-color: var(--cg-surface-raised); }
+    .cg-surface-tint { background-color: color-mix(in srgb, var(--cg-surface) 92%, transparent); }
+
     .cg-card {
         @apply p-5 sm:p-6 text-gray-800 dark:text-gray-200;
         background-color: var(--cg-surface);
@@ -228,7 +234,8 @@
 /* ---- Design system additions ---- */
 @layer components {
     .cg-btn-secondary {
-        @apply inline-flex min-h-[40px] items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:border-maroon-700 hover:text-maroon-700 dark:border-gray-600 dark:bg-transparent dark:text-gray-200 dark:hover:text-white;
+        @apply inline-flex min-h-[40px] items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:border-maroon-700 hover:text-maroon-700 dark:border-gray-600 dark:bg-transparent dark:text-gray-200 dark:hover:text-white;
+        background-color: var(--cg-surface-raised);
     }
     .cg-pill { @apply inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium; }
     .cg-pill-pending { @apply bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200; }
