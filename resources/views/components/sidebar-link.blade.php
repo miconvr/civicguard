@@ -15,12 +15,12 @@ $icons = [
 ];
 
 $classes = $active
-    ? 'group flex items-center gap-3 rounded-lg px-3 py-2.5 lg:py-2 text-sm font-semibold bg-white/80 text-maroon-800 shadow-sm dark:bg-white/10 dark:text-white transition'
-    : 'group flex items-center gap-3 rounded-lg px-3 py-2.5 lg:py-2 text-sm font-medium text-stone-600 hover:bg-black/5 hover:text-stone-900 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white transition';
+    ? 'group flex items-center gap-3 rounded-lg border-l-2 border-maroon-700 bg-maroon-50 px-3 py-2.5 text-sm font-semibold text-maroon-900 transition dark:border-[#c27872] dark:bg-[#30302e] dark:text-gray-100'
+    : 'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-stone-700 hover:bg-white/70 hover:text-stone-950 dark:text-gray-300 dark:hover:bg-white/[0.06] dark:hover:text-white transition';
 
 $iconClasses = $active
-    ? 'h-5 w-5 shrink-0 text-maroon-700 dark:text-white'
-    : 'h-5 w-5 shrink-0 text-stone-400 group-hover:text-stone-600 dark:text-gray-500 dark:group-hover:text-gray-300';
+    ? 'h-5 w-5 shrink-0 text-maroon-700 dark:text-[#c27872]'
+    : 'h-5 w-5 shrink-0 text-stone-500 group-hover:text-maroon-700 dark:text-gray-400 dark:group-hover:text-[#c27872]';
 @endphp
 
 <a {{ $attributes->merge(['class' => $classes]) }}>

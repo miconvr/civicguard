@@ -27,7 +27,7 @@
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ $report->category->name }}</h3>
                         <p class="cg-muted text-sm">{{ $report->location_text }}</p>
                         @if ($hasCoords)
-                            <a href="https://www.google.com/maps?q={{ (float) $report->latitude }},{{ (float) $report->longitude }}" target="_blank" rel="noopener" class="mt-1 inline-block text-sm font-semibold text-maroon-700 hover:underline dark:text-maroon-300">{{ __('Open in Maps') }} &rarr;</a>
+                            <a href="https://www.google.com/maps?q={{ (float) $report->latitude }},{{ (float) $report->longitude }}" target="_blank" rel="noopener" class="mt-1 inline-block text-sm font-semibold text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('Open in Maps') }} &rarr;</a>
                         @endif
                     </div>
                     <div class="flex items-center gap-3">
@@ -39,7 +39,7 @@
                 <ol class="mt-5 grid grid-cols-4 gap-2" aria-label="{{ __('Progress') }}">
                     @foreach ($steps as [$label, $done, $at])
                         <li>
-                            <div class="h-1.5 rounded-full {{ $done ? 'bg-maroon-700 dark:bg-maroon-400' : 'bg-gray-200 dark:bg-gray-700' }}"></div>
+                            <div class="h-1.5 rounded-full {{ $done ? 'bg-maroon-700 dark:bg-[#b56764]' : 'bg-gray-200 dark:bg-gray-700' }}"></div>
                             <p class="mt-1.5 text-xs {{ $done ? 'font-semibold text-gray-900 dark:text-gray-100' : 'cg-muted' }}">{{ __($label) }}</p>
                             @if ($at)<p class="text-[11px] leading-tight cg-muted">{{ $at->format('M d') }}<br>{{ $at->format('g:i A') }}</p>@endif
                         </li>
@@ -81,7 +81,7 @@
                             @endif
                         </dl>
                         @if ($report->curfewLog)
-                            <a href="{{ route('admin.reports.curfewDetails', $report) }}" class="mt-4 block text-sm font-semibold text-maroon-700 hover:underline dark:text-maroon-300">{{ __('View Curfew Violation Details') }} &rarr;</a>
+                            <a href="{{ route('admin.reports.curfewDetails', $report) }}" class="mt-4 block text-sm font-semibold text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('View Curfew Violation Details') }} &rarr;</a>
                         @endif
                     </div>
 
@@ -101,7 +101,7 @@
                 </div>
             </div>
 
-            <a href="{{ route('admin.dashboard') }}" class="inline-block text-sm font-semibold text-maroon-700 hover:underline dark:text-maroon-300">&larr; {{ __('Back to Incident Queue') }}</a>
+            <a href="{{ route('admin.dashboard') }}" class="inline-block text-sm font-semibold text-maroon-700 hover:underline dark:text-[#c27872]">&larr; {{ __('Back to Incident Queue') }}</a>
         </div>
     </div>
 </x-app-layout>
