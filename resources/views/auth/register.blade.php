@@ -4,7 +4,7 @@
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('Sign up to report incidents and follow their progress.') }}</p>
     </div>
 
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}" x-data="{ submitting: false }" @submit="submitting = true">
         @csrf
 
         <div>
@@ -32,8 +32,15 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <x-primary-button class="mt-6 w-full justify-center min-h-[44px]">
-            {{ __('Register') }}
+        <x-primary-button class="mt-6 w-full justify-center min-h-[44px]" ::disabled="submitting" ::aria-busy="submitting">
+            <span x-show="!submitting">{{ __('Register') }}</span>
+            <span x-cloak x-show="submitting" class="inline-flex items-center gap-2" role="status">
+                <svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                </svg>
+                {{ __('Creating account...') }}
+            </span>
         </x-primary-button>
     </form>
 
