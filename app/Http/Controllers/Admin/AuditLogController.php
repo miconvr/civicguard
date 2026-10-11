@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AuditLogController extends Controller
 {
@@ -18,8 +19,8 @@ class AuditLogController extends Controller
     {
         $auditLogs = AuditLog::with('user')->latest()->get();
 
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.audit-logs-pdf', compact('auditLogs'));
+        $pdf = Pdf::loadView('admin.audit-logs-pdf', compact('auditLogs'));
 
-        return $pdf->download('civicguard-audit-logs-' . now()->format('Y-m-d') . '.pdf');
+        return $pdf->download('civicguard-audit-logs-'.now()->format('Y-m-d').'.pdf');
     }
 }

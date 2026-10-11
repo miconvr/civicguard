@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\CurfewLog;
 use App\Models\Report;
 use App\Services\GeminiClient;
+use App\Support\Duration;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -16,7 +18,7 @@ class AnalyticsController extends Controller
         [$byCategory, $bySeverity, $byStatus, $last14Days, $totalReports, $pendingCount, $resolvedCount, $curfewCount] = $this->gatherMetrics();
 
         $inProgressCount = Report::where('status', 'in_progress')->count();
-        $avgResolve = \App\Support\Duration::human(Report::averageResolutionMinutes());
+        $avgResolve = Duration::human(Report::averageResolutionMinutes());
 
         return view('admin.analytics', compact(
             'byCategory', 'bySeverity', 'byStatus', 'last14Days',
@@ -44,7 +46,7 @@ class AnalyticsController extends Controller
             $byCategory, $bySeverity, $byStatus, $last14Days, $curfewCount, $gemini
         ));
 
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.analytics-pdf', [
+        $pdf = Pdf::loadView('admin.analytics-pdf', [
             'byCategory' => $byCategory,
             'bySeverity' => $bySeverity,
             'byStatus' => $byStatus,
@@ -59,7 +61,7 @@ class AnalyticsController extends Controller
             'riskFlags' => $insights['riskFlags'],
         ]);
 
-        return $pdf->download('civicguard-analytics-' . now()->format('Y-m-d') . '.pdf');
+        return $pdf->download('civicguard-analytics-'.now()->format('Y-m-d').'.pdf');
     }
 
     private function gatherMetrics(): array
@@ -111,7 +113,7 @@ class AnalyticsController extends Controller
             'curfew_logs' => $curfewCount,
         ];
 
-        $prompt = "You are analyzing CivicGuard data for barangay officials. Based only on these metrics, return valid JSON with exactly these keys: summary (one concise sentence), patterns (an array of up to three observed patterns), risk_flags (an array of up to three risks), and recommendations (an array of exactly three concise practical follow-up actions). Do not include markdown or extra text. Metrics: " . json_encode($metrics);
+        $prompt = 'You are analyzing CivicGuard data for barangay officials. Based only on these metrics, return valid JSON with exactly these keys: summary (one concise sentence), patterns (an array of up to three observed patterns), risk_flags (an array of up to three risks), and recommendations (an array of exactly three concise practical follow-up actions). Do not include markdown or extra text. Metrics: '.json_encode($metrics);
 
         $text = $gemini->generateText($prompt, 10);
 
