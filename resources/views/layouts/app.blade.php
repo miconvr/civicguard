@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ darkMode: (() => { try { return localStorage.getItem('darkMode') === 'true'; } catch (error) { return false; } })() }" x-init="$watch('darkMode', val => { try { localStorage.setItem('darkMode', val); } catch (error) {} })" :class="{ 'dark': darkMode }">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,8 +9,6 @@
         <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
 
         <style>
-            html, body { background-color: #f5f1ea; }
-            html.dark, html.dark body { background-color: #181818; }
             [x-cloak] { display: none !important; }
         </style>
         <script>
@@ -27,15 +25,18 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen flex flex-col lg:flex-row bg-paper dark:bg-[#181818]">
+    <body :class="{ 'dark': darkMode }" class="font-sans antialiased text-ink dark:text-gray-100">
+        <a href="#main-content" class="sr-only fixed left-4 top-4 z-[100] rounded-lg bg-maroon-700 px-4 py-3 font-semibold text-white focus:not-sr-only">
+            {{ __('Skip to content') }}
+        </a>
+        <div class="min-h-screen flex flex-col lg:flex-row bg-paper dark:bg-[#1c1c1b]">
             <div class="sticky top-0 z-30 lg:static lg:z-auto lg:shrink-0">
                 @include('layouts.navigation')
             </div>
 
             <div class="flex-1 min-w-0 flex flex-col">
                 @isset($header)
-                    <header class="bg-paper dark:bg-[#202020] border-b border-stone-300 dark:border-gray-700">
+                    <header class="bg-paper/95 dark:bg-[#222221] border-b border-stone-200 dark:border-[#3d3d3a]">
                         <div class="{{ isset($headerWidth) ? trim((string) $headerWidth) : 'max-w-6xl' }} mx-auto py-5 px-4 sm:px-6 lg:px-8">
                             <div class="pl-0">
                                 {{ $header }}
@@ -44,7 +45,7 @@
                     </header>
                 @endisset
 
-                <main class="flex-1">
+                <main id="main-content" class="flex-1">
                     {{ $slot }}
                 </main>
 
