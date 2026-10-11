@@ -4,7 +4,7 @@
      @resize.window="if (window.innerWidth >= 1024) open = false"
      class="lg:h-full">
     <!-- Mobile top bar -->
-    <div class="lg:hidden flex items-center gap-2 h-16 px-3 border-b border-stone-200 dark:border-[#3d3d3a] bg-[#f2ede7] dark:bg-[#222221]">
+    <div class="lg:hidden flex items-center gap-2 h-16 px-3 border-b border-stone-200 dark:border-[#3d3d3a] cg-canvas dark:bg-[#222221]">
         <button @click="open = true" :aria-expanded="open.toString()" aria-controls="primary-navigation" aria-label="{{ __('Open menu') }}" class="p-2.5 rounded-xl text-stone-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5 focus-visible:outline-offset-0">
             <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
@@ -30,7 +30,7 @@
         x-transition:leave-start="translate-x-0"
         x-transition:leave-end="-translate-x-full"
         id="primary-navigation"
-        class="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] flex flex-col border-r border-stone-200 bg-[#f2ede7] dark:border-[#3d3d3a] dark:bg-[#222221] lg:!flex lg:w-64 lg:max-w-none lg:sticky lg:top-0 lg:h-screen"
+        class="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] flex flex-col border-r border-stone-200 cg-canvas dark:border-[#3d3d3a] dark:bg-[#222221] lg:!flex lg:w-64 lg:max-w-none lg:sticky lg:top-0 lg:h-screen"
     >
         <!-- Brand -->
         <div class="h-16 flex items-center justify-between border-b border-stone-200/80 px-5 shrink-0 dark:border-[#3d3d3a]/80">
@@ -113,7 +113,7 @@
         </nav>
 
         <!-- Bottom section -->
-        <div class="border-t border-stone-200 dark:border-[#3d3d3a] bg-white/30 p-3 space-y-2 shrink-0 dark:bg-black/10">
+        <div class="border-t border-stone-200 dark:border-[#3d3d3a] cg-surface-tint p-3 space-y-2 shrink-0 dark:bg-black/10">
             @php
                 $roleLabel = match (Auth::user()->role) {
                     'official' => __('Barangay Official'),
@@ -127,7 +127,7 @@
             <!-- Profile (menu opens upward) -->
             <div x-data="{ menu: false }" @click.outside="menu = false" @keydown.escape.window="menu = false" class="relative">
                 <div x-show="menu" x-cloak x-transition.origin.bottom
-                     class="absolute bottom-full left-0 right-0 mb-2 rounded-xl border border-stone-200 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-[#262624]">
+                     class="absolute bottom-full left-0 right-0 mb-2 rounded-xl border border-stone-200 cg-surface-raised py-1 shadow-lg dark:border-gray-700 dark:bg-[#262624]">
                     <a href="{{ route('profile.edit') }}" class="block px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
                         {{ __('Profile') }}
                     </a>

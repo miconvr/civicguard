@@ -19,7 +19,7 @@
     </head>
     <body :class="{ 'dark': darkMode }" class="min-h-screen bg-paper font-sans text-ink antialiased dark:bg-[#1c1c1b] dark:text-gray-100">
         <a href="#main-content" class="sr-only fixed left-4 top-4 z-50 rounded-lg bg-maroon-700 px-4 py-3 font-semibold text-white focus:not-sr-only">{{ __('Skip to content') }}</a>
-        <header class="relative z-10 border-b border-stone-200/80 bg-white/80 backdrop-blur-xl dark:border-[#3d3d3a] dark:bg-[#222221]/95">
+        <header class="relative z-10 border-b border-stone-200/80 cg-canvas-tint backdrop-blur-xl dark:border-[#3d3d3a] dark:bg-[#222221]/95">
             <nav class="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8" aria-label="{{ __('Main navigation') }}">
                 <a href="{{ url('/') }}" class="flex shrink-0 items-center gap-2 rounded-lg focus-visible:outline-offset-4 sm:gap-3">
                     <x-application-logo class="h-9 w-9 shrink-0 text-maroon-700 dark:text-[#c27872] sm:h-10 sm:w-10" />
@@ -30,11 +30,11 @@
                 </a>
                 <div class="flex shrink-0 items-center gap-1 sm:gap-3">
                     <button type="button" @click="toggleLanguage()" :aria-label="language === 'en' ? 'Switch language to Tagalog' : 'Switch language to English'" :title="language === 'en' ? 'Switch language to Tagalog' : 'Switch language to English'"
-                            class="inline-flex h-10 min-w-10 items-center justify-center rounded-full border border-stone-300 bg-white px-2 text-xs font-semibold text-stone-700 transition hover:border-maroon-600 hover:text-maroon-800 dark:border-[#454541] dark:bg-[#30302e] dark:text-gray-100 dark:hover:border-gray-400"
+                            class="inline-flex h-10 min-w-10 items-center justify-center rounded-full border border-stone-300 cg-surface px-2 text-xs font-semibold text-stone-700 transition hover:border-maroon-600 hover:text-maroon-800 dark:border-[#454541] dark:bg-[#30302e] dark:text-gray-100 dark:hover:border-gray-400"
                             x-text="language === 'en' ? 'EN' : 'TL'"></button>
                     <button type="button" @click="darkMode = !darkMode" :aria-pressed="darkMode.toString()"
                             :aria-label="darkMode ? '{{ __('Switch to light mode') }}' : '{{ __('Switch to dark mode') }}'"
-                            class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-stone-300 bg-white text-stone-700 transition hover:border-maroon-600 hover:text-maroon-800 dark:border-[#454541] dark:bg-[#30302e] dark:text-gray-100 dark:hover:border-gray-400 sm:h-11 sm:w-11"
+                            class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-stone-300 cg-surface text-stone-700 transition hover:border-maroon-600 hover:text-maroon-800 dark:border-[#454541] dark:bg-[#30302e] dark:text-gray-100 dark:hover:border-gray-400 sm:h-11 sm:w-11"
                             title="{{ __('Toggle color theme') }}">
                         <svg x-show="!darkMode" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                             <circle cx="12" cy="12" r="4"></circle><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>
@@ -75,7 +75,7 @@
                                 <a href="{{ route('register') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-maroon-700 px-6 font-semibold text-white shadow-sm transition hover:bg-maroon-800">
                                     <span x-text="text('createAccount')">{{ __('Create a resident account') }}</span><span aria-hidden="true">&rarr;</span>
                                 </a>
-                                <a href="{{ route('login') }}" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-stone-300 bg-white/80 px-6 font-semibold text-stone-800 transition hover:border-maroon-400 hover:bg-white dark:border-[#454541] dark:bg-[#262624] dark:text-gray-100 dark:hover:bg-[#30302e]">
+                                <a href="{{ route('login') }}" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-stone-300 cg-surface-tint px-6 font-semibold text-stone-800 transition hover:border-maroon-400 hover:bg-[#fffdf9] dark:border-[#454541] dark:bg-[#262624] dark:text-gray-100 dark:hover:bg-[#30302e]">
                                     <span x-text="text('signIn')">{{ __('Sign in') }}</span>
                                 </a>
                             @endauth
@@ -85,14 +85,14 @@
                 </div>
             </section>
 
-            <section class="border-y border-stone-200 bg-white/65 py-16 dark:border-[#3d3d3a] dark:bg-[#222221]">
+            <section class="border-y border-stone-200 cg-surface-raised py-16 dark:border-[#3d3d3a] dark:bg-[#222221]">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="max-w-2xl">
                         <h2 class="text-3xl font-bold text-stone-950 dark:text-white" x-text="text('howItWorks')">{{ __('How we can help one another') }}</h2>
                         <p class="mt-3 leading-7 text-stone-600 dark:text-gray-300" x-text="text('teamwork')">{{ __('Working together helps the barangay respond more effectively.') }}</p>
                     </div>
                     <div class="mt-8 grid gap-5 md:grid-cols-2">
-                        <article class="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm dark:border-[#3d3d3a] dark:bg-[#262624]">
+                        <article class="rounded-2xl border border-stone-200 cg-surface p-6 shadow-sm dark:border-[#3d3d3a] dark:bg-[#262624]">
                             <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-maroon-50 text-maroon-700 dark:bg-[#3a2828] dark:text-[#c27872]" aria-hidden="true">
                                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25s7.5-3.75 7.5-9V5.5L12 2.75 4.5 5.5v5.75c0 5.25 7.5 9 7.5 9Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 11.5 2 2 4-4"/></svg>
                             </span>
@@ -104,7 +104,7 @@
                                 <a href="{{ route('dashboard') }}" class="mt-5 inline-flex min-h-11 items-center font-semibold text-maroon-800 hover:underline dark:text-[#c27872]"><span x-text="text('dashboard')">{{ __('Go to your dashboard') }}</span> <span class="ml-2" aria-hidden="true">&rarr;</span></a>
                             @endguest
                         </article>
-                        <article class="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm dark:border-[#3d3d3a] dark:bg-[#262624]">
+                        <article class="rounded-2xl border border-stone-200 cg-surface p-6 shadow-sm dark:border-[#3d3d3a] dark:bg-[#262624]">
                             <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-800 dark:bg-amber-400/10 dark:text-amber-200" aria-hidden="true">
                                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3"/><circle cx="12" cy="12" r="9"/></svg>
                             </span>
