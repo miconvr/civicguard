@@ -38,7 +38,7 @@ New sign-ups are always created as residents.
 
 ## Tech Stack
 
-Laravel 11 (Breeze, Blade, Alpine.js), Tailwind CSS, MySQL, Laravel Sail (Docker), DomPDF, Chart.js, and the Google Gemini API.
+Laravel 12 (Breeze, Blade, Alpine.js), Tailwind CSS 4, MySQL, Laravel Sail (Docker), DomPDF, Chart.js, and the Google Gemini API.
 
 ---
 
@@ -71,6 +71,10 @@ Open `.env` and set your key (never commit this file):
 ```
 GEMINI_API_KEY=your-key-here
 ```
+
+Set `DB_PASSWORD` to a unique, non-empty password before starting Docker Compose. The same value is used for the local MySQL account and phpMyAdmin.
+
+The database is published on `127.0.0.1:3340` by default; change `FORWARD_DB_PORT` if that port is already in use.
 
 ### 3. Install PHP dependencies
 

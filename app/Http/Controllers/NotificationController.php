@@ -35,7 +35,7 @@ class NotificationController extends Controller
         $user = Auth::user();
 
         if ($report->user_id === $user->id) {
-            return redirect()->to(route('reports.index') . '#report-' . $report->id);
+            return redirect()->to(route('reports.index').'#report-'.$report->id);
         }
 
         if (in_array($user->role, ['tanod', 'admin', 'official'])) {
