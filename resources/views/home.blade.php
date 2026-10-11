@@ -14,7 +14,7 @@
                 <h1 class="mt-2 text-3xl font-bold tracking-tight text-white dark:text-[#c27872] sm:text-4xl">{{ __('Good day,') }} {{ $first }}</h1>
                 <p class="mt-2 max-w-2xl text-sm leading-6 text-white/80 dark:text-gray-300 sm:text-base">
                     @if ($user->role === 'resident')
-                        {{ __('Your reports, updates, and next steps—all in one place.') }}
+                        {{ __('Track your reports and see the latest updates.') }}
                     @elseif ($user->role === 'tanod')
                         {{ __('Review your assignments and help keep your community safe.') }}
                     @else
