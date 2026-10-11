@@ -189,7 +189,10 @@
             try {
                 const response = await fetch("{{ route('reports.store') }}", {
                     method: 'POST',
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
                     body: formData
                 });
 

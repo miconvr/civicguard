@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
 use App\Models\CurfewLog;
 use App\Models\Report;
+use App\Support\Duration;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class ConsolidatedReportController extends Controller
@@ -18,7 +19,7 @@ class ConsolidatedReportController extends Controller
     public function exportPdf()
     {
         return Pdf::loadView('admin.consolidated-reports-pdf', $this->reportData())
-            ->download('civicguard-consolidated-report-' . now()->format('Y-m-d') . '.pdf');
+            ->download('civicguard-consolidated-report-'.now()->format('Y-m-d').'.pdf');
     }
 
     private function reportData(): array
@@ -47,7 +48,7 @@ class ConsolidatedReportController extends Controller
             'resolvedCount' => $resolvedReports->count(),
             'assignedCount' => $reports->whereNotNull('assigned_to')->count(),
             'curfewCount' => $curfewLogs->count(),
-            'averageResolution' => \App\Support\Duration::human(Report::averageResolutionMinutes()),
+            'averageResolution' => Duration::human(Report::averageResolutionMinutes()),
             'averageResponseHours' => $responseTimes->isNotEmpty()
                 ? round($responseTimes->average() / 60, 1)
                 : null,

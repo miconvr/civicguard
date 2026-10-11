@@ -25,27 +25,27 @@ class ChatbotController extends Controller
         $sessionId = $validated['session_id'] ?? (string) Str::uuid();
         $categoryNames = ReportCategory::pluck('name')->implode(', ');
         $faqContext = "Frequently asked questions and approved answers:\n"
-            . "- How do I report an incident? Choose a category, describe what happened, provide the location, and optionally attach a photo.\n"
-            . "- How can I track my report? Open My Reports after signing in to see whether it is Pending, In Progress, or Resolved.\n"
-            . "- What do the urgency levels mean? Low, Moderate, High, and Critical help officials prioritize responses.\n"
-            . "- What should I do during an emergency? Contact barangay officials or emergency authorities immediately; do not wait for the app.\n"
-            . "- How are curfew violations recorded? Authorized tanods log the minor's details, guardian information, apprehension location, prior violations, and notes.";
+            ."- How do I report an incident? Choose a category, describe what happened, provide the location, and optionally attach a photo.\n"
+            ."- How can I track my report? Open My Reports after signing in to see whether it is Pending, In Progress, or Resolved.\n"
+            ."- What do the urgency levels mean? Low, Moderate, High, and Critical help officials prioritize responses.\n"
+            ."- What should I do during an emergency? Contact barangay officials or emergency authorities immediately; do not wait for the app.\n"
+            ."- How are curfew violations recorded? Authorized tanods log the minor's details, guardian information, apprehension location, prior violations, and notes.";
 
         $systemPrompt = "You are CivicGuard's assistant for Barangay Maimpis, helping residents file incident reports through conversation. "
-            . "Your job is to gather exactly three pieces of information by asking ONE clear question at a time if missing: "
-            . "1) the category (must be one of exactly: {$categoryNames}), "
-            . "2) a description of what happened, "
-            . "3) the location. "
-            . "Keep every message short and friendly. If it sounds like an active emergency, tell them to contact barangay officials or authorities immediately instead of continuing the form. "
-            . "Once you have all three pieces of information clearly, respond normally AND then on a new line append exactly this hidden marker with the collected data as JSON (the resident will not see this marker, only your normal message): "
-            . "###REPORT_DATA###{\"category\":\"exact category name from the list\",\"description\":\"what happened\",\"location\":\"the location\"}###END### "
-            . "Do not include the marker until you truly have all three pieces of information. Never make up information the resident hasn't given you. "
-            . "Answer FAQ questions using this approved context:\n{$faqContext}";
+            .'Your job is to gather exactly three pieces of information by asking ONE clear question at a time if missing: '
+            ."1) the category (must be one of exactly: {$categoryNames}), "
+            .'2) a description of what happened, '
+            .'3) the location. '
+            .'Keep every message short and friendly. If it sounds like an active emergency, tell them to contact barangay officials or authorities immediately instead of continuing the form. '
+            .'Once you have all three pieces of information clearly, respond normally AND then on a new line append exactly this hidden marker with the collected data as JSON (the resident will not see this marker, only your normal message): '
+            .'###REPORT_DATA###{"category":"exact category name from the list","description":"what happened","location":"the location"}###END### '
+            ."Do not include the marker until you truly have all three pieces of information. Never make up information the resident hasn't given you. "
+            ."Answer FAQ questions using this approved context:\n{$faqContext}";
 
         $conversationHistory = mb_substr($validated['history'] ?? '', -6000);
 
         $rawReply = $gemini->generateText(
-            $systemPrompt . "\n\nConversation so far:\n" . $conversationHistory . "\n\nResident's latest message: " . $validated['message'],
+            $systemPrompt."\n\nConversation so far:\n".$conversationHistory."\n\nResident's latest message: ".$validated['message'],
             12,
             true
         );

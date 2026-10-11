@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CurfewLog;
 use App\Models\AuditLog;
+use App\Models\CurfewLog;
 use App\Models\Report;
 use App\Models\ReportCategory;
 use Illuminate\Http\Request;
@@ -44,7 +44,7 @@ class CurfewLogController extends Controller
                 'user_id' => Auth::id(),
                 'category_id' => $category->id,
                 'description' => "Curfew violation involving minor: {$validated['minor_name']}. "
-                    . ($validated['notes'] ?? 'No additional notes.'),
+                    .($validated['notes'] ?? 'No additional notes.'),
                 'location_text' => $validated['apprehension_location'],
                 'severity' => $severity,
                 'status' => 'pending',

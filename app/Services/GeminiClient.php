@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GeminiClient
 {
@@ -16,21 +17,23 @@ class GeminiClient
     {
         $apiKey = config('services.gemini.key');
 
-        if (!$apiKey) {
+        if (! $apiKey) {
             return null;
         }
 
         foreach ($fast ? ['gemini-flash-lite-latest', 'gemini-flash-latest'] : $this->models as $model) {
             for ($attempt = 1; $attempt <= ($fast ? 1 : 2); $attempt++) {
                 try {
-                    $response = Http::timeout($timeout)->post(
-                        "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}",
-                        [
-                            'contents' => [
-                                ['role' => 'user', 'parts' => [['text' => $prompt]]],
-                            ],
-                        ]
-                    );
+                    $response = Http::timeout($timeout)
+                        ->withHeaders(['x-goog-api-key' => $apiKey])
+                        ->post(
+                            "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent",
+                            [
+                                'contents' => [
+                                    ['role' => 'user', 'parts' => [['text' => $prompt]]],
+                                ],
+                            ]
+                        );
 
                     if ($response->successful()) {
                         $text = $response->json('candidates.0.content.parts.0.text');
@@ -39,9 +42,12 @@ class GeminiClient
                         }
                     }
 
-                    if ($fast) { \Illuminate\Support\Facades\Log::warning("Gemini fast {$model}: HTTP " . $response->status() . ' ' . substr($response->body(), 0, 200)); }
+                    if ($fast) {
+                        Log::warning("Gemini fast {$model}: HTTP ".$response->status().' '.substr($response->body(), 0, 200));
+                    }
                     if ($response->status() === 503 && $attempt === 1) {
                         sleep(1);
+
                         continue;
                     }
 
@@ -49,6 +55,7 @@ class GeminiClient
                 } catch (\Throwable $exception) {
                     if ($attempt === 1) {
                         sleep(1);
+
                         continue;
                     }
                     break;

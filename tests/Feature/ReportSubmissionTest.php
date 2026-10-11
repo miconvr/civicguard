@@ -4,6 +4,7 @@ use App\Models\AuditLog;
 use App\Models\Report;
 use App\Models\ReportCategory;
 use App\Models\User;
+use App\Services\GeminiClient;
 
 test('guests cannot open the incident report form', function () {
     $this->get(route('reports.create'))->assertRedirect(route('login'));
@@ -18,15 +19,20 @@ test('tanods cannot submit resident incident reports', function () {
 });
 
 test('a resident can submit an incident report and is sent to my reports', function () {
+    $this->mock(GeminiClient::class)
+        ->shouldReceive('generateText')
+        ->once()
+        ->andReturn(null);
+
     $resident = User::factory()->create(['role' => 'resident']);
     $category = ReportCategory::create([
-        'name' => 'Noise Complaint',
+        'name' => 'Test Noise Complaint',
         'default_severity' => 'low',
     ]);
 
     $response = $this->actingAs($resident)->post(route('reports.store'), [
         'category_id' => $category->id,
-        'description' => 'Loud karaoke past midnight near the court.',
+        'description' => 'A karaoke gathering continued past midnight near the court.',
         'location_text' => 'Purok 3, near the basketball court',
     ]);
 
@@ -49,13 +55,18 @@ test('a resident can submit an incident report and is sent to my reports', funct
     $this->actingAs($resident)
         ->get(route('reports.index'))
         ->assertOk()
-        ->assertSee('Loud karaoke past midnight near the court.');
+        ->assertSee('A karaoke gathering continued past midnight near the court.');
 });
 
 test('urgency keywords raise severity when gemini is unavailable', function () {
+    $this->mock(GeminiClient::class)
+        ->shouldReceive('generateText')
+        ->once()
+        ->andReturn(null);
+
     $resident = User::factory()->create(['role' => 'resident']);
     $category = ReportCategory::create([
-        'name' => 'Public Disturbance',
+        'name' => 'Test Public Disturbance',
         'default_severity' => 'moderate',
     ]);
 
