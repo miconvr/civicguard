@@ -15,7 +15,7 @@
                         <p class="text-sm text-gray-700 dark:text-gray-300">{{ $unread }} {{ __('unread') }}</p>
                         <form method="POST" action="{{ route('notifications.readAll') }}">
                             @csrf
-                            <button class="min-h-[44px] px-2 text-sm font-medium text-maroon-700 dark:text-maroon-300 hover:underline">{{ __('Mark all as read') }}</button>
+                            <button class="min-h-[44px] px-2 text-sm font-medium text-maroon-700 dark:text-[#c27872] hover:underline">{{ __('Mark all as read') }}</button>
                         </form>
                     </div>
                 @endif
@@ -25,8 +25,8 @@
                         <li>
                             <form method="POST" action="{{ route('notifications.open', $notification) }}">
                                 @csrf
-                                <button type="submit" class="flex w-full min-h-[56px] items-start gap-3 px-4 py-3 text-left transition hover:bg-black/5 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-maroon-600 {{ $notification->is_read ? '' : 'bg-maroon-50/60 dark:bg-maroon-900/20' }}">
-                                    <span class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full {{ $notification->is_read ? 'bg-transparent' : 'bg-maroon-700 dark:bg-maroon-300' }}" aria-hidden="true"></span>
+                                <button type="submit" class="flex w-full min-h-[56px] items-start gap-3 px-4 py-3 text-left transition hover:bg-black/5 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-maroon-600 {{ $notification->is_read ? '' : 'bg-maroon-50/60 dark:bg-white/[0.06]' }}">
+                                    <span class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full {{ $notification->is_read ? 'bg-transparent' : 'bg-maroon-700 dark:bg-[#c27872]' }}" aria-hidden="true"></span>
                                     <span class="min-w-0 flex-1">
                                         <span class="block text-sm {{ $notification->is_read ? 'text-gray-700 dark:text-gray-300' : 'font-semibold text-gray-900 dark:text-gray-100' }}">
                                             @unless ($notification->is_read)<span class="sr-only">{{ __('Unread') }}: </span>@endunless

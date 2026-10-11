@@ -1,27 +1,37 @@
 <x-app-layout>
-    <x-slot name="headerWidth">max-w-4xl</x-slot>
+    <x-slot name="headerWidth">max-w-5xl</x-slot>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">{{ __('Home') }}</h2>
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">{{ __('Dashboard') }}</h2>
     </x-slot>
 
     @php $first = \Illuminate\Support\Str::before($user->name, ' '); @endphp
 
     <div class="py-8">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
+        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            <div>
-                <p class="text-2xl font-semibold text-gray-900 dark:text-gray-100">{{ __('Good day,') }} {{ $first }}</p>
-                <p class="cg-muted text-sm">Barangay Maimpis</p>
+            <div class="rounded-2xl border border-maroon-800 bg-maroon-900 px-6 py-7 text-white shadow-sm sm:px-8 sm:py-9 dark:border-[#3d3d3a] dark:bg-[#262624] dark:text-gray-100">
+                <p class="text-xs font-semibold uppercase tracking-wider text-maroon-100 dark:text-gray-300">{{ __('Barangay Maimpis') }} <span class="mx-1 text-white/50" aria-hidden="true">/</span> {{ __(ucfirst($user->role)) }}</p>
+                <h1 class="mt-2 text-3xl font-bold tracking-tight text-white dark:text-[#c27872] sm:text-4xl">{{ __('Good day,') }} {{ $first }}</h1>
+                <p class="mt-2 max-w-2xl text-sm leading-6 text-white/80 dark:text-gray-300 sm:text-base">
+                    @if ($user->role === 'resident')
+                        {{ __('Your reports, updates, and next steps—all in one place.') }}
+                    @elseif ($user->role === 'tanod')
+                        {{ __('Review your assignments and help keep your community safe.') }}
+                    @else
+                        {{ __('Stay on top of incidents and help your team respond with care.') }}
+                    @endif
+                </p>
             </div>
 
             @if ($user->role === 'resident')
 
-                <a href="{{ route('reports.create') }}" class="flex items-center justify-between gap-4 rounded-xl bg-maroon-700 p-6 text-white shadow-md transition hover:bg-maroon-800 focus:outline-none">
+                <a href="{{ route('reports.create') }}" class="group flex min-h-24 items-center justify-between gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-stone-200 transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-offset-4 sm:p-6 dark:bg-[#262624] dark:ring-[#3d3d3a]">
                     <span>
-                        <span class="block text-xl font-semibold">{{ __('Report an incident') }}</span>
-                        <span class="block text-sm text-maroon-100">{{ __('It takes about a minute.') }}</span>
+                        <span class="block text-xs font-bold uppercase tracking-wider text-maroon-700 dark:text-[#c27872]">{{ __('Need help from the barangay?') }}</span>
+                        <span class="mt-1 block text-lg font-bold text-stone-950 dark:text-white sm:text-xl">{{ __('Report an incident') }}</span>
+                        <span class="mt-0.5 block text-sm text-stone-600 dark:text-gray-300">{{ __('It takes about a minute. You can follow the response here.') }}</span>
                     </span>
-                    <span class="text-3xl" aria-hidden="true">&rsaquo;</span>
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-xl text-white transition group-hover:bg-maroon-800" aria-hidden="true">&rarr;</span>
                 </a>
 
                 @if ($needsFeedback > 0)
@@ -34,7 +44,7 @@
                 <div class="cg-card">
                     <div class="mb-3 flex items-center justify-between">
                         <h3 class="font-semibold text-gray-900 dark:text-gray-100">{{ __('Latest reports') }}</h3>
-                        <a href="{{ route('reports.index') }}" class="text-sm font-medium text-maroon-700 hover:underline dark:text-maroon-300">{{ __('View all') }}</a>
+                        <a href="{{ route('reports.index') }}" class="text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('View all') }}</a>
                     </div>
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse ($recent as $report)
@@ -53,7 +63,7 @@
                     </ul>
                 </div>
 
-                <a href="{{ route('chatbot.widget') }}" class="cg-btn-secondary w-full sm:w-auto">{{ __('Prefer to just talk it through?') }}</a>
+                <a href="{{ route('chatbot.widget') }}" class="cg-btn-secondary w-full sm:w-auto">{{ __('Prefer to just talk it through?') }} <span aria-hidden="true">&rarr;</span></a>
 
             @elseif ($user->role === 'tanod')
 
@@ -99,7 +109,7 @@
                 <div class="cg-card">
                     <div class="mb-3 flex items-center justify-between">
                         <h3 class="font-semibold text-gray-900 dark:text-gray-100">{{ __('Needs attention') }}</h3>
-                        <a href="{{ route('admin.dashboard') }}" class="text-sm font-medium text-maroon-700 hover:underline dark:text-maroon-300">{{ __('Open incident queue') }}</a>
+                        <a href="{{ route('admin.dashboard') }}" class="text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('Open incident queue') }}</a>
                     </div>
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse ($urgent as $report)
