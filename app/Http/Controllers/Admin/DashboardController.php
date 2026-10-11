@@ -34,7 +34,7 @@ class DashboardController extends Controller
         if ($tab === 'resolved') {
             $query->latest('resolved_at');
         } else {
-            $query->orderByRaw("FIELD(severity, 'critical', 'high', 'moderate', 'low')")->oldest();
+            $query->orderByUrgency()->oldest();
         }
 
         $stats = [

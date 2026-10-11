@@ -1,5 +1,57 @@
 @import "tailwindcss";
 @config "../../tailwind.config.js";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+    :root {
+        color-scheme: light;
+        --cg-canvas: #f7f3ed;
+        --cg-surface: #ffffff;
+        --cg-surface-raised: #ffffff;
+        --cg-border: #e8e0d8;
+        --cg-ink: #24191d;
+        --cg-muted: #71666a;
+        --cg-accent: #951f3d;
+    }
+
+    :root.dark {
+        color-scheme: dark;
+        --cg-canvas: #1c1c1b;
+        --cg-surface: #262624;
+        --cg-surface-raised: #30302e;
+        --cg-border: #3d3d3a;
+        --cg-ink: #f2f0eb;
+        --cg-muted: #b5b2aa;
+        --cg-accent: #d9d5cc;
+    }
+
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 1rem;
+    }
+
+    body {
+        color: var(--cg-ink);
+        background-color: var(--cg-canvas);
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection {
+        color: #ffffff;
+        background: #951f3d;
+    }
+
+    :focus-visible {
+        outline: 3px solid #bd2f52;
+        outline-offset: 3px;
+    }
+
+    .dark :focus-visible {
+        outline-color: #d6d2c8;
+    }
+}
 
 @layer base {
     h1, h2, h3 { @apply tracking-tight; }
@@ -7,44 +59,95 @@
 }
 
 @layer components {
-    /* Content box */
     .cg-card {
-        @apply bg-white dark:bg-gray-800 p-6 shadow-md rounded-xl border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-200;
-        background-color: #ffffff;
+        @apply p-5 sm:p-6 text-gray-800 dark:text-gray-200;
+        background-color: var(--cg-surface);
+        border: 1px solid var(--cg-border);
+        border-radius: 1rem;
+        box-shadow: 0 1px 2px rgb(36 25 29 / 4%), 0 10px 28px -20px rgb(36 25 29 / 24%);
+        transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
     }
 
     .dark .cg-card {
-        background-color: #252525 !important;
-        border-color: #383838 !important;
+        background-color: var(--cg-surface);
+        border-color: var(--cg-border);
+        box-shadow: 0 1px 2px rgb(0 0 0 / 18%), 0 12px 32px -24px rgb(0 0 0 / 60%);
     }
 
-    /* Tables */
+    a.cg-card:hover {
+        border-color: rgb(149 31 61 / 32%);
+        box-shadow: 0 12px 30px -20px rgb(36 25 29 / 40%);
+        transform: translateY(-1px);
+    }
+
+    .dark a.cg-card:hover {
+        border-color: rgb(214 210 200 / 38%);
+        box-shadow: 0 14px 34px -22px rgb(0 0 0 / 80%);
+    }
+
+    .cg-input,
+    .cg-select {
+        min-height: 2.75rem;
+        color: var(--cg-ink);
+        background-color: var(--cg-surface-raised);
+        border-color: var(--cg-border);
+        border-radius: 0.75rem;
+        transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+    }
+
+    .cg-input::placeholder {
+        color: var(--cg-muted);
+        opacity: 0.8;
+    }
+
+    .cg-input:focus,
+    .cg-select:focus {
+        border-color: #bd2f52;
+        --tw-ring-color: rgb(189 47 82 / 18%);
+    }
+
+    .dark .cg-input,
+    .dark .cg-select {
+        color: var(--cg-ink);
+        background-color: #1c1c1b;
+        border-color: var(--cg-border);
+    }
+
+    .cg-btn {
+        @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-maroon-700 px-5 py-2.5 font-semibold text-white shadow-sm transition;
+    }
+
+    .cg-btn:hover {
+        @apply bg-maroon-800 shadow-md;
+    }
+
+    .cg-btn:disabled,
+    .cg-btn[aria-disabled="true"] {
+        @apply cursor-wait opacity-70;
+    }
+
     .cg-table { @apply min-w-full text-sm text-left; }
     .cg-table thead th {
-        @apply px-4 py-3 bg-maroon-50 dark:bg-maroon-800 text-maroon-800 dark:text-white text-xs font-semibold uppercase tracking-wider;
+        @apply px-4 py-3 bg-maroon-50 dark:bg-[#30302e] text-maroon-900 dark:text-gray-200 text-xs font-semibold uppercase tracking-wider;
     }
     .cg-table tbody td {
-        @apply px-4 py-3 text-gray-700 dark:text-gray-300 border-t border-gray-100 dark:border-gray-700;
+        @apply px-4 py-3 text-gray-700 dark:text-gray-200 border-t border-gray-100 dark:border-[#3d3d3a];
     }
-    .cg-table tbody tr:hover { @apply bg-gray-50 dark:bg-gray-700/50; }
+    .cg-table tbody tr { transition: background-color 140ms ease; }
+    .cg-table tbody tr:hover { @apply bg-maroon-50/70 dark:bg-white/[0.04]; }
 
-    /* Status badges */
     .cg-badge { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold; }
-    
-    /* Unified Status Badges (Pending, In Progress, Resolved) */
+
     .cg-badge-status,
     .cg-badge-pending,
     .cg-badge-in_progress,
     .cg-badge-resolved {
-        @apply inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-500 text-white;
+        @apply inline-flex items-center whitespace-nowrap px-2.5 py-1 rounded-full text-xs font-semibold;
     }
-        /* Dark mode: no border */
-    .dark .cg-badge-status,
-    .dark .cg-badge-pending,
-    .dark .cg-badge-in_progress,
-    .dark .cg-badge-resolved {
-        @apply bg-gray-600 text-white;
-    }
+
+    .cg-badge-pending { @apply bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200; }
+    .cg-badge-in_progress { @apply bg-blue-100 text-blue-900 dark:bg-blue-900/40 dark:text-blue-200; }
+    .cg-badge-resolved { @apply bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-200; }
 
     .cg-badge-red    { @apply bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300; }
     .cg-badge-orange { @apply bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300; }
@@ -53,7 +156,6 @@
     .cg-badge-blue   { @apply bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300; }
     .cg-badge-gray   { @apply bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300; }
 
-    /* Severity: small colored dot + plain text */
     .cg-sev { @apply inline-flex items-center gap-2 text-sm; }
     .cg-sev::after { content: ''; @apply h-2.5 w-2.5 shrink-0 rounded-full; }
     .cg-sev-low::after      { @apply bg-green-500; }
@@ -61,55 +163,25 @@
     .cg-sev-high::after     { @apply bg-orange-500; }
     .cg-sev-critical::after { @apply bg-red-600; }
 
-    /* Selects and small form controls */
-    .cg-select {
-        @apply border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200 rounded-lg shadow-sm text-sm focus:border-maroon-500 focus:ring-maroon-500 transition;
-    }
-
-    .dark .cg-select,
-    .dark .cg-input {
-        background-color: #181818 !important;
-        border-color: #414141 !important;
-    }
-
-    /* Forms */
     .cg-label { @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1; }
-    .cg-input {
-        @apply block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200 rounded-lg shadow-sm px-3 py-2 focus:border-maroon-500 focus:ring-maroon-500 transition;
-    }
     .cg-error { @apply text-red-600 dark:text-red-400 text-sm mt-1; }
-    .cg-btn {
-        @apply inline-flex items-center bg-maroon-700 text-white px-5 py-2.5 rounded-lg shadow-sm hover:bg-maroon-800 hover:shadow-md transition font-medium;
-    }
 }
 
 @layer utilities {
-    .dark .dark\:bg-gray-900 { background-color: #1f1f1f !important; }
-    .dark .dark\:bg-gray-800 { background-color: #292929 !important; }
-    .dark .dark\:bg-gray-700 { background-color: #343434 !important; }
+    .dark .dark\:bg-gray-900 { background-color: #1c1c1b !important; }
+    .dark .dark\:bg-gray-800 { background-color: #262624 !important; }
+    .dark .dark\:bg-gray-700 { background-color: #30302e !important; }
     .dark .dark\:border-gray-700,
-    .dark .dark\:border-gray-600 { border-color: #414141 !important; }
-    .dark .cg-card { background-color: #252525 !important; }
-    .dark .cg-input,
-    .dark .cg-select { background-color: #181818 !important; }
-    .dark [class*="dark:bg-gray-900"] { background-color: #1f1f1f !important; }
-    .dark [class*="dark:bg-gray-800"] { background-color: #252525 !important; }
-    .dark [class*="dark:bg-gray-700"] { background-color: #343434 !important; }
-    .dark [class*="dark:hover:bg-gray-900"]:hover,
-    .dark [class*="dark:focus:bg-gray-900"]:focus { background-color: #292929 !important; }
-    .dark [class*="dark:hover:bg-gray-700"]:hover,
-    .dark [class*="dark:focus:bg-gray-700"]:focus { background-color: #343434 !important; }
-    .dark [class*="dark:border-gray-700"],
-    .dark [class*="dark:border-gray-600"] { border-color: #414141 !important; }
-    .dark .text-gray-400 { color: #a3a3a3 !important; }
-    .dark .text-gray-500 { color: #8f8f8f !important; }
+    .dark .dark\:border-gray-600 { border-color: #3d3d3a !important; }
+    .dark .text-gray-400 { color: #c2bfb6 !important; }
+    .dark .text-gray-500 { color: #aaa79f !important; }
     .dark input::placeholder,
     .dark textarea::placeholder,
-    .dark select::placeholder,
-    .dark .cg-input::placeholder { color: #858585 !important; opacity: 1; }
-    .dark select option { background-color: #181818; color: #e5e5e5; }
-    .dark select option:disabled { color: #858585; }
+    .dark select::placeholder { color: #aaa79f !important; opacity: 1; }
+    .dark select option { background-color: #1c1c1b; color: #f2f0eb; }
+    .dark select option:disabled { color: #aaa79f; }
 }
+
 [x-cloak] { display: none !important; }
 
 /* Admin queue: rows become cards on phones */
@@ -120,30 +192,43 @@
     table.cg-queue tr,
     table.cg-queue td { display: block; width: 100%; }
     table.cg-queue tr {
-        border: 1px solid #e5e7eb;
-        border-radius: 0.75rem;
-        margin-bottom: 0.75rem;
+        border: 1px solid var(--cg-border);
+        border-radius: 1rem;
+        margin-bottom: 0.875rem;
         padding: 0.75rem 1rem;
+        background: var(--cg-surface);
+        box-shadow: 0 4px 18px -16px rgb(36 25 29 / 40%);
     }
-    table.cg-queue td { border: 0; padding: 0.25rem 0; text-align: left; }
+    table.cg-queue td {
+        display: grid;
+        grid-template-columns: 6.25rem minmax(0, 1fr);
+        align-items: center;
+        gap: 0.75rem;
+        border: 0;
+        padding: 0.45rem 0;
+        text-align: left;
+    }
+    table.cg-queue td::before {
+        content: attr(data-label);
+        color: var(--cg-muted);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
     table.cg-queue td:last-child { display: none; }
-    .dark table.cg-queue tr { border-color: #374151; }
+    .dark table.cg-queue tr { border-color: var(--cg-border); }
 }
 
 /* ---- Design system additions ---- */
-@layer base {
-    :focus-visible { outline: 2px solid #a52a2a; outline-offset: 2px; }
-    .dark :focus-visible { outline-color: #f0a0a0; }
-}
-
 @layer components {
     .cg-btn-secondary {
         @apply inline-flex min-h-[40px] items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:border-maroon-700 hover:text-maroon-700 dark:border-gray-600 dark:bg-transparent dark:text-gray-200 dark:hover:text-white;
     }
     .cg-pill { @apply inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium; }
-    .cg-pill-pending { @apply bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300; }
-    .cg-pill-in_progress { @apply bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300; }
-    .cg-pill-resolved { @apply bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300; }
+    .cg-pill-pending { @apply bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200; }
+    .cg-pill-in_progress { @apply bg-blue-100 text-blue-900 dark:bg-blue-900/40 dark:text-blue-200; }
+    .cg-pill-resolved { @apply bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-200; }
     .cg-muted { @apply text-gray-600 dark:text-gray-400; }
 }
 
@@ -156,5 +241,6 @@
 }
 
 @layer components {
-    .cg-kpi { @apply text-maroon-700 dark:text-maroon-300; }
+    .cg-kpi { @apply text-maroon-700; }
+    .dark .cg-kpi { color: #c27872; }
 }
