@@ -27,7 +27,7 @@
     <body :class="{ 'dark': darkMode }" class="font-sans text-ink antialiased bg-paper dark:bg-[#1c1c1b]">
         <button type="button" @click="darkMode = !darkMode" :aria-pressed="darkMode.toString()"
                 :aria-label="darkMode ? '{{ __('Switch to light mode') }}' : '{{ __('Switch to dark mode') }}'"
-                class="fixed right-4 top-4 z-10 inline-flex min-h-11 items-center gap-2 rounded-full border border-stone-300 bg-white/90 px-4 text-sm font-semibold text-stone-700 shadow-sm backdrop-blur transition hover:border-maroon-600 hover:text-maroon-800 dark:border-[#454541] dark:bg-[#30302e]/90 dark:text-gray-100 dark:hover:border-gray-400">
+                class="fixed right-4 top-4 z-10 inline-flex min-h-11 items-center gap-2 rounded-full border border-stone-300 cg-surface-tint px-4 text-sm font-semibold text-stone-700 shadow-sm backdrop-blur transition hover:border-maroon-600 hover:text-maroon-800 dark:border-[#454541] dark:bg-[#30302e]/90 dark:text-gray-100 dark:hover:border-gray-400">
             <svg x-show="!darkMode" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                 <circle cx="12" cy="12" r="4"></circle><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>
             </svg>
@@ -46,7 +46,7 @@
                 <p class="text-sm text-stone-600 dark:text-gray-300 mt-1">Barangay Maimpis Incident Management</p>
             </div>
 
-            <div class="w-full sm:max-w-md mt-2 px-6 py-8 bg-white dark:bg-[#262624] shadow-xl shadow-stone-900/5 dark:shadow-black/20 overflow-hidden rounded-2xl border border-stone-200 dark:border-[#3d3d3a]">
+            <div class="w-full sm:max-w-md mt-2 px-6 py-8 cg-surface-raised dark:bg-[#262624] shadow-xl shadow-stone-900/5 dark:shadow-black/20 overflow-hidden rounded-2xl border border-stone-200 dark:border-[#3d3d3a]">
                 {{ $slot }}
             </div>
 
