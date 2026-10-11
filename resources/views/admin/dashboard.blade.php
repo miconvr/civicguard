@@ -34,8 +34,8 @@
                     @if (request('assignee') === 'none')
                         <input type="hidden" name="assignee" value="none">
                     @endif
-                    <input type="search" name="search" value="{{ request('search') }}" placeholder="Search category or location…"
-                           class="cg-select w-64" aria-label="Search reports">
+                    <input type="search" name="search" value="{{ request('search') }}" placeholder="Search by category, location, or report details…"
+                           class="cg-select w-full sm:w-80 lg:w-96" aria-label="Search reports">
                     <select name="severity" onchange="this.form.submit()" class="cg-select" aria-label="Filter by severity">
                         <option value="">All severities</option>
                         @foreach (['critical', 'high', 'moderate', 'low'] as $s)
@@ -104,20 +104,20 @@
                                 <tr class="cursor-pointer hover:bg-black/5 dark:hover:bg-white/5" tabindex="0"
                                     @click="r = {{ Js::from($payload) }}; open = true"
                                     @keydown.enter="r = {{ Js::from($payload) }}; open = true">
-                                    <td><span class="cg-sev cg-sev-{{ $report->severity }}">{{ ucfirst($report->severity) }}</span></td>
-                                    <td>
+                                    <td data-label="Severity"><span class="cg-sev cg-sev-{{ $report->severity }}">{{ ucfirst($report->severity) }}</span></td>
+                                    <td data-label="Report">
                                         <div class="font-medium">{{ $report->category->name }}</div>
                                         <div class="text-xs text-gray-500 dark:text-gray-400">{{ Str::title($report->location_text) }}</div>
                                     </td>
-                                    <td class="whitespace-nowrap {{ $stale ? 'font-semibold text-red-700 dark:text-red-400' : '' }}">
+                                    <td data-label="Age" class="whitespace-nowrap {{ $stale ? 'font-semibold text-red-700 dark:text-red-400' : '' }}">
                                         {{ $report->created_at->diffForHumans() }}
                                     </td>
-                                    <td>
+                                    <td data-label="Status">
                                         <span class="rounded-full px-2.5 py-1 text-xs font-medium {{ $statusPill }}">
                                             {{ ucwords(str_replace('_', ' ', $report->status)) }}
                                         </span>
                                     </td>
-                                    <td>
+                                    <td data-label="Assigned">
                                         @if ($report->assignedTo)
                                             {{ $report->assignedTo->name }}
                                         @elseif ($report->status !== 'resolved')
@@ -172,7 +172,7 @@
 
                     <template x-if="r.lat && r.lng">
                         <a :href="`https://www.google.com/maps?q=${r.lat},${r.lng}`" target="_blank" rel="noopener"
-                           class="text-sm text-maroon-700 dark:text-maroon-300 font-semibold hover:underline">Open in Maps →</a>
+                           class="text-sm text-maroon-700 dark:text-[#c27872] font-semibold hover:underline">Open in Maps →</a>
                     </template>
 
                     <hr class="border-gray-200 dark:border-gray-700">

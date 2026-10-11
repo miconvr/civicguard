@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
@@ -26,6 +27,13 @@ class Report extends Model
         'resolved_at' => 'datetime',
         'confirmed_at' => 'datetime',
     ];
+
+    public function scopeOrderByUrgency(Builder $query): Builder
+    {
+        return $query->orderByRaw(
+            "CASE severity WHEN 'critical' THEN 0 WHEN 'high' THEN 1 WHEN 'moderate' THEN 2 WHEN 'low' THEN 3 ELSE 4 END"
+        );
+    }
 
     public function category()
     {
