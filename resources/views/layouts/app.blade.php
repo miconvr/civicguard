@@ -36,7 +36,7 @@
 
             <div class="flex-1 min-w-0 flex flex-col">
                 @isset($header)
-                    <header class="bg-paper/95 dark:bg-[#222221] border-b border-stone-200 dark:border-[#3d3d3a]">
+                    <header class="cg-canvas dark:bg-[#222221] border-b border-stone-200 dark:border-[#3d3d3a]">
                         <div class="{{ isset($headerWidth) ? trim((string) $headerWidth) : 'max-w-6xl' }} mx-auto py-5 px-4 sm:px-6 lg:px-8">
                             <div class="pl-0">
                                 {{ $header }}

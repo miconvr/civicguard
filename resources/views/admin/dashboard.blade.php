@@ -147,7 +147,7 @@
                x-transition:enter="transition duration-200" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
                x-transition:leave="transition duration-150" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
                role="dialog" aria-modal="true" aria-label="Report details"
-               class="fixed inset-y-0 right-0 z-50 w-full max-w-md overflow-y-auto bg-white dark:bg-gray-900 p-6 shadow-xl">
+               class="fixed inset-y-0 right-0 z-50 w-full max-w-md overflow-y-auto cg-surface-raised dark:bg-gray-900 p-6 shadow-xl">
             <template x-if="r">
                 <div class="space-y-5">
                     <div class="flex items-start justify-between gap-4">
