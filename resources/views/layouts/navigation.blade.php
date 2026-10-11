@@ -74,11 +74,8 @@
                 <x-sidebar-link icon="list" :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard', 'admin.reports.details', 'admin.reports.curfewDetails')">
                     {{ __('Incident Queue') }}
                 </x-sidebar-link>
-                <x-sidebar-link icon="chart" :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics')">
-                    {{ __('Analytics') }}
-                </x-sidebar-link>
-                <x-sidebar-link icon="document" :href="route('admin.consolidatedReports')" :active="request()->routeIs('admin.consolidatedReports')">
-                    {{ __('Summary Reports') }}
+                <x-sidebar-link icon="chart" :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics', 'admin.consolidatedReports')">
+                    {{ __('Reports') }}
                 </x-sidebar-link>
                 @if (in_array($role, ['tanod', 'admin']))
                     <x-sidebar-link icon="moon" :href="route('curfew.create')" :active="request()->routeIs('curfew.create')">

@@ -15,11 +15,11 @@ $icons = [
 ];
 
 $classes = $active
-    ? 'group flex items-center gap-3 rounded-lg border-l-2 border-maroon-700 bg-maroon-50 px-3 py-2.5 text-sm font-semibold text-maroon-900 transition dark:border-[#c27872] dark:bg-[#30302e] dark:text-gray-100'
+    ? 'group flex items-center gap-3 rounded-lg bg-stone-200/70 px-3 py-2.5 text-sm font-semibold text-stone-900 transition dark:bg-[#30302e] dark:text-gray-100'
     : 'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-stone-700 hover:bg-white/70 hover:text-stone-950 dark:text-gray-300 dark:hover:bg-white/[0.06] dark:hover:text-white transition';
 
 $iconClasses = $active
-    ? 'h-5 w-5 shrink-0 text-maroon-700 dark:text-[#c27872]'
+    ? 'h-5 w-5 shrink-0 text-stone-700 dark:text-gray-200'
     : 'h-5 w-5 shrink-0 text-stone-500 group-hover:text-maroon-700 dark:text-gray-400 dark:group-hover:text-[#c27872]';
 @endphp
 

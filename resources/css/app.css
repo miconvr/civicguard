@@ -85,6 +85,11 @@
         box-shadow: 0 14px 34px -22px rgb(0 0 0 / 80%);
     }
 
+    .cg-input {
+        display: block;
+        width: 100%;
+    }
+
     .cg-input,
     .cg-select {
         min-height: 2.75rem;
