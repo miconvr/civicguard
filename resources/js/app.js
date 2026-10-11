@@ -101,6 +101,9 @@ Alpine.data('landingPage', () => ({
             return;
         }
     },
+    toggleLanguage() {
+        this.setLanguage(this.language === 'en' ? 'tl' : 'en');
+    },
 }));
 
 Alpine.start();
