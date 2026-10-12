@@ -20,6 +20,17 @@
                     {{ __('Barangay staff will review your report and update its status on My Reports.') }}
                 </p>
 
+                <details class="cg-help-panel mb-6 px-4">
+                    <summary class="flex items-center justify-between gap-4 py-3 text-sm font-semibold text-gray-800 dark:text-gray-100">
+                        {{ __('Tips for a helpful report') }}
+                    </summary>
+                    <ul class="space-y-2 border-t border-gray-200 py-3 text-sm leading-6 text-gray-700 dark:border-gray-700 dark:text-gray-300">
+                        <li>{{ __('Say what happened, and when it happened.') }}</li>
+                        <li>{{ __('Add a nearby street, purok, or landmark.') }}</li>
+                        <li>{{ __('Attach a photo only if it helps explain the concern.') }}</li>
+                    </ul>
+                </details>
+
                 <a href="{{ route('chatbot.widget') }}" class="mb-6 flex items-center gap-3 rounded-lg border border-gray-200 cg-surface-raised dark:bg-gray-900 dark:border-gray-700 p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                     <svg class="h-6 w-6 text-maroon-700 dark:text-[#c27872] shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
