@@ -29,6 +29,8 @@ Use this document as visual guidance, not as permission to change routes, roles,
 - Inputs and buttons use compact 8px radii. Small status tags may be pills.
 - Prefer open layout, whitespace, and thin dividers over nested cards and ornamental borders.
 - Keep the established public header, role-based navigation, page routes, and resident reporting flow familiar.
+- The signed-in sidebar may collapse to an icon rail on desktop. Preserve visible tooltips, accessible link names, and the full mobile drawer.
+- Keep appearance and language preferences in the signed-in account menu; public pages remain light-only.
 - Make dense staff surfaces scannable. Keep urgent reports and primary actions easy to find.
 
 ## Interaction and motion
@@ -52,3 +54,12 @@ Use this document as visual guidance, not as permission to change routes, roles,
 - Keep English and Tagalog behavior consistent when changing visible copy.
 - Do not invent service promises, response-time guarantees, or barangay contact information.
 - Emergency guidance must continue to direct people to call 911 and clarify that reports are not monitored in real time.
+
+## Public landing page
+
+- Keep resident registration and staff sign-in as distinct paths in the `#get-started` section.
+- Preserve the `#how-it-works` anchor and describe the existing report, staff review, and status-update flow.
+- Keep the 911 guidance prominent and directly actionable, with the real-time monitoring warning beside it.
+- Keep the English/Tagalog control accessible without relying on JavaScript for the initial English content.
+- Keep public and guest pages in the light cream theme; reserve the light/dark switch for signed-in app pages.
+- Prefer an honest process explainer over fabricated dashboard previews, statistics, or local imagery.
