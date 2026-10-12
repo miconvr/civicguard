@@ -13,7 +13,7 @@
             @endif
 
             {{-- Summary cards (each one is a filter) --}}
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" data-reveal>
                 @foreach ([
                     ['Critical open', $stats['critical'], ['tab' => 'active', 'severity' => 'critical'], 'cg-kpi'],
                     ['Unassigned', $stats['unassigned'], ['tab' => 'active', 'assignee' => 'none'], 'cg-kpi'],

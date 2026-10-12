@@ -19,7 +19,7 @@
     </head>
     <body :class="{ 'dark': darkMode }" class="min-h-screen bg-paper font-sans text-ink antialiased dark:bg-[#1c1c1b] dark:text-gray-100">
         <a href="#main-content" class="sr-only fixed left-4 top-4 z-50 rounded-lg bg-maroon-700 px-4 py-3 font-semibold text-white focus:not-sr-only">{{ __('Skip to content') }}</a>
-        <header class="relative z-10 border-b border-stone-200/80 cg-canvas-tint backdrop-blur-xl dark:border-[#3d3d3a] dark:bg-[#222221]/95">
+        <header class="relative z-10 border-b border-stone-200/80 cg-canvas-tint dark:border-[#3d3d3a] dark:bg-[#222221]/95">
             <nav class="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8" aria-label="{{ __('Main navigation') }}">
                 <a href="{{ url('/') }}" class="flex shrink-0 items-center gap-2 rounded-lg focus-visible:outline-offset-4 sm:gap-3">
                     <x-application-logo class="h-9 w-9 shrink-0 text-maroon-700 dark:text-[#c27872] sm:h-10 sm:w-10" />
@@ -44,10 +44,10 @@
                         </svg>
                     </button>
                     @auth
-                        <a href="{{ route('dashboard') }}" class="inline-flex min-h-11 items-center justify-center rounded-full bg-maroon-700 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-maroon-800 sm:px-5"><span x-text="text('dashboard')">{{ __('Go to your dashboard') }}</span></a>
+                        <a href="{{ route('dashboard') }}" class="inline-flex min-h-11 items-center justify-center rounded-md bg-maroon-700 px-4 text-sm font-semibold text-white transition-colors hover:bg-maroon-800 sm:px-5"><span x-text="text('dashboard')">{{ __('Go to your dashboard') }}</span></a>
                     @else
                         <a href="{{ route('login') }}" class="hidden min-h-11 items-center justify-center rounded-full px-2 text-sm font-semibold text-stone-700 transition hover:bg-stone-100 hover:text-maroon-800 dark:text-gray-200 dark:hover:bg-white/10 dark:hover:text-white sm:inline-flex sm:px-4"><span x-text="text('signIn')">{{ __('Sign in') }}</span></a>
-                        <a href="{{ route('register') }}" :aria-label="text('createAccount')" class="inline-flex min-h-11 items-center justify-center rounded-full bg-maroon-700 px-3 text-sm font-semibold text-white shadow-sm transition hover:bg-maroon-800 sm:px-5">
+                        <a href="{{ route('register') }}" :aria-label="text('createAccount')" class="inline-flex min-h-11 items-center justify-center rounded-md bg-maroon-700 px-3 text-sm font-semibold text-white transition-colors hover:bg-maroon-800 sm:px-5">
                             <span class="sm:hidden" x-text="text('join')">{{ __('Join') }}</span>
                             <span class="hidden sm:inline" x-text="text('createAccount')">{{ __('Create a resident account') }}</span>
                         </a>
@@ -57,60 +57,59 @@
         </header>
 
         <main id="main-content">
-            <section class="py-20 sm:py-28 lg:py-36">
+            <section class="py-14 sm:py-20 lg:py-24">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="max-w-4xl">
-                        <p class="mb-4 text-sm font-semibold text-maroon-800 dark:text-[#c27872]" x-text="text('community')">{{ __('For the people of Barangay Maimpis') }}</p>
-                        <h1 class="max-w-4xl text-4xl font-bold leading-tight text-stone-950 sm:text-6xl lg:text-7xl dark:text-white">
-                            <span x-text="text('headline')">{{ __('Let’s take care of our barangay.') }}</span>
-                            <span class="text-maroon-700 dark:text-[#c27872]" x-text="text('headlineAccent')">{{ __('Together.') }}</span>
-                        </h1>
-                        <p class="mt-6 max-w-2xl text-lg leading-8 text-stone-700 dark:text-gray-300" x-text="text('introduction')">{{ __('Share a concern, follow its updates, and connect with our barangay officials and tanod to help keep Maimpis safe.') }}</p>
-                        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                            @auth
-                                <a href="{{ route('dashboard') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-maroon-700 px-6 font-semibold text-white shadow-sm transition hover:bg-maroon-800">
-                                    <span x-text="text('dashboard')">{{ __('Go to your dashboard') }}</span><span aria-hidden="true">&rarr;</span>
-                                </a>
-                            @else
-                                <a href="{{ route('register') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-maroon-700 px-6 font-semibold text-white shadow-sm transition hover:bg-maroon-800">
-                                    <span x-text="text('createAccount')">{{ __('Create a resident account') }}</span><span aria-hidden="true">&rarr;</span>
-                                </a>
-                                <a href="{{ route('login') }}" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-stone-300 cg-surface-tint px-6 font-semibold text-stone-800 transition hover:border-maroon-400 hover:bg-[#fffdf9] dark:border-[#454541] dark:bg-[#262624] dark:text-gray-100 dark:hover:bg-[#30302e]">
-                                    <span x-text="text('signIn')">{{ __('Sign in') }}</span>
-                                </a>
-                            @endauth
+                    <div class="grid items-end gap-10 lg:grid-cols-12 lg:gap-16">
+                        <div class="lg:col-span-8">
+                            <p class="cg-intro-enter mb-4 text-sm font-semibold text-maroon-800 dark:text-[#c27872]" x-text="text('community')">{{ __('For the people of Barangay Maimpis') }}</p>
+                            <h1 class="cg-intro-enter cg-intro-enter-1 max-w-4xl text-4xl font-semibold leading-[1.08] text-stone-950 sm:text-6xl lg:text-6xl dark:text-white">
+                                <span x-text="text('headline')">{{ __('Let’s take care of our barangay.') }}</span>
+                                <span class="text-maroon-700 dark:text-[#c27872]" x-text="text('headlineAccent')">{{ __('Together.') }}</span>
+                            </h1>
+                            <p class="cg-intro-enter cg-intro-enter-2 mt-5 max-w-2xl text-base leading-7 text-stone-700 dark:text-gray-300 sm:text-lg sm:leading-8" x-text="text('introduction')">{{ __('Share a concern, follow its updates, and connect with our barangay officials and tanod to help keep Maimpis safe.') }}</p>
+                            <div class="cg-intro-enter cg-intro-enter-3 mt-7 flex flex-col gap-3 sm:flex-row">
+                                @auth
+                                    <a href="{{ route('dashboard') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-maroon-700 px-6 font-semibold text-white transition-colors hover:bg-maroon-800">
+                                        <span x-text="text('dashboard')">{{ __('Go to your dashboard') }}</span><span aria-hidden="true">&rarr;</span>
+                                    </a>
+                                @else
+                                    <a href="{{ route('register') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-maroon-700 px-6 font-semibold text-white transition-colors hover:bg-maroon-800">
+                                        <span x-text="text('createAccount')">{{ __('Create a resident account') }}</span><span aria-hidden="true">&rarr;</span>
+                                    </a>
+                                    <a href="{{ route('login') }}" class="inline-flex min-h-12 items-center justify-center rounded-md border border-stone-300 cg-surface-tint px-6 font-semibold text-stone-800 transition-colors hover:border-maroon-400 hover:bg-[#fffdf9] dark:border-[#454541] dark:bg-[#262624] dark:text-gray-100 dark:hover:bg-[#30302e]">
+                                        <span x-text="text('signIn')">{{ __('Sign in') }}</span>
+                                    </a>
+                                @endauth
+                            </div>
                         </div>
-                        <p class="mt-4 text-sm text-stone-600 dark:text-gray-400" x-text="text('emergency')">{{ __('Emergency? Call 911. CivicGuard reports are not monitored in real time.') }}</p>
+                        <aside class="cg-intro-enter cg-intro-enter-3 border-t border-stone-300 pt-5 lg:col-span-4 lg:border-l lg:border-t-0 lg:pl-7 lg:pt-0 dark:border-[#454541]" role="note">
+                            <p class="text-sm font-semibold text-stone-900 dark:text-gray-100" x-text="text('emergencyTitle')">{{ __('Need urgent help?') }}</p>
+                            <p class="mt-2 text-sm leading-6 text-stone-700 dark:text-gray-300" x-text="text('emergency')">{{ __('Emergency? Call 911. CivicGuard reports are not monitored in real time.') }}</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section class="border-y border-stone-200 cg-surface-raised py-16 dark:border-[#3d3d3a] dark:bg-[#222221]">
+            <section class="border-y border-stone-200 cg-surface-raised py-14 sm:py-16 dark:border-[#3d3d3a] dark:bg-[#222221]">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="max-w-2xl">
+                    <div class="max-w-2xl" data-reveal>
                         <h2 class="text-3xl font-bold text-stone-950 dark:text-white" x-text="text('howItWorks')">{{ __('How we can help one another') }}</h2>
                         <p class="mt-3 leading-7 text-stone-600 dark:text-gray-300" x-text="text('teamwork')">{{ __('Working together helps the barangay respond more effectively.') }}</p>
                     </div>
-                    <div class="mt-8 grid gap-5 md:grid-cols-2">
-                        <article class="rounded-2xl border border-stone-200 cg-surface p-6 shadow-sm dark:border-[#3d3d3a] dark:bg-[#262624]">
-                            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-maroon-50 text-maroon-700 dark:bg-[#3a2828] dark:text-[#c27872]" aria-hidden="true">
-                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25s7.5-3.75 7.5-9V5.5L12 2.75 4.5 5.5v5.75c0 5.25 7.5 9 7.5 9Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 11.5 2 2 4-4"/></svg>
-                            </span>
-                            <h3 class="mt-4 text-lg font-bold text-stone-950 dark:text-white" x-text="text('residentsTitle')">{{ __('For residents') }}</h3>
-                            <p class="mt-2 text-sm leading-6 text-stone-600 dark:text-gray-300" x-text="text('residentDescription')">{{ __('Report an incident, check its progress, and receive important updates from the barangay.') }}</p>
+                    <div class="mt-9 grid gap-8 md:grid-cols-12 md:gap-12">
+                        <article class="rounded-xl bg-maroon-50/80 p-6 sm:p-8 md:col-span-7 dark:bg-[#302425]" data-reveal style="--cg-reveal-delay: 40ms">
+                            <p class="cg-kicker" x-text="text('residentsTitle')">{{ __('For residents') }}</p>
+                            <h3 class="mt-3 text-xl font-semibold text-stone-950 dark:text-white sm:text-2xl" x-text="text('residentDescription')">{{ __('Report an incident, check its progress, and receive important updates from the barangay.') }}</h3>
                             @guest
-                                <a href="{{ route('register') }}" class="mt-5 inline-flex min-h-11 items-center font-semibold text-maroon-800 hover:underline dark:text-[#c27872]"><span x-text="text('getStarted')">{{ __('Get started') }}</span> <span class="ml-2" aria-hidden="true">&rarr;</span></a>
+                                <a href="{{ route('register') }}" class="mt-5 inline-flex min-h-11 items-center font-semibold text-maroon-800 hover:underline dark:text-[#e2b8b7]"><span x-text="text('getStarted')">{{ __('Get started') }}</span> <span class="ml-2" aria-hidden="true">&rarr;</span></a>
                             @else
-                                <a href="{{ route('dashboard') }}" class="mt-5 inline-flex min-h-11 items-center font-semibold text-maroon-800 hover:underline dark:text-[#c27872]"><span x-text="text('dashboard')">{{ __('Go to your dashboard') }}</span> <span class="ml-2" aria-hidden="true">&rarr;</span></a>
+                                <a href="{{ route('dashboard') }}" class="mt-5 inline-flex min-h-11 items-center font-semibold text-maroon-800 hover:underline dark:text-[#e2b8b7]"><span x-text="text('dashboard')">{{ __('Go to your dashboard') }}</span> <span class="ml-2" aria-hidden="true">&rarr;</span></a>
                             @endguest
                         </article>
-                        <article class="rounded-2xl border border-stone-200 cg-surface p-6 shadow-sm dark:border-[#3d3d3a] dark:bg-[#262624]">
-                            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-800 dark:bg-amber-400/10 dark:text-amber-200" aria-hidden="true">
-                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3"/><circle cx="12" cy="12" r="9"/></svg>
-                            </span>
-                            <h3 class="mt-4 text-lg font-bold text-stone-950 dark:text-white" x-text="text('staffTitle')">{{ __('For barangay officials and tanod') }}</h3>
-                            <p class="mt-2 text-sm leading-6 text-stone-600 dark:text-gray-300" x-text="text('staffDescription')">{{ __('Review reports, prioritize urgent concerns, and keep residents updated.') }}</p>
-                            <a href="{{ route('login') }}" class="mt-5 inline-flex min-h-11 items-center font-semibold text-maroon-800 hover:underline dark:text-[#c27872]"><span x-text="text('staffSignIn')">{{ __('Staff sign in') }}</span> <span class="ml-2" aria-hidden="true">&rarr;</span></a>
+                        <article class="flex flex-col justify-center border-t border-stone-300 pt-6 md:col-span-5 md:border-t-0 md:pt-0 dark:border-[#454541]" data-reveal style="--cg-reveal-delay: 90ms">
+                            <p class="cg-kicker" x-text="text('staffTitle')">{{ __('For barangay officials and tanod') }}</p>
+                            <h3 class="mt-3 text-lg font-semibold text-stone-950 dark:text-white" x-text="text('staffDescription')">{{ __('Review reports, prioritize urgent concerns, and keep residents updated.') }}</h3>
+                            <a href="{{ route('login') }}" class="mt-4 inline-flex min-h-11 items-center font-semibold text-maroon-800 hover:underline dark:text-[#e2b8b7]"><span x-text="text('staffSignIn')">{{ __('Staff sign in') }}</span> <span class="ml-2" aria-hidden="true">&rarr;</span></a>
                         </article>
                     </div>
                 </div>
@@ -118,7 +117,7 @@
 
             <section class="py-16 sm:py-20">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="max-w-2xl">
+                    <div class="max-w-2xl" data-reveal>
                         <p class="text-sm font-semibold text-maroon-800 dark:text-[#c27872]" x-text="text('processIntro')">{{ __('From our kababayans, for our barangay') }}</p>
                         <h2 class="mt-2 text-3xl font-bold text-stone-950 dark:text-white" x-text="text('processTitle')">{{ __('Every concern has a next step.') }}</h2>
                     </div>
@@ -128,7 +127,7 @@
                             ['02', 'staffStep', 'staffDescription'],
                             ['03', 'progressStep', 'progressDescription'],
                         ] as [$step, $title, $description])
-                            <li class="border-t-2 border-maroon-700/30 pt-4 dark:border-[#c27872]/40">
+                            <li class="border-t-2 border-maroon-700/30 pt-4 dark:border-[#c27872]/40" data-reveal="step">
                                 <span class="text-sm font-semibold text-maroon-700 dark:text-[#c27872]">{{ $step }}</span>
                                 <h3 class="mt-2 font-semibold text-stone-900 dark:text-gray-100" x-text="text('{{ $title }}')">{{ ['reportStep' => __('Share your concern'), 'staffStep' => __('Barangay staff follow up'), 'progressStep' => __('Follow the updates')][$title] }}</h3>
                                 <p class="mt-2 text-sm leading-6 text-stone-600 dark:text-gray-400" x-text="text('{{ $description }}')">{{ ['reportDescription' => __('Add the details and location so the right team can review it.'), 'staffDescription' => __('Our officials and tanod review and respond to reports.'), 'progressDescription' => __('Check the status and let us know when the concern is resolved.')][$description] }}</p>

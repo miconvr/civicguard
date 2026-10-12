@@ -9,10 +9,10 @@
     <div class="py-8">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            <div class="rounded-2xl border border-maroon-800 bg-maroon-900 px-6 py-7 text-white shadow-sm sm:px-8 sm:py-9 dark:border-[#3d3d3a] dark:bg-[#262624] dark:text-gray-100">
-                <p class="text-xs font-semibold uppercase tracking-wider text-maroon-100 dark:text-gray-300">{{ __('Barangay Maimpis') }} <span class="mx-1 text-white/50" aria-hidden="true">/</span> {{ __(ucfirst($user->role)) }}</p>
-                <h1 class="mt-2 text-3xl font-bold tracking-tight text-white dark:text-[#c27872] sm:text-4xl">{{ __('Good day,') }} {{ $first }}</h1>
-                <p class="mt-2 max-w-2xl text-sm leading-6 text-white/80 dark:text-gray-300 sm:text-base">
+            <div class="rounded-xl border border-stone-200 cg-surface-raised px-5 py-6 sm:px-7 sm:py-7 dark:border-[#3d3d3a] dark:bg-[#262624]" data-reveal>
+                <p class="cg-kicker">{{ __('Barangay Maimpis') }} <span class="mx-1 text-stone-400 dark:text-gray-500" aria-hidden="true">/</span> {{ __(ucfirst($user->role)) }}</p>
+                <h1 class="mt-2 text-3xl font-semibold tracking-tight text-stone-950 dark:text-white sm:text-4xl">{{ __('Good day,') }} {{ $first }}</h1>
+                <p class="mt-2 max-w-2xl text-sm leading-6 text-stone-700 dark:text-gray-300 sm:text-base">
                     @if ($user->role === 'resident')
                         {{ __('Track your reports and see the latest updates.') }}
                     @elseif ($user->role === 'tanod')
@@ -25,13 +25,13 @@
 
             @if ($user->role === 'resident')
 
-                <a href="{{ route('reports.create') }}" class="group flex min-h-24 items-center justify-between gap-4 rounded-2xl cg-surface-raised p-5 shadow-sm ring-1 ring-stone-200 transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-offset-4 sm:p-6 dark:bg-[#262624] dark:ring-[#3d3d3a]">
+                <a href="{{ route('reports.create') }}" class="group flex min-h-24 items-center justify-between gap-4 rounded-xl cg-surface-raised p-5 ring-1 ring-stone-200 transition-colors hover:bg-[#e9e3da] focus-visible:outline-offset-4 sm:p-6 dark:bg-[#262624] dark:ring-[#3d3d3a] dark:hover:bg-[#30302e]" data-reveal>
                     <span>
                         <span class="block text-xs font-bold uppercase tracking-wider text-maroon-700 dark:text-[#c27872]">{{ __('Need help from the barangay?') }}</span>
                         <span class="mt-1 block text-lg font-bold text-stone-950 dark:text-white sm:text-xl">{{ __('Report an incident') }}</span>
                         <span class="mt-0.5 block text-sm text-stone-600 dark:text-gray-300">{{ __('It takes about a minute. You can follow the response here.') }}</span>
                     </span>
-                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-xl text-white transition group-hover:bg-maroon-800" aria-hidden="true">&rarr;</span>
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-xl text-white transition-colors group-hover:bg-maroon-800" aria-hidden="true">&rarr;</span>
                 </a>
 
                 @if ($needsFeedback > 0)
@@ -41,7 +41,7 @@
                     </a>
                 @endif
 
-                <div class="cg-card">
+                <div class="cg-card" data-reveal>
                     <div class="mb-3 flex items-center justify-between">
                         <h3 class="font-semibold text-gray-900 dark:text-gray-100">{{ __('Latest reports') }}</h3>
                         <a href="{{ route('reports.index') }}" class="text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('View all') }}</a>
@@ -72,7 +72,7 @@
                     <a href="{{ route('admin.dashboard') }}" class="cg-btn-secondary">{{ __('Incident Queue') }}</a>
                 </div>
 
-                <div class="cg-card">
+                <div class="cg-card" data-reveal>
                     <h3 class="mb-3 font-semibold text-gray-900 dark:text-gray-100">{{ __('My assigned reports') }} ({{ $assigned->count() }})</h3>
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse ($assigned as $report)
@@ -93,20 +93,20 @@
 
             @else
 
-                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3" data-reveal>
                     @foreach ([
                         ['Critical open', $stats['critical'], ['tab' => 'active', 'severity' => 'critical'], 'cg-kpi'],
                         ['Unassigned', $stats['unassigned'], ['tab' => 'active', 'assignee' => 'none'], 'cg-kpi'],
                         ['Pending 48h+', $stats['overdue'], ['tab' => 'pending'], 'cg-kpi'],
                     ] as [$label, $count, $params, $color])
-                        <a href="{{ route('admin.dashboard', $params) }}" class="cg-card block transition hover:shadow-md">
+                        <a href="{{ route('admin.dashboard', $params) }}" class="cg-card block transition-colors">
                             <p class="text-sm cg-muted">{{ $label }}</p>
                             <p class="text-3xl font-semibold {{ $color }}">{{ $count }}</p>
                         </a>
                     @endforeach
                 </div>
 
-                <div class="cg-card">
+                <div class="cg-card" data-reveal>
                     <div class="mb-3 flex items-center justify-between">
                         <h3 class="font-semibold text-gray-900 dark:text-gray-100">{{ __('Needs attention') }}</h3>
                         <a href="{{ route('admin.dashboard') }}" class="text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('Open incident queue') }}</a>

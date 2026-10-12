@@ -18,6 +18,17 @@ test('tanods cannot submit resident incident reports', function () {
         ->assertForbidden();
 });
 
+test('residents see report writing guidance on the incident form', function () {
+    $resident = User::factory()->create(['role' => 'resident']);
+
+    $this->actingAs($resident)
+        ->get(route('reports.create'))
+        ->assertOk()
+        ->assertSee('Tips for a helpful report')
+        ->assertSee('Say what happened, and when it happened.')
+        ->assertSee('Add a nearby street, purok, or landmark.');
+});
+
 test('a resident can submit an incident report and is sent to my reports', function () {
     $this->mock(GeminiClient::class)
         ->shouldReceive('generateText')
@@ -55,6 +66,8 @@ test('a resident can submit an incident report and is sent to my reports', funct
     $this->actingAs($resident)
         ->get(route('reports.index'))
         ->assertOk()
+        ->assertSee('Follow each report’s status and updates here.')
+        ->assertSee('Your reports are private to you and barangay staff.')
         ->assertSee('A karaoke gathering continued past midnight near the court.');
 });
 
