@@ -9,7 +9,18 @@ test('each user role can render its role-specific dashboard', function (string $
         ->get(route('dashboard'))
         ->assertOk()
         ->assertSee('Good day,')
-        ->assertSee(ucfirst($role));
+        ->assertSee(ucfirst($role))
+        ->assertSee('data-testid="sidebar-toggle"', false)
+        ->assertSee('aria-label="Toggle dark mode"', false)
+        ->assertSeeInOrder([
+            'href="'.route('profile.edit').'"',
+            'aria-label="Toggle dark mode"',
+            'Appearance',
+            'Language',
+        ], false)
+        ->assertSee('role="switch"', false);
+
+    expect(substr_count($response->getContent(), 'role="switch"'))->toBe(1);
 
     if ($role === 'resident') {
         $response->assertSee('Track your reports and see the latest updates.');
@@ -49,12 +60,14 @@ test('staff report views are grouped under one reports section with tabs', funct
         ->get(route('admin.analytics'))
         ->assertOk()
         ->assertSee('Reports')
+        ->assertSee('class="text-3xl font-bold cg-kpi"', false)
         ->assertSee(route('admin.consolidatedReports'))
         ->assertSee('Analytics');
 
     $this->get(route('admin.consolidatedReports'))
         ->assertOk()
         ->assertSee('Reports')
+        ->assertSee('class="text-3xl font-bold cg-kpi"', false)
         ->assertSee(route('admin.analytics'))
         ->assertSee('Summary');
 });

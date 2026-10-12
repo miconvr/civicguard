@@ -21,13 +21,14 @@ $classes = $active
 $iconClasses = $active
     ? 'h-5 w-5 shrink-0 text-maroon-700 dark:text-[#c27872]'
     : 'h-5 w-5 shrink-0 text-stone-500 group-hover:text-maroon-700 dark:text-gray-400 dark:group-hover:text-[#c27872]';
+$label = trim(strip_tags((string) $slot));
 @endphp
 
-<a {{ $attributes->merge(['class' => $classes]) }}>
+<a {{ $attributes->merge(['class' => $classes.' cg-sidebar-link']) }} aria-label="{{ $label }}" :title='collapsed ? @js($label) : null'>
     @if ($icon && isset($icons[$icon]))
         <svg class="{{ $iconClasses }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="{{ $icons[$icon] }}" />
         </svg>
     @endif
-    <span class="flex-1 min-w-0 truncate">{{ $slot }}</span>
+    <span class="cg-sidebar-label flex-1 min-w-0 truncate">{{ $slot }}</span>
 </a>
