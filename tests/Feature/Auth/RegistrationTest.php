@@ -3,7 +3,9 @@
 test('registration screen can be rendered', function () {
     $response = $this->get('/register');
 
-    $response->assertStatus(200);
+    $response->assertStatus(200)
+        ->assertDontSee('Switch to dark mode')
+        ->assertDontSee('darkMode');
 });
 
 test('new users can register', function () {

@@ -1,148 +1,138 @@
 <!DOCTYPE html>
-<html lang="en" x-data="landingPage" :lang="language === 'tl' ? 'tl' : 'en'" :class="{ 'dark': darkMode }">
+<html lang="en" x-data="landingPage" :lang="language">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#f7f3ed">
-        <meta name="description" content="CivicGuard helps Barangay Maimpis residents report incidents and helps local teams respond with care.">
+        <meta name="description" content="CivicGuard helps Barangay Maimpis residents report incidents and follow updates from barangay staff.">
         <title>{{ config('app.name', 'CivicGuard') }} · Barangay Maimpis</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-        <script>
-            try {
-                if (localStorage.getItem('darkMode') === 'true') document.documentElement.classList.add('dark');
-            } catch (error) {}
-        </script>
+        <style>[x-cloak] { display: none !important; }</style>
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800|bitter:600,700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700|bitter:600,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+        <noscript><link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700|bitter:600,700&display=swap" rel="stylesheet"></noscript>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body :class="{ 'dark': darkMode }" class="min-h-screen bg-paper font-sans text-ink antialiased dark:bg-[#1c1c1b] dark:text-gray-100">
-        <a href="#main-content" class="sr-only fixed left-4 top-4 z-50 rounded-lg bg-maroon-700 px-4 py-3 font-semibold text-white focus:not-sr-only">{{ __('Skip to content') }}</a>
-        <header class="relative z-10 border-b border-stone-200/80 cg-canvas-tint dark:border-[#3d3d3a] dark:bg-[#222221]/95">
-            <nav class="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8" aria-label="{{ __('Main navigation') }}">
-                <a href="{{ url('/') }}" class="flex shrink-0 items-center gap-2 rounded-lg focus-visible:outline-offset-4 sm:gap-3">
-                    <x-application-logo class="h-9 w-9 shrink-0 text-maroon-700 dark:text-[#c27872] sm:h-10 sm:w-10" />
-                    <span class="min-w-0 leading-tight">
-                        <span class="block whitespace-nowrap text-sm font-bold text-maroon-900 dark:text-white sm:text-base">CivicGuard</span>
-                        <span class="hidden truncate text-xs text-stone-600 dark:text-gray-300 sm:block">{{ __('Barangay Maimpis') }}</span>
-                    </span>
-                </a>
-                <div class="flex shrink-0 items-center gap-1 sm:gap-3">
-                    <button type="button" @click="toggleLanguage()" :aria-label="language === 'en' ? 'Switch language to Tagalog' : 'Switch language to English'" :title="language === 'en' ? 'Switch language to Tagalog' : 'Switch language to English'"
-                            class="inline-flex h-10 min-w-10 items-center justify-center rounded-full border border-stone-300 cg-surface px-2 text-xs font-semibold text-stone-700 transition hover:border-maroon-600 hover:text-maroon-800 dark:border-[#454541] dark:bg-[#30302e] dark:text-gray-100 dark:hover:border-gray-400"
-                            x-text="language === 'en' ? 'EN' : 'TL'"></button>
-                    <button type="button" @click="darkMode = !darkMode" :aria-pressed="darkMode.toString()"
-                            :aria-label="darkMode ? '{{ __('Switch to light mode') }}' : '{{ __('Switch to dark mode') }}'"
-                            class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-stone-300 cg-surface text-stone-700 transition hover:border-maroon-600 hover:text-maroon-800 dark:border-[#454541] dark:bg-[#30302e] dark:text-gray-100 dark:hover:border-gray-400 sm:h-11 sm:w-11"
-                            title="{{ __('Toggle color theme') }}">
-                        <svg x-show="!darkMode" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <circle cx="12" cy="12" r="4"></circle><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>
-                        </svg>
-                        <svg x-show="darkMode" x-cloak class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"></path>
-                        </svg>
-                    </button>
-                    @auth
-                        <a href="{{ route('dashboard') }}" class="inline-flex min-h-11 items-center justify-center rounded-md bg-maroon-700 px-4 text-sm font-semibold text-white transition-colors hover:bg-maroon-800 sm:px-5"><span x-text="text('dashboard')">{{ __('Go to your dashboard') }}</span></a>
-                    @else
-                        <a href="{{ route('login') }}" class="hidden min-h-11 items-center justify-center rounded-full px-2 text-sm font-semibold text-stone-700 transition hover:bg-stone-100 hover:text-maroon-800 dark:text-gray-200 dark:hover:bg-white/10 dark:hover:text-white sm:inline-flex sm:px-4"><span x-text="text('signIn')">{{ __('Sign in') }}</span></a>
-                        <a href="{{ route('register') }}" :aria-label="text('createAccount')" class="inline-flex min-h-11 items-center justify-center rounded-md bg-maroon-700 px-3 text-sm font-semibold text-white transition-colors hover:bg-maroon-800 sm:px-5">
-                            <span class="sm:hidden" x-text="text('join')">{{ __('Join') }}</span>
-                            <span class="hidden sm:inline" x-text="text('createAccount')">{{ __('Create a resident account') }}</span>
-                        </a>
-                    @endauth
-                </div>
-            </nav>
-        </header>
+    <body class="min-h-[100dvh] bg-paper font-sans antialiased text-ink dark:bg-[#1c1c1b] dark:text-gray-100">
+        <a href="#main-content" class="sr-only fixed left-4 top-4 z-[100] rounded-lg bg-maroon-700 px-4 py-3 font-semibold text-white focus:not-sr-only">
+            {{ __('Skip to content') }}
+        </a>
 
-        <main id="main-content">
-            <section class="py-14 sm:py-20 lg:py-24">
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="grid items-end gap-10 lg:grid-cols-12 lg:gap-16">
-                        <div class="lg:col-span-8">
-                            <p class="cg-intro-enter mb-4 text-sm font-semibold text-maroon-800 dark:text-[#c27872]" x-text="text('community')">{{ __('For the people of Barangay Maimpis') }}</p>
-                            <h1 class="cg-intro-enter cg-intro-enter-1 max-w-4xl text-4xl font-semibold leading-[1.08] text-stone-950 sm:text-6xl lg:text-6xl dark:text-white">
-                                <span x-text="text('headline')">{{ __('Let’s take care of our barangay.') }}</span>
-                                <span class="text-maroon-700 dark:text-[#c27872]" x-text="text('headlineAccent')">{{ __('Together.') }}</span>
-                            </h1>
-                            <p class="cg-intro-enter cg-intro-enter-2 mt-5 max-w-2xl text-base leading-7 text-stone-700 dark:text-gray-300 sm:text-lg sm:leading-8" x-text="text('introduction')">{{ __('Share a concern, follow its updates, and connect with our barangay officials and tanod to help keep Maimpis safe.') }}</p>
-                            <div class="cg-intro-enter cg-intro-enter-3 mt-7 flex flex-col gap-3 sm:flex-row">
-                                @auth
-                                    <a href="{{ route('dashboard') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-maroon-700 px-6 font-semibold text-white transition-colors hover:bg-maroon-800">
-                                        <span x-text="text('dashboard')">{{ __('Go to your dashboard') }}</span><span aria-hidden="true">&rarr;</span>
-                                    </a>
-                                @else
-                                    <a href="{{ route('register') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-maroon-700 px-6 font-semibold text-white transition-colors hover:bg-maroon-800">
-                                        <span x-text="text('createAccount')">{{ __('Create a resident account') }}</span><span aria-hidden="true">&rarr;</span>
-                                    </a>
-                                    <a href="{{ route('login') }}" class="inline-flex min-h-12 items-center justify-center rounded-md border border-stone-300 cg-surface-tint px-6 font-semibold text-stone-800 transition-colors hover:border-maroon-400 hover:bg-[#fffdf9] dark:border-[#454541] dark:bg-[#262624] dark:text-gray-100 dark:hover:bg-[#30302e]">
-                                        <span x-text="text('signIn')">{{ __('Sign in') }}</span>
-                                    </a>
-                                @endauth
-                            </div>
-                        </div>
-                        <aside class="cg-intro-enter cg-intro-enter-3 border-t border-stone-300 pt-5 lg:col-span-4 lg:border-l lg:border-t-0 lg:pl-7 lg:pt-0 dark:border-[#454541]" role="note">
-                            <p class="text-sm font-semibold text-stone-900 dark:text-gray-100" x-text="text('emergencyTitle')">{{ __('Need urgent help?') }}</p>
-                            <p class="mt-2 text-sm leading-6 text-stone-700 dark:text-gray-300" x-text="text('emergency')">{{ __('Emergency? Call 911. CivicGuard reports are not monitored in real time.') }}</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <div class="min-h-[100dvh] overflow-hidden">
+            <header class="border-b border-stone-200/80 bg-paper dark:border-[#3d3d3a] dark:bg-[#1c1c1b]">
+                <nav aria-label="Main navigation" :aria-label="text('navigation')" class="mx-auto flex min-h-[72px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+                    <a href="{{ url('/') }}" class="group flex min-w-0 items-center gap-2.5 rounded-md focus-visible:outline-offset-4" aria-label="CivicGuard, Barangay Maimpis home" :aria-label="text('homeLink')">
+                        <x-application-logo class="h-9 w-9 shrink-0" />
+                        <span class="min-w-0">
+                            <span class="block text-[15px] font-bold leading-tight tracking-tight text-maroon-900 dark:text-gray-100">CivicGuard</span>
+                            <span class="block truncate text-[11px] leading-tight text-stone-600 dark:text-gray-400">Barangay Maimpis</span>
+                        </span>
+                    </a>
 
-            <section class="border-y border-stone-200 cg-surface-raised py-14 sm:py-16 dark:border-[#3d3d3a] dark:bg-[#222221]">
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="max-w-2xl" data-reveal>
-                        <h2 class="text-3xl font-bold text-stone-950 dark:text-white" x-text="text('howItWorks')">{{ __('How we can help one another') }}</h2>
-                        <p class="mt-3 leading-7 text-stone-600 dark:text-gray-300" x-text="text('teamwork')">{{ __('Working together helps the barangay respond more effectively.') }}</p>
+                    <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
+                        <button type="button"
+                                @click="toggleLanguage()"
+                                :aria-label="language === 'en' ? 'Switch language to Tagalog' : 'Switch language to English'"
+                                :aria-pressed="(language === 'tl').toString()"
+                                class="inline-flex min-h-10 min-w-10 items-center justify-center rounded-md border border-stone-300 px-2.5 text-xs font-semibold tracking-wide text-stone-700 transition-colors hover:bg-white/70 dark:border-[#4a4945] dark:text-gray-200 dark:hover:bg-white/5">
+                            <span x-text="language === 'en' ? 'EN' : 'TL'"></span>
+                        </button>
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="ml-1 inline-flex min-h-10 items-center justify-center rounded-md bg-maroon-700 px-3 text-xs font-semibold text-white transition-colors hover:bg-maroon-800 sm:px-4 sm:text-sm">
+                                <span x-text="text('dashboard')">Go to your dashboard</span>
+                            </a>
+                        @endauth
                     </div>
-                    <div class="mt-9 grid gap-8 md:grid-cols-12 md:gap-12">
-                        <article class="rounded-xl bg-maroon-50/80 p-6 sm:p-8 md:col-span-7 dark:bg-[#302425]" data-reveal style="--cg-reveal-delay: 40ms">
-                            <p class="cg-kicker" x-text="text('residentsTitle')">{{ __('For residents') }}</p>
-                            <h3 class="mt-3 text-xl font-semibold text-stone-950 dark:text-white sm:text-2xl" x-text="text('residentDescription')">{{ __('Report an incident, check its progress, and receive important updates from the barangay.') }}</h3>
+                </nav>
+            </header>
+
+            <main id="main-content">
+                <section class="mx-auto grid max-w-7xl gap-10 px-4 pb-14 pt-12 sm:px-6 sm:pb-16 sm:pt-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:px-8 lg:pb-20 lg:pt-20">
+                    <div class="max-w-3xl">
+                        <h1 class="cg-intro-enter max-w-none text-[2.125rem] leading-[1.08] max-[360px]:text-[1.875rem] sm:max-w-[16ch] sm:text-6xl lg:max-w-[14ch]">
+                            <span x-text="text('headline')">Report an issue in</span>
+                            <span class="text-maroon-800 dark:text-[#d5aaa9]" x-text="text('headlineAccent')"> Barangay Maimpis.</span>
+                        </h1>
+                        <p class="cg-intro-enter cg-intro-enter-1 mt-5 max-w-xl text-base leading-7 text-stone-700 dark:text-gray-300 sm:text-lg sm:leading-8" x-text="text('introduction')">Report an incident, then follow its progress here. CivicGuard connects residents with barangay staff.</p>
+                        <a href="#how-it-works" class="mt-5 inline-flex min-h-11 items-center rounded-md text-sm font-semibold text-stone-700 underline decoration-stone-400 underline-offset-4 transition-colors hover:text-maroon-800 dark:text-gray-200 dark:decoration-gray-500 dark:hover:text-white" x-text="text('howItWorks')">See how it works</a>
+                    </div>
+
+                    <aside id="get-started" aria-label="Choose how to continue" :aria-label="text('startLabel')" class="cg-intro-enter cg-intro-enter-2 rounded-xl border border-stone-300 bg-[#f2ede7] p-5 dark:border-[#454440] dark:bg-[#262624] sm:p-7">
+                        <h2 class="text-xl font-semibold leading-tight sm:text-2xl" x-text="text('startTitle')">What would you like to do?</h2>
+                        <div class="mt-5">
+                            <h3 class="text-base font-semibold text-stone-950 dark:text-gray-100" x-text="text('residentPathTitle')">I live in Maimpis</h3>
+                            <p class="mt-1.5 max-w-md text-sm leading-6 text-stone-700 dark:text-gray-300" x-text="text('residentPathDescription')">Create a resident account to report an issue and follow updates.</p>
                             @guest
-                                <a href="{{ route('register') }}" class="mt-5 inline-flex min-h-11 items-center font-semibold text-maroon-800 hover:underline dark:text-[#e2b8b7]"><span x-text="text('getStarted')">{{ __('Get started') }}</span> <span class="ml-2" aria-hidden="true">&rarr;</span></a>
+                                <a href="{{ route('register') }}" class="cg-btn mt-4 w-full sm:w-auto">
+                                    <span x-text="text('residentAction')">Create a resident account</span>
+                                    <span aria-hidden="true">→</span>
+                                </a>
+                                <a href="{{ route('login') }}" class="mt-2 inline-flex min-h-10 items-center rounded-md text-sm font-semibold text-maroon-800 underline decoration-maroon-700/50 underline-offset-4 transition-colors hover:text-maroon-950 dark:text-[#e8c4c7] dark:decoration-[#c59da3] dark:hover:text-white" x-text="text('existingAccount')">Already have an account? Sign in</a>
                             @else
-                                <a href="{{ route('dashboard') }}" class="mt-5 inline-flex min-h-11 items-center font-semibold text-maroon-800 hover:underline dark:text-[#e2b8b7]"><span x-text="text('dashboard')">{{ __('Go to your dashboard') }}</span> <span class="ml-2" aria-hidden="true">&rarr;</span></a>
+                                <a href="{{ route('dashboard') }}" class="cg-btn mt-4 w-full sm:w-auto">
+                                    <span x-text="text('dashboard')">Go to your dashboard</span>
+                                    <span aria-hidden="true">→</span>
+                                </a>
                             @endguest
-                        </article>
-                        <article class="flex flex-col justify-center border-t border-stone-300 pt-6 md:col-span-5 md:border-t-0 md:pt-0 dark:border-[#454541]" data-reveal style="--cg-reveal-delay: 90ms">
-                            <p class="cg-kicker" x-text="text('staffTitle')">{{ __('For barangay officials and tanod') }}</p>
-                            <h3 class="mt-3 text-lg font-semibold text-stone-950 dark:text-white" x-text="text('staffDescription')">{{ __('Review reports, prioritize urgent concerns, and keep residents updated.') }}</h3>
-                            <a href="{{ route('login') }}" class="mt-4 inline-flex min-h-11 items-center font-semibold text-maroon-800 hover:underline dark:text-[#e2b8b7]"><span x-text="text('staffSignIn')">{{ __('Staff sign in') }}</span> <span class="ml-2" aria-hidden="true">&rarr;</span></a>
-                        </article>
-                    </div>
-                </div>
-            </section>
+                        </div>
+                        <div class="mt-5 border-t border-stone-300 pt-5 dark:border-[#454440]">
+                            <h3 class="text-base font-semibold text-stone-950 dark:text-gray-100" x-text="text('staffPathTitle')">I work for the barangay</h3>
+                            <p class="mt-1.5 max-w-md text-sm leading-6 text-stone-700 dark:text-gray-300" x-text="text('staffPathDescription')">Sign in to review reports and share updates with residents.</p>
+                            <a href="{{ route('login') }}" class="mt-2 inline-flex min-h-10 items-center rounded-md text-sm font-semibold text-maroon-800 underline decoration-maroon-700/50 underline-offset-4 transition-colors hover:text-maroon-950 dark:text-[#e8c4c7] dark:decoration-[#c59da3] dark:hover:text-white">
+                                <span x-text="text('staffAction')">Staff sign in</span>
+                                <span class="ml-1" aria-hidden="true">→</span>
+                            </a>
+                        </div>
+                    </aside>
+                </section>
 
-            <section class="py-16 sm:py-20">
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="max-w-2xl" data-reveal>
-                        <p class="text-sm font-semibold text-maroon-800 dark:text-[#c27872]" x-text="text('processIntro')">{{ __('From our kababayans, for our barangay') }}</p>
-                        <h2 class="mt-2 text-3xl font-bold text-stone-950 dark:text-white" x-text="text('processTitle')">{{ __('Every concern has a next step.') }}</h2>
+                <section aria-labelledby="emergency-title" class="border-y border-[#e8d6d0] bg-[#f1e8e2] dark:border-[#51413e] dark:bg-[#302724]">
+                    <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+                        <div>
+                            <h2 id="emergency-title" class="font-sans text-sm font-bold tracking-normal text-[#5e2630] dark:text-[#f0c5c1]" x-text="text('emergencyTitle')">Is someone in immediate danger?</h2>
+                            <p class="mt-1 text-sm leading-6 text-[#563f40] dark:text-[#dfcfca]" x-text="text('emergency')">Call 911 for emergencies. CivicGuard reports are not monitored in real time.</p>
+                        </div>
+                        <a href="tel:911" class="inline-flex min-h-11 shrink-0 items-center justify-center rounded-md border border-[#9d5260] px-4 text-sm font-bold text-[#76263a] transition-colors hover:bg-white/50 dark:border-[#a76b76] dark:text-[#ffd6d7] dark:hover:bg-white/5" x-text="text('call911')">Call 911</a>
                     </div>
-                    <ol class="mt-8 grid gap-6 md:grid-cols-3">
-                        @foreach ([
-                            ['01', 'reportStep', 'reportDescription'],
-                            ['02', 'staffStep', 'staffDescription'],
-                            ['03', 'progressStep', 'progressDescription'],
-                        ] as [$step, $title, $description])
-                            <li class="border-t-2 border-maroon-700/30 pt-4 dark:border-[#c27872]/40" data-reveal="step">
-                                <span class="text-sm font-semibold text-maroon-700 dark:text-[#c27872]">{{ $step }}</span>
-                                <h3 class="mt-2 font-semibold text-stone-900 dark:text-gray-100" x-text="text('{{ $title }}')">{{ ['reportStep' => __('Share your concern'), 'staffStep' => __('Barangay staff follow up'), 'progressStep' => __('Follow the updates')][$title] }}</h3>
-                                <p class="mt-2 text-sm leading-6 text-stone-600 dark:text-gray-400" x-text="text('{{ $description }}')">{{ ['reportDescription' => __('Add the details and location so the right team can review it.'), 'staffDescription' => __('Our officials and tanod review and respond to reports.'), 'progressDescription' => __('Check the status and let us know when the concern is resolved.')][$description] }}</p>
-                            </li>
-                        @endforeach
+                </section>
+
+                <section id="how-it-works" class="mx-auto grid max-w-7xl gap-9 px-4 py-14 sm:px-6 sm:py-18 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20 lg:px-8">
+                    <div class="max-w-md">
+                        <p class="cg-kicker" x-text="text('processIntro')">For residents</p>
+                        <h2 class="mt-3 text-3xl leading-tight sm:text-4xl" x-text="text('howHeading')">What happens after you report?</h2>
+                        <p class="mt-4 text-sm leading-6 text-stone-700 dark:text-gray-300" x-text="text('howDescription')">You can follow each report from your account. Here is what to expect.</p>
+                    </div>
+                    <ol>
+                        <li class="grid gap-2 border-b border-stone-300 py-5 first:border-t dark:border-[#454440] sm:grid-cols-[3rem_1fr] sm:gap-4 sm:py-6" data-reveal="step">
+                            <span class="font-serif text-xl text-maroon-800 dark:text-[#d5aaa9]">1</span>
+                            <div>
+                                <h3 class="text-base font-semibold" x-text="text('reportStep')">Create a resident account</h3>
+                                <p class="mt-1.5 max-w-xl text-sm leading-6 text-stone-700 dark:text-gray-300" x-text="text('reportDescription')">Sign up to send a report and see its updates.</p>
+                            </div>
+                        </li>
+                        <li class="grid gap-2 border-b border-stone-300 py-5 dark:border-[#454440] sm:grid-cols-[3rem_1fr] sm:gap-4 sm:py-6" data-reveal="step">
+                            <span class="font-serif text-xl text-maroon-800 dark:text-[#d5aaa9]">2</span>
+                            <div>
+                                <h3 class="text-base font-semibold" x-text="text('staffStep')">Tell us what happened</h3>
+                                <p class="mt-1.5 max-w-xl text-sm leading-6 text-stone-700 dark:text-gray-300" x-text="text('staffDescription')">Choose a category, describe the issue, and enter its location. Adding a photo is optional.</p>
+                            </div>
+                        </li>
+                        <li class="grid gap-2 border-b border-stone-300 py-5 dark:border-[#454440] sm:grid-cols-[3rem_1fr] sm:gap-4 sm:py-6" data-reveal="step">
+                            <span class="font-serif text-xl text-maroon-800 dark:text-[#d5aaa9]">3</span>
+                            <div>
+                                <h3 class="text-base font-semibold" x-text="text('progressStep')">Check the report status</h3>
+                                <p class="mt-1.5 max-w-xl text-sm leading-6 text-stone-700 dark:text-gray-300" x-text="text('progressDescription')">Barangay staff review the report and post updates for you to follow.</p>
+                            </div>
+                        </li>
                     </ol>
-                </div>
-            </section>
-        </main>
+                </section>
+            </main>
 
-        <footer class="py-8">
-            <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 text-sm text-stone-600 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8 dark:text-gray-400">
-                <p><span class="font-semibold text-stone-800 dark:text-gray-200">CivicGuard</span> · <span x-text="text('footerBrand')">{{ __('Barangay Maimpis Incident Management') }}</span></p>
-                <p x-text="text('footerEmergency')">{{ __('For emergencies, call 911.') }}</p>
-            </div>
-        </footer>
+            <footer class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-7 text-sm text-stone-600 dark:text-gray-400 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+                <p class="font-medium text-stone-700 dark:text-gray-300" x-text="text('footerBrand')">CivicGuard · Barangay Maimpis Incident Management</p>
+                <p x-text="text('footerEmergency')">For emergencies, call 911.</p>
+            </footer>
+        </div>
     </body>
 </html>
