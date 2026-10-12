@@ -4,6 +4,41 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
+function initializeScrollReveals() {
+    const elements = document.querySelectorAll('[data-reveal]');
+
+    if (!elements.length || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+    }
+
+    document.documentElement.classList.add('cg-motion-ready');
+
+    const observer = new IntersectionObserver((entries, currentObserver) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                currentObserver.unobserve(entry.target);
+            }
+        });
+    }, { rootMargin: '0px 0px -32px 0px', threshold: 0.08 });
+
+    elements.forEach(element => observer.observe(element));
+
+    document.addEventListener('focusin', event => {
+        const element = event.target.closest('[data-reveal]');
+        if (element) {
+            element.classList.add('is-visible');
+            observer.unobserve(element);
+        }
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeScrollReveals, { once: true });
+} else {
+    initializeScrollReveals();
+}
+
 Alpine.data('landingPage', () => ({
     darkMode: (() => {
         try {
@@ -28,6 +63,7 @@ Alpine.data('landingPage', () => ({
             createAccount: 'Create a resident account',
             join: 'Join',
             signIn: 'Sign in',
+            emergencyTitle: 'Need urgent help?',
             emergency: 'Emergency? Call 911. CivicGuard reports are not monitored in real time.',
             processIntro: 'From our kababayans, for our barangay',
             processTitle: 'Every concern has a next step.',
@@ -58,6 +94,7 @@ Alpine.data('landingPage', () => ({
             createAccount: 'Gumawa ng account ng residente',
             join: 'Sumali',
             signIn: 'Magpatuloy',
+            emergencyTitle: 'Kailangan ng agarang tulong?',
             emergency: 'May agarang panganib? Tumawag sa 911. Hindi agad natutugunan ang mga ulat sa CivicGuard.',
             processIntro: 'Mula sa mga kababayan, para sa barangay',
             processTitle: 'Bawat alalahanin ay may kasunod na hakbang.',
