@@ -5,7 +5,10 @@ use App\Models\User;
 test('login screen can be rendered', function () {
     $response = $this->get('/login');
 
-    $response->assertStatus(200);
+    $response->assertStatus(200)
+        ->assertSee('<h1 class="mt-2 font-sans text-3xl font-bold tracking-tight text-maroon-900">CivicGuard</h1>', false)
+        ->assertDontSee('Switch to dark mode')
+        ->assertDontSee('darkMode');
 });
 
 test('users can authenticate using the login screen', function () {

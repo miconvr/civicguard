@@ -3,15 +3,23 @@
 test('public landing page clearly links to resident and staff entry points', function () {
     $response = $this->get('/')
         ->assertOk()
-        ->assertSee('Let’s take care of our barangay.')
-        ->assertSee('For the people of Barangay Maimpis')
+        ->assertSee('Report an issue in')
+        ->assertSee('Barangay Maimpis.')
         ->assertSee('landingPage')
         ->assertSee('toggleLanguage()')
         ->assertSee('Switch language to Tagalog')
         ->assertSee(route('register'))
         ->assertSee(route('login'))
-        ->assertSee('Emergency? Call 911. CivicGuard reports are not monitored in real time.');
-
-    expect(strpos($response->getContent(), 'Let’s take care of our barangay.'))
-        ->toBeLessThan(strpos($response->getContent(), 'From our kababayans, for our barangay'));
+        ->assertSee('What would you like to do?')
+        ->assertSee('I live in Maimpis')
+        ->assertSee('I work for the barangay')
+        ->assertSee('See how it works')
+        ->assertSee('id="get-started"', false)
+        ->assertSee('Call 911 for emergencies. CivicGuard reports are not monitored in real time.')
+        ->assertSee('href="tel:911"', false)
+        ->assertSee('What happens after you report?')
+        ->assertSee('Adding a photo is optional.')
+        ->assertSee('Staff sign in')
+        ->assertDontSee('Switch to dark mode')
+        ->assertDontSee('darkMode');
 });
