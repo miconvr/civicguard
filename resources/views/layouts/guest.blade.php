@@ -42,11 +42,11 @@
                 <a href="/">
                     <x-application-logo class="w-16 h-16 fill-current text-maroon-700 dark:text-gray-100 mx-auto" />
                 </a>
-                <h1 class="mt-2 text-3xl font-bold text-maroon-700 dark:text-gray-100 tracking-tight">CivicGuard</h1>
+                <h1 class="mt-2 text-3xl font-semibold text-maroon-700 dark:text-gray-100 tracking-tight">CivicGuard</h1>
                 <p class="text-sm text-stone-600 dark:text-gray-300 mt-1">Barangay Maimpis Incident Management</p>
             </div>
 
-            <div class="w-full sm:max-w-md mt-2 px-6 py-8 cg-surface-raised dark:bg-[#262624] shadow-xl shadow-stone-900/5 dark:shadow-black/20 overflow-hidden rounded-2xl border border-stone-200 dark:border-[#3d3d3a]">
+            <div class="w-full sm:max-w-md mt-2 px-6 py-8 cg-surface dark:bg-[#262624] overflow-hidden rounded-xl border border-stone-200 dark:border-[#3d3d3a]">
                 {{ $slot }}
             </div>
 

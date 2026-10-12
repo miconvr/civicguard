@@ -36,9 +36,9 @@
 
             <div class="flex-1 min-w-0 flex flex-col">
                 @isset($header)
-                    <header class="cg-canvas dark:bg-[#222221] border-b border-stone-200 dark:border-[#3d3d3a]">
-                        <div class="{{ isset($headerWidth) ? trim((string) $headerWidth) : 'max-w-6xl' }} mx-auto py-5 px-4 sm:px-6 lg:px-8">
-                            <div class="pl-0">
+                    <header class="cg-canvas border-b border-stone-200/80 dark:border-[#3d3d3a] dark:bg-[#222221]">
+                        <div class="{{ isset($headerWidth) ? trim((string) $headerWidth) : 'max-w-6xl' }} mx-auto px-4 py-5 sm:px-6 lg:px-8">
+                            <div class="pl-0 [&>h2]:text-lg [&>h2]:font-semibold [&>h2]:tracking-tight sm:[&>h2]:text-xl">
                                 {{ $header }}
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                     {{ $slot }}
                 </main>
 
-                <footer class="py-6 text-center text-xs text-stone-400 dark:text-gray-500">
+                <footer class="py-6 text-center text-xs text-stone-600 dark:text-gray-400">
                     CivicGuard &middot; Barangay Maimpis Incident Management System
                 </footer>
             </div>
