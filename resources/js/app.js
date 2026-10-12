@@ -39,14 +39,25 @@ if (document.readyState === 'loading') {
     initializeScrollReveals();
 }
 
-Alpine.data('landingPage', () => ({
-    darkMode: (() => {
+Alpine.data('appShell', () => ({
+    collapsed: (() => {
         try {
-            return localStorage.getItem('darkMode') === 'true';
+            return localStorage.getItem('sidebarCollapsed') === 'true';
         } catch (error) {
             return false;
         }
     })(),
+    toggleSidebar() {
+        this.collapsed = !this.collapsed;
+        try {
+            localStorage.setItem('sidebarCollapsed', this.collapsed);
+        } catch (error) {
+            return;
+        }
+    },
+}));
+
+Alpine.data('landingPage', () => ({
     language: (() => {
         try {
             return localStorage.getItem('landingLanguage') === 'tl' ? 'tl' : 'en';
@@ -56,79 +67,72 @@ Alpine.data('landingPage', () => ({
     })(),
     copy: {
         en: {
-            community: 'For the people of Barangay Maimpis',
-            headline: 'Let’s take care of our barangay.',
-            headlineAccent: 'Together.',
-            introduction: 'Share a concern, follow its updates, and connect with our barangay officials and tanod to help keep Maimpis safe.',
-            createAccount: 'Create a resident account',
-            join: 'Join',
-            signIn: 'Sign in',
-            emergencyTitle: 'Need urgent help?',
-            emergency: 'Emergency? Call 911. CivicGuard reports are not monitored in real time.',
-            processIntro: 'From our kababayans, for our barangay',
-            processTitle: 'Every concern has a next step.',
-            reportStep: 'Share your concern',
-            reportDescription: 'Add the details and location so the right team can review it.',
-            staffStep: 'Barangay staff follow up',
-            staffDescription: 'Our officials and tanod review and respond to reports.',
-            progressStep: 'Follow the updates',
-            progressDescription: 'Check the status and let us know when the concern is resolved.',
-            residentsTitle: 'For residents',
-            howItWorks: 'How we can help one another',
-            teamwork: 'Working together helps the barangay respond more effectively.',
-            residentDescription: 'Report an incident, check its progress, and receive important updates from the barangay.',
-            getStarted: 'Get started',
+            headline: 'Report an issue in',
+            headlineAccent: ' Barangay Maimpis.',
+            introduction: 'Report an incident, then follow its progress here. CivicGuard connects residents with barangay staff.',
+            startTitle: 'What would you like to do?',
+            residentPathTitle: 'I live in Maimpis',
+            residentPathDescription: 'Create a resident account to report an issue and follow updates.',
+            residentAction: 'Create a resident account',
+            existingAccount: 'Already have an account? Sign in',
+            staffPathTitle: 'I work for the barangay',
+            staffPathDescription: 'Sign in to review reports and share updates with residents.',
+            staffAction: 'Staff sign in',
             dashboard: 'Go to your dashboard',
-            staffTitle: 'For barangay officials and tanod',
-            staffDescription: 'Review reports, prioritize urgent concerns, and keep residents updated.',
-            staffSignIn: 'Staff sign in',
-            footerBrand: 'Barangay Maimpis Incident Management',
+            howItWorks: 'See how it works',
+            howHeading: 'What happens after you report?',
+            howDescription: 'You can follow each report from your account. Here is what to expect.',
+            reportStep: 'Create a resident account',
+            reportDescription: 'Sign up to send a report and see its updates.',
+            staffStep: 'Tell us what happened',
+            staffDescription: 'Choose a category, describe the issue, and enter its location. Adding a photo is optional.',
+            progressStep: 'Check the report status',
+            progressDescription: 'Barangay staff review the report and post updates for you to follow.',
+            emergencyTitle: 'Is someone in immediate danger?',
+            emergency: 'Call 911 for emergencies. CivicGuard reports are not monitored in real time.',
+            call911: 'Call 911',
+            processIntro: 'For residents',
+            footerBrand: 'CivicGuard · Barangay Maimpis Incident Management',
             footerEmergency: 'For emergencies, call 911.',
-            chooseLanguage: 'Choose page language',
+            navigation: 'Main navigation',
+            startLabel: 'Choose how to continue',
+            homeLink: 'CivicGuard, Barangay Maimpis home',
         },
         tl: {
-            community: 'Para sa mga kababayan ng Barangay Maimpis',
-            headline: 'Pangalagaan natin ang ating barangay.',
-            headlineAccent: 'Sama-sama.',
-            introduction: 'Ipaabot ang inyong mga alalahanin, subaybayan ang tugon, at makipag-ugnayan sa mga opisyal at tanod para sa mas ligtas na Maimpis.',
-            createAccount: 'Gumawa ng account ng residente',
-            join: 'Sumali',
-            signIn: 'Magpatuloy',
-            emergencyTitle: 'Kailangan ng agarang tulong?',
-            emergency: 'May agarang panganib? Tumawag sa 911. Hindi agad natutugunan ang mga ulat sa CivicGuard.',
-            processIntro: 'Mula sa mga kababayan, para sa barangay',
-            processTitle: 'Bawat alalahanin ay may kasunod na hakbang.',
-            reportStep: 'Ipaabot ang alalahanin',
-            reportDescription: 'Ibigay ang detalye at lokasyon upang masuri ito ng kinauukulang pangkat.',
-            staffStep: 'Kikilos ang barangay',
-            staffDescription: 'Susuriin at aaksiyunan ng mga opisyal at tanod ang mga ulat.',
-            progressStep: 'Subaybayan ang tugon',
-            progressDescription: 'Tingnan ang kalagayan ng ulat at ipaalam kung nalutas na ang alalahanin.',
-            residentsTitle: 'Para sa mga residente',
-            howItWorks: 'Paano tayo makatutulong sa isa’t isa',
-            teamwork: 'Mas maayos ang pagtugon kapag nagtutulungan ang mga residente at ang barangay.',
-            residentDescription: 'Mag-ulat ng insidente, subaybayan ang pag-usad nito, at tumanggap ng mahahalagang abiso mula sa barangay.',
-            getStarted: 'Magsimula',
-            dashboard: 'Buksan ang pahina ng buod',
-            staffTitle: 'Para sa mga opisyal at tanod',
-            staffDescription: 'Suriin ang mga ulat, unahin ang mga agarang alalahanin, at ipaalam ang mga tugon sa mga residente.',
-            staffSignIn: 'Pagpasok ng kawani',
-            footerBrand: 'Pamamahala ng mga insidente sa Barangay Maimpis',
+            headline: 'Mag-ulat ng insidente',
+            headlineAccent: ' sa Maimpis.',
+            introduction: 'Mag-ulat ng insidente at subaybayan dito ang pag-usad nito. Iniuugnay ng CivicGuard ang mga residente sa mga kawani ng barangay.',
+            startTitle: 'Ano ang nais ninyong gawin?',
+            residentPathTitle: 'Nakatira ako sa Maimpis',
+            residentPathDescription: 'Gumawa ng account ng residente upang mag-ulat ng problema at subaybayan ang mga update.',
+            residentAction: 'Gumawa ng account ng residente',
+            existingAccount: 'May account na? Mag-sign in',
+            staffPathTitle: 'Kawani ako ng barangay',
+            staffPathDescription: 'Mag-sign in upang suriin ang mga ulat at magbahagi ng mga update sa mga residente.',
+            staffAction: 'Pagpasok ng kawani',
+            dashboard: 'Buksan ang dashboard',
+            howItWorks: 'Tingnan ang mga hakbang',
+            howHeading: 'Ano ang mangyayari pagkatapos mag-ulat?',
+            howDescription: 'Maaari ninyong subaybayan ang bawat ulat sa inyong account. Narito ang mga susunod na hakbang.',
+            reportStep: 'Gumawa ng account ng residente',
+            reportDescription: 'Mag-sign up upang makapag-ulat at makita ang mga update.',
+            staffStep: 'Ilarawan ang nangyari',
+            staffDescription: 'Pumili ng kategorya, ilarawan ang problema, at ilagay ang lokasyon. Opsyonal ang pagdagdag ng larawan.',
+            progressStep: 'Tingnan ang kalagayan ng ulat',
+            progressDescription: 'Susuriin ng mga kawani ng barangay ang ulat at maglalagay ng mga update para masubaybayan ninyo.',
+            emergencyTitle: 'May taong nasa agarang panganib?',
+            emergency: 'Tumawag sa 911 kapag may emergency. Hindi agad nababantayan ang mga ulat sa CivicGuard.',
+            call911: 'Tumawag sa 911',
+            processIntro: 'Para sa mga residente',
+            footerBrand: 'CivicGuard · Pamamahala ng mga insidente sa Barangay Maimpis',
             footerEmergency: 'Sa oras ng kagipitan, tumawag sa 911.',
-            chooseLanguage: 'Pumili ng wika',
+            navigation: 'Pangunahing nabigasyon',
+            startLabel: 'Piliin kung paano magpatuloy',
+            homeLink: 'CivicGuard, tahanan ng Barangay Maimpis',
         },
     },
     text(key) {
         return this.copy[this.language][key];
-    },
-    init() {
-        this.$watch('darkMode', value => {
-            try {
-                localStorage.setItem('darkMode', value);
-            } catch (error) {
-                return;
-            }
-        });
     },
     setLanguage(language) {
         this.language = language;

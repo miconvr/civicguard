@@ -30,17 +30,27 @@
         x-transition:leave-start="translate-x-0"
         x-transition:leave-end="-translate-x-full"
         id="primary-navigation"
+        :class="collapsed ? 'lg:!w-[76px]' : 'lg:!w-64'"
         class="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] flex flex-col border-r border-stone-200 cg-canvas dark:border-[#3d3d3a] dark:bg-[#222221] lg:!flex lg:w-64 lg:max-w-none lg:sticky lg:top-0 lg:h-screen"
     >
         <!-- Brand -->
-        <div class="h-16 flex items-center justify-between border-b border-stone-200/80 px-5 shrink-0 dark:border-[#3d3d3a]/80">
-            <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5">
+        <div class="h-16 flex items-center justify-between border-b border-stone-200/80 px-5 shrink-0 dark:border-[#3d3d3a]/80 cg-sidebar-brand">
+            <a href="{{ route('dashboard') }}" aria-label="CivicGuard" class="flex items-center gap-2.5 min-w-0">
                 <x-application-logo class="h-8 w-auto text-maroon-700" />
-                <span class="leading-tight">
+                <span class="cg-sidebar-label leading-tight">
                     <span class="block font-sans font-bold text-sm text-maroon-800 dark:text-gray-100">CivicGuard</span>
                     <span class="block text-[10px] uppercase tracking-wider text-stone-500 dark:text-gray-500">Brgy. Maimpis</span>
                 </span>
             </a>
+            <button type="button" @click="toggleSidebar()" :aria-expanded="(!collapsed).toString()" aria-controls="primary-navigation"
+                    :aria-label='collapsed ? @js(__('Expand sidebar')) : @js(__('Collapse sidebar'))'
+                    :title='collapsed ? @js(__('Expand sidebar')) : @js(__('Collapse sidebar'))'
+                    class="hidden lg:inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-stone-500 hover:bg-black/5 hover:text-maroon-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white"
+                    data-testid="sidebar-toggle">
+                <svg class="h-5 w-5 transition-transform duration-200" :class="collapsed ? 'rotate-180' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5H6A1.5 1.5 0 0 0 4.5 6v12A1.5 1.5 0 0 0 6 19.5h12a1.5 1.5 0 0 0 1.5-1.5V6A1.5 1.5 0 0 0 18 4.5h-3M9 4.5v15M15.75 9.75 13.5 12l2.25 2.25" />
+                </svg>
+            </button>
             <button @click="open = false" aria-label="Close menu" class="lg:hidden p-2 -mr-2 text-stone-400 hover:text-stone-600 dark:hover:text-gray-200">
                 <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
@@ -53,7 +63,7 @@
             $role = Auth::user()->role;
             $isStaff = in_array($role, ['tanod', 'admin', 'official']);
             $unreadCount = \App\Models\AppNotification::where('user_id', auth()->id())->where('is_read', false)->count();
-            $groupLabel = 'px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400';
+            $groupLabel = 'cg-sidebar-label px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400';
         @endphp
         <nav class="flex-1 overflow-y-auto overscroll-contain px-3 py-4 space-y-1" aria-label="{{ __('Main menu') }}">
             <x-sidebar-link icon="home" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -127,10 +137,24 @@
             <!-- Profile (menu opens upward) -->
             <div x-data="{ menu: false }" @click.outside="menu = false" @keydown.escape.window="menu = false" class="relative">
                 <div x-show="menu" x-cloak x-transition.origin.bottom
+                     :class="collapsed ? 'lg:w-64' : ''"
                      class="absolute bottom-full left-0 right-0 mb-2 rounded-xl border border-stone-200 cg-surface-raised py-1 shadow-lg dark:border-gray-700 dark:bg-[#262624]">
                     <a href="{{ route('profile.edit') }}" class="block px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
                         {{ __('Profile') }}
                     </a>
+                    <button type="button" role="switch" aria-label="{{ __('Toggle dark mode') }}" :aria-checked="darkMode.toString()" @click="darkMode = !darkMode"
+                            class="flex min-h-11 w-full items-center justify-between px-4 py-2 text-left text-sm text-stone-700 hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-maroon-700 dark:text-gray-200 dark:hover:bg-white/5">
+                        <span class="flex items-center gap-2">
+                            <svg x-show="!darkMode" class="h-4 w-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                <circle cx="12" cy="12" r="4"></circle><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l-1.42 1.42m11.3-11.3-1.42-1.42"></path>
+                            </svg>
+                            <svg x-show="darkMode" class="h-4 w-4 text-maroon-600 dark:text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"></path>
+                            </svg>
+                            <span>{{ __('Appearance') }}</span>
+                        </span>
+                        <span class="text-xs text-stone-600 dark:text-gray-400" x-text='darkMode ? @js(__('Dark')) : @js(__('Light'))'></span>
+                    </button>
                     <div class="my-1 border-t border-stone-200 dark:border-gray-700"></div>
                     <div class="flex items-center gap-2 px-4 pt-1 pb-1">
                         <span class="text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400">{{ __('Language') }}</span>
@@ -151,32 +175,19 @@
                     </form>
                 </div>
 
-                <button @click="menu = !menu" :aria-expanded="menu.toString()" aria-haspopup="true" class="w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 transition">
+                <button @click="menu = !menu" :aria-expanded="menu.toString()" aria-haspopup="true" aria-label="{{ Auth::user()->name }} {{ __('Account menu') }}" :title='collapsed ? @js(Auth::user()->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 transition">
                     <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-sm font-semibold text-white">
                         {{ strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}
                     </span>
-                    <span class="min-w-0 flex-1 leading-tight">
+                    <span class="cg-sidebar-label min-w-0 flex-1 leading-tight">
                         <span class="block truncate text-sm font-semibold text-stone-800 dark:text-gray-100">{{ Auth::user()->name }}</span>
                         <span class="block truncate text-xs font-medium text-maroon-700 dark:text-[#c27872]">{{ $roleLabel }}</span>
                     </span>
-                    <svg class="h-4 w-4 shrink-0 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <svg class="cg-sidebar-label h-4 w-4 shrink-0 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                     </svg>
                 </button>
             </div>
-            <button type="button" role="switch" :aria-checked="darkMode.toString()" @click="darkMode = !darkMode"
-                    class="flex min-h-11 w-full items-center justify-between rounded-xl border border-stone-200/80 px-3 text-left text-sm font-medium text-stone-700 transition hover:border-maroon-300 hover:bg-white/60 dark:border-[#3d3d3a] dark:text-gray-200 dark:hover:border-gray-500 dark:hover:bg-white/[0.04]">
-                <span class="flex items-center gap-2">
-                    <svg x-show="!darkMode" class="h-4 w-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                        <circle cx="12" cy="12" r="4"></circle><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>
-                    </svg>
-                    <svg x-show="darkMode" class="h-4 w-4 text-maroon-600 dark:text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"></path>
-                    </svg>
-                    <span>{{ __('Appearance') }}</span>
-                </span>
-                <span class="text-xs text-stone-600 dark:text-gray-400" x-text="darkMode ? '{{ __('Dark') }}' : '{{ __('Light') }}'"></span>
-            </button>
         </div>
     </aside>
 </div>
