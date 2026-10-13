@@ -4,6 +4,8 @@ test('registration screen can be rendered', function () {
     $response = $this->get('/register');
 
     $response->assertStatus(200)
+        ->assertSee('cg-auth-layout', false)
+        ->assertSee('cg-auth-card', false)
         ->assertDontSee('Switch to dark mode')
         ->assertDontSee('darkMode');
 });
