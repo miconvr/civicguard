@@ -15,12 +15,12 @@ $icons = [
 ];
 
 $classes = $active
-    ? 'group flex min-h-11 items-center gap-3 rounded-lg bg-maroon-50/80 px-3 py-2.5 text-sm font-semibold text-maroon-900 transition dark:bg-[#302425] dark:text-[#ead6d7]'
-    : 'group flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-stone-700 hover:bg-white/70 hover:text-stone-950 dark:text-gray-300 dark:hover:bg-white/[0.06] dark:hover:text-white transition';
+    ? 'group flex min-h-11 items-center gap-3 rounded-lg bg-white/15 px-3 py-2.5 text-sm font-semibold text-white transition'
+    : 'group flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white transition';
 
 $iconClasses = $active
-    ? 'h-5 w-5 shrink-0 text-maroon-700 dark:text-[#c27872]'
-    : 'h-5 w-5 shrink-0 text-stone-500 group-hover:text-maroon-700 dark:text-gray-400 dark:group-hover:text-[#c27872]';
+    ? 'h-5 w-5 shrink-0 text-white'
+    : 'h-5 w-5 shrink-0 text-white/70 group-hover:text-white';
 $label = trim(strip_tags((string) $slot));
 @endphp
 
