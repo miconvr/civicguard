@@ -15,6 +15,19 @@
         --cg-focus: #8f1d39;
         --cg-radius: 0.75rem;
         --cg-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        --cg-motion-fast: 150ms;
+        --cg-motion-page: 260ms;
+        --dropdown-open-dur: 180ms;
+        --dropdown-close-dur: 120ms;
+        --dropdown-pre-scale: 0.97;
+        --dropdown-closing-scale: 0.99;
+        --dropdown-ease: cubic-bezier(0.22, 1, 0.36, 1);
+        --check-opacity-dur: 240ms;
+        --check-path-dur: 220ms;
+        --check-path-delay: 35ms;
+        --check-rotate-from: -12deg;
+        --check-y-amount: 5px;
+        --check-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     :root.dark {
@@ -83,13 +96,71 @@
     .cg-surface-raised { background-color: var(--cg-surface-raised); }
     .cg-surface-tint { background-color: var(--cg-canvas); }
 
+    .cg-page-enter {
+        animation: cg-page-enter var(--cg-motion-page) var(--cg-ease-out) both;
+    }
+
+    .cg-page-enter-late { animation-delay: 60ms; }
+
+    .t-dropdown {
+        transform-origin: bottom left;
+        transition:
+            transform var(--dropdown-open-dur) var(--dropdown-ease),
+            opacity var(--dropdown-open-dur) var(--dropdown-ease);
+    }
+
+    .t-dropdown-start {
+        transform: scale(var(--dropdown-pre-scale));
+        opacity: 0;
+    }
+
+    .t-dropdown-open {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    .t-dropdown-close {
+        transform: scale(var(--dropdown-closing-scale));
+        opacity: 0;
+        transition-duration: var(--dropdown-close-dur);
+    }
+
+    .t-success-check {
+        display: inline-flex;
+        opacity: 0;
+        transform: translateY(var(--check-y-amount)) rotate(var(--check-rotate-from));
+    }
+
+    .t-success-check svg { display: block; overflow: visible; }
+
+    .t-success-check svg path {
+        stroke-dasharray: 20;
+        stroke-dashoffset: 20;
+    }
+
+    .t-success-check[data-state="in"] {
+        animation: t-success-check-reveal var(--check-opacity-dur) var(--check-ease-out) forwards;
+    }
+
+    .t-success-check[data-state="in"] svg path {
+        animation: t-success-check-draw var(--check-path-dur) var(--check-ease-out) var(--check-path-delay) forwards;
+    }
+
+    @keyframes t-success-check-reveal {
+        to { opacity: 1; transform: translateY(0) rotate(0); }
+    }
+
+    @keyframes t-success-check-draw {
+        to { stroke-dashoffset: 0; }
+    }
+
     .cg-card {
         @apply p-5 sm:p-6 text-gray-800 dark:text-gray-200;
         background-color: var(--cg-surface);
         border: 1px solid var(--cg-border);
         border-radius: var(--cg-radius);
         box-shadow: none;
-        transition: border-color 180ms var(--cg-ease-out), background-color 180ms var(--cg-ease-out);
+        transition: border-color 180ms var(--cg-ease-out), background-color 180ms var(--cg-ease-out), transform 180ms var(--cg-ease-out);
     }
 
     .dark .cg-card {
@@ -156,7 +227,7 @@
         @apply cursor-wait opacity-70;
     }
 
-    @media (hover: hover) and (pointer: fine) {
+    @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
         .cg-btn:not(:disabled):not([aria-disabled="true"]):hover {
             transform: translateY(-1px);
         }
@@ -273,6 +344,12 @@
     .cg-reading-width {
         max-width: 68ch;
     }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .t-dropdown { transition: none !important; }
+    .t-success-check { animation: none !important; opacity: 1; transform: none; }
+    .t-success-check svg path { animation: none !important; stroke-dashoffset: 0 !important; }
 }
 
 @keyframes cg-intro-enter {
@@ -395,12 +472,38 @@
     .cg-btn-secondary {
         @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-maroon-700 hover:text-maroon-700 dark:border-gray-600 dark:bg-transparent dark:text-gray-200 dark:hover:text-white;
         background-color: var(--cg-surface-raised);
+        transition: border-color var(--cg-motion-fast) var(--cg-ease-out), color var(--cg-motion-fast) var(--cg-ease-out), background-color var(--cg-motion-fast) var(--cg-ease-out), transform var(--cg-motion-fast) var(--cg-ease-out);
     }
     .cg-pill { @apply inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium; }
     .cg-pill-pending { @apply bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200; }
     .cg-pill-in_progress { @apply bg-blue-100 text-blue-900 dark:bg-blue-900/40 dark:text-blue-200; }
     .cg-pill-resolved { @apply bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-200; }
     .cg-muted { @apply text-gray-600 dark:text-gray-400; }
+}
+
+@keyframes cg-page-enter {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .cg-btn-secondary:not(:disabled):not([aria-disabled="true"]):hover {
+        transform: translateY(-1px);
+    }
+
+    a.cg-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .cg-sidebar-link:hover {
+        transform: translateX(2px);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

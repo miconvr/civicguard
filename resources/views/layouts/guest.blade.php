@@ -21,7 +21,7 @@
     <body class="font-sans text-ink antialiased bg-paper">
         <div class="min-h-screen flex flex-col sm:justify-center items-center px-4 py-20 sm:py-12">
 
-            <div class="text-center mb-4">
+            <div class="cg-page-enter text-center mb-4">
                 <a href="/">
                     <x-application-logo class="w-16 h-16 fill-current text-maroon-700 dark:text-gray-100 mx-auto" />
                 </a>
@@ -29,7 +29,7 @@
                 <p class="text-sm text-stone-600 dark:text-gray-300 mt-1">Barangay Maimpis Incident Management</p>
             </div>
 
-            <div class="w-full sm:max-w-md mt-2 px-6 py-8 cg-surface dark:bg-[#262624] overflow-hidden rounded-xl border border-stone-200 dark:border-[#3d3d3a]">
+            <div class="cg-page-enter cg-page-enter-late w-full sm:max-w-md mt-2 px-6 py-8 cg-surface dark:bg-[#262624] overflow-hidden rounded-xl border border-stone-200 dark:border-[#3d3d3a]">
                 {{ $slot }}
             </div>
 
