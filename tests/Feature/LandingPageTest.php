@@ -15,6 +15,8 @@ test('public landing page clearly links to resident and staff entry points', fun
         ->assertSee('I work for the barangay')
         ->assertSee('See how it works')
         ->assertSee('id="get-started"', false)
+        ->assertSee('id="main-content" class="cg-page-enter"', false)
+        ->assertSee('data-reveal', false)
         ->assertSee('Call 911 for emergencies. CivicGuard reports are not monitored in real time.')
         ->assertSee('href="tel:911"', false)
         ->assertSee('What happens after you report?')

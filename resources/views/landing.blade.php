@@ -47,7 +47,7 @@
                 </nav>
             </header>
 
-            <main id="main-content">
+            <main id="main-content" class="cg-page-enter">
                 <section class="mx-auto grid max-w-7xl gap-10 px-4 pb-14 pt-12 sm:px-6 sm:pb-16 sm:pt-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:px-8 lg:pb-20 lg:pt-20">
                     <div class="max-w-3xl">
                         <h1 class="cg-intro-enter max-w-none text-[2.125rem] leading-[1.08] max-[360px]:text-[1.875rem] sm:max-w-[16ch] sm:text-6xl lg:max-w-[14ch]">
@@ -87,7 +87,7 @@
                     </aside>
                 </section>
 
-                <section aria-labelledby="emergency-title" class="border-y border-[#e8d6d0] bg-[#f1e8e2] dark:border-[#51413e] dark:bg-[#302724]">
+                <section aria-labelledby="emergency-title" class="border-y border-[#e8d6d0] bg-[#f1e8e2] dark:border-[#51413e] dark:bg-[#302724]" data-reveal>
                     <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
                         <div>
                             <h2 id="emergency-title" class="font-sans text-sm font-bold tracking-normal text-[#5e2630] dark:text-[#f0c5c1]" x-text="text('emergencyTitle')">Is someone in immediate danger?</h2>

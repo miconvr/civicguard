@@ -21,7 +21,8 @@
 * **Analytics** with charts, KPI cards, and on-demand AI insights
 * **Curfew logging** for tanods
 * **Audit logs** and PDF exports
-* **English and Tagalog**, plus light and dark mode
+* **English and Tagalog**, light and dark mode in the signed-in app, and a light-only public experience
+* **Responsive navigation** with a collapsible desktop sidebar and mobile drawer
 
 ## User Roles
 
@@ -38,15 +39,15 @@ New sign-ups are always created as residents.
 
 ## Tech Stack
 
-Laravel 12 (Breeze, Blade, Alpine.js), Tailwind CSS 4, MySQL, Laravel Sail (Docker), DomPDF, Chart.js, and the Google Gemini API.
+Laravel 12 (Breeze, Blade, Alpine.js), PHP 8.2 or later, Tailwind CSS 4, MySQL 8.4, Laravel Sail (Docker), DomPDF, Chart.js, and the Google Gemini API.
 
 ---
 
 ## Requirements
 
-* **Docker Desktop** installed and running
+* **Docker Desktop** with Docker Compose, installed and running
 * **Git**
-* A terminal (Windows: WSL/Ubuntu recommended; macOS/Linux: native terminal)
+* A terminal (Windows: use WSL/Ubuntu for the commands below; macOS/Linux: use a native terminal)
 * A **Gemini API key** (optional, see [AI features](#ai-features-and-privacy))
 
 ---
@@ -66,22 +67,22 @@ cd civicguard
 cp .env.example .env
 ```
 
-Open `.env` and set your key (never commit this file):
+Open `.env` and set your key if you want the Gemini-powered features (never commit this file):
 
 ```
 GEMINI_API_KEY=your-key-here
 ```
 
-Set `DB_PASSWORD` to a unique, non-empty password before starting Docker Compose. The same value is used for the local MySQL account and phpMyAdmin.
+Set `DB_PASSWORD` to a unique, non-empty password before starting Docker Compose. The same value is used for the local MySQL account and phpMyAdmin. `.env` is local configuration and must not be committed.
 
-The database is published on `127.0.0.1:3340` by default; change `FORWARD_DB_PORT` if that port is already in use.
+The database is published on `127.0.0.1:3340` by default; change `FORWARD_DB_PORT` if that port is already in use. The app uses port `80` by default; set `APP_PORT` in `.env` if it is occupied.
 
 ### 3. Install PHP dependencies
 
-A fresh clone has no `vendor/` folder yet, so use this one-time command. If your `docker-compose.yml` uses a different PHP version, match the image tag.
+A fresh clone has no `vendor/` folder yet. Use the published Sail PHP 8.4 Composer helper for the initial dependency install. The app runtime itself is built from PHP 8.5; `composer.json` requires PHP `^8.2` and resolves dependencies against the PHP 8.2.12 platform:
 
 ```bash
-docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php83-composer:latest composer install --ignore-platform-reqs
+docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php84-composer:latest composer install
 ```
 
 ### 4. Start Docker
@@ -103,16 +104,16 @@ docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/htm
 ./vendor/bin/sail artisan storage:link
 ```
 
-> **Using an existing database?** Import your CivicGuard `.sql` backup through phpMyAdmin instead of running `migrate --seed` on it.
+`migrate --seed` is for a fresh local database. If you already have CivicGuard data, back it up first and run `./vendor/bin/sail artisan migrate` to apply pending migrations. Do not use `migrate:fresh` or re-seed an existing database. If you are moving an existing database to this computer, restore its SQL backup before starting the app.
 
 ### 7. Install and start the frontend
 
 ```bash
-./vendor/bin/sail npm install
+./vendor/bin/sail npm ci
 ./vendor/bin/sail npm run dev
 ```
 
-Keep `npm run dev` running while developing. For a one-time build, use `./vendor/bin/sail npm run build`.
+Keep the Vite development command running while developing. For a one-time production asset build, use `./vendor/bin/sail npm run build`.
 
 ### 8. Create the first admin
 
@@ -132,18 +133,88 @@ Keep `npm run dev` running while developing. For a one-time build, use `./vendor
 ```bash
 cd ~/civicguard
 ./vendor/bin/sail up -d          # start
-./vendor/bin/sail npm run dev    # frontend
-./vendor/bin/sail stop           # stop
+./vendor/bin/sail npm run dev    # keep running in this terminal while developing
+```
+
+Stop the development server with `Ctrl+C`, then stop the containers:
+
+```bash
+./vendor/bin/sail stop
 ```
 
 ## Local Services
 
 | Service | URL |
 | --- | --- |
-| **CivicGuard** | http://localhost |
+| **CivicGuard** | http://localhost (or `http://localhost:<APP_PORT>` if you changed the port) |
 | **phpMyAdmin** | http://localhost:8080 |
 
 Use the database credentials from your `.env` file for phpMyAdmin.
+
+### Port already in use
+
+If Docker cannot publish a port, change the matching value in `.env`, then recreate the containers:
+
+```dotenv
+APP_PORT=8081
+FORWARD_DB_PORT=3341
+```
+
+```bash
+./vendor/bin/sail down
+./vendor/bin/sail up -d
+```
+
+Use `APP_PORT` for a conflict on the web app port and `FORWARD_DB_PORT` for a conflict on the host MySQL port. This changes the host port only; the app container continues to reach MySQL at `mysql:3306`. `sail down` preserves the named MySQL volume. Do not add `-v` if you need to keep the local database.
+
+---
+
+## Production deployment
+
+This repository currently provides a **local development setup with Laravel Sail**, not a production deployment for a specific cloud host. Choose and configure a production host, managed database, and persistent file storage before exposing CivicGuard publicly. Do not publish the local phpMyAdmin service or the MySQL port to the internet.
+
+Before serving real residents:
+
+1. Configure production secrets outside Git: `APP_ENV=production`, `APP_DEBUG=false`, a unique `APP_KEY`, the production `APP_URL`, and private database credentials. Serve the app over HTTPS.
+2. Configure production mail delivery. The example `.env` uses the `log` mailer, which does not deliver password-reset or verification email.
+3. Build dependencies and frontend assets for production:
+
+   ```bash
+   composer install --no-dev --optimize-autoloader
+   npm ci
+   npm run build
+   ```
+
+4. Run database migrations once during release:
+
+   ```bash
+   php artisan migrate --force
+   ```
+
+   Do not run seeders against a production database unless each seeder has been reviewed for that environment.
+5. Make report-photo storage persistent and writable by the app, and run `php artisan storage:link` if using Laravel's public local disk. Back up the database and uploaded files, and test restoring those backups.
+6. Configure the host's process manager for any queue work you enable. The default queue connection is `database`; monitor failed jobs and application logs.
+7. Configure `GEMINI_API_KEY` only if the barangay approves sending report content to Google Gemini. Review [AI features and privacy](#ai-features-and-privacy) and publish an appropriate privacy notice.
+
+The above is a deployment checklist, not a ready-to-run production Docker image or hosting recipe. Production networking, TLS, database, storage, mail, backups, monitoring, and release automation depend on the hosting provider.
+
+## Running tests
+
+With the Sail container running, execute the Laravel feature and unit tests with:
+
+```bash
+./vendor/bin/sail artisan test
+```
+
+Check the production frontend bundle with:
+
+```bash
+./vendor/bin/sail npm run build
+```
+
+## UI motion
+
+Pages use a brief entrance, selected landing and dashboard content reveals as it scrolls into view, and restrained hover feedback on interactive cards, buttons, and navigation. The signed-in account menu uses an origin-aware dropdown transition, and successful report actions show a brief animated check. Motion respects `prefers-reduced-motion` and does not hide content when animation is disabled. The CSS is included in the app, with no runtime package dependency. The dropdown and success-check patterns are adapted from [transitions.dev](https://transitions.dev/), whose free recipes may be used in personal and commercial projects under its terms. See the [Transitions.dev repository](https://github.com/Jakubantalik/transitions.dev).
 
 ---
 

@@ -135,8 +135,15 @@
             @endphp
 
             <!-- Profile (menu opens upward) -->
-            <div x-data="{ menu: false }" @click.outside="menu = false" @keydown.escape.window="menu = false" class="relative">
-                <div x-show="menu" x-cloak x-transition.origin.bottom
+            <div x-data="{ menu: false }" @click.outside="menu = false" @keydown.escape.window="if (menu) { menu = false; $nextTick(() => $refs.accountTrigger.focus()); }" class="relative">
+                <div x-show="menu" x-cloak
+                     x-transition:enter="t-dropdown"
+                     x-transition:enter-start="t-dropdown-start"
+                     x-transition:enter-end="t-dropdown-open"
+                     x-transition:leave="t-dropdown"
+                     x-transition:leave-start="t-dropdown-open"
+                     x-transition:leave-end="t-dropdown-close"
+                     id="account-menu" aria-label="{{ __('Account menu') }}" role="group"
                      :class="collapsed ? 'lg:w-64' : ''"
                      class="absolute bottom-full left-0 right-0 mb-2 rounded-xl border border-stone-200 cg-surface-raised py-1 shadow-lg dark:border-gray-700 dark:bg-[#262624]">
                     <a href="{{ route('profile.edit') }}" class="block px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
@@ -175,7 +182,7 @@
                     </form>
                 </div>
 
-                <button @click="menu = !menu" :aria-expanded="menu.toString()" aria-haspopup="true" aria-label="{{ Auth::user()->name }} {{ __('Account menu') }}" :title='collapsed ? @js(Auth::user()->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 transition">
+                <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu" aria-label="{{ Auth::user()->name }} {{ __('Account menu') }}" :title='collapsed ? @js(Auth::user()->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 transition">
                     <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-sm font-semibold text-white">
                         {{ strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}
                     </span>

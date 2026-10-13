@@ -10,7 +10,9 @@ test('each user role can render its role-specific dashboard', function (string $
         ->assertOk()
         ->assertSee('Good day,')
         ->assertSee(ucfirst($role))
+        ->assertSee('class="cg-page-enter flex-1"', false)
         ->assertSee('data-testid="sidebar-toggle"', false)
+        ->assertSee('x-transition:enter="t-dropdown"', false)
         ->assertSee('aria-label="Toggle dark mode"', false)
         ->assertSeeInOrder([
             'href="'.route('profile.edit').'"',
