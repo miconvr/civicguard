@@ -27,6 +27,7 @@ function initializeScrollReveals() {
     document.addEventListener('focusin', event => {
         const element = event.target.closest('[data-reveal]');
         if (element) {
+            element.classList.add('cg-motion-immediate');
             element.classList.add('is-visible');
             observer.unobserve(element);
         }
