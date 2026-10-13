@@ -11,6 +11,7 @@ test('each user role can render its role-specific dashboard', function (string $
         ->assertSee('Good day,')
         ->assertSee(ucfirst($role))
         ->assertSee('class="cg-page-enter flex-1"', false)
+        ->assertSee('aria-current="page"', false)
         ->assertSee('data-testid="sidebar-toggle"', false)
         ->assertSee('x-transition:enter="t-dropdown"', false)
         ->assertSee('aria-label="Toggle dark mode"', false)
