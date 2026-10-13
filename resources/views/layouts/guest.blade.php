@@ -34,21 +34,6 @@
             </section>
 
             <p class="cg-auth-emergency text-center text-sm">{{ __('In immediate danger? Call 911 first.') }}</p>
-
-            <div class="cg-auth-credits w-full px-2">
-                <div class="border-t pt-4">
-                    <p class="mb-2 text-center text-xs">Developed by</p>
-                    <div class="flex flex-wrap justify-center gap-x-2 gap-y-1 text-xs font-medium">
-                        <span>Mico Gerard Navarro</span>
-                        <span aria-hidden="true">&bull;</span>
-                        <span>Franz Mikey Reyes</span>
-                        <span aria-hidden="true">&bull;</span>
-                        <span>Carl Spencer Talon</span>
-                        <span aria-hidden="true">&bull;</span>
-                        <span>Adriann Enriquez</span>
-                    </div>
-                </div>
-            </div>
         </main>
     </body>
 </html>
