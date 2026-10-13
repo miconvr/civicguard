@@ -38,7 +38,7 @@ test('staff roles can render the incident queue', function (string $role) {
         ->assertOk()
         ->assertSee('Incident Queue')
         ->assertSee('Search by category, location, or report details')
-        ->assertSee('bg-maroon-50/80')
+        ->assertSee('bg-white/15')
         ->assertDontSee('border-l-2 border-maroon-700');
 })->with(['tanod', 'official', 'admin']);
 
