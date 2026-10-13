@@ -18,36 +18,39 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-ink antialiased bg-paper">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center px-4 py-20 sm:py-12">
-
-            <div class="cg-page-enter text-center mb-4">
-                <a href="/">
-                    <x-application-logo class="w-16 h-16 fill-current text-maroon-700 dark:text-gray-100 mx-auto" />
+    <body class="cg-auth-shell font-sans text-ink antialiased">
+        <main class="cg-auth-layout mx-auto flex min-h-[100svh] w-full max-w-lg flex-col items-center justify-center gap-6 px-4 py-10 sm:px-6">
+            <div class="cg-auth-brand cg-page-enter w-full text-center">
+                <a href="/" class="cg-auth-mark">
+                    <x-application-logo class="h-10 w-10" />
                 </a>
-                <h1 class="mt-2 font-sans text-3xl font-bold tracking-tight text-maroon-900">CivicGuard</h1>
-                <p class="text-sm text-stone-600 dark:text-gray-300 mt-1">Barangay Maimpis Incident Management</p>
+                <h1 class="mt-4 font-sans text-3xl font-bold tracking-tight text-white">CivicGuard</h1>
+                <p class="mt-1 text-sm">Barangay Maimpis Incident Management</p>
+                <div class="cg-auth-emergency mx-auto mt-5 max-w-sm border-t pt-4 text-sm leading-6">
+                    <p>{{ __('In immediate danger? Call 911 first.') }}</p>
+                </div>
             </div>
 
-            <div class="cg-page-enter cg-page-enter-late w-full sm:max-w-md mt-2 px-6 py-8 cg-surface dark:bg-[#262624] overflow-hidden rounded-xl border border-stone-200 dark:border-[#3d3d3a]">
-                {{ $slot }}
-            </div>
+            <section class="w-full" aria-label="{{ __('Account access') }}">
+                <div class="cg-auth-card cg-page-enter cg-page-enter-late mx-auto w-full overflow-hidden border px-6 py-8 sm:px-8">
+                    {{ $slot }}
+                </div>
+            </section>
 
-            <div class="mt-8 w-full max-w-md px-4">
-                <div class="border-t border-stone-300 dark:border-gray-700 pt-4">
-                    <p class="text-xs text-stone-400 dark:text-gray-500 text-center mb-2">Developed by</p>
-                    <div class="flex flex-wrap justify-center gap-x-2 gap-y-1 text-xs text-stone-600 dark:text-gray-300 font-medium">
+            <div class="cg-auth-credits mt-6 w-full px-2">
+                <div class="border-t pt-4">
+                    <p class="mb-2 text-center text-xs">Developed by</p>
+                    <div class="flex flex-wrap justify-center gap-x-2 gap-y-1 text-xs font-medium">
                         <span>Mico Gerard Navarro</span>
-                        <span class="text-stone-300 dark:text-gray-600">&bull;</span>
+                        <span aria-hidden="true">&bull;</span>
                         <span>Franz Mikey Reyes</span>
-                        <span class="text-stone-300 dark:text-gray-600">&bull;</span>
+                        <span aria-hidden="true">&bull;</span>
                         <span>Carl Spencer Talon</span>
-                        <span class="text-stone-300 dark:text-gray-600">&bull;</span>
+                        <span aria-hidden="true">&bull;</span>
                         <span>Adriann Enriquez</span>
                     </div>
                 </div>
             </div>
-
-        </div>
+        </main>
     </body>
 </html>

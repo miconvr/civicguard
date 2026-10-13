@@ -29,14 +29,14 @@
         <a href="#main-content" class="sr-only fixed left-4 top-4 z-[100] rounded-lg bg-maroon-700 px-4 py-3 font-semibold text-white focus:not-sr-only">
             {{ __('Skip to content') }}
         </a>
-        <div x-data="appShell" :class="{ 'cg-sidebar-collapsed': collapsed }" class="min-h-screen flex flex-col lg:flex-row bg-paper dark:bg-[#1c1c1b]">
-            <div class="sticky top-0 z-30 lg:static lg:z-auto lg:shrink-0" :class="collapsed ? 'lg:w-[76px]' : 'lg:w-64'">
+        <div x-data="appShell" :class="{ 'cg-sidebar-collapsed': collapsed }" class="cg-app-shell min-h-screen flex flex-col lg:flex-row">
+            <div class="cg-app-sidebar sticky top-0 z-30 lg:static lg:z-auto lg:shrink-0" :class="collapsed ? 'lg:w-[76px]' : 'lg:w-64'">
                 @include('layouts.navigation')
             </div>
 
             <div class="flex-1 min-w-0 flex flex-col">
                 @isset($header)
-                    <header class="cg-canvas border-b border-stone-200/80 dark:border-[#3d3d3a] dark:bg-[#222221]">
+                    <header class="cg-app-header border-b">
                         <div class="{{ isset($headerWidth) ? trim((string) $headerWidth) : 'max-w-6xl' }} mx-auto px-4 py-5 sm:px-6 lg:px-8">
                             <div class="pl-0 [&>h2]:text-lg [&>h2]:font-semibold [&>h2]:tracking-tight sm:[&>h2]:text-xl">
                                 {{ $header }}

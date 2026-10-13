@@ -9,7 +9,7 @@
     <div class="py-8">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            <div class="rounded-xl border border-stone-200 cg-surface-raised px-5 py-6 sm:px-7 sm:py-7 dark:border-[#3d3d3a] dark:bg-[#262624]" data-reveal>
+            <div class="cg-dashboard-welcome rounded-xl border px-5 py-6 sm:px-7 sm:py-7" data-reveal>
                 <p class="cg-kicker">{{ __('Barangay Maimpis') }} <span class="mx-1 text-stone-400 dark:text-gray-500" aria-hidden="true">/</span> {{ __(ucfirst($user->role)) }}</p>
                 <h1 class="mt-2 text-3xl font-semibold tracking-tight text-stone-950 dark:text-white sm:text-4xl">{{ __('Good day,') }} {{ $first }}</h1>
                 <p class="mt-2 max-w-2xl text-sm leading-6 text-stone-700 dark:text-gray-300 sm:text-base">

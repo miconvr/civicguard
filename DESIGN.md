@@ -10,22 +10,22 @@ Use this document as visual guidance, not as permission to change routes, roles,
 
 - Keep the CivicGuard logo and wordmark unchanged.
 - Keep maroon `#951f3d` as the primary action and selected-state color.
-- Light theme canvas: `#f7f3ed`. Use warm neutral surfaces for grouping, with restrained borders.
-- Dark theme canvas: `#1c1c1b`. Use charcoal surfaces and the same maroon identity without turning the whole screen red.
+- Light theme canvas: `#f6f2eb`, with near-paper surfaces, warm raised surfaces, and restrained borders.
+- Dark theme canvas: `#1b1919`. Use charcoal surfaces and the same maroon identity without turning the whole screen red.
 - Use red, amber, blue, and green only when communicating real severity, warning, information, or success states.
 - Avoid gradients, decorative glows, glass effects, and large shadows.
 
 ## Typography
 
-- Use Figtree for body copy, navigation, controls, labels, and data.
-- Use Bitter for `h1` and `h2` display headings. Keep `h3` and smaller interface headings in Figtree.
+- Use Figtree for body copy, navigation, controls, labels, data, and signed-in application headings.
+- Use Bitter selectively for public editorial headings. Keep operational screens in Figtree.
 - Keep headings concise and balanced. Use readable line lengths for prose, and compact typography only where users scan operational data.
 - Do not use display typography for form controls, table data, or navigation labels.
 
 ## Shape, spacing, and layout
 
 - Use a 4px spacing base, with 8px increments for repeated layout rhythm.
-- Cards use a 12px radius and should express useful grouping, not decorate every block.
+- Cards use a 12 to 14px radius and should express useful grouping, not decorate every block.
 - Inputs and buttons use compact 8px radii. Small status tags may be pills.
 - Prefer open layout, whitespace, and thin dividers over nested cards and ornamental borders.
 - Keep the established public header, role-based navigation, page routes, and resident reporting flow familiar.
@@ -37,7 +37,7 @@ Use this document as visual guidance, not as permission to change routes, roles,
 
 - Keep controls at least 44px high when practical, with visible keyboard focus and clear disabled, loading, error, and success states.
 - Motion should clarify an entrance, reveal, or action response. Keep routine interactions quick and subtle.
-- Use brief page entrances, scroll reveals, and pointer hover feedback where they clarify hierarchy or interaction. Avoid repeating or decorative motion.
+- The public hero may use a single slow contour-ring animation, staggered copy entrance, and ordered process reveals. Keep routine page motion brief and avoid continuous motion elsewhere.
 - Use transform and opacity for movement. Respect `prefers-reduced-motion`; content must remain visible and fully usable without animation.
 - Do not make keyboard navigation depend on hover or animation.
 - Prefer progressive disclosure for optional guidance, such as report-writing tips.
