@@ -6,7 +6,7 @@ test('login screen can be rendered', function () {
     $response = $this->get('/login');
 
     $response->assertStatus(200)
-        ->assertSee('<h1 class="mt-4 font-sans text-3xl font-bold tracking-tight text-white">CivicGuard</h1>', false)
+        ->assertSee('Brgy. Maimpis')
         ->assertSee('cg-auth-layout', false)
         ->assertSee('cg-auth-card', false)
         ->assertSee('cg-page-enter-late', false)

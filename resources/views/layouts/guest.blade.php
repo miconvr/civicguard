@@ -20,24 +20,22 @@
     </head>
     <body class="cg-auth-shell font-sans text-ink antialiased">
         <main class="cg-auth-layout mx-auto flex min-h-[100svh] w-full max-w-lg flex-col items-center justify-center gap-6 px-4 py-10 sm:px-6">
-            <div class="cg-auth-brand cg-page-enter w-full text-center">
-                <a href="/" class="cg-auth-mark">
-                    <x-application-logo class="h-10 w-10" />
-                </a>
-                <h1 class="mt-4 font-sans text-3xl font-bold tracking-tight text-white">CivicGuard</h1>
-                <p class="mt-1 text-sm">Barangay Maimpis Incident Management</p>
-                <div class="cg-auth-emergency mx-auto mt-5 max-w-sm border-t pt-4 text-sm leading-6">
-                    <p>{{ __('In immediate danger? Call 911 first.') }}</p>
-                </div>
-            </div>
-
             <section class="w-full" aria-label="{{ __('Account access') }}">
-                <div class="cg-auth-card cg-page-enter cg-page-enter-late mx-auto w-full overflow-hidden border px-6 py-8 sm:px-8">
+                <div class="cg-auth-card cg-page-enter cg-page-enter-late mx-auto w-full overflow-hidden border px-6 pb-8 pt-9 sm:px-8">
+                    <a href="/" class="mb-7 flex items-center justify-center gap-3 border-b border-stone-200 pb-7" aria-label="CivicGuard, Barangay Maimpis home">
+                        <x-application-logo class="h-11 w-auto shrink-0" />
+                        <span class="leading-tight">
+                            <span class="block font-sans text-xl font-bold text-maroon-800">CivicGuard</span>
+                            <span class="block text-[11px] uppercase tracking-wider text-stone-500">Brgy. Maimpis</span>
+                        </span>
+                    </a>
                     {{ $slot }}
                 </div>
             </section>
 
-            <div class="cg-auth-credits mt-6 w-full px-2">
+            <p class="cg-auth-emergency text-center text-sm">{{ __('In immediate danger? Call 911 first.') }}</p>
+
+            <div class="cg-auth-credits w-full px-2">
                 <div class="border-t pt-4">
                     <p class="mb-2 text-center text-xs">Developed by</p>
                     <div class="flex flex-wrap justify-center gap-x-2 gap-y-1 text-xs font-medium">
