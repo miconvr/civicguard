@@ -557,8 +557,12 @@
     }
 
     .cg-app-sidebar {
-        border-color: var(--cg-border);
-        background: var(--cg-surface);
+        background: #6d1c32;
+        color: #fffaf5;
+    }
+
+    .cg-app-sidebar :focus-visible {
+        outline-color: #ffffff;
     }
 
     .cg-sidebar-mobilebar {
@@ -569,14 +573,10 @@
         transition: color 150ms var(--cg-ease-out), background-color 150ms var(--cg-ease-out), transform 150ms var(--cg-ease-out);
     }
 
-    .cg-sidebar-link[aria-current="page"] {
-        color: #742137;
-        background: #f1e5e4;
-    }
-
+    .cg-sidebar-link[aria-current="page"],
     .dark .cg-sidebar-link[aria-current="page"] {
-        color: #f1dfe2;
-        background: #39292c;
+        color: #ffffff;
+        background: rgb(255 250 245 / 16%);
     }
 
     .cg-card {
