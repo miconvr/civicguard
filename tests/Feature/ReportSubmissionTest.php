@@ -68,6 +68,7 @@ test('a resident can submit an incident report and is sent to my reports', funct
         ->assertOk()
         ->assertSee('Follow each report’s status and updates here.')
         ->assertSee('Your reports are private to you and barangay staff.')
+        ->assertSee('class="t-success-check shrink-0" data-state="in"', false)
         ->assertSee('A karaoke gathering continued past midnight near the court.');
 });
 

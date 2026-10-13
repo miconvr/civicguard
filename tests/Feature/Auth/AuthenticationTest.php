@@ -7,6 +7,7 @@ test('login screen can be rendered', function () {
 
     $response->assertStatus(200)
         ->assertSee('<h1 class="mt-2 font-sans text-3xl font-bold tracking-tight text-maroon-900">CivicGuard</h1>', false)
+        ->assertSee('cg-page-enter-late', false)
         ->assertDontSee('Switch to dark mode')
         ->assertDontSee('darkMode');
 });

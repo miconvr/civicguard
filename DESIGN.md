@@ -37,6 +37,7 @@ Use this document as visual guidance, not as permission to change routes, roles,
 
 - Keep controls at least 44px high when practical, with visible keyboard focus and clear disabled, loading, error, and success states.
 - Motion should clarify an entrance, reveal, or action response. Keep routine interactions quick and subtle.
+- Use brief page entrances, scroll reveals, and pointer hover feedback where they clarify hierarchy or interaction. Avoid repeating or decorative motion.
 - Use transform and opacity for movement. Respect `prefers-reduced-motion`; content must remain visible and fully usable without animation.
 - Do not make keyboard navigation depend on hover or animation.
 - Prefer progressive disclosure for optional guidance, such as report-writing tips.
