@@ -31,27 +31,27 @@
         x-transition:leave-end="-translate-x-full"
         id="primary-navigation"
         :class="collapsed ? 'lg:!w-[76px]' : 'lg:!w-64'"
-        class="cg-app-sidebar fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] flex flex-col border-r border-stone-200 lg:!flex lg:w-64 lg:max-w-none lg:sticky lg:top-0 lg:h-screen"
+        class="cg-app-sidebar fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] flex flex-col border-r border-white/10 lg:!flex lg:w-64 lg:max-w-none lg:sticky lg:top-0 lg:h-screen"
     >
         <!-- Brand -->
-        <div class="h-16 flex items-center justify-between border-b border-stone-200/80 px-5 shrink-0 dark:border-[#3d3d3a]/80 cg-sidebar-brand">
+        <div class="h-16 flex items-center justify-between border-b border-white/15 px-5 shrink-0 cg-sidebar-brand">
             <a href="{{ route('dashboard') }}" aria-label="CivicGuard" class="flex items-center gap-2.5 min-w-0">
-                <x-application-logo class="h-8 w-auto text-maroon-700" />
+                <x-application-logo inverse class="h-8 w-auto" />
                 <span class="cg-sidebar-label leading-tight">
-                    <span class="block font-sans font-bold text-sm text-maroon-800 dark:text-gray-100">CivicGuard</span>
-                    <span class="block text-[10px] uppercase tracking-wider text-stone-500 dark:text-gray-500">Brgy. Maimpis</span>
+                    <span class="block font-sans font-bold text-sm text-white">CivicGuard</span>
+                    <span class="block text-[10px] uppercase tracking-wider text-white/70">Brgy. Maimpis</span>
                 </span>
             </a>
             <button type="button" @click="toggleSidebar()" :aria-expanded="(!collapsed).toString()" aria-controls="primary-navigation"
                     :aria-label='collapsed ? @js(__('Expand sidebar')) : @js(__('Collapse sidebar'))'
                     :title='collapsed ? @js(__('Expand sidebar')) : @js(__('Collapse sidebar'))'
-                    class="hidden lg:inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-stone-500 hover:bg-black/5 hover:text-maroon-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white"
+                    class="hidden lg:inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white/70 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                     data-testid="sidebar-toggle">
                 <svg class="h-5 w-5 transition-transform duration-200" :class="collapsed ? 'rotate-180' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5H6A1.5 1.5 0 0 0 4.5 6v12A1.5 1.5 0 0 0 6 19.5h12a1.5 1.5 0 0 0 1.5-1.5V6A1.5 1.5 0 0 0 18 4.5h-3M9 4.5v15M15.75 9.75 13.5 12l2.25 2.25" />
                 </svg>
             </button>
-            <button @click="open = false" aria-label="Close menu" class="lg:hidden p-2 -mr-2 text-stone-400 hover:text-stone-600 dark:hover:text-gray-200">
+            <button @click="open = false" aria-label="Close menu" class="lg:hidden p-2 -mr-2 text-white/70 hover:text-white">
                 <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -63,7 +63,7 @@
             $role = Auth::user()->role;
             $isStaff = in_array($role, ['tanod', 'admin', 'official']);
             $unreadCount = \App\Models\AppNotification::where('user_id', auth()->id())->where('is_read', false)->count();
-            $groupLabel = 'cg-sidebar-label px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400';
+            $groupLabel = 'cg-sidebar-label px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-white/60';
         @endphp
         <nav class="flex-1 overflow-y-auto overscroll-contain px-3 py-4 space-y-1" aria-label="{{ __('Main menu') }}">
             <x-sidebar-link icon="home" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -108,7 +108,7 @@
 
             @if (in_array($role, ['resident', 'admin', 'official']))
                 <x-sidebar-link icon="sparkles" :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
-                    <span class="font-bold text-maroon-700 dark:text-gray-100">{{ __('AI') }}</span> {{ __('Assistant') }}
+                    <span class="font-bold text-white">{{ __('AI') }}</span> {{ __('Assistant') }}
                 </x-sidebar-link>
             @endif
 
@@ -116,14 +116,14 @@
                 <span class="flex items-center justify-between">
                     <span>{{ __('Notifications') }}</span>
                     @if ($unreadCount > 0)
-                        <span class="bg-red-600 text-white text-[11px] font-bold rounded-full min-w-[1.25rem] h-5 px-1.5 flex items-center justify-center">{{ $unreadCount > 99 ? '99+' : $unreadCount }}<span class="sr-only"> {{ __('unread') }}</span></span>
+                        <span class="bg-[#fffaf5] text-maroon-800 text-[11px] font-bold rounded-full min-w-[1.25rem] h-5 px-1.5 flex items-center justify-center">{{ $unreadCount > 99 ? '99+' : $unreadCount }}<span class="sr-only"> {{ __('unread') }}</span></span>
                     @endif
                 </span>
             </x-sidebar-link>
         </nav>
 
         <!-- Bottom section -->
-        <div class="border-t border-stone-200 dark:border-[#3d3d3a] cg-surface-tint p-3 space-y-2 shrink-0 dark:bg-black/10">
+        <div class="border-t border-white/15 bg-black/20 p-3 space-y-2 shrink-0">
             @php
                 $roleLabel = match (Auth::user()->role) {
                     'official' => __('Barangay Official'),
@@ -182,15 +182,15 @@
                     </form>
                 </div>
 
-                <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu" aria-label="{{ Auth::user()->name }} {{ __('Account menu') }}" :title='collapsed ? @js(Auth::user()->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 transition">
-                    <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-sm font-semibold text-white">
+                <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu" aria-label="{{ Auth::user()->name }} {{ __('Account menu') }}" :title='collapsed ? @js(Auth::user()->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/10 transition">
+                    <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#fffaf5] text-sm font-semibold text-maroon-800">
                         {{ strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}
                     </span>
                     <span class="cg-sidebar-label min-w-0 flex-1 leading-tight">
-                        <span class="block truncate text-sm font-semibold text-stone-800 dark:text-gray-100">{{ Auth::user()->name }}</span>
-                        <span class="block truncate text-xs font-medium text-maroon-700 dark:text-[#c27872]">{{ $roleLabel }}</span>
+                        <span class="block truncate text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
+                        <span class="block truncate text-xs font-medium text-white/70">{{ $roleLabel }}</span>
                     </span>
-                    <svg class="cg-sidebar-label h-4 w-4 shrink-0 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <svg class="cg-sidebar-label h-4 w-4 shrink-0 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                     </svg>
                 </button>
