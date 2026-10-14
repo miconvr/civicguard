@@ -878,3 +878,17 @@
     .cg-kpi { color: var(--cg-accent); }
     .dark .cg-kpi { color: var(--cg-ink); }
 }
+
+/* Scroll reveal for the landing page */
+@media (prefers-reduced-motion: no-preference) {
+    .cg-scroll {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+        transition-delay: var(--cg-delay, 0ms);
+    }
+    .cg-scroll.is-visible {
+        opacity: 1;
+        transform: none;
+    }
+}
