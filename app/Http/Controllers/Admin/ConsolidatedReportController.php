@@ -25,9 +25,11 @@ class ConsolidatedReportController extends Controller
     private function reportData(): array
     {
         $reports = Report::with(['category', 'user', 'assignedTo', 'curfewLog'])
+            ->visibleTo(auth()->user())
             ->latest()
             ->get();
         $curfewLogs = CurfewLog::with(['report.category', 'tanod'])
+            ->when(auth()->user()?->role === 'tanod', fn ($q) => $q->where('tanod_id', auth()->id()))
             ->latest('apprehension_datetime')
             ->get();
         $canViewAudit = in_array(auth()->user()?->role, ['admin', 'official'], true);
