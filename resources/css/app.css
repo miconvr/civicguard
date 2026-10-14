@@ -912,3 +912,16 @@
     .cg-ping-ring { animation: cg-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
     .cg-sample-foot { animation: cg-rise 0.5s ease both; animation-delay: 2s; }
 }
+
+/* --- Store readiness: safe areas, keyboard, sticky actions --- */
+html { scroll-padding-bottom: 7rem; }
+body { padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.cg-app-sidebar { padding-top: env(safe-area-inset-top, 0px); }
+@supports (min-height: 100dvh) { .min-h-screen { min-height: 100dvh; } }
+.cg-sticky-actions {
+    position: sticky; bottom: 0; z-index: 10;
+    margin-inline: -0.25rem;
+    padding: 0.75rem 0.25rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    background: #fff;
+}
+.dark .cg-sticky-actions { background: #1f2937; }

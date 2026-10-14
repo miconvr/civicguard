@@ -52,7 +52,10 @@
 
                 <form id="chat-form" class="flex gap-2">
                     <input type="text" id="chat-input" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Describe your concern or ask a question…') }}" class="cg-input min-w-0 flex-1 min-h-[44px]" autocomplete="off">
-                    <button type="submit" id="chat-send" class="cg-btn min-h-[44px] disabled:opacity-60">{{ __('Send') }}</button>
+                    <button type="submit" id="chat-send" class="cg-btn min-h-[44px] disabled:cursor-wait disabled:opacity-60" aria-busy="false">
+                        <span id="chat-send-label">{{ __('Send') }}</span>
+                        <span id="chat-send-spinner" class="hidden"><span class="inline-flex items-center gap-2" role="status"><svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>{{ __('Sending...') }}</span></span>
+                    </button>
                 </form>
 
                 <p class="mt-2 sm:mt-3 text-xs sm:text-sm cg-muted">
@@ -177,6 +180,8 @@
             log.scrollTop = log.scrollHeight;
         }
         async function submitReport(data, btn) {
+            const originalLabel = btn.textContent;
+            let submitted = false;
             btn.disabled = true;
             btn.innerHTML = '<span class="inline-flex items-center gap-2">Submitting<svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg></span>';
 
@@ -198,17 +203,25 @@
 
                 if (response.ok || response.redirected) {
                     btn.innerHTML = '<span class="inline-flex items-center gap-2">Submitted<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></span>';
+                    submitted = true;
                     showSuccessCard();
                 } else {
                     addMessage('Something went wrong submitting the report. Please try the incident report form directly.', 'bot');
                 }
             } catch (err) {
-                addMessage('Something went wrong submitting the report. Please try the incident report form directly.', 'bot');
+                addMessage(navigator.onLine ? 'Something went wrong submitting the report. Please try the incident report form directly.' : t.offline, 'bot');
+            } finally {
+                if (!submitted) {
+                    btn.disabled = false;
+                    btn.textContent = originalLabel;
+                }
             }
         }
 
         const t = {{ Js::from([
             'error' => __('Sorry, something went wrong. Please try again.'),
+            'offline' => __("You're offline. Please check your connection and try again."),
+            'expired' => __('Your session expired. Please refresh the page and try again.'),
             'slow' => __('That took too long. Please try again.'),
             'rate' => __('You are sending messages too quickly. Please wait a moment.'),
             'retry' => __('Try again'),
@@ -247,6 +260,9 @@
         function setBusy(busy) {
             input.disabled = busy;
             sendBtn.disabled = busy;
+            sendBtn.setAttribute('aria-busy', busy ? 'true' : 'false');
+            document.getElementById('chat-send-label').classList.toggle('hidden', busy);
+            document.getElementById('chat-send-spinner').classList.toggle('hidden', !busy);
             chips.querySelectorAll('button').forEach(b => b.disabled = busy);
         }
 
@@ -299,6 +315,7 @@
                 });
 
                 if (response.status === 429) throw new Error('rate');
+                if (response.status === 419) throw new Error('expired');
                 if (!response.ok) throw new Error('http');
 
                 const data = await response.json();
@@ -316,7 +333,7 @@
                 }
             } catch (err) {
                 hideTyping();
-                showError(err.message === 'rate' ? t.rate : (err.name === 'AbortError' ? t.slow : t.error));
+                showError(!navigator.onLine ? t.offline : err.message === 'rate' ? t.rate : err.message === 'expired' ? t.expired : (err.name === 'AbortError' ? t.slow : t.error));
             } finally {
                 clearTimeout(timer);
                 setBusy(false);
