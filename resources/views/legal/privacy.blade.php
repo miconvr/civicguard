@@ -1,8 +1,11 @@
 @extends('legal.layout')
 @section('title', 'Privacy Policy')
-@section('updated', 'DRAFT - set date before publishing')
+@section('updated', 'October 15, 2026')
 @section('content')
 <p>CivicGuard is an incident reporting system for Barangay Maimpis, City of San Fernando, Pampanga. This policy explains what personal data we collect and how we handle it, in line with the Data Privacy Act of 2012 (Republic Act 10173).</p>
+
+<h2 class="mt-8 text-xl font-semibold">Who is responsible for your data</h2>
+<p>Barangay Maimpis, City of San Fernando, Pampanga, is the personal information controller for the data collected through CivicGuard.</p>
 
 <h2 class="mt-8 text-xl font-semibold">What we collect</h2>
 <ul class="list-disc space-y-1 pl-6">
@@ -27,14 +30,14 @@
 <p>We do not sell your data or use it for advertising.</p>
 
 <h2 class="mt-8 text-xl font-semibold">How long we keep it</h2>
-<p>[BARANGAY TO CONFIRM: how long reports and audit logs are kept.]</p>
+<p>Reports and audit log entries are kept for as long as the barangay needs them for its records and to handle incidents. If you want to know how long a particular record is kept, ask the barangay using the contact details below.</p>
 
 <h2 class="mt-8 text-xl font-semibold">Your rights</h2>
-<p>You may ask to see the data we hold about you, correct it, object to its processing, or have it deleted, and you may complain to the National Privacy Commission. You can delete your account yourself from Profile, then Delete Account. [BARANGAY TO CONFIRM: whether submitted reports are deleted with the account or kept for barangay records.]</p>
+<p>You may ask to see the data we hold about you, correct it, object to its processing, or have it deleted, and you may complain to the National Privacy Commission. Residents can delete their own account from Profile, then Delete Account. Deleting your account also deletes the reports you filed and their photos. Entries in the audit log are kept, without your name attached. Staff accounts are removed by the barangay administrator on request.</p>
 
 <h2 class="mt-8 text-xl font-semibold">Security</h2>
 <p>Passwords are stored hashed, access is limited by role, and the site uses HTTPS. No system is perfectly secure, so please use a strong password.</p>
 
 <h2 class="mt-8 text-xl font-semibold">Contact</h2>
-<p>For privacy questions or requests: [BARANGAY CONTACT EMAIL OR OFFICE].</p>
+<p>For privacy questions or requests: email <a class="underline" href="mailto:skbarangaymaimpiscsfp@gmail.com">skbarangaymaimpiscsfp@gmail.com</a>, call (045) 300 2629, or visit the Barangay Maimpis hall.</p>
 @endsection
