@@ -46,7 +46,7 @@ class ChatbotController extends Controller
 
         $rawReply = $gemini->generateText(
             $systemPrompt."\n\nConversation so far:\n".$conversationHistory."\n\nResident's latest message: ".$validated['message'],
-            12,
+            8,
             true
         );
 
