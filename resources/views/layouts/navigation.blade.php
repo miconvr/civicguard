@@ -47,8 +47,9 @@
                     :title='collapsed ? @js(__('Expand sidebar')) : @js(__('Collapse sidebar'))'
                     class="hidden lg:inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white/70 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                     data-testid="sidebar-toggle">
-                <svg class="h-5 w-5 transition-transform duration-200" :class="collapsed ? 'rotate-180' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5H6A1.5 1.5 0 0 0 4.5 6v12A1.5 1.5 0 0 0 6 19.5h12a1.5 1.5 0 0 0 1.5-1.5V6A1.5 1.5 0 0 0 18 4.5h-3M9 4.5v15M15.75 9.75 13.5 12l2.25 2.25" />
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                    <rect x="3.5" y="4.5" width="17" height="15" rx="3" stroke-linejoin="round" />
+                    <path stroke-linecap="round" d="M9.5 4.5v15" />
                 </svg>
             </button>
             <button @click="open = false" aria-label="Close menu" class="lg:hidden p-2 -mr-2 text-white/70 hover:text-white">
