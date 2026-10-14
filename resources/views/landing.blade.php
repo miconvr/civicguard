@@ -56,8 +56,8 @@
             </header>
 
             <main id="main-content" class="cg-page-enter">
-                <section class="cg-landing-hero">
-                    <div class="cg-landing-hero-inner mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:py-20">
+                <section class="cg-landing-hero lg:flex lg:min-h-[calc(100dvh_-_162px)] lg:items-center">
+                    <div class="cg-landing-hero-inner mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:py-20">
                         <div class="cg-landing-copy">
                             <p class="cg-landing-location cg-intro-enter" x-text="text('processIntro')">For residents</p>
                             <h1 class="cg-intro-enter cg-intro-enter-1 max-w-none text-[2.4rem] leading-[1.04] max-[360px]:text-[2.1rem] sm:max-w-[15ch] sm:text-6xl lg:max-w-[13ch]">
@@ -65,42 +65,70 @@
                                 <span class="cg-landing-accent" x-text="text('headlineAccent')"> Barangay Maimpis.</span>
                             </h1>
                             <p class="cg-intro-enter cg-intro-enter-2 mt-5 max-w-xl text-base leading-7 text-white/85 sm:text-lg sm:leading-8" x-text="text('introduction')">Report an incident, then follow its progress here. CivicGuard connects residents with barangay staff.</p>
-                            <a href="#how-it-works" class="cg-landing-more cg-intro-enter cg-intro-enter-3 mt-6 inline-flex min-h-11 items-center gap-2 rounded-md text-sm font-semibold" x-text="text('howItWorks')">See how it works</a>
-                        </div>
-
-                        <aside id="get-started" aria-label="Choose how to continue" :aria-label="text('startLabel')" class="cg-start-panel cg-intro-enter cg-intro-enter-3">
-                            <div class="cg-start-panel-heading">
-                                <p class="cg-start-note" x-text="text('startTitle')">What would you like to do?</p>
-                            </div>
-                            <div class="cg-start-option">
-                                <h2 class="text-lg font-semibold text-stone-950" x-text="text('residentPathTitle')">I live in Maimpis</h2>
-                                <p class="mt-1.5 max-w-md text-sm leading-6 text-stone-700" x-text="text('residentPathDescription')">Create a resident account to report an issue and follow updates.</p>
+                            <div class="cg-intro-enter cg-intro-enter-3 mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
                                 @guest
-                                    <a href="{{ route('register') }}" class="cg-btn cg-start-primary mt-4 w-full">
+                                    <a href="{{ route('register') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 text-base font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100">
                                         <span x-text="text('residentAction')">Create a resident account</span>
                                         <span class="cg-arrow" aria-hidden="true">→</span>
                                     </a>
-                                    <a href="{{ route('login') }}" class="mt-2 inline-flex min-h-10 items-center rounded-md text-sm font-semibold text-maroon-800 underline decoration-maroon-700/50 underline-offset-4 transition-colors hover:text-maroon-950" x-text="text('existingAccount')">Already have an account? Sign in</a>
                                 @else
-                                    <a href="{{ route('dashboard') }}" class="cg-btn cg-start-primary mt-4 w-full">
+                                    <a href="{{ route('dashboard') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 text-base font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100">
                                         <span x-text="text('dashboard')">Go to your dashboard</span>
                                         <span class="cg-arrow" aria-hidden="true">→</span>
                                     </a>
                                 @endguest
+                                <a href="#how-it-works" class="cg-landing-more inline-flex min-h-11 items-center gap-2 rounded-md text-sm font-semibold" x-text="text('howItWorks')">See how it works</a>
                             </div>
-                            <div class="cg-start-option cg-start-staff">
-                                <h2 class="text-base font-semibold text-stone-950" x-text="text('staffPathTitle')">I work for the barangay</h2>
-                                <p class="mt-1.5 max-w-md text-sm leading-6 text-stone-700" x-text="text('staffPathDescription')">Sign in to review reports and share updates with residents.</p>
-                                <a href="{{ route('login') }}" class="mt-3 inline-flex min-h-10 items-center gap-2 rounded-md text-sm font-semibold text-maroon-800 underline decoration-maroon-700/50 underline-offset-4 transition-colors hover:text-maroon-950">
-                                    <span x-text="text('staffAction')">Staff sign in</span>
-                                    <span class="cg-arrow" aria-hidden="true">→</span>
-                                </a>
+                            @guest
+                                <p class="cg-intro-enter cg-intro-enter-3 mt-4 text-sm text-white/80">
+                                    <a href="{{ route('login') }}" class="underline decoration-white/50 underline-offset-4 hover:text-white" x-text="text('staffQuestion')">Barangay staff? Sign in</a>
+                                </p>
+                            @endguest
+                        </div>
+
+                        <aside id="get-started" aria-label="Sample report" :aria-label="text('sampleLabel')" class="cg-start-panel cg-intro-enter cg-intro-enter-3">
+                            <div class="cg-start-panel-heading">
+                                <p class="cg-start-note" x-text="text('sampleLabel')">Sample report</p>
                             </div>
+                            <p class="mt-1 text-sm leading-6 text-stone-700" x-text="text('sampleCaption')">This is what following a report looks like.</p>
+                            <ol class="mt-6">
+                                <li class="relative flex gap-4 pb-7">
+                                    <span class="absolute bottom-0 left-4 top-8 w-px -translate-x-1/2 bg-stone-300" aria-hidden="true"></span>
+                                    <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold bg-maroon-700 text-white" aria-hidden="true">✓</span>
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-stone-950" x-text="text('tlReceived')">Received</h3>
+                                        <p class="mt-0.5 text-sm leading-5 text-stone-700" x-text="text('tlReceivedDesc')">Your report is logged.</p>
+                                    </div>
+                                </li>
+                                <li class="relative flex gap-4 pb-7">
+                                    <span class="absolute bottom-0 left-4 top-8 w-px -translate-x-1/2 bg-stone-300" aria-hidden="true"></span>
+                                    <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold bg-maroon-700 text-white" aria-hidden="true">✓</span>
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-stone-950" x-text="text('tlAssigned')">Assigned</h3>
+                                        <p class="mt-0.5 text-sm leading-5 text-stone-700" x-text="text('tlAssignedDesc')">A staff member takes it on.</p>
+                                    </div>
+                                </li>
+                                <li class="relative flex gap-4 pb-7">
+                                    <span class="absolute bottom-0 left-4 top-8 w-px -translate-x-1/2 bg-stone-300" aria-hidden="true"></span>
+                                    <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold border-2 border-maroon-700 bg-white text-maroon-800" aria-hidden="true">3</span>
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-stone-950" x-text="text('tlProgress')">In progress</h3>
+                                        <p class="mt-0.5 text-sm leading-5 text-stone-700" x-text="text('tlProgressDesc')">Work on it is underway.</p>
+                                    </div>
+                                </li>
+                                <li class="relative flex gap-4">
+                                    <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold border-2 border-stone-300 bg-white text-stone-500" aria-hidden="true">4</span>
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-stone-950" x-text="text('tlResolved')">Resolved</h3>
+                                        <p class="mt-0.5 text-sm leading-5 text-stone-700" x-text="text('tlResolvedDesc')">You confirm whether it is fixed.</p>
+                                    </div>
+                                </li>
+                            </ol>
                         </aside>
                     </div>
                 </section>
 
-                <section aria-labelledby="emergency-title" class="cg-emergency-strip" data-reveal>
+                <section aria-labelledby="emergency-title" class="cg-emergency-strip" data-cg-scroll>
                     <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
                         <div>
                             <h2 id="emergency-title" class="font-sans text-sm font-bold tracking-normal text-[#5e2630]" x-text="text('emergencyTitle')">Is someone in immediate danger?</h2>
@@ -111,27 +139,27 @@
                 </section>
 
                 <section id="how-it-works" class="cg-how-section mx-auto grid max-w-7xl gap-9 px-4 py-14 sm:px-6 sm:py-18 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20 lg:px-8 lg:py-24">
-                    <div class="max-w-md" data-reveal>
+                    <div class="max-w-md" data-cg-scroll>
                         <p class="cg-kicker" x-text="text('processIntro')">For residents</p>
                         <h2 class="mt-3 text-3xl leading-tight sm:text-4xl" x-text="text('howHeading')">What happens after you report?</h2>
                         <p class="mt-4 text-sm leading-6 text-stone-700" x-text="text('howDescription')">You can follow each report from your account. Here is what to expect.</p>
                     </div>
                     <ol class="cg-how-steps">
-                        <li class="cg-how-step grid gap-2 py-5 sm:grid-cols-[3rem_1fr] sm:gap-4 sm:py-6" data-reveal="step">
+                        <li class="cg-how-step grid gap-2 py-5 sm:grid-cols-[3rem_1fr] sm:gap-4 sm:py-6" data-cg-scroll>
                             <span class="cg-how-index">1</span>
                             <div>
                                 <h3 class="text-base font-semibold" x-text="text('reportStep')">Create a resident account</h3>
                                 <p class="mt-1.5 max-w-xl text-sm leading-6 text-stone-700" x-text="text('reportDescription')">Sign up to send a report and see its updates.</p>
                             </div>
                         </li>
-                        <li class="cg-how-step grid gap-2 py-5 sm:grid-cols-[3rem_1fr] sm:gap-4 sm:py-6" data-reveal="step">
+                        <li class="cg-how-step grid gap-2 py-5 sm:grid-cols-[3rem_1fr] sm:gap-4 sm:py-6" data-cg-scroll>
                             <span class="cg-how-index">2</span>
                             <div>
                                 <h3 class="text-base font-semibold" x-text="text('staffStep')">Tell us what happened</h3>
                                 <p class="mt-1.5 max-w-xl text-sm leading-6 text-stone-700" x-text="text('staffDescription')">Choose a category, describe the issue, and enter its location. Adding a photo is optional.</p>
                             </div>
                         </li>
-                        <li class="cg-how-step grid gap-2 py-5 sm:grid-cols-[3rem_1fr] sm:gap-4 sm:py-6" data-reveal="step">
+                        <li class="cg-how-step grid gap-2 py-5 sm:grid-cols-[3rem_1fr] sm:gap-4 sm:py-6" data-cg-scroll>
                             <span class="cg-how-index">3</span>
                             <div>
                                 <h3 class="text-base font-semibold" x-text="text('progressStep')">Check the report status</h3>
@@ -141,7 +169,7 @@
                     </ol>
                 </section>
 
-                <section aria-labelledby="developers-title" class="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8 lg:pb-20" data-reveal>
+                <section aria-labelledby="developers-title" class="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8 lg:pb-20" data-cg-scroll>
                     <div class="border-t border-stone-300/70 pt-10">
                         <h2 id="developers-title" class="cg-kicker" x-text="text('devKicker')">Developed by</h2>
                         <ul class="mt-5 grid gap-x-8 gap-y-3 text-base font-semibold text-stone-900 sm:grid-cols-2 lg:grid-cols-4">
