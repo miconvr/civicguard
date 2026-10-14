@@ -10,9 +10,30 @@ class AuditLogController extends Controller
 {
     public function index()
     {
-        $auditLogs = AuditLog::with('user')->latest()->paginate(25);
+        $query = AuditLog::with('user')->latest();
 
-        return view('admin.audit-logs', compact('auditLogs'));
+        if ($search = trim((string) request('search'))) {
+            $like = '%'.addcslashes($search, '%_\\').'%';
+            $query->where(function ($q) use ($like) {
+                $q->where('description', 'like', $like)
+                    ->orWhere('action', 'like', $like)
+                    ->orWhereHas('user', fn ($u) => $u->where('name', 'like', $like));
+            });
+        }
+
+        if ($action = request('action')) {
+            $query->where('action', $action);
+        }
+
+        $auditLogs = $query->paginate(25)->withQueryString();
+        $actions = AuditLog::query()->distinct()->orderBy('action')->pluck('action');
+        $stats = [
+            'total' => AuditLog::count(),
+            'today' => AuditLog::where('created_at', '>=', now()->startOfDay())->count(),
+            'week' => AuditLog::where('created_at', '>=', now()->subDays(7))->count(),
+        ];
+
+        return view('admin.audit-logs', compact('auditLogs', 'actions', 'stats'));
     }
 
     public function exportPdf()

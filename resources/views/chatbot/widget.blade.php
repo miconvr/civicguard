@@ -32,11 +32,11 @@
         }
     </style>
 
-    <div class="py-8">
+    <div class="py-3 sm:py-8">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="cg-card p-4 sm:p-6">
+            <div class="cg-card p-3 sm:p-6">
 
-                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="space-y-3 mb-4 overflow-y-auto pr-1" style="height:min(60vh,32rem)">
+                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="space-y-2.5 sm:space-y-3 mb-3 sm:mb-4 overflow-y-auto pr-1" style="height:min(52dvh,32rem)">
                     <div class="text-sm text-left">
                         <span class="px-3 py-2 rounded-lg inline-block max-w-[85%] text-left bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100">
                             {{ __('Hi! Tell me what happened and I can help you put together a clear incident report.') }}
@@ -44,9 +44,9 @@
                     </div>
                 </div>
 
-                <div id="chat-chips" class="mb-3 flex flex-wrap gap-2">
+                <div id="chat-chips" class="mb-3 flex flex-nowrap gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible">
                     @foreach ([__('I want to report an incident'), __('How do I track my report?'), __('What counts as an emergency?'), __('What do the urgency levels mean?')] as $chip)
-                        <button type="button" class="min-h-[44px] rounded-full border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-800 dark:text-gray-200 transition hover:border-maroon-700 hover:text-maroon-700 dark:hover:text-white disabled:opacity-50">{{ $chip }}</button>
+                        <button type="button" class="shrink-0 whitespace-nowrap min-h-[40px] sm:min-h-[44px] rounded-full border border-gray-300 dark:border-gray-600 px-3.5 sm:px-4 py-1.5 sm:py-2 text-[13px] sm:text-sm font-medium text-gray-800 dark:text-gray-200 transition hover:border-maroon-700 hover:text-maroon-700 dark:hover:text-white disabled:opacity-50">{{ $chip }}</button>
                     @endforeach
                 </div>
 
@@ -55,7 +55,7 @@
                     <button type="submit" id="chat-send" class="cg-btn min-h-[44px] disabled:opacity-60">{{ __('Send') }}</button>
                 </form>
 
-                <p class="mt-3 text-sm cg-muted">
+                <p class="mt-2 sm:mt-3 text-xs sm:text-sm cg-muted">
                     <strong>{{ __('In immediate danger? Call 911 first.') }}</strong>
                     {{ __('Reports are reviewed by staff and are not answered instantly.') }}
                 </p>
