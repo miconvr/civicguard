@@ -198,7 +198,7 @@ class ReportController extends Controller
             ."Default severity for this category: {$category->default_severity}\n"
             ."Description: {$description}";
 
-        $aiText = $gemini->generateText($prompt);
+        $aiText = $gemini->generateText($prompt, 6, true);
         $aiResult = $aiText ? strtolower(trim($aiText)) : null;
 
         if (in_array($aiResult, ['low', 'moderate', 'high', 'critical'])) {
