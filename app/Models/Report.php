@@ -35,6 +35,35 @@ class Report extends Model
         );
     }
 
+    public function scopeVisibleTo(Builder $query, ?User $user): Builder
+    {
+        if (! $user) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        return match ($user->role) {
+            'admin', 'official' => $query,
+            'tanod' => $query->where(
+                fn (Builder $q) => $q->where('assigned_to', $user->id)->orWhere('user_id', $user->id)
+            ),
+            default => $query->whereRaw('1 = 0'),
+        };
+    }
+
+    public function isVisibleTo(?User $user): bool
+    {
+        if (! $user) {
+            return false;
+        }
+
+        return match ($user->role) {
+            'admin', 'official' => true,
+            'tanod' => (int) $this->assigned_to === (int) $user->id
+                || (int) $this->user_id === (int) $user->id,
+            default => false,
+        };
+    }
+
     public function category()
     {
         return $this->belongsTo(ReportCategory::class, 'category_id');
