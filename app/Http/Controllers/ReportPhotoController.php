@@ -9,6 +9,8 @@ class ReportPhotoController extends Controller
 {
     public function show(Report $report)
     {
+        abort_unless($report->isVisibleTo(auth()->user()), 403);
+
         $disk = Storage::disk('report_photos');
 
         abort_unless($report->photo_path && $disk->exists($report->photo_path), 404);
