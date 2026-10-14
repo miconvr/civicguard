@@ -55,6 +55,7 @@
         </tbody>
     </table>
 
+    @if ($canViewAudit ?? true)
     <h2>Recent System Activity</h2>
     <table class="data">
         <thead><tr><th>Date</th><th>Actor</th><th>Action</th><th>Description</th></tr></thead>
@@ -66,5 +67,6 @@
             @endforelse
         </tbody>
     </table>
+    @endif
 </body>
 </html>
