@@ -1,6 +1,6 @@
 @extends('legal.layout')
 @section('title', 'Terms of Use')
-@section('updated', 'DRAFT - set date before publishing')
+@section('updated', 'October 15, 2026')
 @section('content')
 <p>By creating a CivicGuard account you agree to these terms.</p>
 
