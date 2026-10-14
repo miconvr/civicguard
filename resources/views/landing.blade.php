@@ -26,7 +26,7 @@
                         <span class="cg-brand-mark"><x-application-logo class="h-9 w-9 shrink-0" /></span>
                         <span class="min-w-0">
                             <span class="block text-[15px] font-bold leading-tight tracking-tight text-maroon-900">CivicGuard</span>
-                            
+                            <span class="block truncate text-[11px] leading-tight text-stone-600">Barangay Maimpis</span>
                         </span>
                     </a>
 
@@ -143,7 +143,7 @@
             </main>
 
             <footer class="cg-public-footer mx-auto flex max-w-7xl flex-col gap-3 px-4 py-7 text-sm text-stone-600 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-                <p class="font-medium text-stone-700" x-text="text('footerBrand')">CivicGuard</p>
+                <p class="font-medium text-stone-700" x-text="text('footerBrand')">CivicGuard · Barangay Maimpis Incident Management</p>
                 <p x-text="text('footerEmergency')">For emergencies, call 911.</p>
             </footer>
         </div>
