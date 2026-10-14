@@ -56,23 +56,23 @@
             </header>
 
             <main id="main-content" class="cg-page-enter">
-                <section class="cg-landing-hero lg:flex lg:min-h-[calc(100dvh_-_162px)] lg:items-center">
+                <section class="cg-landing-hero lg:flex lg:min-h-[calc(100dvh_-_73px)] lg:items-center">
                     <div class="cg-landing-hero-inner mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:py-20">
                         <div class="cg-landing-copy">
                             <p class="cg-landing-location cg-intro-enter" x-text="text('processIntro')">For residents</p>
-                            <h1 class="cg-intro-enter cg-intro-enter-1 max-w-none text-[2.4rem] leading-[1.04] max-[360px]:text-[2.1rem] sm:max-w-[15ch] sm:text-6xl lg:max-w-[13ch]">
+                            <h1 class="cg-intro-enter cg-intro-enter-1 max-w-none text-[2.4rem] leading-[1.04] max-[360px]:text-[2.1rem] sm:max-w-[15ch] sm:text-6xl lg:max-w-none lg:text-[4.25rem]">
                                 <span x-text="text('headline')">Report an issue in</span>
                                 <span class="cg-landing-accent" x-text="text('headlineAccent')"> Barangay Maimpis.</span>
                             </h1>
-                            <p class="cg-intro-enter cg-intro-enter-2 mt-5 max-w-xl text-base leading-7 text-white/85 sm:text-lg sm:leading-8" x-text="text('introduction')">Report an incident, then follow its progress here. CivicGuard connects residents with barangay staff.</p>
+                            <p class="cg-intro-enter cg-intro-enter-2 mt-6 max-w-xl text-base leading-7 text-white/85 sm:text-lg sm:leading-8 lg:text-xl lg:leading-9" x-text="text('introduction')">Report an incident, then follow its progress here. CivicGuard connects residents with barangay staff.</p>
                             <div class="cg-intro-enter cg-intro-enter-3 mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
                                 @guest
-                                    <a href="{{ route('register') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 text-base font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100">
+                                    <a href="{{ route('register') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 text-base lg:min-h-14 lg:px-8 lg:text-lg font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100">
                                         <span x-text="text('residentAction')">Create a resident account</span>
                                         <span class="cg-arrow" aria-hidden="true">→</span>
                                     </a>
                                 @else
-                                    <a href="{{ route('dashboard') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 text-base font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100">
+                                    <a href="{{ route('dashboard') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 text-base lg:min-h-14 lg:px-8 lg:text-lg font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100">
                                         <span x-text="text('dashboard')">Go to your dashboard</span>
                                         <span class="cg-arrow" aria-hidden="true">→</span>
                                     </a>
@@ -84,19 +84,23 @@
                                     <a href="{{ route('login') }}" class="underline decoration-white/50 underline-offset-4 hover:text-white" x-text="text('staffQuestion')">Barangay staff? Sign in</a>
                                 </p>
                             @endguest
+                            <p class="cg-intro-enter cg-intro-enter-3 mt-6 text-sm text-white/75">
+                                <span x-text="text('emergencyTitle')">Is someone in immediate danger?</span>
+                                <a href="tel:911" class="ml-1 font-semibold text-white underline decoration-white/50 underline-offset-4 hover:decoration-white" x-text="text('call911')">Call 911</a>
+                            </p>
                         </div>
 
                         <aside id="get-started" aria-label="Sample report" :aria-label="text('sampleLabel')" class="cg-start-panel cg-intro-enter cg-intro-enter-3">
                             <div class="cg-start-panel-heading">
                                 <p class="cg-start-note" x-text="text('sampleLabel')">Sample report</p>
                             </div>
-                            <p class="mt-1 text-sm leading-6 text-stone-700" x-text="text('sampleCaption')">This is what following a report looks like.</p>
-                            <ol class="mt-6">
+                            <p class="mt-1 px-6 text-sm leading-6 text-stone-700" x-text="text('sampleCaption')">This is what following a report looks like.</p>
+                            <ol class="mt-6 px-6 pb-8">
                                 <li class="relative flex gap-4 pb-7">
                                     <span class="absolute bottom-0 left-4 top-8 w-px -translate-x-1/2 bg-stone-300" aria-hidden="true"></span>
                                     <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold bg-maroon-700 text-white" aria-hidden="true">✓</span>
                                     <div>
-                                        <h3 class="text-sm font-semibold text-stone-950" x-text="text('tlReceived')">Received</h3>
+                                        <h3 class="text-base font-semibold text-stone-950" x-text="text('tlReceived')">Received</h3>
                                         <p class="mt-0.5 text-sm leading-5 text-stone-700" x-text="text('tlReceivedDesc')">Your report is logged.</p>
                                     </div>
                                 </li>
@@ -104,7 +108,7 @@
                                     <span class="absolute bottom-0 left-4 top-8 w-px -translate-x-1/2 bg-stone-300" aria-hidden="true"></span>
                                     <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold bg-maroon-700 text-white" aria-hidden="true">✓</span>
                                     <div>
-                                        <h3 class="text-sm font-semibold text-stone-950" x-text="text('tlAssigned')">Assigned</h3>
+                                        <h3 class="text-base font-semibold text-stone-950" x-text="text('tlAssigned')">Assigned</h3>
                                         <p class="mt-0.5 text-sm leading-5 text-stone-700" x-text="text('tlAssignedDesc')">A staff member takes it on.</p>
                                     </div>
                                 </li>
@@ -112,14 +116,14 @@
                                     <span class="absolute bottom-0 left-4 top-8 w-px -translate-x-1/2 bg-stone-300" aria-hidden="true"></span>
                                     <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold border-2 border-maroon-700 bg-white text-maroon-800" aria-hidden="true">3</span>
                                     <div>
-                                        <h3 class="text-sm font-semibold text-stone-950" x-text="text('tlProgress')">In progress</h3>
+                                        <h3 class="text-base font-semibold text-stone-950" x-text="text('tlProgress')">In progress</h3>
                                         <p class="mt-0.5 text-sm leading-5 text-stone-700" x-text="text('tlProgressDesc')">Work on it is underway.</p>
                                     </div>
                                 </li>
                                 <li class="relative flex gap-4">
                                     <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold border-2 border-stone-300 bg-white text-stone-500" aria-hidden="true">4</span>
                                     <div>
-                                        <h3 class="text-sm font-semibold text-stone-950" x-text="text('tlResolved')">Resolved</h3>
+                                        <h3 class="text-base font-semibold text-stone-950" x-text="text('tlResolved')">Resolved</h3>
                                         <p class="mt-0.5 text-sm leading-5 text-stone-700" x-text="text('tlResolvedDesc')">You confirm whether it is fixed.</p>
                                     </div>
                                 </li>
