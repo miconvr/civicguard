@@ -140,6 +140,18 @@
                         </li>
                     </ol>
                 </section>
+
+                <section aria-labelledby="developers-title" class="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8 lg:pb-20" data-reveal>
+                    <div class="border-t border-stone-300/70 pt-10">
+                        <h2 id="developers-title" class="cg-kicker" x-text="text('devKicker')">Developed by</h2>
+                        <ul class="mt-5 grid gap-x-8 gap-y-3 text-base font-semibold text-stone-900 sm:grid-cols-2 lg:grid-cols-4">
+                            <li>Mico Gerard Navarro</li>
+                            <li>Franz Mikey Reyes</li>
+                            <li>Carl Spencer Talon</li>
+                            <li>Adriann Enriquez</li>
+                        </ul>
+                    </div>
+                </section>
             </main>
 
             <footer class="cg-public-footer mx-auto flex max-w-7xl flex-col gap-3 px-4 py-7 text-sm text-stone-600 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
