@@ -57,8 +57,8 @@
                     @if ($report->photo_path)
                         <div class="cg-card">
                             <h3 class="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __('Photo') }}</h3>
-                            <a href="{{ asset('storage/' . $report->photo_path) }}" target="_blank" rel="noopener">
-                                <img src="{{ asset('storage/' . $report->photo_path) }}" alt="{{ __('Incident photo') }}" class="max-h-96 w-full rounded-lg border border-gray-200 object-contain dark:border-gray-700">
+                            <a href="{{ route('admin.reports.photo', $report) }}" target="_blank" rel="noopener">
+                                <img src="{{ route('admin.reports.photo', $report) }}" alt="{{ __('Incident photo') }}" class="max-h-96 w-full rounded-lg border border-gray-200 object-contain dark:border-gray-700">
                             </a>
                         </div>
                     @endif
