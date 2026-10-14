@@ -960,3 +960,13 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
     outline: 2px solid #7a1f1f;
     outline-offset: 2px;
 }
+
+/* cg-checkbox-focus: no ring or outline on mouse/touch click, keep it for keyboard focus */
+input[type="checkbox"]:focus, input[type="radio"]:focus {
+    outline: none;
+    box-shadow: none;
+}
+input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
+    outline: 2px solid #7a1f1f;
+    outline-offset: 2px;
+}
