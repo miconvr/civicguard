@@ -8,6 +8,10 @@
   Incident reporting, monitoring, and curfew tracking for Barangay Maimpis
 </p>
 
+**Live site:** <https://civicguard.wasmer.app>
+
+CivicGuard is a web-based system that lets residents of Barangay Maimpis, City of San Fernando, Pampanga report incidents and follow their progress. Barangay staff get one place to review, assign, and resolve reports and to log curfew violations. An AI assistant helps residents describe what happened, and urgent messages get immediate emergency guidance.
+
 ---
 
 ## Features
@@ -80,7 +84,7 @@ The database is published on `127.0.0.1:3340` by default; change `FORWARD_DB_POR
 
 ### 3. Install PHP dependencies
 
-A fresh clone has no `vendor/` folder yet. Use the published Sail PHP 8.4 Composer helper for the initial dependency install. The app runtime itself is built from PHP 8.5; `composer.json` requires PHP `^8.2` and resolves dependencies against the PHP 8.2.12 platform:
+A fresh clone has no `vendor/` folder yet. Install the PHP dependencies with the Sail Composer helper image:
 
 ```bash
 docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php84-composer:latest composer install
@@ -172,7 +176,7 @@ Use `APP_PORT` for a conflict on the web app port and `FORWARD_DB_PORT` for a co
 
 ## Production deployment
 
-CivicGuard is deployed on Wasmer Edge at <https://civicguard.wasmer.app>, configured by `app.yaml`. Secrets (`APP_KEY`, database credentials, `GEMINI_API_KEY`) are set in the Wasmer dashboard and never committed.
+CivicGuard is live at <https://civicguard.wasmer.app> on Wasmer Edge, configured by `app.yaml`. Secrets (`APP_KEY`, database credentials, `GEMINI_API_KEY`) are set in the Wasmer dashboard and never committed.
 
 To release a change: test locally, `git push`, then run `wasmer deploy`. Pushing alone does not update the live site. Run any new migration against the live database once per release.
 
@@ -194,7 +198,7 @@ Check the production frontend bundle with:
 
 ## UI motion
 
-Pages use a brief entrance, selected landing and dashboard content reveals as it scrolls into view, and restrained hover feedback on interactive cards, buttons, and navigation. The signed-in account menu uses an origin-aware dropdown transition, and successful report actions show a brief animated check. Motion respects `prefers-reduced-motion` and does not hide content when animation is disabled. The CSS is included in the app, with no runtime package dependency. The dropdown and success-check patterns are adapted from [transitions.dev](https://transitions.dev/), whose free recipes may be used in personal and commercial projects under its terms. See the [Transitions.dev repository](https://github.com/Jakubantalik/transitions.dev).
+Pages use brief entrance and hover animations, and all motion respects `prefers-reduced-motion`. The dropdown and success-check patterns are adapted from [transitions.dev](https://transitions.dev/). Design notes are in [DESIGN.md](DESIGN.md).
 
 ---
 
@@ -210,7 +214,3 @@ The AI Assistant, category suggestion, severity classification, and analytics in
 ## Developed by
 
 Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, Adriann Enriquez
-
-## Repository
-
-https://github.com/miconvr/civicguard.git
