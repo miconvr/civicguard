@@ -27,11 +27,6 @@
                 <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
             </label>
 
-            @if (Route::has('password.request'))
-                <a class="text-sm font-medium text-maroon-700 dark:text-gray-200 hover:underline" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
         </div>
 
         <x-primary-button class="mt-6 w-full justify-center min-h-[44px]" ::disabled="submitting" ::aria-busy="submitting">
@@ -45,6 +40,8 @@
             </span>
         </x-primary-button>
     </form>
+
+    <p class="cg-forgot-note mt-4 text-center text-sm text-gray-600 dark:text-gray-400">{{ __('Forgot your password? Please ask the barangay to reset it for you.') }}</p>
 
     <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700 text-center">
         <p class="text-sm text-gray-600 dark:text-gray-400">
