@@ -212,9 +212,37 @@
             'slow' => __('That took too long. Please try again.'),
             'rate' => __('You are sending messages too quickly. Please wait a moment.'),
             'retry' => __('Try again'),
+            'call911' => __('Call 911'),
+            'safeContinue' => __("I'm safe, continue my report"),
+            'safeMessage' => __("I'm safe, and I would like to continue with a report."),
         ]) }};
         const chips = document.getElementById('chat-chips');
         let lastMessage = '';
+        let emergencyAcked = false;
+
+        function showEmergencyActions() {
+            const row = document.createElement('div');
+            row.setAttribute('data-emergency-actions', '');
+            row.className = 'flex flex-wrap gap-2';
+
+            const call = document.createElement('a');
+            call.href = 'tel:911';
+            call.className = 'cg-btn inline-flex min-h-[44px] items-center justify-center';
+            call.textContent = t.call911;
+
+            const proceed = document.createElement('button');
+            proceed.type = 'button';
+            proceed.className = 'min-h-[44px] rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-800 transition hover:border-maroon-700 dark:border-gray-600 dark:text-gray-200';
+            proceed.textContent = t.safeContinue;
+            proceed.onclick = () => {
+                emergencyAcked = true;
+                sendMessage(t.safeMessage);
+            };
+
+            row.append(call, proceed);
+            log.appendChild(row);
+            log.scrollTop = log.scrollHeight;
+        }
 
         function setBusy(busy) {
             input.disabled = busy;
@@ -245,6 +273,7 @@
             if (!message || input.disabled) return;
             lastMessage = message;
             chips.classList.add('hidden');
+            document.querySelectorAll('[data-emergency-actions]').forEach(el => el.remove());
 
             if (!isRetry) {
                 addMessage(message, 'user');
@@ -265,7 +294,7 @@
                         'Accept': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
                     },
-                    body: JSON.stringify({ message, session_id: sessionId, history: conversationHistory }),
+                    body: JSON.stringify({ message, session_id: sessionId, history: conversationHistory, emergency_ack: emergencyAcked }),
                     signal: controller.signal
                 });
 
@@ -277,6 +306,10 @@
                 conversationHistory += 'Assistant: ' + data.reply + '\n';
                 hideTyping();
                 addMessage(data.reply, 'bot');
+
+                if (data.emergency) {
+                    showEmergencyActions();
+                }
 
                 if (data.report_data) {
                     showReviewCard(data.report_data);
