@@ -2,7 +2,7 @@
 <html lang="en" x-data="landingPage" :lang="language">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#f6f2eb">
         <meta name="description" content="CivicGuard helps Barangay Maimpis residents report incidents and follow updates from barangay staff.">
@@ -260,6 +260,10 @@
             <footer class="cg-public-footer mx-auto flex max-w-7xl flex-col gap-3 px-4 py-7 text-sm text-stone-600 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:px-6 lg:px-8">
                 <p class="font-medium text-stone-700" x-text="text('footerBrand')">CivicGuard · Barangay Maimpis · Incident and Curfew Reporting System</p>
                 <p x-text="text('footerEmergency')">For emergencies, call 911.</p>
+                <p class="flex flex-wrap gap-x-5">
+                    <a href="{{ route('privacy') }}" class="inline-block py-2 underline underline-offset-4 hover:text-stone-900" x-text="text('footerPrivacy')">Privacy Policy</a>
+                    <a href="{{ route('terms') }}" class="inline-block py-2 underline underline-offset-4 hover:text-stone-900" x-text="text('footerTerms')">Terms of Use</a>
+                </p>
                 <p class="mt-2 border-t border-stone-300/70 pt-4 text-sm font-medium text-stone-800 sm:basis-full"><span class="font-semibold text-maroon-800" x-text="text('devKicker')">Developed by</span> Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, Adriann Enriquez</p>
             </footer>
         </div>

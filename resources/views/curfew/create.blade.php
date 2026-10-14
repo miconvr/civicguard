@@ -19,25 +19,25 @@
                     @csrf
 
                     <div>
-                        <label class="cg-label">Minor's Name</label>
-                        <input type="text" name="minor_name" value="{{ old('minor_name') }}" class="cg-input">
+                        <label for="cf_minor_name" class="cg-label">Minor's Name</label>
+                        <input id="cf_minor_name" type="text" name="minor_name" required value="{{ old('minor_name') }}" class="cg-input">
                         @error('minor_name') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="cg-label">Age</label>
-                        <input type="number" name="minor_age" value="{{ old('minor_age') }}" min="0" max="17" class="cg-input">
+                        <label for="cf_minor_age" class="cg-label">Age</label>
+                        <input id="cf_minor_age" type="number" name="minor_age" value="{{ old('minor_age') }}" min="0" max="17" class="cg-input">
                         @error('minor_age') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="cg-label">Guardian's Name</label>
-                        <input type="text" name="guardian_name" value="{{ old('guardian_name') }}" class="cg-input">
+                        <label for="cf_guardian_name" class="cg-label">Guardian's Name</label>
+                        <input id="cf_guardian_name" type="text" name="guardian_name" value="{{ old('guardian_name') }}" class="cg-input">
                     </div>
 
                     <div>
-                        <label class="cg-label">Guardian's Contact Number</label>
-                        <input type="text" name="guardian_contact" value="{{ old('guardian_contact') }}" class="cg-input">
+                        <label for="cf_guardian_contact" class="cg-label">Guardian's Contact Number</label>
+                        <input id="cf_guardian_contact" type="text" name="guardian_contact" value="{{ old('guardian_contact') }}" class="cg-input">
                     </div>
 
                     <label class="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
@@ -46,8 +46,8 @@
                     </label>
 
                     <div>
-                        <label class="cg-label">Referral or Follow-up Action</label>
-                        <select name="referral_action" class="cg-input">
+                        <label for="cf_referral_action" class="cg-label">Referral or Follow-up Action</label>
+                        <select id="cf_referral_action" name="referral_action" class="cg-input">
                             <option value="">Select action...</option>
                             <option value="Released to guardian" {{ old('referral_action') === 'Released to guardian' ? 'selected' : '' }}>Released to guardian</option>
                             <option value="Referred to social-welfare personnel" {{ old('referral_action') === 'Referred to social-welfare personnel' ? 'selected' : '' }}>Referred to social-welfare personnel</option>
@@ -60,31 +60,31 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400">Record safeguarding actions factually and follow current barangay and social-welfare procedures for minors.</p>
 
                     <div>
-                        <label class="cg-label">Date & Time of Apprehension</label>
-                        <input type="datetime-local" name="apprehension_datetime" value="{{ old('apprehension_datetime') }}" class="cg-input">
+                        <label for="cf_apprehension_datetime" class="cg-label">Date & Time of Apprehension</label>
+                        <input id="cf_apprehension_datetime" type="datetime-local" name="apprehension_datetime" required value="{{ old('apprehension_datetime') }}" class="cg-input">
                         @error('apprehension_datetime') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="cg-label">Location</label>
-                        <input type="text" name="apprehension_location" value="{{ old('apprehension_location') }}" class="cg-input">
+                        <label for="cf_apprehension_location" class="cg-label">Location</label>
+                        <input id="cf_apprehension_location" type="text" name="apprehension_location" required value="{{ old('apprehension_location') }}" class="cg-input">
                         @error('apprehension_location') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="cg-label">Number of Prior Violations</label>
-                        <input type="number" name="prior_violations_count" value="{{ old('prior_violations_count', 0) }}" min="0" class="cg-input">
+                        <label for="cf_prior_violations_count" class="cg-label">Number of Prior Violations</label>
+                        <input id="cf_prior_violations_count" type="number" name="prior_violations_count" required value="{{ old('prior_violations_count', 0) }}" min="0" class="cg-input">
                         @error('prior_violations_count') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="cg-label">Notes</label>
-                        <textarea name="notes" rows="3" class="cg-input">{{ old('notes') }}</textarea>
+                        <label for="cf_notes" class="cg-label">Notes</label>
+                        <textarea id="cf_notes" name="notes" rows="3" class="cg-input">{{ old('notes') }}</textarea>
                     </div>
 
-                    <button type="submit" class="cg-btn">
-                        Log Violation
-                    </button>
+                    <div class="cg-sticky-actions">
+                        <button type="submit" class="cg-btn w-full sm:w-auto" data-loading-btn data-loading-text="{{ __('Logging...') }}">{{ __('Log Violation') }}</button>
+                    </div>
                 </form>
 
             </div>

@@ -78,6 +78,7 @@
                         <button type="button" id="use-location" class="mt-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-60 transition">
                             <span id="use-location-label">{{ __('Pin my current location') }}</span>
                         </button>
+                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('Optional. Your browser will ask for permission. Your location is used only to help staff find the incident, and only barangay staff can see it.') }}</p>
                         <p id="location-status" class="mt-1 text-sm text-gray-600 dark:text-gray-400" aria-live="polite"></p>
                         @error('latitude') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                         @error('longitude') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
@@ -96,15 +97,16 @@
                         @error('photo') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                     </div>
 
-                    <div>
-                        <button type="submit" id="submit-report-btn" class="cg-btn min-h-[48px] w-full sm:w-auto">
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('Only barangay staff can see your report. You will be notified when its status changes.') }}</p>
+                    <div class="cg-sticky-actions">
+                        <button type="submit" id="submit-report-btn" class="cg-btn min-h-[48px] w-full sm:w-auto" data-loading-btn data-loading-text="{{ __('Submitting...') }}">
                             <span id="submit-report-label">{{ __('Submit Report') }}</span>
                             <svg id="submit-report-spinner" class="hidden animate-spin h-4 w-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                             </svg>
                         </button>
-                        <p class="mt-3 text-sm text-gray-600 dark:text-gray-400">{{ __('Only barangay staff can see your report. You will be notified when its status changes.') }}</p>
+                        
                     </div>
                 </form>
 
