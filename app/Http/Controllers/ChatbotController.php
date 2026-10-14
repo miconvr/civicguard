@@ -20,9 +20,21 @@ class ChatbotController extends Controller
             'message' => ['required', 'string', 'max:1000'],
             'session_id' => ['nullable', 'string'],
             'history' => ['nullable', 'string'],
+            'emergency_ack' => ['nullable', 'boolean'],
         ]);
 
         $sessionId = $validated['session_id'] ?? (string) Str::uuid();
+        $emergencyAcknowledged = $request->boolean('emergency_ack');
+
+        // Fixed emergency guidance, shown instantly (no AI call) the first time a message sounds urgent.
+        if (! $emergencyAcknowledged && $this->looksLikeEmergency($validated['message'])) {
+            return response()->json([
+                'reply' => __('This may be an emergency. If someone is in danger right now, call 911 or contact the barangay officials immediately. Please do not wait for the app.'),
+                'session_id' => $sessionId,
+                'report_data' => null,
+                'emergency' => true,
+            ]);
+        }
         $categoryNames = ReportCategory::pluck('name')->implode(', ');
         $faqContext = "Frequently asked questions and approved answers:\n"
             ."- How do I report an incident? Choose a category, describe what happened, provide the location, and optionally attach a photo.\n"
@@ -41,6 +53,11 @@ class ChatbotController extends Controller
             .'###REPORT_DATA###{"category":"exact category name from the list","description":"what happened","location":"the location"}###END### '
             ."Do not include the marker until you truly have all three pieces of information. Never make up information the resident hasn't given you. "
             ."Answer FAQ questions using this approved context:\n{$faqContext}";
+
+        if ($emergencyAcknowledged) {
+            $systemPrompt .= "\n\nThe resident has confirmed they are safe and wants to continue filing a report. "
+                .'Do not repeat the emergency warning. Continue gathering the three pieces of information.';
+        }
 
         $conversationHistory = mb_substr($validated['history'] ?? '', -6000);
 
@@ -69,11 +86,21 @@ class ChatbotController extends Controller
             $rawReply = trim(preg_replace('/###REPORT_DATA###.*?###END###/s', '', $rawReply));
         }
 
+        // Never show a half-finished hidden marker to the resident.
+        $rawReply = trim(preg_replace('/###REPORT_DATA###.*$/s', '', $rawReply));
+
         return response()->json([
             'reply' => $rawReply,
             'session_id' => $sessionId,
             'report_data' => $reportData,
         ]);
+    }
+
+    private function looksLikeEmergency(string $message): bool
+    {
+        $pattern = '/\b(gun|gunshot|firearm|knife|machete|weapon|stab|stabbed|stabbing|shot|shooting|fire|unconscious|not breathing|bleeding|kidnap|kidnapped|dying|attacked|baril|binaril|patalim|kutsilyo|sinaksak|sunog|walang malay|dumudugo)\b/iu';
+
+        return (bool) preg_match($pattern, $message);
     }
 
     private function faqFallback(string $message): string
