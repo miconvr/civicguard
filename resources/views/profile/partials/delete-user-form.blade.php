@@ -9,6 +9,7 @@
         </p>
     </header>
 
+    @if (auth()->user()->role === 'resident')
     <x-danger-button
         x-data=""
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
@@ -52,4 +53,7 @@
             </div>
         </form>
     </x-modal>
+    @else
+    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('Staff accounts cannot be deleted here. Please contact the barangay administrator.') }}</p>
+    @endif
 </section>

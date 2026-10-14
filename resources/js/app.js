@@ -139,6 +139,8 @@ Alpine.data('landingPage', () => ({
             navSignIn: 'Sign in',
             navCreateAccount: 'Create account',
             footerEmergency: 'For emergencies, call 911.',
+            footerPrivacy: 'Privacy Policy',
+            footerTerms: 'Terms of Use',
             navigation: 'Main navigation',
             startLabel: 'Choose how to continue',
             homeLink: 'CivicGuard, Barangay Maimpis home',
@@ -215,6 +217,8 @@ Alpine.data('landingPage', () => ({
             navSignIn: 'Mag-sign in',
             navCreateAccount: 'Gumawa ng account',
             footerEmergency: 'Sa oras ng kagipitan, tumawag sa 911.',
+            footerPrivacy: 'Patakaran sa Privacy',
+            footerTerms: 'Mga Tuntunin ng Paggamit',
             navigation: 'Pangunahing nabigasyon',
             startLabel: 'Piliin kung paano magpatuloy',
             homeLink: 'CivicGuard, tahanan ng Barangay Maimpis',
@@ -268,3 +272,93 @@ Alpine.start();
         run();
     }
 })();
+
+// ---- Loading state for forms: buttons marked data-loading-btn ----
+const CG_SPINNER = '<svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+function cgSetBusy(btn) {
+    btn.dataset.originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.setAttribute('aria-busy', 'true');
+    btn.innerHTML = '<span class="inline-flex items-center gap-2" role="status">' + CG_SPINNER + '<span></span></span>';
+    btn.querySelector('span span').textContent = btn.dataset.loadingText || '...';
+}
+function cgResetBusy() {
+    document.querySelectorAll('[data-loading-btn][aria-busy="true"]').forEach((btn) => {
+        btn.disabled = false;
+        btn.removeAttribute('aria-busy');
+        if (btn.dataset.originalHtml) btn.innerHTML = btn.dataset.originalHtml;
+    });
+}
+document.addEventListener('submit', (e) => {
+    const btn = e.target.querySelector && e.target.querySelector('[data-loading-btn]');
+    if (!btn || e.defaultPrevented) return;
+    if (btn.disabled) { e.preventDefault(); return; }
+    cgSetBusy(btn);
+});
+window.addEventListener('pageshow', cgResetBusy);
+
+// ---- Keyboard: keep the active field in view ----
+(function () {
+    const skip = ['checkbox', 'radio', 'file', 'submit', 'button'];
+    const isField = (el) => el && el.matches && el.matches('input,textarea,select') && !skip.includes(el.type);
+    const reveal = (el) => el.scrollIntoView({ block: 'center', behavior: 'auto' });
+    document.addEventListener('focusin', (e) => {
+        if (isField(e.target)) setTimeout(() => reveal(e.target), 300);
+    });
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', () => {
+            if (isField(document.activeElement)) reveal(document.activeElement);
+        });
+    }
+})();
+
+// ---- Offline banner and submit guard ----
+(function () {
+    const tl = (document.documentElement.lang || '').toLowerCase().startsWith('tl');
+    const text = tl
+        ? { msg: 'Walang koneksyon sa internet. Hindi maipapadala ang inyong mga pagbabago hanggang makakonekta kayo muli.', retry: 'Subukan muli', still: 'Offline pa rin' }
+        : { msg: "You're offline. Your changes can't be sent until you reconnect.", retry: 'Retry', still: 'Still offline' };
+    let banner = null;
+    function build() {
+        banner = document.createElement('div');
+        banner.setAttribute('role', 'status');
+        banner.style.cssText = 'position:fixed;left:0;right:0;top:0;z-index:9999;display:none;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top,0px));background:#7a1f1f;color:#fff;font-size:14px;';
+        const msg = document.createElement('span');
+        msg.textContent = text.msg;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = text.retry;
+        btn.style.cssText = 'min-height:44px;padding:0 14px;border:1px solid #fff;border-radius:8px;background:transparent;color:#fff;font-weight:600;';
+        btn.addEventListener('click', async () => {
+            try {
+                await fetch('/favicon.svg?cb=' + Date.now(), { cache: 'no-store' });
+                hide();
+            } catch (err) {
+                btn.textContent = text.still;
+                setTimeout(() => { btn.textContent = text.retry; }, 2000);
+            }
+        });
+        banner.append(msg, btn);
+        document.body.appendChild(banner);
+    }
+    function show() { if (!banner) build(); banner.style.display = 'flex'; }
+    function hide() { if (banner) banner.style.display = 'none'; }
+    window.addEventListener('offline', show);
+    window.addEventListener('online', hide);
+    document.addEventListener('DOMContentLoaded', () => { if (!navigator.onLine) show(); });
+    // Capture phase: block submits while offline before other handlers (including the loading spinner) run.
+    document.addEventListener('submit', (e) => {
+        if (!navigator.onLine) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            show();
+        }
+    }, true);
+})();
+
+// ---- Service worker: friendly offline page for page loads only ----
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+    });
+}
