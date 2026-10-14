@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#f6f2eb">
         <meta name="description" content="CivicGuard helps Barangay Maimpis residents report incidents and follow updates from barangay staff.">
-        <title>{{ config('app.name', 'CivicGuard') }} · Barangay Maimpis</title>
+        <title>{{ config('app.name', 'CivicGuard') }}</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
         <style>[x-cloak] { display: none !important; }</style>
         <link rel="preconnect" href="https://fonts.bunny.net">
