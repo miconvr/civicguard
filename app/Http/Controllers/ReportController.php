@@ -42,7 +42,7 @@ class ReportController extends Controller
 
         $photoPath = null;
         if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('report-photos', 'public');
+            $photoPath = $request->file('photo')->store('report-photos', 'report_photos');
         }
 
         $report = Report::create([

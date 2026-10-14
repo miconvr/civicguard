@@ -46,8 +46,8 @@
                     <td>{{ $report->assignedTo->name ?? '-' }}</td>
                     <td>{{ $report->latitude !== null && $report->longitude !== null ? $report->latitude . ', ' . $report->longitude : '-' }}</td>
                     <td>
-                        @if ($report->photo_path && file_exists(public_path('storage/' . $report->photo_path)))
-                            <img src="{{ public_path('storage/' . $report->photo_path) }}" alt="Incident photo" style="width: 48px; height: 36px; object-fit: cover;">
+                        @if ($report->photo_path && \Illuminate\Support\Facades\Storage::disk('report_photos')->exists($report->photo_path))
+                            <img src="data:{{ \Illuminate\Support\Facades\Storage::disk('report_photos')->mimeType($report->photo_path) }};base64,{{ base64_encode(\Illuminate\Support\Facades\Storage::disk('report_photos')->get($report->photo_path)) }}" alt="Incident photo" style="width: 48px; height: 36px; object-fit: cover;">
                         @else
                             -
                         @endif
