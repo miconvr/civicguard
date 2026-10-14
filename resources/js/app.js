@@ -93,7 +93,7 @@ Alpine.data('landingPage', () => ({
             emergency: 'Call 911 for emergencies. CivicGuard reports are not monitored in real time.',
             call911: 'Call 911',
             processIntro: 'For residents',
-            footerBrand: 'CivicGuard · Barangay Maimpis Incident and Curfew Reporting System',
+            footerBrand: 'CivicGuard · Barangay Maimpis · Incident and Curfew Reporting System',
             featKicker: 'Why CivicGuard',
             featHeading: 'Reporting made simple',
             feat1Title: 'Add a photo and location',

@@ -258,9 +258,9 @@
             </main>
 
             <footer class="cg-public-footer mx-auto flex max-w-7xl flex-col gap-3 px-4 py-7 text-sm text-stone-600 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:px-6 lg:px-8">
-                <p class="font-medium text-stone-700" x-text="text('footerBrand')">CivicGuard · Barangay Maimpis Incident and Curfew Reporting System</p>
+                <p class="font-medium text-stone-700" x-text="text('footerBrand')">CivicGuard · Barangay Maimpis · Incident and Curfew Reporting System</p>
                 <p x-text="text('footerEmergency')">For emergencies, call 911.</p>
-                <p class="text-xs text-stone-500 sm:basis-full"><span class="font-medium" x-text="text('devKicker')">Developed by</span> Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, Adriann Enriquez</p>
+                <p class="mt-2 border-t border-stone-300/70 pt-4 text-sm font-medium text-stone-800 sm:basis-full"><span class="font-semibold text-maroon-800" x-text="text('devKicker')">Developed by</span> Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, Adriann Enriquez</p>
             </footer>
         </div>
     </body>
