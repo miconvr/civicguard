@@ -32,6 +32,17 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <div class="mt-4">
+            <label for="terms" class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-400">
+                <input id="terms" type="checkbox" name="terms" value="1" required @checked(old('terms')) class="mt-0.5 h-5 w-5 shrink-0 rounded border-gray-300 text-maroon-600 focus:ring-maroon-500">
+                <span>{!! __('I agree to the :terms and :privacy.', [
+                    'terms' => '<a href="' . route('terms') . '" class="font-semibold text-maroon-700 dark:text-gray-200 underline" target="_blank" rel="noopener">' . e(__('Terms of Use')) . '</a>',
+                    'privacy' => '<a href="' . route('privacy') . '" class="font-semibold text-maroon-700 dark:text-gray-200 underline" target="_blank" rel="noopener">' . e(__('Privacy Policy')) . '</a>',
+                ]) !!}</span>
+            </label>
+            <x-input-error :messages="$errors->get('terms')" class="mt-2" />
+        </div>
+
         <x-primary-button class="mt-6 w-full justify-center min-h-[44px]" ::disabled="submitting" ::aria-busy="submitting">
             <span x-show="!submitting">{{ __('Register') }}</span>
             <span x-cloak x-show="submitting" class="inline-flex items-center gap-2" role="status">

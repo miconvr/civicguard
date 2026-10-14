@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Report;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -42,15 +44,21 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        abort_unless($request->user()->role === 'resident', 403, 'Staff accounts cannot be deleted here. Please contact the barangay administrator.');
+
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
 
         $user = $request->user();
 
+        $photoPaths = Report::where('user_id', $user->id)->whereNotNull('photo_path')->pluck('photo_path');
+
         Auth::logout();
 
         $user->delete();
+
+        $photoPaths->each(fn ($path) => Storage::disk('report_photos')->delete($path));
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

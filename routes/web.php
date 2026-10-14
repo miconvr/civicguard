@@ -18,6 +18,9 @@ Route::get('/', function () {
     return view('landing');
 });
 
+Route::view('/privacy', 'legal.privacy')->name('privacy');
+Route::view('/terms', 'legal.terms')->name('terms');
+
 Route::get('/locale/{locale}', function (string $locale) {
     abort_unless(in_array($locale, ['en', 'tl']), 404);
 
