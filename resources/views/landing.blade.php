@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+        @include('partials.pwa-head')
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#f6f2eb">
         <meta name="description" content="CivicGuard helps Barangay Maimpis residents report incidents and follow updates from barangay staff.">
