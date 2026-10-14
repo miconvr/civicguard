@@ -14,6 +14,7 @@
 
 * **Incident reporting** with photo upload, optional GPS pin, and an AI category suggestion
 * **AI Assistant** that helps residents describe an incident in their own words
+* **Emergency guidance** in the chat: urgent messages (for example a weapon or fire) get an instant fixed warning with a Call 911 button and an "I'm safe, continue my report" option
 * **Incident queue** for staff: urgency sorting, status tabs, search, and a detail drawer
 * **Progress timeline** (Received, Assigned, In progress, Resolved) for residents and staff
 * **"Was this fixed?"** follow-up: residents confirm or reopen a resolved report within 7 days
@@ -171,32 +172,11 @@ Use `APP_PORT` for a conflict on the web app port and `FORWARD_DB_PORT` for a co
 
 ## Production deployment
 
-This repository currently provides a **local development setup with Laravel Sail**, not a production deployment for a specific cloud host. Choose and configure a production host, managed database, and persistent file storage before exposing CivicGuard publicly. Do not publish the local phpMyAdmin service or the MySQL port to the internet.
+CivicGuard is deployed on Wasmer Edge at <https://civicguard.wasmer.app>, configured by `app.yaml`. Secrets (`APP_KEY`, database credentials, `GEMINI_API_KEY`) are set in the Wasmer dashboard and never committed.
 
-Before serving real residents:
+To release a change: test locally, `git push`, then run `wasmer deploy`. Pushing alone does not update the live site. Run any new migration against the live database once per release.
 
-1. Configure production secrets outside Git: `APP_ENV=production`, `APP_DEBUG=false`, a unique `APP_KEY`, the production `APP_URL`, and private database credentials. Serve the app over HTTPS.
-2. Configure production mail delivery. The example `.env` uses the `log` mailer, which does not deliver password-reset or verification email.
-3. Build dependencies and frontend assets for production:
-
-   ```bash
-   composer install --no-dev --optimize-autoloader
-   npm ci
-   npm run build
-   ```
-
-4. Run database migrations once during release:
-
-   ```bash
-   php artisan migrate --force
-   ```
-
-   Do not run seeders against a production database unless each seeder has been reviewed for that environment.
-5. Make report-photo storage persistent and writable by the app, and run `php artisan storage:link` if using Laravel's public local disk. Back up the database and uploaded files, and test restoring those backups.
-6. Configure the host's process manager for any queue work you enable. The default queue connection is `database`; monitor failed jobs and application logs.
-7. Configure `GEMINI_API_KEY` only if the barangay approves sending report content to Google Gemini. Review [AI features and privacy](#ai-features-and-privacy) and publish an appropriate privacy notice.
-
-The above is a deployment checklist, not a ready-to-run production Docker image or hosting recipe. Production networking, TLS, database, storage, mail, backups, monitoring, and release automation depend on the hosting provider.
+Before serving real residents, get the barangay's approval for sending report text to Google Gemini, publish a privacy notice, and configure real email delivery.
 
 ## Running tests
 
