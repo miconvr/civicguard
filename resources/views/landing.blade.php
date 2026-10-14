@@ -165,6 +165,99 @@
                         </li>
                     </ol>
                 </section>
+
+                <section aria-labelledby="features-title" class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+                    <div class="max-w-2xl" data-cg-scroll>
+                        <p class="cg-kicker" x-text="text('featKicker')">Why CivicGuard</p>
+                        <h2 id="features-title" class="mt-3 text-3xl leading-tight sm:text-4xl" x-text="text('featHeading')">Reporting made simple</h2>
+                    </div>
+                    <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                            <li class="rounded-xl border border-stone-200 bg-white p-6" data-cg-scroll>
+                                <h3 class="text-base font-semibold text-stone-950" x-text="text('feat1Title')">Add a photo and location</h3>
+                                <p class="mt-2 text-sm leading-6 text-stone-700" x-text="text('feat1Text')">Attach a photo and drop a pin so staff can find the problem.</p>
+                            </li>
+                            <li class="rounded-xl border border-stone-200 bg-white p-6" data-cg-scroll>
+                                <h3 class="text-base font-semibold text-stone-950" x-text="text('feat2Title')">Follow every update</h3>
+                                <p class="mt-2 text-sm leading-6 text-stone-700" x-text="text('feat2Text')">See when your report is received, assigned, in progress, and resolved.</p>
+                            </li>
+                            <li class="rounded-xl border border-stone-200 bg-white p-6" data-cg-scroll>
+                                <h3 class="text-base font-semibold text-stone-950" x-text="text('feat3Title')">Get notified</h3>
+                                <p class="mt-2 text-sm leading-6 text-stone-700" x-text="text('feat3Text')">Receive a notification when the status of your report changes.</p>
+                            </li>
+                            <li class="rounded-xl border border-stone-200 bg-white p-6" data-cg-scroll>
+                                <h3 class="text-base font-semibold text-stone-950" x-text="text('feat4Title')">English and Tagalog</h3>
+                                <p class="mt-2 text-sm leading-6 text-stone-700" x-text="text('feat4Text')">Use the site in the language you are most comfortable with.</p>
+                            </li>
+                    </ul>
+                </section>
+
+                <section aria-labelledby="staff-title" class="border-y border-stone-200 bg-white/60">
+                    <div class="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20 lg:px-8 lg:py-20">
+                        <div class="max-w-md" data-cg-scroll>
+                            <p class="cg-kicker" x-text="text('staffKicker')">For barangay staff</p>
+                            <h2 id="staff-title" class="mt-3 text-3xl leading-tight sm:text-4xl" x-text="text('staffHeading')">One place for every report</h2>
+                        </div>
+                        <ul class="divide-y divide-stone-200 border-y border-stone-200">
+                            <li class="py-5 text-base text-stone-800" data-cg-scroll x-text="text('staff1')">Review reports sorted by urgency</li>
+                            <li class="py-5 text-base text-stone-800" data-cg-scroll x-text="text('staff2')">Assign reports and post updates for residents</li>
+                            <li class="py-5 text-base text-stone-800" data-cg-scroll x-text="text('staff3')">Log curfew violations (for tanods)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section aria-labelledby="faq-title" class="mx-auto max-w-3xl px-4 py-14 sm:px-6 lg:py-20">
+                    <h2 id="faq-title" class="text-3xl leading-tight sm:text-4xl" data-cg-scroll x-text="text('faqHeading')">Common questions</h2>
+                    <div class="mt-8 border-t border-stone-300/70">
+                        <details class="group border-b border-stone-300/70 py-4" data-cg-scroll>
+                            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">
+                                <span x-text="text('faq1Q')">Do I need an account to report?</span>
+                                <span class="text-xl leading-none text-maroon-700 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                            </summary>
+                            <p class="mt-3 max-w-2xl text-sm leading-6 text-stone-700" x-text="text('faq1A')">Yes. Create a resident account so you can send a report and follow its updates.</p>
+                        </details>
+                        <details class="group border-b border-stone-300/70 py-4" data-cg-scroll>
+                            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">
+                                <span x-text="text('faq2Q')">Can I use CivicGuard in an emergency?</span>
+                                <span class="text-xl leading-none text-maroon-700 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                            </summary>
+                            <p class="mt-3 max-w-2xl text-sm leading-6 text-stone-700" x-text="text('faq2A')">No. Call 911 first. CivicGuard reports are not monitored in real time.</p>
+                        </details>
+                        <details class="group border-b border-stone-300/70 py-4" data-cg-scroll>
+                            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">
+                                <span x-text="text('faq3Q')">What if my issue gets fixed?</span>
+                                <span class="text-xl leading-none text-maroon-700 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                            </summary>
+                            <p class="mt-3 max-w-2xl text-sm leading-6 text-stone-700" x-text="text('faq3A')">When a report is marked resolved, you can confirm it or reopen it within 7 days.</p>
+                        </details>
+                        <details class="group border-b border-stone-300/70 py-4" data-cg-scroll>
+                            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">
+                                <span x-text="text('faq4Q')">Is a photo required?</span>
+                                <span class="text-xl leading-none text-maroon-700 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                            </summary>
+                            <p class="mt-3 max-w-2xl text-sm leading-6 text-stone-700" x-text="text('faq4A')">No. A photo is optional, but it helps staff understand the issue.</p>
+                        </details>
+                    </div>
+                </section>
+
+                <section aria-labelledby="cta-title" class="bg-maroon-900 text-white">
+                    <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-14 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8 lg:py-16">
+                        <div class="max-w-xl" data-cg-scroll>
+                            <h2 id="cta-title" class="text-3xl leading-tight text-white sm:text-4xl" x-text="text('ctaHeading')">Ready to report an issue?</h2>
+                            <p class="mt-3 text-base leading-7 text-white/80" x-text="text('ctaText')">Create an account and follow your report from start to finish.</p>
+                        </div>
+                        @guest
+                            <a href="{{ route('register') }}" class="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-md bg-white px-6 text-base font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100" data-cg-scroll>
+                                <span x-text="text('residentAction')">Create a resident account</span>
+                                <span class="cg-arrow" aria-hidden="true">→</span>
+                            </a>
+                        @else
+                            <a href="{{ route('dashboard') }}" class="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-md bg-white px-6 text-base font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100" data-cg-scroll>
+                                <span x-text="text('dashboard')">Go to your dashboard</span>
+                                <span class="cg-arrow" aria-hidden="true">→</span>
+                            </a>
+                        @endguest
+                    </div>
+                </section>
             </main>
 
             <footer class="cg-public-footer mx-auto flex max-w-7xl flex-col gap-3 px-4 py-7 text-sm text-stone-600 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:px-6 lg:px-8">
