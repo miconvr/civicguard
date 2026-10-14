@@ -15,6 +15,7 @@ class ReportPhotoController extends Controller
 
         return $disk->response($report->photo_path, null, [
             'Cache-Control' => 'private, max-age=3600',
+            'X-Content-Type-Options' => 'nosniff',
         ]);
     }
 }
