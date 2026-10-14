@@ -38,6 +38,14 @@
                                 class="cg-language-toggle inline-flex min-h-10 min-w-10 items-center justify-center rounded-md border border-stone-300 px-2.5 text-xs font-semibold tracking-wide text-stone-700 transition-colors hover:bg-white/70">
                             <span x-text="language === 'en' ? 'EN' : 'TL'"></span>
                         </button>
+                        @guest
+                            <a href="{{ route('login') }}" class="inline-flex min-h-10 items-center rounded-md px-2.5 text-sm font-semibold text-maroon-800 transition-colors hover:bg-white/70 hover:text-maroon-950" x-text="text('navSignIn')">Sign in</a>
+                            <span class="hidden sm:inline-flex">
+                                <a href="{{ route('register') }}" class="cg-btn min-h-10 px-4 text-sm">
+                                    <span x-text="text('navCreateAccount')">Create account</span>
+                                </a>
+                            </span>
+                        @endguest
                         @auth
                             <a href="{{ route('dashboard') }}" class="cg-btn ml-1 min-h-10 px-3 text-xs sm:px-4 sm:text-sm">
                                 <span x-text="text('dashboard')">Go to your dashboard</span>
