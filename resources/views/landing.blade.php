@@ -91,35 +91,32 @@
                         </div>
 
                         <aside id="get-started" aria-label="Sample report" :aria-label="text('sampleLabel')" class="cg-start-panel cg-intro-enter cg-intro-enter-3">
-                            <div class="cg-start-panel-heading">
-                                <p class="cg-start-note" x-text="text('sampleLabel')">Sample report</p>
-                            </div>
-                            <div class="px-6 pb-7">
-                                <p class="text-sm leading-6 text-stone-700 lg:text-base lg:leading-7" x-text="text('sampleIntro')">After you send a report, you can follow its progress like this.</p>
+                            <div class="px-6 py-7">
+                                <p class="cg-sample-text text-sm leading-6 text-stone-700 lg:text-base lg:leading-7" x-text="text('sampleIntro')">After you send a report, you can follow its progress like this.</p>
                                 <div class="mt-5 rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
                                     <div class="flex items-start justify-between gap-3">
                                         <div>
                                             <p class="text-base font-semibold text-stone-950 lg:text-lg" x-text="text('sampleTitle')">Broken streetlight</p>
                                             <p class="mt-0.5 text-sm text-stone-600" x-text="text('sampleSent')">Sent today</p>
                                         </div>
-                                        <span class="shrink-0 rounded-full bg-maroon-700 px-3 py-1 text-xs font-semibold text-white" x-text="text('tlProgress')">In progress</span>
+                                        <span class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-maroon-700 px-3 py-1 text-xs font-semibold text-white"><span class="relative flex h-2 w-2" aria-hidden="true"><span class="cg-ping-ring absolute inline-flex h-full w-full rounded-full bg-white/70"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-white"></span></span><span x-text="text('tlProgress')">In progress</span></span>
                                     </div>
                                     <ol class="mt-6 grid grid-cols-3 gap-2">
                                         <li>
-                                            <span class="block h-1.5 rounded-full bg-maroon-700"></span>
-                                            <span class="mt-2 block text-xs font-semibold text-stone-900 sm:text-sm" x-text="text('tlReceived')">Received</span>
+                                            <span class="block h-1.5 overflow-hidden rounded-full bg-stone-300"><span class="cg-fill cg-fill-1 block h-full w-full rounded-full bg-maroon-700"></span></span>
+                                            <span class="cg-label cg-label-1 mt-2 block text-xs font-semibold text-stone-900 sm:text-sm" x-text="text('tlReceived')">Received</span>
                                         </li>
                                         <li>
-                                            <span class="block h-1.5 rounded-full bg-maroon-700"></span>
-                                            <span class="mt-2 block text-xs font-semibold text-maroon-800 sm:text-sm" x-text="text('tlProgress')">In progress</span>
+                                            <span class="block h-1.5 overflow-hidden rounded-full bg-stone-300"><span class="cg-fill cg-fill-2 block h-full w-full rounded-full bg-maroon-700"></span></span>
+                                            <span class="cg-label cg-label-2 mt-2 block text-xs font-semibold text-maroon-800 sm:text-sm" x-text="text('tlProgress')">In progress</span>
                                         </li>
                                         <li>
-                                            <span class="block h-1.5 rounded-full bg-stone-300"></span>
-                                            <span class="mt-2 block text-xs text-stone-500 sm:text-sm" x-text="text('tlResolved')">Resolved</span>
+                                            <span class="cg-pending block h-1.5 rounded-full bg-stone-300"></span>
+                                            <span class="cg-label cg-label-3 mt-2 block text-xs text-stone-500 sm:text-sm" x-text="text('tlResolved')">Resolved</span>
                                         </li>
                                     </ol>
                                 </div>
-                                <p class="mt-5 text-sm leading-6 text-stone-700 lg:text-base lg:leading-7" x-text="text('sampleFoot')">You can check this anytime from your account.</p>
+                                <p class="cg-sample-foot mt-5 text-sm leading-6 text-stone-700 lg:text-base lg:leading-7" x-text="text('sampleFoot')">You can check this anytime from your account.</p>
                             </div>
                         </aside>
                     </div>
@@ -191,16 +188,16 @@
                     </ul>
                 </section>
 
-                <section aria-labelledby="staff-title" class="border-y border-stone-200 bg-white/60">
+                <section aria-labelledby="staff-title" class="bg-maroon-900 text-white">
                     <div class="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20 lg:px-8 lg:py-20">
                         <div class="max-w-md" data-cg-scroll>
-                            <p class="cg-kicker" x-text="text('staffKicker')">For barangay staff</p>
-                            <h2 id="staff-title" class="mt-3 text-3xl leading-tight sm:text-4xl" x-text="text('staffHeading')">One place for every report</h2>
+                            <p class="text-xs font-semibold uppercase tracking-widest text-white/70" x-text="text('staffKicker')">For barangay staff</p>
+                            <h2 id="staff-title" class="mt-3 text-3xl leading-tight text-white sm:text-4xl" x-text="text('staffHeading')">One place for every report</h2>
                         </div>
-                        <ul class="divide-y divide-stone-200 border-y border-stone-200">
-                            <li class="py-5 text-base text-stone-800" data-cg-scroll x-text="text('staff1')">Review reports sorted by urgency</li>
-                            <li class="py-5 text-base text-stone-800" data-cg-scroll x-text="text('staff2')">Assign reports and post updates for residents</li>
-                            <li class="py-5 text-base text-stone-800" data-cg-scroll x-text="text('staff3')">Log curfew violations (for tanods)</li>
+                        <ul class="divide-y divide-white/20 border-y border-white/20">
+                            <li class="py-5 text-base text-white/90" data-cg-scroll x-text="text('staff1')">Review reports sorted by urgency</li>
+                            <li class="py-5 text-base text-white/90" data-cg-scroll x-text="text('staff2')">Assign reports and post updates for residents</li>
+                            <li class="py-5 text-base text-white/90" data-cg-scroll x-text="text('staff3')">Log curfew violations (for tanods)</li>
                         </ul>
                     </div>
                 </section>
