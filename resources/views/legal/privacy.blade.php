@@ -39,5 +39,9 @@
 <p>Passwords are stored hashed, access is limited by role, and the site uses HTTPS. No system is perfectly secure, so please use a strong password.</p>
 
 <h2 class="mt-8 text-xl font-semibold">Contact</h2>
-<p>For privacy questions or requests: email <a class="underline" href="mailto:skbarangaymaimpiscsfp@gmail.com">skbarangaymaimpiscsfp@gmail.com</a>, call (045) 300 2629, or visit the Barangay Maimpis hall.</p>
+<p>For privacy questions or requests, contact:</p>
+<ul class="list-disc space-y-1 pl-6">
+    <li>Sangguniang Kabataan: <a class="underline" href="mailto:skbarangaymaimpiscsfp@gmail.com">skbarangaymaimpiscsfp@gmail.com</a></li>
+    <li>Barangay Maimpis hall: <a class="underline" href="tel:+63453002629">(045) 300 2629</a></li>
+</ul>
 @endsection
