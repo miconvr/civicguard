@@ -178,7 +178,7 @@ Use `APP_PORT` for a conflict on the web app port and `FORWARD_DB_PORT` for a co
 
 CivicGuard is live at <https://civicguard.wasmer.app> on Wasmer Edge, configured by `app.yaml`. Secrets (`APP_KEY`, database credentials, `GEMINI_API_KEY`) are set in the Wasmer dashboard and never committed.
 
-To release a change: test locally, `git push`, then run `wasmer deploy`. Pushing alone does not update the live site. Run any new migration against the live database once per release.
+To release a change: test locally, then `git push`. Wasmer redeploys the live site automatically on each push. Run any new migration against the live database once per release.
 
 Before serving real residents, get the barangay's approval for sending report text to Google Gemini, publish a privacy notice, and configure real email delivery.
 
