@@ -93,6 +93,7 @@
                     </x-sidebar-link>
                 @endif
 
+                @if (in_array($role, ['admin', 'official']))
                 <p class="{{ $groupLabel }} pt-4">{{ __('Administration') }}</p>
                 <x-sidebar-link icon="shield" :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
                     {{ __('Audit Logs') }}
@@ -101,6 +102,7 @@
                     <x-sidebar-link icon="user-plus" :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
                         {{ __('Add Staff') }}
                     </x-sidebar-link>
+                @endif
                 @endif
 
                 <p class="{{ $groupLabel }} pt-4">{{ __('General') }}</p>
