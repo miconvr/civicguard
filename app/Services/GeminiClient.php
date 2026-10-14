@@ -9,7 +9,6 @@ class GeminiClient
 {
     protected array $models = [
         'gemini-flash-latest',
-        'gemini-2.5-flash',
         'gemini-flash-lite-latest',
     ];
 
