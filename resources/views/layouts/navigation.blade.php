@@ -127,7 +127,7 @@
             @php
                 $roleLabel = match (Auth::user()->role) {
                     'official' => __('Barangay Official'),
-                    'tanod'    => __('Tanod'),
+                    'tanod'    => __('Barangay Tanod'),
                     'admin'    => __('Admin'),
                     'resident' => __('Resident'),
                     default    => ucfirst(Auth::user()->role),
