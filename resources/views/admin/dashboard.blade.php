@@ -95,7 +95,7 @@
                                         'status' => $report->status,
                                         'assigned_to' => (string) $report->assigned_to,
                                         'filed' => $report->created_at->format('M d, Y g:i A'),
-                                        'photo' => $report->photo_path ? asset('storage/' . $report->photo_path) : null,
+                                        'photo' => $report->photo_path ? route('admin.reports.photo', $report) : null,
                                         'lat' => $report->latitude,
                                         'lng' => $report->longitude,
                                         'details' => route('admin.reports.details', $report),
