@@ -1,6 +1,8 @@
 kind: wasmer.io/App.v0
 owner: miconvr
 name: civicguard
+env:
+  PHOTO_DISK_ROOT: "/data"
 volumes:
   - name: data
     mount: /data
