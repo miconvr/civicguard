@@ -135,7 +135,7 @@
             </main>
 
             <footer class="cg-public-footer mx-auto flex max-w-7xl flex-col gap-3 px-4 py-7 text-sm text-stone-600 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-                <p class="font-medium text-stone-700" x-text="text('footerBrand')">CivicGuard · Barangay Maimpis Incident Management</p>
+                <p class="font-medium text-stone-700" x-text="text('footerBrand')">CivicGuard</p>
                 <p x-text="text('footerEmergency')">For emergencies, call 911.</p>
             </footer>
         </div>
