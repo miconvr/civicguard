@@ -94,40 +94,33 @@
                             <div class="cg-start-panel-heading">
                                 <p class="cg-start-note" x-text="text('sampleLabel')">Sample report</p>
                             </div>
-                            <p class="mt-1 px-6 text-sm leading-6 text-stone-700" x-text="text('sampleCaption')">This is what following a report looks like.</p>
-                            <ol class="mt-6 px-6 pb-8">
-                                <li class="relative flex gap-4 pb-7">
-                                    <span class="absolute bottom-0 left-4 top-8 w-px -translate-x-1/2 bg-stone-300" aria-hidden="true"></span>
-                                    <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold bg-maroon-700 text-white" aria-hidden="true">✓</span>
-                                    <div>
-                                        <h3 class="text-base font-semibold text-stone-950" x-text="text('tlReceived')">Received</h3>
-                                        <p class="mt-0.5 text-sm leading-5 text-stone-700" x-text="text('tlReceivedDesc')">Your report is logged.</p>
+                            <div class="px-6 pb-7">
+                                <p class="text-sm leading-6 text-stone-700 lg:text-base lg:leading-7" x-text="text('sampleIntro')">After you send a report, you can follow its progress like this.</p>
+                                <div class="mt-5 rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div>
+                                            <p class="text-base font-semibold text-stone-950 lg:text-lg" x-text="text('sampleTitle')">Broken streetlight</p>
+                                            <p class="mt-0.5 text-sm text-stone-600" x-text="text('sampleSent')">Sent today</p>
+                                        </div>
+                                        <span class="shrink-0 rounded-full bg-maroon-700 px-3 py-1 text-xs font-semibold text-white" x-text="text('tlProgress')">In progress</span>
                                     </div>
-                                </li>
-                                <li class="relative flex gap-4 pb-7">
-                                    <span class="absolute bottom-0 left-4 top-8 w-px -translate-x-1/2 bg-stone-300" aria-hidden="true"></span>
-                                    <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold bg-maroon-700 text-white" aria-hidden="true">✓</span>
-                                    <div>
-                                        <h3 class="text-base font-semibold text-stone-950" x-text="text('tlAssigned')">Assigned</h3>
-                                        <p class="mt-0.5 text-sm leading-5 text-stone-700" x-text="text('tlAssignedDesc')">A staff member takes it on.</p>
-                                    </div>
-                                </li>
-                                <li class="relative flex gap-4 pb-7">
-                                    <span class="absolute bottom-0 left-4 top-8 w-px -translate-x-1/2 bg-stone-300" aria-hidden="true"></span>
-                                    <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold border-2 border-maroon-700 bg-white text-maroon-800" aria-hidden="true">3</span>
-                                    <div>
-                                        <h3 class="text-base font-semibold text-stone-950" x-text="text('tlProgress')">In progress</h3>
-                                        <p class="mt-0.5 text-sm leading-5 text-stone-700" x-text="text('tlProgressDesc')">Work on it is underway.</p>
-                                    </div>
-                                </li>
-                                <li class="relative flex gap-4">
-                                    <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold border-2 border-stone-300 bg-white text-stone-500" aria-hidden="true">4</span>
-                                    <div>
-                                        <h3 class="text-base font-semibold text-stone-950" x-text="text('tlResolved')">Resolved</h3>
-                                        <p class="mt-0.5 text-sm leading-5 text-stone-700" x-text="text('tlResolvedDesc')">You confirm whether it is fixed.</p>
-                                    </div>
-                                </li>
-                            </ol>
+                                    <ol class="mt-6 grid grid-cols-3 gap-2">
+                                        <li>
+                                            <span class="block h-1.5 rounded-full bg-maroon-700"></span>
+                                            <span class="mt-2 block text-xs font-semibold text-stone-900 sm:text-sm" x-text="text('tlReceived')">Received</span>
+                                        </li>
+                                        <li>
+                                            <span class="block h-1.5 rounded-full bg-maroon-700"></span>
+                                            <span class="mt-2 block text-xs font-semibold text-maroon-800 sm:text-sm" x-text="text('tlProgress')">In progress</span>
+                                        </li>
+                                        <li>
+                                            <span class="block h-1.5 rounded-full bg-stone-300"></span>
+                                            <span class="mt-2 block text-xs text-stone-500 sm:text-sm" x-text="text('tlResolved')">Resolved</span>
+                                        </li>
+                                    </ol>
+                                </div>
+                                <p class="mt-5 text-sm leading-6 text-stone-700 lg:text-base lg:leading-7" x-text="text('sampleFoot')">You can check this anytime from your account.</p>
+                            </div>
                         </aside>
                     </div>
                 </section>
@@ -172,23 +165,12 @@
                         </li>
                     </ol>
                 </section>
-
-                <section aria-labelledby="developers-title" class="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8 lg:pb-20" data-cg-scroll>
-                    <div class="border-t border-stone-300/70 pt-10">
-                        <h2 id="developers-title" class="cg-kicker" x-text="text('devKicker')">Developed by</h2>
-                        <ul class="mt-5 grid gap-x-8 gap-y-3 text-base font-semibold text-stone-900 sm:grid-cols-2 lg:grid-cols-4">
-                            <li>Mico Gerard Navarro</li>
-                            <li>Franz Mikey Reyes</li>
-                            <li>Carl Spencer Talon</li>
-                            <li>Adriann Enriquez</li>
-                        </ul>
-                    </div>
-                </section>
             </main>
 
-            <footer class="cg-public-footer mx-auto flex max-w-7xl flex-col gap-3 px-4 py-7 text-sm text-stone-600 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+            <footer class="cg-public-footer mx-auto flex max-w-7xl flex-col gap-3 px-4 py-7 text-sm text-stone-600 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:px-6 lg:px-8">
                 <p class="font-medium text-stone-700" x-text="text('footerBrand')">CivicGuard · Barangay Maimpis Incident and Curfew Reporting System</p>
                 <p x-text="text('footerEmergency')">For emergencies, call 911.</p>
+                <p class="text-xs text-stone-500 sm:basis-full"><span class="font-medium" x-text="text('devKicker')">Developed by</span> Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, Adriann Enriquez</p>
             </footer>
         </div>
     </body>
