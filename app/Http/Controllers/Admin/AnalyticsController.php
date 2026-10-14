@@ -115,7 +115,7 @@ class AnalyticsController extends Controller
 
         $prompt = 'You are analyzing CivicGuard data for barangay officials. Based only on these metrics, return valid JSON with exactly these keys: summary (one concise sentence), patterns (an array of up to three observed patterns), risk_flags (an array of up to three risks), and recommendations (an array of exactly three concise practical follow-up actions). Do not include markdown or extra text. Metrics: '.json_encode($metrics);
 
-        $text = $gemini->generateText($prompt, 10);
+        $text = $gemini->generateText($prompt, 10, true);
 
         if ($text) {
             $decoded = json_decode(trim($text), true);
