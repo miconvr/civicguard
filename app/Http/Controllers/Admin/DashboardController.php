@@ -20,6 +20,7 @@ class DashboardController extends Controller
         $open = ['pending', 'in_progress'];
 
         $query = Report::with(['category', 'user', 'assignedTo'])
+            ->visibleTo($request->user())
             ->when($request->filled('search'), function ($q) use ($request) {
                 $s = $request->search;
                 $q->where(fn ($q) => $q
@@ -56,7 +57,7 @@ class DashboardController extends Controller
     {
         $isResolved = $request->query('group') === 'resolved';
 
-        $query = Report::with(['category', 'user', 'assignedTo']);
+        $query = Report::with(['category', 'user', 'assignedTo'])->visibleTo($request->user());
 
         if ($request->filled('severity')) {
             $query->where('severity', $request->severity);
@@ -181,6 +182,8 @@ class DashboardController extends Controller
 
     public function showDetails(Report $report)
     {
+        abort_unless($report->isVisibleTo(auth()->user()), 403);
+
         $report->load(['category', 'user', 'assignedTo', 'curfewLog']);
 
         $history = AuditLog::with('user:id,name')
@@ -194,6 +197,8 @@ class DashboardController extends Controller
 
     public function showCurfewDetails(Report $report)
     {
+        abort_unless($report->isVisibleTo(auth()->user()), 403);
+
         $report->load('curfewLog');
 
         return view('admin.curfew-details', compact('report'));
