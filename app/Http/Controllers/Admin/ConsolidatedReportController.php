@@ -30,10 +30,10 @@ class ConsolidatedReportController extends Controller
         $curfewLogs = CurfewLog::with(['report.category', 'tanod'])
             ->latest('apprehension_datetime')
             ->get();
-        $auditLogs = AuditLog::with('user')
-            ->latest()
-            ->limit(100)
-            ->get();
+        $canViewAudit = in_array(auth()->user()?->role, ['admin', 'official'], true);
+        $auditLogs = $canViewAudit
+            ? AuditLog::with('user')->latest()->limit(100)->get()
+            : collect();
 
         $resolvedReports = $reports->filter(fn (Report $report) => $report->status === 'resolved' && $report->resolved_at);
         $responseTimes = $resolvedReports->map(
@@ -44,6 +44,7 @@ class ConsolidatedReportController extends Controller
             'reports' => $reports,
             'curfewLogs' => $curfewLogs,
             'auditLogs' => $auditLogs,
+            'canViewAudit' => $canViewAudit,
             'totalReports' => $reports->count(),
             'resolvedCount' => $resolvedReports->count(),
             'assignedCount' => $reports->whereNotNull('assigned_to')->count(),
