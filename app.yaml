@@ -3,6 +3,7 @@ owner: miconvr
 name: civicguard
 env:
   PHOTO_DISK_ROOT: "/data"
+  APP_URL: "https://civicguard.wasmer.app"
 volumes:
   - name: data
     mount: /data
