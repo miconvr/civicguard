@@ -80,6 +80,7 @@
                 </div>
             </div>
 
+            @if ($canViewAudit ?? true)
             <div class="cg-card p-6">
                 <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-100 mb-4">Recent System Activity</h3>
                 <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
@@ -100,6 +101,7 @@
                     </table>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 </x-app-layout>
