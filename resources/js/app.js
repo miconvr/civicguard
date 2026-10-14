@@ -94,6 +94,17 @@ Alpine.data('landingPage', () => ({
             call911: 'Call 911',
             processIntro: 'For residents',
             footerBrand: 'CivicGuard · Barangay Maimpis Incident and Curfew Reporting System',
+            sampleLabel: 'Sample report',
+            sampleCaption: 'This is what following a report looks like.',
+            tlReceived: 'Received',
+            tlReceivedDesc: 'Your report is logged.',
+            tlAssigned: 'Assigned',
+            tlAssignedDesc: 'A staff member takes it on.',
+            tlProgress: 'In progress',
+            tlProgressDesc: 'Work on it is underway.',
+            tlResolved: 'Resolved',
+            tlResolvedDesc: 'You confirm whether it is fixed.',
+            staffQuestion: 'Barangay staff? Sign in',
             devKicker: 'Developed by',
             navSignIn: 'Sign in',
             navCreateAccount: 'Create account',
@@ -129,6 +140,17 @@ Alpine.data('landingPage', () => ({
             call911: 'Tumawag sa 911',
             processIntro: 'Para sa mga residente',
             footerBrand: 'CivicGuard · Sistema ng pag-uulat ng insidente at curfew sa Barangay Maimpis',
+            sampleLabel: 'Halimbawang ulat',
+            sampleCaption: 'Ganito ang itsura ng pagsubaybay sa iyong ulat.',
+            tlReceived: 'Natanggap',
+            tlReceivedDesc: 'Naitala na ang iyong ulat.',
+            tlAssigned: 'Naitalaga',
+            tlAssignedDesc: 'May kawani nang nakatalaga rito.',
+            tlProgress: 'Isinasagawa',
+            tlProgressDesc: 'Ginagawan na ito ng aksyon.',
+            tlResolved: 'Naresolba',
+            tlResolvedDesc: 'Kukumpirmahin mo kung naayos na.',
+            staffQuestion: 'Kawani ng barangay? Mag-sign in',
             devKicker: 'Binuo nina',
             navSignIn: 'Mag-sign in',
             navCreateAccount: 'Gumawa ng account',
@@ -155,3 +177,34 @@ Alpine.data('landingPage', () => ({
 }));
 
 Alpine.start();
+
+// Scroll reveal for the landing page
+(function () {
+    const run = () => {
+        const items = document.querySelectorAll('[data-cg-scroll]');
+        if (!items.length) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (!('IntersectionObserver' in window)) return;
+        items.forEach((el) => {
+            const group = el.parentElement
+                ? Array.from(el.parentElement.querySelectorAll(':scope > [data-cg-scroll]'))
+                : [];
+            el.style.setProperty('--cg-delay', Math.max(group.indexOf(el), 0) * 120 + 'ms');
+            el.classList.add('cg-scroll');
+        });
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((e) => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('is-visible');
+                    io.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+        items.forEach((el) => io.observe(el));
+    };
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+})();
