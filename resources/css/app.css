@@ -1294,3 +1294,29 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
     .cg-sev-critical::after { animation: none; }
     .cg-bar-fill { animation: none; transform: none; }
 }
+
+
+/* CivicGuard: reduce unwanted text reveal effects */
+.cg-label,
+.cg-intro-enter,
+[data-reveal] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.cg-sticky-actions {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    width: auto !important;
+    margin-top: 1rem;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cg-page-enter {
+        animation: none !important;
+    }
+}
