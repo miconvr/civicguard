@@ -65,7 +65,7 @@
 
                         <input id="cf_apprehension_datetime" type="hidden" name="apprehension_datetime" value="{{ old('apprehension_datetime') }}">
 
-                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div class="grid grid-cols-1 gap-4">
                             <div class="relative">
                                 <label for="cf-date-display" class="cg-label">Date</label>
                                 <button type="button" id="cf-date-display" class="cg-input flex w-full items-center justify-between gap-2 text-left" aria-haspopup="dialog" aria-expanded="false">
@@ -117,11 +117,9 @@
                                         </select>
                                     </div>
                                 </div>
-                                <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Select the hour, minutes, and AM/PM.</p>
                             </div>
                         </div>
 
-                        <p class="mt-3 text-xs leading-5 text-gray-600 dark:text-gray-400">Review the date and time before saving.</p>
                         @error('apprehension_datetime') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                     </fieldset>
 
