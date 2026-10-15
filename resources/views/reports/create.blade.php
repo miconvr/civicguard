@@ -1,5 +1,6 @@
 <x-app-layout>
     <x-slot name="headerWidth">max-w-2xl</x-slot>
+    <x-slot name="motion">off</x-slot>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
             {{ __('Report an Incident') }}
@@ -10,38 +11,14 @@
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="cg-card p-6 sm:p-8">
 
-                <div class="mb-6 flex gap-3 rounded-lg border-2 border-red-300 bg-red-50 dark:bg-red-900/20 dark:border-red-800 p-4 text-sm text-red-800 dark:text-red-200" role="note">
+                <div class="mb-5 flex gap-2.5 rounded-lg border border-red-300 bg-red-50 dark:bg-red-900/20 dark:border-red-800 px-3 py-2.5 text-sm text-red-800 dark:text-red-200" role="note">
                     <svg class="h-5 w-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
                     <p><strong>{{ __('In immediate danger? Call 911 first.') }}</strong> {{ __('Reports are reviewed by staff and are not answered instantly.') }}</p>
                 </div>
 
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('Tell us what happened') }}</h3>
-                <p class="mt-1 mb-4 text-sm text-gray-600 dark:text-gray-400">
-                    {{ __('Barangay staff will review your report and update its status on My Reports.') }}
-                </p>
+                <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('Tell us what happened') }}</h3>
 
-                <details class="cg-help-panel mb-6 px-4">
-                    <summary class="flex items-center justify-between gap-4 py-3 text-sm font-semibold text-gray-800 dark:text-gray-100">
-                        {{ __('Tips for a helpful report') }}
-                    </summary>
-                    <ul class="space-y-2 border-t border-gray-200 py-3 text-sm leading-6 text-gray-700 dark:border-gray-700 dark:text-gray-300">
-                        <li>{{ __('Say what happened, and when it happened.') }}</li>
-                        <li>{{ __('Add a nearby street, purok, or landmark.') }}</li>
-                        <li>{{ __('Attach a photo only if it helps explain the concern.') }}</li>
-                    </ul>
-                </details>
-
-                <a href="{{ route('chatbot.widget') }}" class="mb-6 flex items-center gap-3 rounded-lg border border-gray-200 cg-surface-raised dark:bg-gray-900 dark:border-gray-700 p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                    <svg class="h-6 w-6 text-maroon-700 dark:text-[#c27872] shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                    </svg>
-                    <div>
-                        <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('Prefer to just talk it through?') }}</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('Use the AI Assistant to describe what happened in your own words.') }}</p>
-                    </div>
-                </a>
-
-                <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">{!! __('Fields marked :star are required.', ['star' => '<span class="text-red-600">*</span>']) !!}</p>
+                <p class="mb-5 text-sm"><a href="{{ route('chatbot.widget') }}" class="font-medium text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('Prefer to just talk it through?') }} <span aria-hidden="true">&rarr;</span></a></p>
 
                 <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-6"
                       x-data="{ cat: '{{ old('category_id') }}', descs: {{ Js::from($categories->pluck('description', 'id')) }}, len: {{ strlen(old('description', '')) }}, preview: null, tooBig: false, suggested: false, timer: null,
@@ -51,7 +28,7 @@
 
                     <div>
                         <label for="description" class="cg-label">{{ __('What happened?') }} <span class="text-red-600" aria-hidden="true">*</span></label>
-                        <textarea id="description" name="description" rows="5" required maxlength="2000" x-on:input="len = $event.target.value.length; suggest($event.target.value)" class="cg-input" placeholder="{{ __('Who was involved, what happened, and when. The more detail, the faster staff can act.') }}">{{ old('description') }}</textarea>
+                        <textarea id="description" name="description" rows="5" required maxlength="2000" x-on:input="len = $event.target.value.length; suggest($event.target.value)" class="cg-input" placeholder="{{ __('Say what happened, and when it happened.') }}">{{ old('description') }}</textarea>
                         <p class="mt-1 text-right text-sm text-gray-600 dark:text-gray-400"><span x-text="len"></span> / 2000</p>
                         @error('description') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                     </div>
@@ -78,7 +55,7 @@
                         <button type="button" id="use-location" class="mt-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-60 transition">
                             <span id="use-location-label">{{ __('Pin my current location') }}</span>
                         </button>
-                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('Optional. Your browser will ask for permission. Your location is used only to help staff find the incident, and only barangay staff can see it.') }}</p>
+                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('Optional. Helps staff find the spot.') }}</p>
                         <p id="location-status" class="mt-1 text-sm text-gray-600 dark:text-gray-400" aria-live="polite"></p>
                         @error('latitude') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                         @error('longitude') <p class="cg-error" role="alert">{{ $message }}</p> @enderror

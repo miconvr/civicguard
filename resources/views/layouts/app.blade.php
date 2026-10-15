@@ -46,7 +46,7 @@
                     </header>
                 @endisset
 
-                <main id="main-content" class="cg-page-enter flex-1">
+                <main id="main-content" class="{{ isset($motion) && trim((string) $motion) === 'off' ? '' : 'cg-page-enter' }} flex-1">
                     {{ $slot }}
                 </main>
 
