@@ -64,3 +64,4 @@ Use this document as visual guidance, not as permission to change routes, roles,
 - Keep the English/Tagalog control accessible without relying on JavaScript for the initial English content.
 - Keep public and guest pages in the light cream theme; reserve the light/dark switch for signed-in app pages.
 - Prefer an honest process explainer over fabricated dashboard previews, statistics, or local imagery.
+- On the landing page the public header is hidden over the hero (a small language and sign-in strip sits in the hero corner) and slides in once the visitor scrolls past the hero. It stays visible without JavaScript and appears on keyboard focus.
