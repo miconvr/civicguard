@@ -1611,3 +1611,200 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
     color: #fff;
     font-weight: 600;
 }
+
+/* CivicGuard curfew picker: consistent light/dark themes and stable menus */
+#cf-date-display {
+    width: 100%;
+    min-height: 42px;
+    justify-content: space-between;
+    border: 1px solid #d1d5db !important;
+    border-radius: 0.65rem;
+    background: #fff !important;
+    color: #1f2937 !important;
+    accent-color: #6b1d35;
+}
+
+.cg-time-picker {
+    position: relative;
+    min-width: 0;
+}
+
+.cg-time-button {
+    display: flex;
+    width: 100%;
+    min-height: 42px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    border: 1px solid #d1d5db !important;
+    border-radius: 0.65rem;
+    padding: 0.5rem 0.65rem;
+    background: #fff !important;
+    color: #1f2937 !important;
+    text-align: left;
+}
+
+.cg-time-button:focus-visible,
+#cf-date-display:focus-visible {
+    outline: 2px solid #6b1d35 !important;
+    outline-offset: 2px;
+    border-color: #6b1d35 !important;
+}
+
+.cg-time-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    bottom: auto;
+    left: 0;
+    z-index: 60;
+    width: 100%;
+    max-height: 190px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid #d1d5db;
+    border-radius: 0.65rem;
+    padding: 4px;
+    background: #fff;
+    color: #1f2937;
+    box-shadow: 0 8px 20px rgb(0 0 0 / 15%);
+}
+
+.cg-time-option {
+    display: block;
+    width: 100%;
+    min-height: 32px;
+    border-radius: 0.4rem;
+    padding: 0.35rem 0.6rem;
+    color: #1f2937;
+    text-align: left;
+}
+
+.cg-time-option:hover,
+.cg-time-option:focus-visible {
+    background: #f5e8ec;
+    color: #6b1d35;
+    outline: none;
+}
+
+.cg-time-option.is-selected {
+    background: #6b1d35;
+    color: #fff;
+}
+
+.cg-calendar-panel {
+    max-height: min(360px, 65vh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-color: #d1d5db !important;
+    background: #fff !important;
+    color: #1f2937 !important;
+}
+
+.cg-calendar-panel #cf-calendar-month {
+    color: #1f2937 !important;
+}
+
+.cg-calendar-panel .cg-calendar-weekdays {
+    color: #6b7280;
+}
+
+.cg-calendar-panel .cg-calendar-day {
+    color: #374151;
+}
+
+.cg-calendar-panel .cg-calendar-day:hover,
+.cg-calendar-panel .cg-calendar-day:focus-visible {
+    background: #f5e8ec;
+    color: #6b1d35;
+}
+
+.cg-calendar-panel .cg-calendar-day.is-selected,
+.cg-calendar-panel .cg-calendar-day.is-selected:hover {
+    background: #6b1d35;
+    color: #fff;
+}
+
+.cg-calendar-panel .cg-calendar-nav {
+    color: #6b1d35;
+}
+
+.cg-calendar-panel #cf-calendar-today {
+    border-color: #d1d5db;
+    color: #6b1d35;
+}
+
+/* Dark mode */
+.dark #cf-date-display,
+.dark .cg-time-button {
+    color-scheme: dark;
+    background: #272323 !important;
+    color: #f9fafb !important;
+    border-color: #514548 !important;
+}
+
+.dark .cg-time-button:focus-visible,
+.dark #cf-date-display:focus-visible {
+    border-color: #b84b68 !important;
+    outline-color: #b84b68 !important;
+}
+
+.dark .cg-time-menu {
+    background: #272323;
+    color: #f9fafb;
+    border-color: #514548;
+    box-shadow: 0 8px 20px rgb(0 0 0 / 35%);
+}
+
+.dark .cg-time-option {
+    color: #f9fafb;
+}
+
+.dark .cg-time-option:hover,
+.dark .cg-time-option:focus-visible {
+    background: #492531;
+    color: #fff;
+}
+
+.dark .cg-time-option.is-selected {
+    background: #8f2c49;
+    color: #fff;
+}
+
+.dark .cg-calendar-panel {
+    background: #272323 !important;
+    color: #f9fafb !important;
+    border-color: #514548 !important;
+}
+
+.dark .cg-calendar-panel #cf-calendar-month {
+    color: #f9fafb !important;
+}
+
+.dark .cg-calendar-panel .cg-calendar-weekdays {
+    color: #c4b8bc;
+}
+
+.dark .cg-calendar-panel .cg-calendar-day {
+    color: #e5e7eb;
+}
+
+.dark .cg-calendar-panel .cg-calendar-day:hover,
+.dark .cg-calendar-panel .cg-calendar-day:focus-visible {
+    background: #492531;
+    color: #fff;
+}
+
+.dark .cg-calendar-panel .cg-calendar-day.is-selected,
+.dark .cg-calendar-panel .cg-calendar-day.is-selected:hover {
+    background: #8f2c49;
+    color: #fff;
+}
+
+.dark .cg-calendar-panel .cg-calendar-nav {
+    color: #f0a0b5;
+}
+
+.dark .cg-calendar-panel #cf-calendar-today {
+    border-color: #514548;
+    color: #f0a0b5;
+}
