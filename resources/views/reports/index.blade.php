@@ -58,7 +58,7 @@
                         <ol class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="{{ __('Progress') }}">
                             @foreach ($report->timeline as $step)
                                 <li>
-                                    <div class="h-1.5 rounded-full {{ $step['done'] ? 'bg-maroon-700 dark:bg-[#b56764]' : 'bg-gray-200 dark:bg-gray-700' }}"></div>
+                                    <div class="h-1.5 rounded-full {{ $step['done'] ? 'cg-bar-fill bg-maroon-700 dark:bg-[#b56764]' : 'bg-gray-200 dark:bg-gray-700' }}" @if ($step['done']) style="--cg-bar-delay: {{ $loop->index * 140 + 250 }}ms" @endif></div>
                                     <p class="mt-1.5 text-xs {{ $step['done'] ? 'font-semibold text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400' }}">
                                         {{ __($step['label']) }}
                                         <span class="sr-only">{{ $step['done'] ? __('(done)') : __('(not yet)') }}</span>
