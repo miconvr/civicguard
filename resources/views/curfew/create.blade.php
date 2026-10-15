@@ -90,31 +90,31 @@
                             <div>
                                 <span class="cg-label">Time</span>
                                 <div class="grid grid-cols-3 gap-2">
-                                    <div>
-                                        <label for="cf-hour" class="sr-only">Hour</label>
-                                        <select id="cf-hour" class="cg-input w-full" aria-label="Hour">
-                                            <option value="">Hour</option>
+                                    <div class="cg-time-picker">
+                                        <label class="cg-label" for="cf-hour-button">Hour</label>
+                                        <button type="button" id="cf-hour-button" class="cg-time-button" aria-haspopup="listbox" aria-expanded="false">Hour <span>⌄</span></button>
+                                        <div id="cf-hour-menu" class="cg-time-menu hidden" role="listbox" aria-label="Choose hour">
                                             @foreach(range(1, 12) as $hour)
-                                                <option value="{{ sprintf('%02d', $hour) }}">{{ sprintf('%02d', $hour) }}</option>
+                                                <button type="button" class="cg-time-option" role="option" data-value="{{ sprintf('%02d', $hour) }}">{{ sprintf('%02d', $hour) }}</button>
                                             @endforeach
-                                        </select>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label for="cf-minute" class="sr-only">Minute</label>
-                                        <select id="cf-minute" class="cg-input w-full" aria-label="Minute">
-                                            <option value="">Min</option>
+                                    <div class="cg-time-picker">
+                                        <label class="cg-label" for="cf-minute-button">Minute</label>
+                                        <button type="button" id="cf-minute-button" class="cg-time-button" aria-haspopup="listbox" aria-expanded="false">Min <span>⌄</span></button>
+                                        <div id="cf-minute-menu" class="cg-time-menu hidden" role="listbox" aria-label="Choose minute">
                                             @foreach(range(0, 59) as $minute)
-                                                <option value="{{ sprintf('%02d', $minute) }}">{{ sprintf('%02d', $minute) }}</option>
+                                                <button type="button" class="cg-time-option" role="option" data-value="{{ sprintf('%02d', $minute) }}">{{ sprintf('%02d', $minute) }}</button>
                                             @endforeach
-                                        </select>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label for="cf-period" class="sr-only">AM or PM</label>
-                                        <select id="cf-period" class="cg-input w-full" aria-label="AM or PM">
-                                            <option value="">AM/PM</option>
-                                            <option value="AM">AM</option>
-                                            <option value="PM">PM</option>
-                                        </select>
+                                    <div class="cg-time-picker">
+                                        <label class="cg-label" for="cf-period-button">AM / PM</label>
+                                        <button type="button" id="cf-period-button" class="cg-time-button" aria-haspopup="listbox" aria-expanded="false">AM/PM <span>⌄</span></button>
+                                        <div id="cf-period-menu" class="cg-time-menu hidden" role="listbox" aria-label="Choose AM or PM">
+                                            <button type="button" class="cg-time-option" role="option" data-value="AM">AM</button>
+                                            <button type="button" class="cg-time-option" role="option" data-value="PM">PM</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -132,9 +132,10 @@
                         const calendar = document.getElementById('cf-calendar');
                         const monthLabel = document.getElementById('cf-calendar-month');
                         const daysBox = document.getElementById('cf-calendar-days');
-                        const hourSelect = document.getElementById('cf-hour');
-                        const minuteSelect = document.getElementById('cf-minute');
-                        const periodSelect = document.getElementById('cf-period');
+                        const hourButton = document.getElementById('cf-hour-button');
+                        const minuteButton = document.getElementById('cf-minute-button');
+                        const periodButton = document.getElementById('cf-period-button');
+                        const timePickers = [...document.querySelectorAll('.cg-time-picker')];
 
                         if (!hidden || !dateButton || !calendar) return;
 
@@ -153,9 +154,9 @@
                                 h = h % 12 || 12;
                                 chosenHour = String(h).padStart(2, '0');
                                 chosenMinute = match[2];
-                                hourSelect.value = chosenHour;
-                                minuteSelect.value = chosenMinute;
-                                periodSelect.value = chosenPeriod;
+                                setButtonValue(hourButton, chosenHour);
+                                setButtonValue(minuteButton, chosenMinute);
+                                setButtonValue(periodButton, chosenPeriod);
                             }
                         }
 
@@ -238,12 +239,52 @@
                             dateButton.setAttribute('aria-expanded', 'false');
                         });
 
-                        [hourSelect, minuteSelect, periodSelect].forEach(select => {
-                            select.addEventListener('change', () => {
-                                chosenHour = hourSelect.value;
-                                chosenMinute = minuteSelect.value;
-                                chosenPeriod = periodSelect.value;
-                                sync();
+                        const setButtonValue = (button, value) => {
+                            if (!button) return;
+                            const label = button.childNodes[0];
+                            if (label) label.textContent = value + ' ';
+                            button.dataset.value = value;
+                        };
+
+                        const closeMenus = () => {
+                            timePickers.forEach(picker => {
+                                const menu = picker.querySelector('.cg-time-menu');
+                                const button = picker.querySelector('.cg-time-button');
+                                if (menu) menu.classList.add('hidden');
+                                if (button) button.setAttribute('aria-expanded', 'false');
+                            });
+                        };
+
+                        timePickers.forEach(picker => {
+                            const button = picker.querySelector('.cg-time-button');
+                            const menu = picker.querySelector('.cg-time-menu');
+                            if (!button || !menu) return;
+
+                            button.addEventListener('click', () => {
+                                const shouldOpen = menu.classList.contains('hidden');
+                                closeMenus();
+                                if (shouldOpen) {
+                                    menu.classList.remove('hidden');
+                                    button.setAttribute('aria-expanded', 'true');
+                                }
+                            });
+
+                            menu.querySelectorAll('.cg-time-option').forEach(option => {
+                                option.addEventListener('click', () => {
+                                    const value = option.dataset.value;
+                                    setButtonValue(button, value);
+                                    menu.querySelectorAll('.cg-time-option').forEach(item => {
+                                        item.classList.toggle('is-selected', item === option);
+                                        item.setAttribute('aria-selected', String(item === option));
+                                    });
+
+                                    if (button.id === 'cf-hour-button') chosenHour = value;
+                                    if (button.id === 'cf-minute-button') chosenMinute = value;
+                                    if (button.id === 'cf-period-button') chosenPeriod = value;
+
+                                    closeMenus();
+                                    sync();
+                                });
                             });
                         });
 
@@ -252,6 +293,7 @@
                                 calendar.classList.add('hidden');
                                 dateButton.setAttribute('aria-expanded', 'false');
                             }
+                            if (!event.target.closest('.cg-time-picker')) closeMenus();
                         });
 
                         const form = hidden.closest('form');
@@ -265,7 +307,7 @@
                                         dateButton.setAttribute('aria-expanded', 'true');
                                         renderCalendar();
                                     } else {
-                                        (!chosenHour ? hourSelect : !chosenMinute ? minuteSelect : periodSelect).focus();
+                                        (!chosenHour ? hourButton : !chosenMinute ? minuteButton : periodButton).focus();
                                     }
                                 }
                             });
