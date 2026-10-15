@@ -1272,3 +1272,7 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
     .cg-hero-brand-mark { animation: none; }
     .cg-public-header { transition: none; }
 }
+
+/* cg-hero-shield: same cream shield with the check showing through, as in the sidebar */
+.cg-hero-brand-mark { color: #fffaf5; }
+.cg-hero-brand-mark :is(svg, img) { filter: none; }
