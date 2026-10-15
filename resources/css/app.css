@@ -1220,3 +1220,30 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
     .cg-i26 .cg-i26-tap { display: none; }
     .cg-install-step[class*="cg-i26-s"] { opacity: 1; background-color: transparent; box-shadow: none; }
 }
+
+/* cg-hero-brand: hero lockup, easier-to-read sample card */
+.cg-hero-brand { display: flex; align-items: center; gap: .95rem; margin-bottom: 1.6rem; }
+.cg-hero-brand-mark { position: relative; display: flex; flex: none; align-items: center; justify-content: center; width: 3.6rem; height: 3.6rem; border-radius: .95rem; background: #f6f2eb; box-shadow: 0 10px 22px -12px rgba(0,0,0,.55); }
+.cg-hero-brand-mark::after { content: ""; position: absolute; inset: -.35rem; border: 2px solid rgba(255,255,255,.55); border-radius: 1.25rem; opacity: 0; animation: cg-brand-pulse 4.5s ease-out infinite; pointer-events: none; }
+@keyframes cg-brand-pulse { 0%, 55% { opacity: 0; transform: scale(.92); } 62% { opacity: .7; transform: scale(1); } 100% { opacity: 0; transform: scale(1.2); } }
+.cg-hero-brand-name { display: block; font-family: 'Bitter', Georgia, serif; font-weight: 700; font-size: clamp(1.7rem, 1.2rem + 1.6vw, 2.2rem); line-height: 1.1; letter-spacing: -.01em; color: #fff; }
+.cg-hero-brand-sub { display: block; margin-top: .25rem; font-size: .8rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.8); }
+.cg-landing-copy > p.cg-intro-enter-2 { color: rgba(255,255,255,.92); }
+.cg-flow .cg-flow-row > div > p:first-child { font-size: 1rem; line-height: 1.4rem; }
+.cg-flow .cg-flow-row > div > p + p { font-size: .92rem; line-height: 1.4rem; color: #57534e; }
+.cg-flow-row { padding-bottom: 1.15rem; }
+.cg-flow-pills { width: 8rem; height: 1.9rem; }
+.cg-flow-pill { font-size: .82rem; }
+@keyframes cg-flow-row-1 { 0% { opacity:.62 } 2% { opacity:.62 } 5% { opacity:1 } 18% { opacity:1 } 22% { opacity:.88 } 92% { opacity:.88 } 96% { opacity:.62 } 100% { opacity:.62 } }
+@keyframes cg-flow-node-1 { 0% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 2% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 5% { background-color:#7a1f1f;color:#fff;transform:scale(1.14) } 9% { background-color:#7a1f1f;color:#fff;transform:scale(1) } 92% { background-color:#7a1f1f;color:#fff;transform:scale(1) } 96% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 100% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } }
+@keyframes cg-flow-row-2 { 0% { opacity:.62 } 20% { opacity:.62 } 23% { opacity:1 } 36% { opacity:1 } 40% { opacity:.88 } 92% { opacity:.88 } 96% { opacity:.62 } 100% { opacity:.62 } }
+@keyframes cg-flow-node-2 { 0% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 20% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 23% { background-color:#7a1f1f;color:#fff;transform:scale(1.14) } 27% { background-color:#7a1f1f;color:#fff;transform:scale(1) } 92% { background-color:#7a1f1f;color:#fff;transform:scale(1) } 96% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 100% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } }
+@keyframes cg-flow-row-3 { 0% { opacity:.62 } 38% { opacity:.62 } 41% { opacity:1 } 54% { opacity:1 } 58% { opacity:.88 } 92% { opacity:.88 } 96% { opacity:.62 } 100% { opacity:.62 } }
+@keyframes cg-flow-node-3 { 0% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 38% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 41% { background-color:#7a1f1f;color:#fff;transform:scale(1.14) } 45% { background-color:#7a1f1f;color:#fff;transform:scale(1) } 92% { background-color:#7a1f1f;color:#fff;transform:scale(1) } 96% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 100% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } }
+@keyframes cg-flow-row-4 { 0% { opacity:.62 } 56% { opacity:.62 } 59% { opacity:1 } 72% { opacity:1 } 76% { opacity:.88 } 92% { opacity:.88 } 96% { opacity:.62 } 100% { opacity:.62 } }
+@keyframes cg-flow-node-4 { 0% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 56% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 59% { background-color:#7a1f1f;color:#fff;transform:scale(1.14) } 63% { background-color:#7a1f1f;color:#fff;transform:scale(1) } 92% { background-color:#7a1f1f;color:#fff;transform:scale(1) } 96% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 100% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } }
+@keyframes cg-flow-row-5 { 0% { opacity:.62 } 74% { opacity:.62 } 77% { opacity:1 } 92% { opacity:1 } 96% { opacity:.62 } 100% { opacity:.62 } }
+@keyframes cg-flow-node-5 { 0% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 74% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 77% { background-color:#7a1f1f;color:#fff;transform:scale(1.14) } 81% { background-color:#7a1f1f;color:#fff;transform:scale(1) } 92% { background-color:#7a1f1f;color:#fff;transform:scale(1) } 96% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } 100% { background-color:#d9cfc2;color:#57534e;transform:scale(1) } }
+@media (prefers-reduced-motion: reduce) {
+    .cg-hero-brand-mark::after { animation: none; opacity: 0; }
+}
