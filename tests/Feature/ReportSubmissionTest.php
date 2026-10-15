@@ -24,9 +24,9 @@ test('residents see report writing guidance on the incident form', function () {
     $this->actingAs($resident)
         ->get(route('reports.create'))
         ->assertOk()
-        ->assertSee('Tips for a helpful report')
+        ->assertSee('Tell us what happened')
         ->assertSee('Say what happened, and when it happened.')
-        ->assertSee('Add a nearby street, purok, or landmark.');
+        ->assertSee('Pin my current location');
 });
 
 test('a resident can submit an incident report and is sent to my reports', function () {
