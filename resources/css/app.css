@@ -1298,7 +1298,6 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 
 /* CivicGuard: reduce unwanted text reveal effects */
 .cg-label,
-.cg-intro-enter,
 [data-reveal] {
     animation: none !important;
     opacity: 1 !important;
