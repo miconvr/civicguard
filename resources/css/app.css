@@ -1476,3 +1476,101 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
         padding-right: 1.5rem;
     }
 }
+
+/* CivicGuard: date outline and predictable custom time menus */
+#cf-date-display {
+    min-height: 44px;
+    width: 100%;
+    border: 1px solid #d1d5db !important;
+    border-radius: 0.65rem !important;
+    background: #fff !important;
+    box-shadow: none;
+}
+
+#cf-date-display:hover,
+#cf-date-display:focus,
+#cf-date-display:focus-visible,
+#cf-date-display[aria-expanded="true"] {
+    border-color: #6b1d35 !important;
+}
+
+#cf-date-display:focus-visible,
+#cf-date-display[aria-expanded="true"] {
+    outline: 2px solid rgba(107, 29, 53, .2);
+    outline-offset: 1px;
+}
+
+.cg-time-picker {
+    position: relative;
+    min-width: 0;
+}
+
+.cg-time-button {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    min-height: 44px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    border: 1px solid #d1d5db;
+    border-radius: 0.65rem;
+    background: #fff;
+    padding: 0.55rem 0.6rem;
+    color: #1f2937;
+    font-size: 0.875rem;
+    text-align: left;
+}
+
+.cg-time-button:hover,
+.cg-time-button[aria-expanded="true"],
+.cg-time-button:focus-visible {
+    border-color: #6b1d35;
+    outline: 2px solid rgba(107, 29, 53, .16);
+    outline-offset: 1px;
+}
+
+.cg-time-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 50;
+    display: block;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid #e5cbd3;
+    border-radius: 0.7rem;
+    background: #fff;
+    padding: 4px;
+    box-shadow: 0 10px 24px rgba(31, 41, 55, .16);
+}
+
+.cg-time-menu.hidden {
+    display: none;
+}
+
+.cg-time-option {
+    display: block;
+    width: 100%;
+    min-height: 34px;
+    border-radius: 0.45rem;
+    padding: 0.45rem 0.6rem;
+    color: #374151;
+    font-size: 0.875rem;
+    text-align: left;
+}
+
+.cg-time-option:hover,
+.cg-time-option:focus-visible {
+    background: #f5e8ec;
+    color: #6b1d35;
+    outline: none;
+}
+
+.cg-time-option.is-selected {
+    background: #6b1d35;
+    color: #fff;
+    font-weight: 600;
+}
