@@ -13,21 +13,21 @@
             @endif
 
             {{-- Summary cards (each one is a filter) --}}
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" data-reveal>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach ([
                     ['Critical open', $stats['critical'], ['tab' => 'active', 'severity' => 'critical'], 'cg-kpi'],
                     ['Unassigned', $stats['unassigned'], ['tab' => 'active', 'assignee' => 'none'], 'cg-kpi'],
                     ['Pending 48h+', $stats['overdue'], ['tab' => 'pending'], 'cg-kpi'],
                     ['Resolved this week', $stats['resolved'], ['tab' => 'resolved'], 'cg-kpi'],
                 ] as [$label, $count, $params, $color])
-                    <a href="{{ route('admin.dashboard', $params) }}" class="cg-card p-4 hover:shadow-md transition focus:outline-none focus:ring-2 focus:ring-maroon-600">
+                    <a href="{{ route('admin.dashboard', $params) }}" class="cg-card p-4 hover:shadow-md transition focus:outline-none focus:ring-2 focus:ring-maroon-600" data-reveal>
                         <div class="text-sm text-gray-600 dark:text-gray-400">{{ $label }}</div>
                         <div class="text-3xl font-semibold {{ $color }}">{{ $count }}</div>
                     </a>
                 @endforeach
             </div>
 
-            <div class="cg-card p-6">
+            <div class="cg-card p-6" data-reveal>
                 {{-- Single filter bar --}}
                 <form method="GET" class="flex flex-wrap items-center gap-3 mb-4">
                     <input type="hidden" name="tab" value="{{ $tab }}">
