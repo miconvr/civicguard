@@ -500,3 +500,23 @@ if ('serviceWorker' in navigator) {
         run();
     }
 })();
+
+// cgNavReveal: the public header hides over the landing hero, slides in after it, and slides out again when you return
+(function () {
+    const hero = document.querySelector('.cg-landing-hero');
+    const header = document.querySelector('.cg-public-header');
+    if (!hero || !header) return;
+    const root = document.documentElement;
+    root.classList.add('cg-nav-js');
+    let ticking = false;
+    const update = () => {
+        ticking = false;
+        root.classList.toggle('cg-nav-on', hero.getBoundingClientRect().bottom < window.innerHeight * 0.6);
+    };
+    const request = () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    };
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request);
+    update();
+})();

@@ -10,6 +10,7 @@
         <title>{{ config('app.name', 'CivicGuard') }}</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
         <style>[x-cloak] { display: none !important; }</style>
+        <script>document.documentElement.classList.add('cg-nav-js');</script>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700|bitter:600,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
         <noscript><link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700|bitter:600,700&display=swap" rel="stylesheet"></noscript>
@@ -25,6 +26,10 @@
                 <nav aria-label="Main navigation" :aria-label="text('navigation')" class="mx-auto flex min-h-[72px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
                     <a href="{{ url('/') }}" class="group flex min-w-0 items-center gap-2.5 rounded-md focus-visible:outline-offset-4" aria-label="CivicGuard, Barangay Maimpis home" :aria-label="text('homeLink')">
                         <span class="cg-brand-mark"><x-application-logo class="h-9 w-9 shrink-0" /></span>
+                        <span class="min-w-0">
+                            <span class="block text-[15px] font-bold leading-tight tracking-tight text-maroon-900">CivicGuard</span>
+                            <span class="block text-[11px] uppercase tracking-wider text-stone-500">Brgy. Maimpis</span>
+                        </span>
                     </a>
 
                     <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
@@ -55,6 +60,15 @@
 
             <main id="main-content" class="cg-page-enter">
                 <section class="cg-landing-hero lg:flex lg:min-h-[calc(100dvh_-_73px)] lg:items-center">
+                    <div class="cg-hero-strip">
+                        <button type="button" @click="toggleLanguage()" :aria-label="language === 'en' ? 'Switch language to Tagalog' : 'Switch language to English'" :aria-pressed="(language === 'tl').toString()" class="cg-hero-strip-btn"><span x-text="language === 'en' ? 'EN' : 'TL'">EN</span></button>
+                        @guest
+                            <a href="{{ route('login') }}" class="cg-hero-strip-link" x-text="text('navSignIn')">Sign in</a>
+                        @endguest
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="cg-hero-strip-link" x-text="text('dashboard')">Go to your dashboard</a>
+                        @endauth
+                    </div>
                     <div class="cg-landing-hero-inner mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:py-20">
                         <div class="cg-landing-copy">
                             <div class="cg-hero-brand cg-intro-enter"><span class="cg-hero-brand-mark"><x-application-logo class="h-10 w-10 shrink-0" /></span><span class="min-w-0"><span class="cg-hero-brand-name">CivicGuard</span><span class="cg-hero-brand-sub">Brgy. Maimpis</span></span></div>
