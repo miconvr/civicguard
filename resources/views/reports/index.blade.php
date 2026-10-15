@@ -38,7 +38,7 @@
                             'resolved' => 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300',
                         ][$report->status];
                     @endphp
-                    <article id="report-{{ $report->id }}" class="cg-card scroll-mt-20" data-reveal>
+                    <article id="report-{{ $report->id }}" class="cg-card scroll-mt-20 border border-gray-200 p-5 shadow-sm transition-colors sm:p-6 dark:border-gray-700">
                         <div class="flex items-start justify-between gap-3">
                             <div class="min-w-0">
                                 <h3 class="font-semibold text-gray-900 dark:text-gray-100">
@@ -91,7 +91,7 @@
                         @endif
                     </article>
                 @empty
-                    <div class="cg-card py-10 text-center" data-reveal>
+                    <div class="cg-card border border-gray-200 py-10 text-center shadow-sm dark:border-gray-700">
                         <p class="font-semibold text-gray-900 dark:text-gray-100">{{ __('You haven\'t filed any reports yet.') }}</p>
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('File your first incident so barangay staff can follow up.') }}</p>
                         <a href="{{ route('reports.create') }}" class="cg-btn mt-4">

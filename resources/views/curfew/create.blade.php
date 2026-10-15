@@ -1,4 +1,4 @@
-﻿<x-app-layout>
+<x-app-layout>
     <x-slot name="motion">off</x-slot>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
@@ -60,11 +60,13 @@
 
                     <p class="text-xs text-gray-500 dark:text-gray-400">Record safeguarding actions factually and follow current barangay and social-welfare procedures for minors.</p>
 
-                    <div>
-                        <label for="cf_apprehension_datetime" class="cg-label">Date & Time of Apprehension</label>
-                        <input id="cf_apprehension_datetime" type="datetime-local" name="apprehension_datetime" required value="{{ old('apprehension_datetime') }}" class="cg-input">
-                        @error('apprehension_datetime') <p class="cg-error">{{ $message }}</p> @enderror
-                    </div>
+                    <fieldset class="rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800/50">
+                        <legend class="px-1 text-sm font-semibold text-gray-900 dark:text-gray-100">Apprehension Details</legend>
+                        <label for="cf_apprehension_datetime" class="cg-label">Date and time of apprehension</label>
+                        <input id="cf_apprehension_datetime" type="datetime-local" name="apprehension_datetime" required value="{{ old('apprehension_datetime') }}" class="cg-input w-full min-w-0">
+                        <p class="mt-2 text-xs leading-5 text-gray-600 dark:text-gray-400">Select when the incident occurred. Check the date and time before saving.</p>
+                        @error('apprehension_datetime') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
+                    </fieldset>
 
                     <div>
                         <label for="cf_apprehension_location" class="cg-label">Location</label>
@@ -83,7 +85,7 @@
                         <textarea id="cf_notes" name="notes" rows="3" class="cg-input">{{ old('notes') }}</textarea>
                     </div>
 
-                    <div class="cg-sticky-actions">
+                    <div class="pt-2">
                         <button type="submit" class="cg-btn w-full sm:w-auto" data-loading-btn data-loading-text="{{ __('Logging...') }}">{{ __('Log Violation') }}</button>
                     </div>
                 </form>
