@@ -21,8 +21,14 @@ function initializeScrollReveals() {
     document.documentElement.classList.add('cg-motion-ready');
 
     const observer = new IntersectionObserver((entries, currentObserver) => {
+        let order = 0;
         entries.forEach(entry => {
             if (entry.isIntersecting) {
+                // Cards that appear together fade in one after another.
+                if (!getComputedStyle(entry.target).getPropertyValue('--cg-reveal-delay').trim()) {
+                    entry.target.style.setProperty('--cg-reveal-delay', Math.min(order * 70, 350) + 'ms');
+                }
+                order += 1;
                 entry.target.classList.add('is-visible');
                 currentObserver.unobserve(entry.target);
             }
@@ -45,6 +51,57 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeScrollReveals, { once: true });
 } else {
     initializeScrollReveals();
+}
+
+// cg-dashboard-motion: report totals count up when they scroll into view
+function initializeCountUps() {
+    const nodes = document.querySelectorAll('.cg-kpi');
+
+    if (!nodes.length || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+    }
+
+    const run = (el) => {
+        const raw = el.textContent.trim();
+        if (!/^\d[\d,]*$/.test(raw)) return;
+
+        const target = parseInt(raw.replace(/,/g, ''), 10);
+        if (!Number.isFinite(target) || target < 2 || target > 100000) return;
+
+        const withCommas = raw.includes(',');
+        const duration = 900;
+        const start = performance.now();
+        const tick = (now) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const value = Math.round(target * (1 - Math.pow(1 - progress, 3)));
+            el.textContent = withCommas ? value.toLocaleString('en-US') : String(value);
+            if (progress < 1) {
+                requestAnimationFrame(tick);
+            } else {
+                el.textContent = raw;
+            }
+        };
+
+        el.textContent = '0';
+        requestAnimationFrame(tick);
+    };
+
+    const io = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                observer.unobserve(entry.target);
+                run(entry.target);
+            }
+        });
+    }, { threshold: 0.4 });
+
+    nodes.forEach(node => io.observe(node));
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeCountUps, { once: true });
+} else {
+    initializeCountUps();
 }
 
 Alpine.data('appShell', () => ({

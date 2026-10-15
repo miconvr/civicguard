@@ -39,7 +39,7 @@
                 <ol class="mt-5 grid grid-cols-4 gap-2" aria-label="{{ __('Progress') }}">
                     @foreach ($steps as [$label, $done, $at])
                         <li>
-                            <div class="h-1.5 rounded-full {{ $done ? 'bg-maroon-700 dark:bg-[#b56764]' : 'bg-gray-200 dark:bg-gray-700' }}"></div>
+                            <div class="h-1.5 rounded-full {{ $done ? 'cg-bar-fill bg-maroon-700 dark:bg-[#b56764]' : 'bg-gray-200 dark:bg-gray-700' }}" @if ($done) style="--cg-bar-delay: {{ $loop->index * 140 + 250 }}ms" @endif></div>
                             <p class="mt-1.5 text-xs {{ $done ? 'font-semibold text-gray-900 dark:text-gray-100' : 'cg-muted' }}">{{ __($label) }}</p>
                             @if ($at)<p class="text-[11px] leading-tight cg-muted">{{ $at->format('M d') }}<br>{{ $at->format('g:i A') }}</p>@endif
                         </li>

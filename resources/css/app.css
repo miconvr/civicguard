@@ -1276,3 +1276,23 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 /* cg-hero-shield: same cream shield with the check showing through, as in the sidebar */
 .cg-hero-brand-mark { color: #fffaf5; }
 .cg-hero-brand-mark :is(svg, img) { filter: none; }
+
+/* cg-dashboard-motion: critical pulse, progress bars that grow in */
+@keyframes cg-crit-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, .45); }
+    70%, 100% { box-shadow: 0 0 0 7px rgba(220, 38, 38, 0); }
+}
+.cg-sev-critical::after { animation: cg-crit-pulse 2.2s ease-out infinite; }
+
+@keyframes cg-bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.cg-bar-fill {
+    transform-origin: left center;
+    animation: cg-bar-grow 700ms var(--cg-ease-out, cubic-bezier(.22, 1, .36, 1)) both;
+    animation-delay: var(--cg-bar-delay, 0ms);
+}
+.cg-motion-ready [data-reveal]:not(.is-visible) .cg-bar-fill { animation: none; transform: scaleX(0); }
+
+@media (prefers-reduced-motion: reduce) {
+    .cg-sev-critical::after { animation: none; }
+    .cg-bar-fill { animation: none; transform: none; }
+}
