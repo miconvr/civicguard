@@ -1355,3 +1355,83 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
     cursor: pointer;
     opacity: 0.85;
 }
+
+
+/* CivicGuard custom curfew date and time picker */
+#cf-date-display,
+#cf-hour,
+#cf-minute,
+#cf-period {
+    background-color: #fff !important;
+    color: #1f2937 !important;
+    border-color: #d1d5db !important;
+    accent-color: #6b1d35;
+}
+
+#cf-date-display:focus,
+#cf-hour:focus,
+#cf-minute:focus,
+#cf-period:focus {
+    border-color: #6b1d35 !important;
+    outline: 2px solid rgba(107, 29, 53, .2);
+    outline-offset: 1px;
+    --tw-ring-color: #6b1d35;
+}
+
+.cg-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 3px;
+    text-align: center;
+}
+
+.cg-calendar-weekdays {
+    color: #6b7280;
+    font-size: .75rem;
+    font-weight: 600;
+}
+
+.cg-calendar-day {
+    min-height: 34px;
+    border-radius: 8px;
+    color: #374151;
+    font-size: .875rem;
+    transition: background-color .12s ease, color .12s ease;
+}
+
+.cg-calendar-day:hover,
+.cg-calendar-day:focus-visible {
+    background: #f5e8ec;
+    color: #6b1d35;
+    outline: none;
+}
+
+.cg-calendar-day.is-selected,
+.cg-calendar-day.is-selected:hover {
+    background: #6b1d35;
+    color: #fff;
+    font-weight: 700;
+}
+
+.cg-calendar-nav {
+    display: inline-flex;
+    height: 34px;
+    width: 34px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: #6b1d35;
+    font-size: 1.5rem;
+}
+
+.cg-calendar-nav:hover {
+    background: #f5e8ec;
+}
+
+.cg-calendar-empty {
+    min-height: 34px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cg-calendar-day { transition: none; }
+}
