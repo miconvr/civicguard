@@ -4,6 +4,13 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
+// Keep the browser's install prompt so the landing page can offer it later.
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    window.__cgInstallPrompt = e;
+    window.dispatchEvent(new Event('cg-install-ready'));
+});
+
 function initializeScrollReveals() {
     const elements = document.querySelectorAll('[data-reveal]');
 
@@ -141,6 +148,27 @@ Alpine.data('landingPage', () => ({
             footerEmergency: 'For emergencies, call 911.',
             footerPrivacy: 'Privacy Policy',
             footerTerms: 'Terms of Use',
+            installNav: 'Install app',
+            installKicker: 'Install the app',
+            installHeading: 'Put CivicGuard on your home screen',
+            installIntro: 'No app store needed. It takes about 20 seconds.',
+            installNow: 'Install now',
+            tabIos: 'iPhone',
+            tabAndroid: 'Android',
+            iosStep1: 'Tap the Share button',
+            iosStep1d: 'It is the square with an arrow at the bottom of Safari.',
+            iosStep2: 'Choose "Add to Home Screen"',
+            iosStep2d: 'Scroll down in the menu if you do not see it.',
+            iosStep3: 'Tap Add',
+            iosStep3d: 'The CivicGuard icon appears on your home screen.',
+            iosNote: 'Use Safari. Browsers inside Facebook or Messenger cannot add apps to the home screen.',
+            andStep1: 'Tap the menu button',
+            andStep1d: 'It is the three dots at the top right of Chrome.',
+            andStep2: 'Choose "Install app"',
+            andStep2d: 'If you see "Add to Home screen" instead, choose that.',
+            andStep3: 'Tap Install',
+            andStep3d: 'The CivicGuard icon appears on your home screen.',
+            andNote: 'Use Chrome. Menu names can differ slightly between phones.',
             navigation: 'Main navigation',
             startLabel: 'Choose how to continue',
             homeLink: 'CivicGuard, Barangay Maimpis home',
@@ -219,10 +247,65 @@ Alpine.data('landingPage', () => ({
             footerEmergency: 'Sa oras ng kagipitan, tumawag sa 911.',
             footerPrivacy: 'Patakaran sa Privacy',
             footerTerms: 'Mga Tuntunin ng Paggamit',
+            installNav: 'I-install ang app',
+            installKicker: 'I-install ang app',
+            installHeading: 'Ilagay ang CivicGuard sa inyong home screen',
+            installIntro: 'Hindi kailangan ng app store. Mga 20 segundo lang.',
+            installNow: 'I-install ngayon',
+            tabIos: 'iPhone',
+            tabAndroid: 'Android',
+            iosStep1: 'Pindutin ang Share button',
+            iosStep1d: 'Ito ang parisukat na may arrow sa ibaba ng Safari.',
+            iosStep2: 'Piliin ang "Add to Home Screen"',
+            iosStep2d: 'Mag-scroll pababa sa menu kung hindi ito makita.',
+            iosStep3: 'Pindutin ang Add',
+            iosStep3d: 'Lalabas ang icon ng CivicGuard sa inyong home screen.',
+            iosNote: 'Gamitin ang Safari. Hindi makapagdagdag ng app sa home screen ang mga browser sa loob ng Facebook o Messenger.',
+            andStep1: 'Pindutin ang menu button',
+            andStep1d: 'Ito ang tatlong tuldok sa kanang itaas ng Chrome.',
+            andStep2: 'Piliin ang "Install app"',
+            andStep2d: 'Kung "Add to Home screen" ang makita, iyon ang piliin.',
+            andStep3: 'Pindutin ang Install',
+            andStep3d: 'Lalabas ang icon ng CivicGuard sa inyong home screen.',
+            andNote: 'Gamitin ang Chrome. Maaaring bahagyang magkaiba ang mga pangalan sa menu depende sa telepono.',
             navigation: 'Pangunahing nabigasyon',
             startLabel: 'Piliin kung paano magpatuloy',
             homeLink: 'CivicGuard, tahanan ng Barangay Maimpis',
         },
+    },
+    installed: false,
+    canPrompt: false,
+    guideTab: 'android',
+    guideOn: true,
+    init() {
+        const ua = navigator.userAgent || '';
+        const ios = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        this.guideTab = ios ? 'ios' : 'android';
+        const mq = window.matchMedia('(display-mode: standalone)');
+        const standalone = () => mq.matches || window.navigator.standalone === true;
+        this.installed = standalone();
+        if (mq.addEventListener) mq.addEventListener('change', () => { this.installed = standalone(); });
+        window.addEventListener('appinstalled', () => { this.installed = true; });
+        this.canPrompt = !!window.__cgInstallPrompt;
+        window.addEventListener('cg-install-ready', () => { this.canPrompt = true; });
+    },
+    showGuide() {
+        const el = document.getElementById('install-guide');
+        if (!el) return;
+        this.guideOn = false;
+        this.$nextTick(() => { this.guideOn = true; });
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    },
+    async nativeInstall() {
+        const evt = window.__cgInstallPrompt;
+        if (!evt) return;
+        try {
+            evt.prompt();
+            await evt.userChoice;
+        } catch (error) {}
+        window.__cgInstallPrompt = null;
+        this.canPrompt = false;
     },
     text(key) {
         return this.copy[this.language][key];
@@ -362,3 +445,20 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(() => {});
     });
 }
+
+// cgInstallObserver: play the install-guide animation only while it is on screen
+(function () {
+    const run = () => {
+        const el = document.getElementById('install-guide');
+        if (!el) return;
+        if (!('IntersectionObserver' in window)) { el.classList.add('is-playing'); return; }
+        new IntersectionObserver((entries) => {
+            entries.forEach((e) => el.classList.toggle('is-playing', e.isIntersecting));
+        }, { threshold: 0.2 }).observe(el);
+    };
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run, { once: true });
+    } else {
+        run();
+    }
+})();
