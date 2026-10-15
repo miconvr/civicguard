@@ -59,13 +59,73 @@
 
                     <p class="text-xs text-gray-500 dark:text-gray-400">Record safeguarding actions factually and follow current barangay and social-welfare procedures for minors.</p>
 
-                    <fieldset class="rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800/50">
+                    <fieldset class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
                         <legend class="px-1 text-sm font-semibold text-gray-900 dark:text-gray-100">Apprehension Details</legend>
-                        <label for="cf_apprehension_datetime" class="cg-label">Date and time of apprehension</label>
-                        <input id="cf_apprehension_datetime" type="datetime-local" name="apprehension_datetime" required value="{{ old('apprehension_datetime') }}" class="cg-input w-full min-w-0">
-                        <p class="mt-2 text-xs leading-5 text-gray-600 dark:text-gray-400">Select when the incident occurred. Check the date and time before saving.</p>
+
+                        <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">Enter when the incident occurred.</p>
+
+                        <input
+                            id="cf_apprehension_datetime"
+                            type="hidden"
+                            name="apprehension_datetime"
+                            value="{{ old('apprehension_datetime') }}"
+                        >
+
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                                <label for="cf_apprehension_date" class="cg-label">Date</label>
+                                <input
+                                    id="cf_apprehension_date"
+                                    type="date"
+                                    required
+                                    value="{{ old('apprehension_datetime') ? substr(old('apprehension_datetime'), 0, 10) : '' }}"
+                                    class="cg-input w-full min-w-0"
+                                    autocomplete="off"
+                                >
+                            </div>
+
+                            <div>
+                                <label for="cf_apprehension_time" class="cg-label">Time</label>
+                                <input
+                                    id="cf_apprehension_time"
+                                    type="time"
+                                    required
+                                    value="{{ old('apprehension_datetime') ? substr(old('apprehension_datetime'), 11, 5) : '' }}"
+                                    class="cg-input w-full min-w-0"
+                                >
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Check the hour and minutes carefully.</p>
+                            </div>
+                        </div>
+
+                        <p class="mt-3 text-xs leading-5 text-gray-600 dark:text-gray-400">Review the date and time before saving.</p>
                         @error('apprehension_datetime') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                     </fieldset>
+
+                    <script>
+                        (() => {
+                            const dateInput = document.getElementById('cf_apprehension_date');
+                            const timeInput = document.getElementById('cf_apprehension_time');
+                            const combinedInput = document.getElementById('cf_apprehension_datetime');
+
+                            if (!dateInput || !timeInput || !combinedInput) return;
+
+                            const syncDateTime = () => {
+                                combinedInput.value = dateInput.value && timeInput.value
+                                    ? `${dateInput.value}T${timeInput.value}`
+                                    : '';
+                            };
+
+                            dateInput.addEventListener('input', syncDateTime);
+                            timeInput.addEventListener('input', syncDateTime);
+
+                            const form = combinedInput.closest('form');
+                            if (form) {
+                                form.addEventListener('submit', syncDateTime);
+                            }
+
+                            syncDateTime();
+                        })();
+                    </script>
 
                     <div>
                         <label for="cf_apprehension_location" class="cg-label">Location</label>
