@@ -1320,3 +1320,19 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
         animation: none !important;
     }
 }
+
+
+/* Simple, neutral date/time picker for tanod forms */
+.cg-datetime-input {
+    color-scheme: light;
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    border-color: #d1d5db !important;
+}
+
+.dark .cg-datetime-input {
+    color-scheme: light;
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    border-color: #d1d5db !important;
+}
