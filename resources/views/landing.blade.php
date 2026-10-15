@@ -71,7 +71,7 @@
                     </div>
                     <div class="cg-landing-hero-inner mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:py-20">
                         <div class="cg-landing-copy">
-                            <div class="cg-hero-brand cg-intro-enter"><span class="cg-hero-brand-mark"><x-application-logo class="h-10 w-10 shrink-0" /></span><span class="min-w-0"><span class="cg-hero-brand-name">CivicGuard</span><span class="cg-hero-brand-sub">Brgy. Maimpis</span></span></div>
+                            <div class="cg-hero-brand cg-intro-enter"><span class="cg-hero-brand-mark"><x-application-logo inverse class="h-10 w-10 shrink-0" /></span><span class="min-w-0"><span class="cg-hero-brand-name">CivicGuard</span><span class="cg-hero-brand-sub">Brgy. Maimpis</span></span></div>
                             <div class="cg-hero-head"><h1 class="cg-intro-enter cg-intro-enter-1 cg-hero-title">
                                 <span x-text="text('headline')">Report an issue in</span>
                                 <span class="cg-landing-accent" x-text="text('headlineAccent')"> Barangay Maimpis.</span>
