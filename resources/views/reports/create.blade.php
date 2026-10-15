@@ -18,7 +18,16 @@
 
                 <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('Tell us what happened') }}</h3>
 
-                <p class="mb-5 text-sm"><a href="{{ route('chatbot.widget') }}" class="font-medium text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('Prefer to just talk it through?') }} <span aria-hidden="true">&rarr;</span></a></p>
+                <a href="{{ route('chatbot.widget') }}" class="group mb-6 flex items-center gap-4 rounded-xl border border-purple-200 bg-gradient-to-r from-purple-50 via-white to-rose-50 p-4 transition-colors hover:border-purple-400 dark:border-purple-900 dark:from-purple-950/40 dark:via-gray-900 dark:to-rose-950/30">
+                    <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-rose-500 text-white shadow-sm" aria-hidden="true">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8m-8 4h5m-9 6 1.8-4.5A8 8 0 1 1 20 15.5L22 20l-5-1.5A8 8 0 0 1 4 12c0-1 .2-2 .6-3"/></svg>
+                    </span>
+                    <span class="min-w-0 flex-1">
+                        <span class="block font-semibold text-gray-900 dark:text-white">{{ __('Need help making a report?') }}</span>
+                        <span class="mt-1 block text-sm text-gray-600 dark:text-gray-300">{{ __('Describe what happened to the AI Assistant and get help preparing your report.') }}</span>
+                        <span class="mt-2 block text-sm font-semibold text-purple-700 dark:text-purple-300">{{ __('Chat with AI Assistant →') }}</span>
+                    </span>
+                </a>
 
                 <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-6"
                       x-data="{ cat: '{{ old('category_id') }}', descs: {{ Js::from($categories->pluck('description', 'id')) }}, len: {{ strlen(old('description', '')) }}, preview: null, tooBig: false, suggested: false, timer: null,
@@ -75,7 +84,7 @@
                     </div>
 
                     <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('Only barangay staff can see your report. You will be notified when its status changes.') }}</p>
-                    <div class="cg-sticky-actions">
+                    <div class="pt-2">
                         <button type="submit" id="submit-report-btn" class="cg-btn min-h-[48px] w-full sm:w-auto" data-loading-btn data-loading-text="{{ __('Submitting...') }}">
                             <span id="submit-report-label">{{ __('Submit Report') }}</span>
                             <svg id="submit-report-spinner" class="hidden animate-spin h-4 w-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
