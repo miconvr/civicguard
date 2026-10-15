@@ -25,7 +25,7 @@
 
             @if ($user->role === 'resident')
 
-                <a href="{{ route('reports.create') }}" class="group flex min-h-24 items-center justify-between gap-4 rounded-xl cg-surface-raised p-5 ring-1 ring-stone-200 transition-colors hover:bg-[#e9e3da] focus-visible:outline-offset-4 sm:p-6 dark:bg-[#262624] dark:ring-[#3d3d3a] dark:hover:bg-[#30302e]" data-reveal>
+                <a data-reveal href="{{ route('reports.create') }}" class="group flex min-h-24 items-center justify-between gap-4 rounded-xl cg-surface-raised p-5 ring-1 ring-stone-200 transition-colors hover:bg-[#e9e3da] focus-visible:outline-offset-4 sm:p-6 dark:bg-[#262624] dark:ring-[#3d3d3a] dark:hover:bg-[#30302e]" data-reveal>
                     <span>
                         <span class="block text-xs font-bold uppercase tracking-wider text-maroon-700 dark:text-[#c27872]">{{ __('Need help from the barangay?') }}</span>
                         <span class="mt-1 block text-lg font-bold text-stone-950 dark:text-white sm:text-xl">{{ __('Report an incident') }}</span>
@@ -63,11 +63,11 @@
                     </ul>
                 </div>
 
-                <a href="{{ route('chatbot.widget') }}" class="cg-btn-secondary w-full sm:w-auto">{{ __('Prefer to just talk it through?') }} <span aria-hidden="true">&rarr;</span></a>
+                <a data-reveal href="{{ route('chatbot.widget') }}" class="cg-btn-secondary w-full sm:w-auto">{{ __('Prefer to just talk it through?') }} <span aria-hidden="true">&rarr;</span></a>
 
             @elseif ($user->role === 'tanod')
 
-                <div class="flex flex-wrap gap-3">
+                <div class="flex flex-wrap gap-3" data-reveal>
                     <a href="{{ route('curfew.create') }}" class="cg-btn">{{ __('Log Curfew') }}</a>
                     <a href="{{ route('admin.dashboard') }}" class="cg-btn-secondary">{{ __('Incident Queue') }}</a>
                 </div>
@@ -93,13 +93,13 @@
 
             @else
 
-                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3" data-reveal>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     @foreach ([
                         ['Critical open', $stats['critical'], ['tab' => 'active', 'severity' => 'critical'], 'cg-kpi'],
                         ['Unassigned', $stats['unassigned'], ['tab' => 'active', 'assignee' => 'none'], 'cg-kpi'],
                         ['Pending 48h+', $stats['overdue'], ['tab' => 'pending'], 'cg-kpi'],
                     ] as [$label, $count, $params, $color])
-                        <a href="{{ route('admin.dashboard', $params) }}" class="cg-card block transition-colors">
+                        <a href="{{ route('admin.dashboard', $params) }}" class="cg-card block transition-colors" data-reveal>
                             <p class="text-sm cg-muted">{{ $label }}</p>
                             <p class="text-3xl font-semibold {{ $color }}">{{ $count }}</p>
                         </a>
