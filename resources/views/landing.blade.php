@@ -25,10 +25,6 @@
                 <nav aria-label="Main navigation" :aria-label="text('navigation')" class="mx-auto flex min-h-[72px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
                     <a href="{{ url('/') }}" class="group flex min-w-0 items-center gap-2.5 rounded-md focus-visible:outline-offset-4" aria-label="CivicGuard, Barangay Maimpis home" :aria-label="text('homeLink')">
                         <span class="cg-brand-mark"><x-application-logo class="h-9 w-9 shrink-0" /></span>
-                        <span class="min-w-0">
-                            <span class="block text-[15px] font-bold leading-tight tracking-tight text-maroon-900">CivicGuard</span>
-                            <span class="block text-[11px] uppercase tracking-wider text-stone-500">Brgy. Maimpis</span>
-                        </span>
                     </a>
 
                     <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
@@ -61,7 +57,7 @@
                 <section class="cg-landing-hero lg:flex lg:min-h-[calc(100dvh_-_73px)] lg:items-center">
                     <div class="cg-landing-hero-inner mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:py-20">
                         <div class="cg-landing-copy">
-                            <p class="cg-landing-location cg-intro-enter" x-text="text('processIntro')">For residents</p>
+                            <div class="cg-hero-brand cg-intro-enter"><span class="cg-hero-brand-mark"><x-application-logo class="h-10 w-10 shrink-0" /></span><span class="min-w-0"><span class="cg-hero-brand-name">CivicGuard</span><span class="cg-hero-brand-sub">Brgy. Maimpis</span></span></div>
                             <div class="cg-hero-head"><h1 class="cg-intro-enter cg-intro-enter-1 cg-hero-title">
                                 <span x-text="text('headline')">Report an issue in</span>
                                 <span class="cg-landing-accent" x-text="text('headlineAccent')"> Barangay Maimpis.</span>
@@ -79,18 +75,8 @@
                                         <span class="cg-arrow" aria-hidden="true">→</span>
                                     </a>
                                 @endguest
-                                <button type="button" x-cloak x-show="!installed" @click="showGuide()" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 text-base font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100 lg:min-h-14 lg:px-8 lg:text-lg"><svg class="h-5 w-5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg><span x-text="text('installNav')">Install app</span></button>
-                                <div class="mt-1 sm:basis-full"><a href="#how-it-works" class="cg-landing-more group inline-flex min-h-11 items-center gap-2 rounded-md text-sm font-semibold"><span x-text="text('howItWorks')">See how it works</span><svg class="h-4 w-4 transition-transform group-hover:translate-y-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></a></div>
+                                <button type="button" x-cloak x-show="!installed" @click="showGuide()" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 text-base font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100 lg:min-h-14 lg:px-8 lg:text-lg"><svg class="h-5 w-5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg><span x-text="text('installNav')">Install app</span><svg class="cg-install-phone-mark h-5 w-5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg></button>
                             </div>
-                            @guest
-                                <p class="cg-intro-enter cg-intro-enter-3 mt-4 text-sm text-white/80">
-                                    <a href="{{ route('login') }}" class="underline decoration-white/50 underline-offset-4 hover:text-white" x-text="text('staffQuestion')">Barangay staff? Sign in</a>
-                                </p>
-                            @endguest
-                            <p class="cg-intro-enter cg-intro-enter-3 mt-6 text-sm text-white/75">
-                                <span x-text="text('emergencyTitle')">Is someone in immediate danger?</span>
-                                <a href="tel:911" class="ml-1 font-semibold text-white underline decoration-white/50 underline-offset-4 hover:decoration-white" x-text="text('call911')">Call 911</a>
-                            </p>
                         </div>
 
                         <aside id="get-started" aria-label="Sample report" :aria-label="text('sampleLabel')" class="cg-start-panel cg-intro-enter cg-intro-enter-3">
@@ -99,13 +85,13 @@
                                 <div class="cg-flow mt-5 rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
                                     <div class="flex items-start justify-between gap-3">
                                         <div>
-                                            <p class="text-base font-semibold text-stone-950 lg:text-lg" x-text="text('sampleTitle')">Broken streetlight</p>
-                                            <p class="mt-0.5 text-sm text-stone-600" x-text="text('sampleSent')">Sent today</p>
+                                            <p class="text-base font-semibold text-stone-950 lg:text-lg" x-text="text('sampleTitle')">Your report</p>
+                                            <p class="mt-0.5 text-sm text-stone-600" x-text="text('sampleSent')">Example · sent just now</p>
                                         </div>
                                         <span class="cg-flow-pills" aria-hidden="true"><span class="cg-flow-pill cg-flow-pill-1" x-text="text('pill1')">Problem</span><span class="cg-flow-pill cg-flow-pill-2" x-text="text('pill2')">Sent</span><span class="cg-flow-pill cg-flow-pill-3" x-text="text('pill3')">Received</span><span class="cg-flow-pill cg-flow-pill-4" x-text="text('pill4')">In progress</span><span class="cg-flow-pill cg-flow-pill-5" x-text="text('pill5')">Resolved?</span></span>
                                     </div>
                                     <ol class="cg-flow-list mt-5">
-<li class="cg-flow-row cg-flow-row-1"><span class="cg-flow-node" aria-hidden="true">1</span><div class="min-w-0"><p class="text-sm font-semibold text-stone-950" x-text="text('flow1Title')">You spot a problem</p><p class="mt-0.5 text-xs leading-5 text-stone-600 sm:text-sm" x-text="text('flow1Desc')">Like a broken streetlight on your street.</p></div></li>
+<li class="cg-flow-row cg-flow-row-1"><span class="cg-flow-node" aria-hidden="true">1</span><div class="min-w-0"><p class="text-sm font-semibold text-stone-950" x-text="text('flow1Title')">You spot a problem</p><p class="mt-0.5 text-xs leading-5 text-stone-600 sm:text-sm" x-text="text('flow1Desc')">Something in the barangay that needs attention.</p></div></li>
 <li class="cg-flow-row cg-flow-row-2"><span class="cg-flow-node" aria-hidden="true">2</span><div class="min-w-0"><p class="text-sm font-semibold text-stone-950" x-text="text('flow2Title')">You send a report</p><p class="mt-0.5 text-xs leading-5 text-stone-600 sm:text-sm" x-text="text('flow2Desc')">Add a photo and a location pin.</p></div></li>
 <li class="cg-flow-row cg-flow-row-3"><span class="cg-flow-node" aria-hidden="true">3</span><div class="min-w-0"><p class="text-sm font-semibold text-stone-950" x-text="text('flow3Title')">Received by tanods and officials</p><p class="mt-0.5 text-xs leading-5 text-stone-600 sm:text-sm" x-text="text('flow3Desc')">Staff see it, sorted by urgency.</p></div></li>
 <li class="cg-flow-row cg-flow-row-4"><span class="cg-flow-node" aria-hidden="true">4</span><div class="min-w-0"><p class="text-sm font-semibold text-stone-950" x-text="text('flow4Title')">In progress</p><p class="mt-0.5 text-xs leading-5 text-stone-600 sm:text-sm" x-text="text('flow4Desc')">A tanod is assigned and works on it.</p></div></li>
