@@ -1173,3 +1173,50 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
 .cg-phone-chip .cg-hp-body { flex: none; width: 3.2rem; height: 4.4rem; padding: .2rem; border-radius: .85rem; animation: none; box-shadow: 0 6px 14px -6px rgba(0,0,0,.5); }
 .cg-phone-chip .cg-hp-island { top: .32rem; width: .9rem; height: .26rem; }
 .cg-phone-chip .cg-hp-grid { gap: .22rem; padding: .85rem .28rem .2rem; border-radius: .7rem; }
+
+/* cg-i26-v1: iOS 26 Safari guide (more menu, Share, Add to Home Screen, Open as Web App) */
+.cg-i26 .cg-ph-pagelayer { animation: none; }
+.cg-i26-pos { position: relative; }
+.cg-i26-bar { position: absolute; left: .5rem; right: .5rem; bottom: .6rem; z-index: 3; display: flex; align-items: center; gap: .4rem; height: 2.3rem; padding: 0 .55rem; border-radius: 9999px; background: rgba(250,250,252,.96); box-shadow: 0 2px 10px rgba(0,0,0,.18); font-size: .5rem; color: #333; }
+.cg-i26-url { flex: 1; text-align: center; }
+.cg-i26-dots { display: flex; width: 1.3rem; height: 1.3rem; align-items: center; justify-content: center; }
+.cg-i26 .cg-ph-dim { animation: cg-i26-dim 12s infinite both; }
+.cg-i26-menu { position: absolute; right: .5rem; bottom: 3.3rem; z-index: 8; width: 60%; padding: .25rem 0; border-radius: .7rem; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.28); transform-origin: bottom right; opacity: 0; animation: cg-i26-menu 12s infinite both; }
+.cg-i26-menu > span { position: relative; display: flex; align-items: center; justify-content: space-between; padding: .42rem .7rem; font-size: .56rem; }
+.cg-i26-menu > .is-key { background: #f2f2f7; font-weight: 700; }
+.cg-i26-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 8; padding: .5rem .6rem 1rem; border-radius: .9rem .9rem 0 0; background: #f2f2f7; transform: translateY(100%); animation: cg-i26-sheet 12s infinite both; }
+.cg-i26-dialog { position: absolute; left: .6rem; right: .6rem; top: 24%; z-index: 9; overflow: hidden; border-radius: .8rem; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.3); opacity: 0; animation: cg-i26-dialog 12s infinite both; }
+.cg-i26-toggle-row { position: relative; display: flex; align-items: center; justify-content: space-between; margin: 0 .6rem .7rem; padding: .45rem .5rem; border: 1.5px solid transparent; border-radius: .5rem; font-size: .56rem; font-weight: 600; animation: cg-i26-ring 12s infinite both; }
+.cg-i26-toggle { position: relative; flex: none; width: 1.7rem; height: 1rem; border-radius: 9999px; background: #34c759; }
+.cg-i26-toggle i { position: absolute; top: .1rem; right: .1rem; width: .8rem; height: .8rem; border-radius: 9999px; background: #fff; }
+.cg-i26-tap { position: absolute; left: 50%; top: 50%; z-index: 20; width: 1.5rem; height: 1.5rem; border: 2px solid rgba(0,122,255,.7); border-radius: 9999px; background: rgba(0,122,255,.25); opacity: 0; pointer-events: none; }
+.cg-i26 .cg-ph-home { animation: cg-i26-home 12s infinite both; }
+.cg-i26 .cg-ph-appicon { animation: cg-i26-icon 12s infinite both; }
+@keyframes cg-i26-dim { 0% { opacity:0 } 12% { opacity:0 } 14% { opacity:.35 } 78% { opacity:.35 } 81% { opacity:0 } 100% { opacity:0 } }
+@keyframes cg-i26-menu { 0% { opacity:0;transform:translateY(.4rem) scale(.95) } 12% { opacity:0;transform:translateY(.4rem) scale(.95) } 15% { opacity:1;transform:translateY(0) scale(1) } 31% { opacity:1;transform:translateY(0) scale(1) } 34% { opacity:0;transform:translateY(.4rem) scale(.95) } 100% { opacity:0;transform:translateY(.4rem) scale(.95) } }
+@keyframes cg-i26-sheet { 0% { transform:translateY(100%) } 35% { transform:translateY(100%) } 39% { transform:translateY(0) } 56% { transform:translateY(0) } 59% { transform:translateY(100%) } 100% { transform:translateY(100%) } }
+@keyframes cg-i26-dialog { 0% { opacity:0;transform:scale(.94) } 58% { opacity:0;transform:scale(.94) } 61% { opacity:1;transform:scale(1) } 79% { opacity:1;transform:scale(1) } 82% { opacity:0;transform:scale(.94) } 100% { opacity:0;transform:scale(.94) } }
+@keyframes cg-i26-ring { 0% { border-color:transparent;background-color:transparent } 63% { border-color:transparent;background-color:transparent } 66% { border-color:#7a1f1f;background-color:#fbeeee } 73% { border-color:#7a1f1f;background-color:#fbeeee } 76% { border-color:transparent;background-color:transparent } 100% { border-color:transparent;background-color:transparent } }
+@keyframes cg-i26-home { 0% { opacity:0 } 82% { opacity:0 } 85% { opacity:1 } 96% { opacity:1 } 99% { opacity:0 } 100% { opacity:0 } }
+@keyframes cg-i26-icon { 0% { opacity:0;transform:scale(.3) } 84% { opacity:0;transform:scale(.3) } 88% { opacity:1;transform:scale(1.18);box-shadow:0 0 0 .3rem rgba(255,255,255,.3) } 92% { opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(255,255,255,0) } 96% { opacity:1;transform:scale(1) } 99% { opacity:0;transform:scale(1) } 100% { opacity:0;transform:scale(1) } }
+@keyframes cg-i26-tap-1 { 0% { opacity:0;transform:translate(-50%,-50%) scale(.5) } 9% { opacity:0;transform:translate(-50%,-50%) scale(.5) } 10% { opacity:1;transform:translate(-50%,-50%) scale(.85) } 13% { opacity:0;transform:translate(-50%,-50%) scale(1.6) } 100% { opacity:0;transform:translate(-50%,-50%) scale(1.6) } }
+@keyframes cg-i26-tap-2 { 0% { opacity:0;transform:translate(-50%,-50%) scale(.5) } 27% { opacity:0;transform:translate(-50%,-50%) scale(.5) } 28% { opacity:1;transform:translate(-50%,-50%) scale(.85) } 31% { opacity:0;transform:translate(-50%,-50%) scale(1.6) } 100% { opacity:0;transform:translate(-50%,-50%) scale(1.6) } }
+@keyframes cg-i26-tap-3 { 0% { opacity:0;transform:translate(-50%,-50%) scale(.5) } 49% { opacity:0;transform:translate(-50%,-50%) scale(.5) } 50% { opacity:1;transform:translate(-50%,-50%) scale(.85) } 53% { opacity:0;transform:translate(-50%,-50%) scale(1.6) } 100% { opacity:0;transform:translate(-50%,-50%) scale(1.6) } }
+@keyframes cg-i26-tap-4 { 0% { opacity:0;transform:translate(-50%,-50%) scale(.5) } 74% { opacity:0;transform:translate(-50%,-50%) scale(.5) } 75% { opacity:1;transform:translate(-50%,-50%) scale(.85) } 78% { opacity:0;transform:translate(-50%,-50%) scale(1.6) } 100% { opacity:0;transform:translate(-50%,-50%) scale(1.6) } }
+@keyframes cg-i26-s1 { 0% { opacity:1;background-color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1) } 24% { opacity:1;background-color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1) } 27% { opacity:.5;background-color:transparent;box-shadow:none } 97% { opacity:.5;background-color:transparent;box-shadow:none } 99% { opacity:1;background-color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1) } 100% { opacity:1;background-color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1) } }
+@keyframes cg-i26-s2 { 0% { opacity:.5;background-color:transparent;box-shadow:none } 25% { opacity:.5;background-color:transparent;box-shadow:none } 28% { opacity:1;background-color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1) } 47% { opacity:1;background-color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1) } 50% { opacity:.5;background-color:transparent;box-shadow:none } 100% { opacity:.5;background-color:transparent;box-shadow:none } }
+@keyframes cg-i26-s3 { 0% { opacity:.5;background-color:transparent;box-shadow:none } 48% { opacity:.5;background-color:transparent;box-shadow:none } 51% { opacity:1;background-color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1) } 71% { opacity:1;background-color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1) } 74% { opacity:.5;background-color:transparent;box-shadow:none } 100% { opacity:.5;background-color:transparent;box-shadow:none } }
+@keyframes cg-i26-s4 { 0% { opacity:.5;background-color:transparent;box-shadow:none } 72% { opacity:.5;background-color:transparent;box-shadow:none } 75% { opacity:1;background-color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1) } 96% { opacity:1;background-color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1) } 99% { opacity:.5;background-color:transparent;box-shadow:none } 100% { opacity:.5;background-color:transparent;box-shadow:none } }
+.cg-i26-tap-1 { animation: cg-i26-tap-1 12s linear infinite both; }
+.cg-install-step.cg-i26-s1 { animation: cg-i26-s1 12s linear infinite both; }
+.cg-i26-tap-2 { animation: cg-i26-tap-2 12s linear infinite both; }
+.cg-install-step.cg-i26-s2 { animation: cg-i26-s2 12s linear infinite both; }
+.cg-i26-tap-3 { animation: cg-i26-tap-3 12s linear infinite both; }
+.cg-install-step.cg-i26-s3 { animation: cg-i26-s3 12s linear infinite both; }
+.cg-i26-tap-4 { animation: cg-i26-tap-4 12s linear infinite both; }
+.cg-install-step.cg-i26-s4 { animation: cg-i26-s4 12s linear infinite both; }
+@media (prefers-reduced-motion: reduce) {
+    .cg-i26 .cg-ph-home { opacity: 1; }
+    .cg-i26 .cg-i26-tap { display: none; }
+    .cg-install-step[class*="cg-i26-s"] { opacity: 1; background-color: transparent; box-shadow: none; }
+}
