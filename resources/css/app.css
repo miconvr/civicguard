@@ -1321,7 +1321,7 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 }
 
 
-/* Simple, neutral date/time picker for tanod forms */
+/* CivicGuard date/time fields: follow the active theme */
 .cg-datetime-input {
     color-scheme: light;
     background-color: #ffffff !important;
@@ -1330,10 +1330,10 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 }
 
 .dark .cg-datetime-input {
-    color-scheme: light;
-    background-color: #ffffff !important;
-    color: #1f2937 !important;
-    border-color: #d1d5db !important;
+    color-scheme: dark;
+    background-color: #272323 !important;
+    color: #f9fafb !important;
+    border-color: #514548 !important;
 }
 
 /* CivicGuard: maroon date/time picker accents */
@@ -1362,10 +1362,47 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 #cf-hour,
 #cf-minute,
 #cf-period {
-    background-color: #fff !important;
+    color-scheme: light;
+    background-color: #ffffff !important;
     color: #1f2937 !important;
-    border-color: #d1d5db !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 0.65rem;
     accent-color: #6b1d35;
+}
+
+.dark #cf-date-display,
+.dark #cf-hour,
+.dark #cf-minute,
+.dark #cf-period {
+    color-scheme: dark;
+    background-color: #272323 !important;
+    color: #f9fafb !important;
+    border-color: #514548 !important;
+    accent-color: #b84b68;
+}
+
+.dark #cf-date-display:focus,
+.dark #cf-hour:focus,
+.dark #cf-minute:focus,
+.dark #cf-period:focus {
+    border-color: #b84b68 !important;
+    outline: 2px solid rgba(184, 75, 104, 0.25);
+    outline-offset: 1px;
+    --tw-ring-color: #b84b68;
+}
+
+#cf-hour option,
+#cf-minute option,
+#cf-period option {
+    background-color: #ffffff;
+    color: #1f2937;
+}
+
+.dark #cf-hour option,
+.dark #cf-minute option,
+.dark #cf-period option {
+    background-color: #272323;
+    color: #f9fafb;
 }
 
 #cf-date-display:focus,
