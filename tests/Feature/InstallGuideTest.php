@@ -12,7 +12,7 @@ test('landing page has an install button and an install guide', function () {
 test('hero shows the install button and a phone hint', function () {
     $this->get('/')
         ->assertOk()
-        ->assertSee('cg-phone-chip', false)
+        ->assertSee('cg-i26', false)
         ->assertSee('cg-flow', false)
         ->assertSee('cg-hero-title', false);
 });
