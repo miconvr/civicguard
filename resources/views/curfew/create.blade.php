@@ -41,14 +41,20 @@
                     </div>
 
                     <label class="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                        <input type="checkbox" name="guardian_notified" value="1" {{ old('guardian_notified') ? 'checked' : '' }}>
+                        <input
+                            type="checkbox"
+                            name="guardian_notified"
+                            value="1"
+                            {{ old('guardian_notified') ? 'checked' : '' }}
+                            class="h-4 w-4 rounded border-gray-400 bg-[#292524] accent-[#6b1d35] focus:ring-[#6b1d35] dark:border-gray-600 dark:bg-[#292524]"
+                        >
                         Guardian notified
                     </label>
 
                     <div>
                         <label for="cf_referral_action" class="cg-label">Referral or Follow-up Action</label>
                         <select id="cf_referral_action" name="referral_action" class="cg-input">
-                            <option value="">Select action...</option>
+                            <option value="">Select action</option>
                             <option value="Released to guardian" {{ old('referral_action') === 'Released to guardian' ? 'selected' : '' }}>Released to guardian</option>
                             <option value="Referred to social-welfare personnel" {{ old('referral_action') === 'Referred to social-welfare personnel' ? 'selected' : '' }}>Referred to social-welfare personnel</option>
                             <option value="Referred to barangay official" {{ old('referral_action') === 'Referred to barangay official' ? 'selected' : '' }}>Referred to barangay official</option>
