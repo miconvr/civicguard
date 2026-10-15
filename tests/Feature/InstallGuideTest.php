@@ -8,3 +8,10 @@ test('landing page has an install button and an install guide', function () {
         ->assertSee('cg-phone', false)
         ->assertSee('Add to Home Screen');
 });
+
+test('hero shows the install button and a phone hint', function () {
+    $this->get('/')
+        ->assertOk()
+        ->assertSee('cg-hero-phone', false)
+        ->assertSee('cg-hero-title', false);
+});
