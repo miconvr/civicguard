@@ -970,3 +970,77 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
     outline: 2px solid #7a1f1f;
     outline-offset: 2px;
 }
+
+/* cg-install-guide: animated phone walkthrough */
+.cg-install-tabs button[aria-selected="true"] { background: #7a1f1f; color: #fff; }
+.cg-install:not(.is-playing) * { animation-play-state: paused !important; }
+.cg-phone-wrap { display: flex; justify-content: center; }
+.cg-phone { position: relative; width: min(15rem, 70vw); aspect-ratio: 9 / 19; padding: .5rem; border-radius: 2.6rem; background: #1c1c1e; box-shadow: 0 30px 60px -22px rgba(60,10,15,.5), inset 0 0 0 2px #3a3a3c; animation: cg-phone-float 6s ease-in-out infinite; }
+.cg-phone.is-android { border-radius: 1.9rem; background: #26262a; }
+.cg-phone * { box-sizing: border-box; }
+.cg-phone i, .cg-phone em { display: block; font-style: normal; }
+.cg-phone b { font-weight: 600; }
+.cg-phone small { display: block; color: #6b7280; font-size: .45rem; }
+.cg-phone-screen { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 2.1rem; background: #fff; color: #111; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: .55rem; }
+.is-android .cg-phone-screen { border-radius: 1.45rem; }
+.cg-phone-island { position: absolute; top: .45rem; left: 50%; z-index: 20; width: 28%; height: 1.05rem; transform: translateX(-50%); border-radius: 9999px; background: #000; }
+.cg-phone-punch { position: absolute; top: .5rem; left: 50%; z-index: 20; width: .6rem; height: .6rem; transform: translateX(-50%); border-radius: 50%; background: #000; }
+.cg-ph-status { position: absolute; top: .55rem; left: 0; right: 0; z-index: 12; display: flex; justify-content: space-between; padding: 0 1.1rem; font-size: .5rem; font-weight: 600; }
+.cg-ph-layer { position: absolute; inset: 0; }
+.cg-ph-pagelayer { background: #f6f2eb; animation: cg-page 12s infinite both; }
+.cg-ph-hero { margin-top: 2.2rem; padding: .9rem .75rem; background: #7a1f1f; color: #fff; font-size: .75rem; line-height: 1.15; }
+.is-android .cg-ph-hero { margin-top: 3.9rem; }
+.cg-ph-bar { height: .28rem; margin-top: .4rem; border-radius: 9999px; background: rgba(255,255,255,.35); }
+.cg-ph-cta { display: inline-block; margin-top: .6rem; padding: .3rem .6rem; border-radius: .3rem; background: #fff; color: #7a1f1f; font-size: .5rem; font-weight: 700; }
+.cg-ph-card { height: 2.2rem; margin: .6rem .6rem 0; border-radius: .5rem; border: 1px solid #e7e0d6; background: #fff; }
+.cg-ph-pos { position: relative; }
+.cg-ph-ico { width: .95rem; height: .95rem; color: #007aff; }
+.cg-ph-toolbar { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-around; align-items: flex-start; height: 3.2rem; padding-top: .6rem; border-top: 1px solid #d8d8dc; background: rgba(246,246,248,.96); }
+.cg-ph-urlbar { position: absolute; top: 1.5rem; left: 0; right: 0; z-index: 3; display: flex; align-items: center; gap: .4rem; height: 2.2rem; padding: 0 .5rem; border-bottom: 1px solid #e5e5e5; background: #fff; }
+.cg-ph-url { flex: 1; padding: .3rem .6rem; border-radius: 9999px; background: #f1f3f4; color: #444; font-size: .5rem; }
+.cg-ph-dots { display: flex; align-items: center; justify-content: center; width: 1.2rem; height: 1.2rem; }
+.cg-ph-dim { position: absolute; inset: 0; z-index: 7; background: #000; opacity: 0; animation: cg-ios-dim 12s infinite both; }
+.is-android .cg-ph-dim { animation-name: cg-and-dim; }
+.cg-ph-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 8; padding: .5rem .6rem 1rem; border-radius: .9rem .9rem 0 0; background: #f2f2f7; animation: cg-ios-sheet 12s infinite both; }
+.cg-ph-sheethead { display: flex; align-items: center; gap: .45rem; margin-bottom: .45rem; }
+.cg-ph-sheethead img { width: 1.5rem; height: 1.5rem; border-radius: 22%; }
+.cg-ph-rows { overflow: hidden; border-radius: .5rem; background: #fff; }
+.cg-ph-row { position: relative; display: flex; justify-content: space-between; align-items: center; padding: .45rem .6rem; border-bottom: 1px solid #eee; font-size: .56rem; }
+.cg-ph-row:last-child { border-bottom: 0; }
+.cg-ph-glyph { font-size: .8rem; line-height: 1; }
+.cg-ph-menu { position: absolute; top: 2.7rem; right: .4rem; z-index: 8; width: 62%; padding: .25rem 0; border-radius: .5rem; background: #fff; box-shadow: 0 6px 18px rgba(0,0,0,.25); transform-origin: top right; animation: cg-and-menu 12s infinite both; }
+.cg-ph-menu > span { position: relative; display: block; padding: .42rem .7rem; font-size: .56rem; }
+.cg-ph-dialog { position: absolute; left: .7rem; right: .7rem; top: 32%; z-index: 9; overflow: hidden; border-radius: .8rem; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.3); opacity: 0; animation: cg-ios-dialog 12s infinite both; }
+.is-android .cg-ph-dialog { animation-name: cg-and-dialog; top: 36%; }
+.cg-ph-dialoghead { display: flex; justify-content: space-between; align-items: center; padding: .55rem .6rem; border-bottom: 1px solid #eee; font-size: .5rem; }
+.cg-ph-dialogbody { display: flex; align-items: center; gap: .5rem; padding: .7rem .6rem; font-size: .6rem; }
+.cg-ph-dialogbody img { width: 1.9rem; height: 1.9rem; border-radius: 22%; }
+.cg-ph-btns { display: flex; justify-content: flex-end; gap: 1.2rem; padding: 0 .8rem .7rem; font-size: .56rem; }
+.cg-ph-blue { color: #007aff; }
+.is-android .cg-ph-blue { color: #7a1f1f; }
+.cg-ph-home { position: absolute; inset: 0; z-index: 10; background: linear-gradient(160deg, #7a1f1f, #2a0d12 72%); opacity: 0; animation: cg-home 12s infinite both; }
+.cg-ph-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .8rem .45rem; padding: 2.6rem .7rem 0; }
+.cg-ph-app { aspect-ratio: 1; border-radius: 22%; background: rgba(255,255,255,.18); }
+.cg-ph-appwrap { display: flex; flex-direction: column; align-items: center; gap: .15rem; }
+.cg-ph-appicon { width: 100%; aspect-ratio: 1; border-radius: 22%; animation: cg-home-icon 12s infinite both; }
+.cg-ph-appwrap em { color: #fff; font-size: .42rem; }
+.cg-ph-dock { position: absolute; left: .5rem; right: .5rem; bottom: .6rem; height: 2.6rem; border-radius: 1rem; background: rgba(255,255,255,.22); }
+.cg-tap { position: absolute; top: 50%; left: 50%; z-index: 15; width: 1.8rem; height: 1.8rem; margin: -.9rem 0 0 -.9rem; border: 2px solid rgba(122,31,31,.65); border-radius: 50%; background: rgba(122,31,31,.25); opacity: 0; pointer-events: none; animation: cg-tap 12s infinite both; }
+.cg-install-step { display: grid; grid-template-columns: 2.25rem 1fr; gap: .8rem; padding: 1rem; border-left: 3px solid #7a1f1f; border-radius: .75rem; animation: cg-hl 12s linear infinite both; }
+.cg-install-num { display: inline-flex; width: 2rem; height: 2rem; align-items: center; justify-content: center; border-radius: 9999px; background: #7a1f1f; color: #fff; font-weight: 700; }
+@keyframes cg-phone-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-.5rem); } }
+@keyframes cg-tap { 0%, 1% { opacity: 0; transform: scale(.4); } 3% { opacity: 1; transform: scale(.7); } 6%, 100% { opacity: 0; transform: scale(1.5); } }
+@keyframes cg-hl { 0% { opacity: .45; background-color: transparent; } 1%, 32% { opacity: 1; background-color: #fbeff0; } 34%, 100% { opacity: .45; background-color: transparent; } }
+@keyframes cg-page { 0%, 76% { opacity: 1; } 79%, 97% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes cg-ios-dim { 0%, 17% { opacity: 0; } 24%, 74% { opacity: .35; } 77%, 100% { opacity: 0; } }
+@keyframes cg-ios-sheet { 0%, 17% { transform: translateY(100%); } 24%, 44% { transform: translateY(0); } 48%, 100% { transform: translateY(100%); } }
+@keyframes cg-ios-dialog { 0%, 45% { opacity: 0; transform: scale(.92); } 50%, 74% { opacity: 1; transform: scale(1); } 77%, 100% { opacity: 0; transform: scale(.96); } }
+@keyframes cg-and-menu { 0%, 15% { opacity: 0; transform: scale(.85); } 20%, 44% { opacity: 1; transform: scale(1); } 47%, 100% { opacity: 0; transform: scale(.85); } }
+@keyframes cg-and-dim { 0%, 45% { opacity: 0; } 52%, 76% { opacity: .4; } 79%, 100% { opacity: 0; } }
+@keyframes cg-and-dialog { 0%, 47% { opacity: 0; transform: translateY(10px); } 52%, 76% { opacity: 1; transform: translateY(0); } 79%, 100% { opacity: 0; transform: translateY(0); } }
+@keyframes cg-home { 0%, 77% { opacity: 0; } 81%, 96% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes cg-home-icon { 0%, 81% { opacity: 0; transform: scale(.3); } 87% { opacity: 1; transform: scale(1.14); } 90%, 100% { opacity: 1; transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+    .cg-phone, .cg-phone *, .cg-install-step { animation: none !important; }
+    .cg-ph-menu { opacity: 1; }
+}
