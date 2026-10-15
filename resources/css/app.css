@@ -1335,3 +1335,23 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
     color: #1f2937 !important;
     border-color: #d1d5db !important;
 }
+
+/* CivicGuard: maroon date/time picker accents */
+#cf_apprehension_date,
+#cf_apprehension_time {
+    color-scheme: light;
+    accent-color: #6b1d35;
+}
+
+#cf_apprehension_date:focus,
+#cf_apprehension_time:focus {
+    border-color: #6b1d35 !important;
+    outline: 2px solid rgba(107, 29, 53, 0.2);
+    outline-offset: 1px;
+    --tw-ring-color: #6b1d35;
+}
+
+#cf_apprehension_date::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.85;
+}

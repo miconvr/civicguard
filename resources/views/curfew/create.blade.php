@@ -93,7 +93,7 @@
                                     value="{{ old('apprehension_datetime') ? substr(old('apprehension_datetime'), 11, 5) : '' }}"
                                     class="cg-input w-full min-w-0"
                                 >
-                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Check the hour and minutes carefully.</p>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Select the time the incident occurred.</p>
                             </div>
                         </div>
 
