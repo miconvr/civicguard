@@ -71,7 +71,7 @@
                     </div>
                     <div class="cg-landing-hero-inner mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:py-20">
                         <div class="cg-landing-copy">
-                            <div class="cg-hero-brand cg-intro-enter"><span class="cg-hero-brand-mark"><x-application-logo inverse class="h-10 w-10 shrink-0" /></span><span class="min-w-0"><span class="cg-hero-brand-name">CivicGuard</span><span class="cg-hero-brand-sub">Brgy. Maimpis</span></span></div>
+                            <div class="cg-hero-brand cg-intro-enter"><span class="cg-hero-brand-mark"><x-application-logo inverse class="h-10 w-10 shrink-0" /></span><span class="min-w-0"><span class="cg-hero-brand-name">CivicGuard</span></span></div>
                             <div class="cg-hero-head"><h1 class="cg-intro-enter cg-intro-enter-1 cg-hero-title">
                                 <span x-text="text('headline')">Report an issue in</span>
                                 <span class="cg-landing-accent" x-text="text('headlineAccent')"> Barangay Maimpis.</span>
@@ -272,7 +272,7 @@
                     <a href="{{ route('privacy') }}" class="inline-block py-2 underline underline-offset-4 hover:text-stone-900" x-text="text('footerPrivacy')">Privacy Policy</a>
                     <a href="{{ route('terms') }}" class="inline-block py-2 underline underline-offset-4 hover:text-stone-900" x-text="text('footerTerms')">Terms of Use</a>
                 </p>
-                <p class="mt-2 border-t border-stone-300/70 pt-4 text-sm font-medium text-stone-800 sm:basis-full"><span class="font-semibold text-maroon-800" x-text="text('devKicker')">Developed by</span> Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, Adriann Enriquez</p>
+                <p class="mt-3 border-t border-stone-300/70 pt-4 text-center text-xs leading-6 text-stone-500 sm:basis-full"><span class="font-semibold text-stone-700" x-text="text('devKicker')">Developed by</span><span class="mx-2 hidden sm:inline" aria-hidden="true">·</span><span class="block sm:inline">Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, Adriann Enriquez</span></p>
             </footer>
         </div>
     </body>
