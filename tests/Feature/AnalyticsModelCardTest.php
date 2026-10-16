@@ -8,5 +8,5 @@ test('analytics shows which model rated the reports', function () {
     $this->actingAs($official)->get(route('admin.analytics'))
         ->assertOk()
         ->assertSee('Severity Rated By')
-        ->assertSee('Before tracking');
+        ->assertSee('Gemini');
 });
