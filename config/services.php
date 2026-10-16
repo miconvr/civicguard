@@ -41,8 +41,8 @@ return [
 
     'groq' => [
         'key' => env('GROQ_API_KEY'),
-        'model' => env('GROQ_MODEL', 'llama-3.3-70b-versatile'),
-        'fast_model' => env('GROQ_FAST_MODEL', 'llama-3.1-8b-instant'),
+        'model' => env('GROQ_MODEL', 'openai/gpt-oss-120b'),
+        'fast_model' => env('GROQ_FAST_MODEL', 'openai/gpt-oss-20b'),
     ],
 
 
