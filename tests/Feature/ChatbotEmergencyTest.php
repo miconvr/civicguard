@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\User;
-use App\Services\GeminiClient;
+use App\Services\AiRouter;
 
 test('urgent messages get fixed emergency guidance without calling Gemini', function () {
-    $this->mock(GeminiClient::class)->shouldNotReceive('generateText');
+    $this->mock(AiRouter::class)->shouldNotReceive('generateText');
 
     $resident = User::factory()->create(['role' => 'resident']);
 
@@ -16,7 +16,7 @@ test('urgent messages get fixed emergency guidance without calling Gemini', func
 });
 
 test('after the resident confirms they are safe the chatbot continues normally', function () {
-    $this->mock(GeminiClient::class)
+    $this->mock(AiRouter::class)
         ->shouldReceive('generateText')
         ->once()
         ->andReturn('Thanks. What category best fits what happened?');
@@ -34,7 +34,7 @@ test('after the resident confirms they are safe the chatbot continues normally',
 });
 
 test('normal messages are not treated as emergencies', function () {
-    $this->mock(GeminiClient::class)
+    $this->mock(AiRouter::class)
         ->shouldReceive('generateText')
         ->once()
         ->andReturn('You can track it under My Reports.');

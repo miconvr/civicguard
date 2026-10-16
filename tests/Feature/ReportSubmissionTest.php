@@ -4,7 +4,7 @@ use App\Models\AuditLog;
 use App\Models\Report;
 use App\Models\ReportCategory;
 use App\Models\User;
-use App\Services\GeminiClient;
+use App\Services\AiRouter;
 
 test('guests cannot open the incident report form', function () {
     $this->get(route('reports.create'))->assertRedirect(route('login'));
@@ -30,7 +30,7 @@ test('residents see report writing guidance on the incident form', function () {
 });
 
 test('a resident can submit an incident report and is sent to my reports', function () {
-    $this->mock(GeminiClient::class)
+    $this->mock(AiRouter::class)
         ->shouldReceive('generateText')
         ->once()
         ->andReturn(null);
@@ -73,7 +73,7 @@ test('a resident can submit an incident report and is sent to my reports', funct
 });
 
 test('urgency keywords raise severity when gemini is unavailable', function () {
-    $this->mock(GeminiClient::class)
+    $this->mock(AiRouter::class)
         ->shouldReceive('generateText')
         ->once()
         ->andReturn(null);
