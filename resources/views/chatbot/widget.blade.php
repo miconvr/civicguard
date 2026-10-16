@@ -103,6 +103,14 @@
             log.scrollTop = log.scrollHeight;
         }
 
+        function addModelNote(text) {
+            const note = document.createElement('p');
+            note.className = 'text-xs text-gray-500 dark:text-gray-400 pl-1';
+            note.textContent = text;
+            log.appendChild(note);
+            log.scrollTop = log.scrollHeight;
+        }
+
         function showTyping() {
             const row = document.createElement('div');
             row.id = 'typing-row';
@@ -337,6 +345,7 @@
                 conversationHistory += 'Assistant: ' + data.reply + '\n';
                 hideTyping();
                 addMessage(data.reply, 'bot');
+                if (data.model_note) addModelNote(data.model_note);
 
                 if (data.emergency) {
                     showEmergencyActions();
