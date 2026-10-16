@@ -10,14 +10,14 @@
 
 **Live site:** <https://civicguard.wasmer.app>
 
-CivicGuard is a web-based system that lets residents of Barangay Maimpis, City of San Fernando, Pampanga report incidents and follow their progress. Barangay staff get one place to review, assign, and resolve reports and to log curfew violations. An AI assistant helps residents describe what happened, and urgent messages get immediate emergency guidance.
+CivicGuard is a web-based system that lets residents of Barangay Maimpis, City of San Fernando, Pampanga report incidents and follow their progress. Barangay staff get one place to review, assign, and resolve reports and to log curfew violations. An AI chatbot helps residents describe what happened, and urgent messages get immediate emergency guidance.
 
 ---
 
 ## Features
 
 * **Incident reporting:** pick a category, describe the problem, add a location, and optionally a photo and GPS pin
-* **AI assistant:** a chat that helps residents write a report, with emergency warnings in English and Tagalog
+* **AI chatbot:** a chat that helps residents write a report, with emergency warnings in English and Tagalog
 * **AI suggestions:** automatic category and urgency rating, which staff can always change
 * **Report tracking:** follow a report from Received to Assigned, In progress, and Resolved, with notifications
 * **Confirm or reopen:** residents can confirm a fix or reopen a report within 7 days

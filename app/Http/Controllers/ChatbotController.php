@@ -43,7 +43,7 @@ class ChatbotController extends Controller
             ."- What should I do during an emergency? Contact barangay officials or emergency authorities immediately; do not wait for the app.\n"
             ."- How are curfew violations recorded? Authorized tanods log the minor's details, guardian information, apprehension location, prior violations, and notes.";
 
-        $systemPrompt = "You are CivicGuard's assistant for Barangay Maimpis, helping residents file incident reports through conversation. "
+        $systemPrompt = "You are CivicGuard's AI chatbot, helping residents file incident reports through conversation. "
             .'Your job is to gather exactly three pieces of information by asking ONE clear question at a time if missing: '
             ."1) the category (must be one of exactly: {$categoryNames}), "
             .'2) a description of what happened, '

@@ -11,7 +11,7 @@
 <ul class="list-disc space-y-1 pl-6">
     <li>Account details: your name, email address, and a hashed password. Phone number and address if you add them.</li>
     <li>Reports you file: description, category, location text, an optional GPS pin, and an optional photo. Photos can carry location data in their file information.</li>
-    <li>Chat messages you send to the AI Assistant.</li>
+    <li>Chat messages you send to the AI Chatbot.</li>
     <li>Activity records: actions such as filing, assigning, or resolving a report, kept in an audit log.</li>
     <li>For barangay tanods only: curfew records about minors, which staff enter themselves.</li>
 </ul>
@@ -24,7 +24,7 @@
 
 <h2 class="mt-8 text-xl font-semibold">Services we use</h2>
 <ul class="list-disc space-y-1 pl-6">
-    <li>AI providers (Google Gemini and Groq): the AI Assistant, category suggestions, and severity ratings send the text you write (chat messages and report descriptions) to one or both of these providers for processing. If one is unavailable, the other is used. Do not include information you do not want shared this way.</li>
+    <li>AI providers (Google Gemini and Groq): the AI Chatbot, category suggestions, and severity ratings send the text you write (chat messages and report descriptions) to one or both of these providers for processing. If one is unavailable, the other is used. Do not include information you do not want shared this way.</li>
     <li>Wasmer: hosts the website and its database.</li>
 </ul>
 <p>We do not sell your data or use it for advertising.</p>
