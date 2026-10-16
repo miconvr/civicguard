@@ -24,7 +24,7 @@
 
 <h2 class="mt-8 text-xl font-semibold">Services we use</h2>
 <ul class="list-disc space-y-1 pl-6">
-    <li>Google Gemini API: the AI Assistant, category suggestions, and severity ratings send the text you write (chat messages and report descriptions) to Google for processing. Do not include information you do not want shared this way.</li>
+    <li>AI providers (Google Gemini, Groq, and Mistral AI): the AI Assistant, category suggestions, and severity ratings send the text you write (chat messages and report descriptions) to one or more of these providers for processing. If one is unavailable, another is used. Do not include information you do not want shared this way.</li>
     <li>Wasmer: hosts the website and its database.</li>
 </ul>
 <p>We do not sell your data or use it for advertising.</p>

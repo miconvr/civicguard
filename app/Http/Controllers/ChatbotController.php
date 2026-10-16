@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ReportCategory;
-use App\Services\GeminiClient;
+use App\Services\AiRouter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -14,7 +14,7 @@ class ChatbotController extends Controller
         return view('chatbot.widget');
     }
 
-    public function send(Request $request, GeminiClient $gemini)
+    public function send(Request $request, AiRouter $ai)
     {
         $validated = $request->validate([
             'message' => ['required', 'string', 'max:1000'],
@@ -61,7 +61,7 @@ class ChatbotController extends Controller
 
         $conversationHistory = mb_substr($validated['history'] ?? '', -6000);
 
-        $rawReply = $gemini->generateText(
+        $rawReply = $ai->generateText(
             $systemPrompt."\n\nConversation so far:\n".$conversationHistory."\n\nResident's latest message: ".$validated['message'],
             8,
             true
