@@ -20,10 +20,7 @@ beforeEach(function () {
         'services.groq.key' => 'groq-key',
         'services.groq.model' => 'groq-model',
         'services.groq.fast_model' => 'groq-fast',
-        'services.mistral.key' => null,
-        'services.mistral.model' => 'mistral-small-latest',
-        'services.mistral.fast_model' => 'mistral-small-latest',
-        'services.ai.order' => ['gemini', 'groq', 'mistral'],
+        'services.ai.order' => ['gemini', 'groq'],
         'services.ai.severity_vote' => false,
     ]);
 });
