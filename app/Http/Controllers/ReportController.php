@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
+    protected ?string $severitySource = null;
+
     protected array $urgencyKeywords = [
         'critical' => ['weapon', 'knife', 'gun', 'fire', 'blood', 'unconscious', 'assault'],
         'high' => ['fight', 'violent', 'threat', 'repeat', 'minor', 'curfew', 'drunk'],
@@ -62,10 +64,11 @@ class ReportController extends Controller
             'action' => 'report_submitted',
             'auditable_type' => Report::class,
             'auditable_id' => $report->id,
-            'description' => 'Incident report submitted.',
+            'description' => 'Incident report submitted. Severity rated by '.($this->severitySource ?? 'keyword rules').'.',
             'metadata' => [
                 'category' => $category->name,
                 'severity' => $severity,
+                'severity_source' => $this->severitySource ?? 'keyword rules',
             ],
         ]);
 
@@ -206,10 +209,26 @@ class ReportController extends Controller
         }
 
         if (in_array($aiResult, ['low', 'moderate', 'high', 'critical'])) {
+            $vote = (bool) config('services.ai.severity_vote');
+            $this->severitySource = $vote
+                ? 'model vote ('.$this->aiDetail($ai, true).')'
+                : $this->aiDetail($ai, false);
+
             return $aiResult;
         }
 
+        $this->severitySource = 'keyword rules';
+
         return $this->classifySeverityWithKeywords($category, $description);
+    }
+
+    protected function aiDetail(AiRouter $ai, bool $vote): string
+    {
+        try {
+            return ($vote ? $ai->voteSummary() : $ai->providerLabel()) ?? 'AI';
+        } catch (\Throwable) {
+            return 'AI';
+        }
     }
 
     protected function classifySeverityWithKeywords(ReportCategory $category, string $description): string

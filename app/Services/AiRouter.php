@@ -11,6 +11,8 @@ class AiRouter
 
     protected ?string $lastProvider = null;
 
+    protected array $votes = [];
+
     public function __construct(protected GeminiClient $gemini)
     {
     }
@@ -67,6 +69,33 @@ class AiRouter
         return $this->lastProvider;
     }
 
+    public function label(string $name): string
+    {
+        return match ($name) {
+            'gemini' => 'Gemini',
+            'groq' => 'Groq',
+            default => ucfirst($name),
+        };
+    }
+
+    public function providerLabel(): ?string
+    {
+        return $this->lastProvider ? $this->label($this->lastProvider) : null;
+    }
+
+    public function voteSummary(): ?string
+    {
+        if ($this->votes === []) {
+            return null;
+        }
+
+        return implode(', ', array_map(
+            fn (string $name, string $rating) => $this->label($name).': '.$rating,
+            array_keys($this->votes),
+            $this->votes
+        ));
+    }
+
     /**
      * Ask every configured model for a severity and return the highest valid one.
      */
@@ -74,10 +103,15 @@ class AiRouter
     {
         $levels = ['low' => 0, 'moderate' => 1, 'high' => 2, 'critical' => 3];
         $best = null;
+        $this->votes = [];
 
-        foreach ($this->providers() as $provider) {
+        foreach ($this->providers() as $name => $provider) {
             $text = $provider->generateText($prompt, $timeout, true);
             $word = is_string($text) ? strtolower(trim($text, " \t\n\r.!*`\"'")) : null;
+
+            if ($word !== null && isset($levels[$word])) {
+                $this->votes[$name] = $word;
+            }
 
             if ($word !== null && isset($levels[$word]) && ($best === null || $levels[$word] > $levels[$best])) {
                 $best = $word;
