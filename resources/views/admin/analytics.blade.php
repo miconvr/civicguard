@@ -53,6 +53,7 @@
                 @php $usageMax = max(1, max($modelUsage)); @endphp
                 <ul class="space-y-3">
                     @foreach ($modelUsage as $label => $count)
+                        @continue($label === 'Model vote')
                         <li>
                             <div class="flex items-center justify-between text-sm text-gray-700 dark:text-gray-300 mb-1">
                                 <span>{{ $label }}</span>
