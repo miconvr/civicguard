@@ -34,23 +34,37 @@
 
     <div class="py-3 sm:py-8">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+            @if (request()->query('from') === 'report')
+                <a href="{{ route('reports.create') }}" class="mb-3 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-3 text-sm font-semibold text-maroon-700 transition-colors hover:bg-maroon-50 dark:text-gray-200 dark:hover:bg-white/5">
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                    {{ __('Back to report form') }}
+                </a>
+            @endif
             <div class="cg-card p-3 sm:p-6">
 
-                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="space-y-3 overflow-y-auto bg-gradient-to-b from-purple-50/70 to-white p-4 dark:from-purple-950/20 dark:to-gray-900 sm:p-6" style="height:min(52dvh,32rem)">
+                <div class="mb-3 flex items-center gap-3 border-b border-gray-100 pb-3 dark:border-gray-700 sm:mb-4 sm:pb-4">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-gray-200 dark:ring-gray-600" aria-hidden="true"><x-application-logo class="h-8 w-8" /></span>
+                    <div class="min-w-0">
+                        <p class="text-base font-bold leading-tight text-maroon-900 dark:text-gray-100">CivicGuard</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('AI Assistant · Barangay Maimpis') }}</p>
+                    </div>
+                </div>
+
+                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="space-y-3 overflow-y-auto p-4 sm:p-6" style="height:min(52dvh,32rem)">
                     <div class="text-sm text-left">
-                        <span class="px-4 py-3 rounded-2xl rounded-tl-sm inline-block max-w-[90%] text-left border border-purple-100 bg-white text-gray-800 shadow-sm dark:border-purple-900 dark:bg-gray-800 dark:text-gray-100">
+                        <span class="px-4 py-3 rounded-2xl rounded-tl-sm inline-block max-w-[90%] text-left bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
                             {{ __('Hi! Tell me what happened and I can help you put together a clear incident report.') }}
                         </span>
                     </div>
                 </div>
 
-                <div id="chat-chips" class="flex flex-nowrap gap-2 overflow-x-auto border-t border-purple-100 bg-white px-4 pb-3 pt-4 dark:border-purple-900 dark:bg-gray-900 sm:flex-wrap sm:overflow-visible sm:px-6">
+                <div id="chat-chips" class="flex flex-nowrap gap-2 overflow-x-auto border-t border-gray-100 px-4 pb-3 pt-4 dark:border-gray-700 sm:flex-wrap sm:overflow-visible sm:px-6">
                     @foreach ([__('I want to report an incident'), __('How do I track my report?'), __('What counts as an emergency?'), __('What do the urgency levels mean?')] as $chip)
                         <button type="button" class="shrink-0 whitespace-nowrap min-h-[40px] sm:min-h-[44px] rounded-full border border-gray-300 dark:border-gray-600 px-3.5 sm:px-4 py-1.5 sm:py-2 text-[13px] sm:text-sm font-medium text-gray-800 dark:text-gray-200 transition hover:border-maroon-700 hover:text-maroon-700 dark:hover:text-white disabled:opacity-50">{{ $chip }}</button>
                     @endforeach
                 </div>
 
-                <form id="chat-form" class="flex gap-2 border-t border-gray-100 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 sm:px-6">
+                <form id="chat-form" class="flex gap-2 border-t border-gray-100 p-4 dark:border-gray-700 sm:px-6">
                     <input type="text" id="chat-input" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Describe your concern or ask a question…') }}" class="cg-input min-w-0 flex-1 min-h-[44px]" autocomplete="off">
                     <button type="submit" id="chat-send" class="cg-btn min-h-[44px] disabled:cursor-wait disabled:opacity-60" aria-busy="false">
                         <span id="chat-send-label">{{ __('Send') }}</span>

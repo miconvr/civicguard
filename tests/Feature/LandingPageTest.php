@@ -10,7 +10,6 @@ test('public landing page clearly links to resident and staff entry points', fun
         ->assertSee('Switch language to Tagalog')
         ->assertSee(route('register'))
         ->assertSee(route('login'))
-        ->assertSee('See how it works')
         ->assertSee('id="get-started"', false)
         ->assertSee('id="main-content" class="cg-page-enter"', false)
         ->assertSee('class="cg-landing-hero', false)

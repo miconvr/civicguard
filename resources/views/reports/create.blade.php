@@ -17,14 +17,14 @@
 
                 <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('Tell us what happened') }}</h3>
 
-                <a href="{{ route('chatbot.widget') }}" class="group mb-6 flex items-center gap-4 rounded-xl border border-purple-200 bg-gradient-to-r from-purple-50 via-white to-rose-50 p-4 transition-colors hover:border-purple-400 dark:border-purple-900 dark:from-purple-950/40 dark:via-gray-900 dark:to-rose-950/30">
-                    <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-rose-500 text-white shadow-sm" aria-hidden="true">
+                <a href="{{ route('chatbot.widget', ['from' => 'report']) }}" class="group mb-6 flex items-center gap-4 rounded-xl bg-maroon-700 p-4 text-white shadow-sm transition-colors hover:bg-maroon-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700">
+                    <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/15" aria-hidden="true">
                         <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8m-8 4h5m-9 6 1.8-4.5A8 8 0 1 1 20 15.5L22 20l-5-1.5A8 8 0 0 1 4 12c0-1 .2-2 .6-3"/></svg>
                     </span>
                     <span class="min-w-0 flex-1">
-                        <span class="block font-semibold text-gray-900 dark:text-white">{{ __('Need help making a report?') }}</span>
-                        <span class="mt-1 block text-sm text-gray-600 dark:text-gray-300">{{ __('Describe what happened to the AI Assistant and get help preparing your report.') }}</span>
-                        <span class="mt-2 block text-sm font-semibold text-purple-700 dark:text-purple-300">{{ __('Chat with AI Assistant →') }}</span>
+                        <span class="block font-semibold">{{ __('Need help making a report?') }}</span>
+                        <span class="mt-1 block text-sm text-white/85">{{ __('Describe what happened to the AI Assistant and get help preparing your report.') }}</span>
+                        <span class="mt-2 block text-sm font-semibold transition-transform group-hover:translate-x-1">{{ __('Chat with AI Assistant →') }}</span>
                     </span>
                 </a>
 
