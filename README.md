@@ -71,7 +71,7 @@ New sign-ups are always residents.
 
 **Services & tools**
 
-* Google Gemini API
+* Google Gemini, Groq, and Mistral AI (automatic failover)
 * DomPDF
 * Laravel Sail (Docker)
 * Wasmer (hosting)

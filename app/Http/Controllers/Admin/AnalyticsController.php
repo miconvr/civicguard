@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CurfewLog;
 use App\Models\Report;
-use App\Services\GeminiClient;
+use App\Services\AiRouter;
 use App\Support\Duration;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Cache;
@@ -27,23 +27,23 @@ class AnalyticsController extends Controller
         ));
     }
 
-    public function insights(GeminiClient $gemini)
+    public function insights(AiRouter $ai)
     {
         [$byCategory, $bySeverity, $byStatus, $last14Days, , , , $curfewCount] = $this->gatherMetrics();
 
         $insights = Cache::remember('analytics-insights', now()->addMinutes(30), fn () => $this->buildInsights(
-            $byCategory, $bySeverity, $byStatus, $last14Days, $curfewCount, $gemini
+            $byCategory, $bySeverity, $byStatus, $last14Days, $curfewCount, $ai
         ));
 
         return response()->json($insights);
     }
 
-    public function exportPdf(GeminiClient $gemini)
+    public function exportPdf(AiRouter $ai)
     {
         [$byCategory, $bySeverity, $byStatus, $last14Days, $totalReports, $pendingCount, $resolvedCount, $curfewCount] = $this->gatherMetrics();
 
         $insights = Cache::remember('analytics-insights', now()->addMinutes(30), fn () => $this->buildInsights(
-            $byCategory, $bySeverity, $byStatus, $last14Days, $curfewCount, $gemini
+            $byCategory, $bySeverity, $byStatus, $last14Days, $curfewCount, $ai
         ));
 
         $pdf = Pdf::loadView('admin.analytics-pdf', [
@@ -102,7 +102,7 @@ class AnalyticsController extends Controller
         return [$byCategory, $bySeverity, $byStatus, $last14Days, $totalReports, $pendingCount, $resolvedCount, $curfewCount];
     }
 
-    private function buildInsights($byCategory, $bySeverity, $byStatus, $last14Days, int $curfewCount, GeminiClient $gemini): array
+    private function buildInsights($byCategory, $bySeverity, $byStatus, $last14Days, int $curfewCount, AiRouter $ai): array
     {
         $metrics = [
             'total_reports' => $byCategory->sum('total'),
@@ -115,7 +115,7 @@ class AnalyticsController extends Controller
 
         $prompt = 'You are analyzing CivicGuard data for barangay officials. Based only on these metrics, return valid JSON with exactly these keys: summary (one concise sentence), patterns (an array of up to three observed patterns), risk_flags (an array of up to three risks), and recommendations (an array of exactly three concise practical follow-up actions). Do not include markdown or extra text. Metrics: '.json_encode($metrics);
 
-        $text = $gemini->generateText($prompt, 10, true);
+        $text = $ai->generateText($prompt, 10, true);
 
         if ($text) {
             $decoded = json_decode(trim($text), true);
