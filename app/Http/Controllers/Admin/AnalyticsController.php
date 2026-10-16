@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuditLog;
 use App\Models\CurfewLog;
 use App\Models\Report;
 use App\Services\AiRouter;
@@ -19,11 +20,12 @@ class AnalyticsController extends Controller
 
         $inProgressCount = Report::where('status', 'in_progress')->count();
         $avgResolve = Duration::human(Report::averageResolutionMinutes());
+        $modelUsage = $this->modelUsage();
 
         return view('admin.analytics', compact(
             'byCategory', 'bySeverity', 'byStatus', 'last14Days',
             'totalReports', 'pendingCount', 'resolvedCount', 'curfewCount',
-            'inProgressCount', 'avgResolve'
+            'inProgressCount', 'avgResolve', 'modelUsage'
         ));
     }
 
@@ -62,6 +64,38 @@ class AnalyticsController extends Controller
         ]);
 
         return $pdf->download('civicguard-analytics-'.now()->format('Y-m-d').'.pdf');
+    }
+
+    private function modelUsage(): array
+    {
+        $usage = ['Gemini' => 0, 'Groq' => 0, 'Model vote' => 0, 'Keyword rules' => 0, 'Before tracking' => 0];
+
+        AuditLog::where('action', 'report_submitted')->get(['metadata'])->each(function ($log) use (&$usage) {
+            $source = is_array($log->metadata) ? ($log->metadata['severity_source'] ?? null) : null;
+
+            if (! is_string($source)) {
+                $usage['Before tracking']++;
+            } elseif (str_starts_with($source, 'model vote')) {
+                $usage['Model vote']++;
+            } elseif ($source === 'keyword rules') {
+                $usage['Keyword rules']++;
+            } elseif (isset($usage[$source])) {
+                $usage[$source]++;
+            } else {
+                $usage['Before tracking']++;
+            }
+        });
+
+        return $usage;
+    }
+
+    private function modelLabel(AiRouter $ai): ?string
+    {
+        try {
+            return $ai->providerLabel();
+        } catch (\Throwable) {
+            return null;
+        }
     }
 
     private function gatherMetrics(): array
@@ -128,6 +162,7 @@ class AnalyticsController extends Controller
                 && is_array($decoded['recommendations'] ?? null)
             ) {
                 return [
+                    'model' => $this->modelLabel($ai),
                     'recommendations' => array_values(array_slice(array_filter($decoded['recommendations'], 'is_string'), 0, 3)),
                     'analysisSummary' => $decoded['summary'],
                     'patterns' => array_values(array_slice(array_filter($decoded['patterns'], 'is_string'), 0, 3)),
