@@ -47,6 +47,25 @@
                 <canvas id="trendChart"></canvas>
             </div>
 
+            <div class="cg-card">
+                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Severity Rated By</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Which model rated each report when it was submitted. Reports from before tracking started are counted separately.</p>
+                @php $usageMax = max(1, max($modelUsage)); @endphp
+                <ul class="space-y-3">
+                    @foreach ($modelUsage as $label => $count)
+                        <li>
+                            <div class="flex items-center justify-between text-sm text-gray-700 dark:text-gray-300 mb-1">
+                                <span>{{ $label }}</span>
+                                <span class="font-semibold">{{ $count }}</span>
+                            </div>
+                            <div class="h-2 rounded-full bg-gray-100 dark:bg-white/10">
+                                <div class="h-2 rounded-full bg-maroon-700 dark:bg-[#b56764]" style="width: {{ round($count / $usageMax * 100) }}%"></div>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+
             <div id="ai-insights-section" class="cg-card">
                 <div id="ai-insights-prompt" class="text-center py-6">
                     <svg class="h-8 w-8 text-maroon-700 dark:text-[#c27872] mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -81,6 +100,7 @@
                             <ul id="ai-risks-list" class="space-y-2 text-sm text-gray-700 dark:text-gray-300"></ul>
                         </div>
                     </div>
+                    <p id="ai-model-note" class="text-xs text-gray-500 dark:text-gray-400"></p>
                 </div>
             </div>
 
@@ -176,6 +196,9 @@
                 fillList('ai-recommendations-list', data.recommendations, 'text-maroon-700');
                 fillList('ai-patterns-list', data.patterns, 'text-maroon-700');
                 fillList('ai-risks-list', data.riskFlags, 'text-red-600');
+                document.getElementById('ai-model-note').textContent = data.model
+                    ? 'Insights written by ' + data.model + '.'
+                    : 'Insights built from the data with built-in rules (AI unavailable).';
 
                 document.getElementById('ai-insights-prompt').classList.add('hidden');
                 document.getElementById('ai-insights-results').classList.remove('hidden');
