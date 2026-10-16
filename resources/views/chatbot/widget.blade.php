@@ -105,8 +105,23 @@
 
         function addModelNote(text) {
             const note = document.createElement('p');
-            note.className = 'text-xs text-gray-500 dark:text-gray-400 pl-1';
-            note.textContent = text;
+            note.className = 'text-xs text-gray-500 dark:text-gray-400 pl-1 flex items-center gap-1.5';
+
+            let icon = '';
+            if (/gemini/i.test(text)) {
+                icon = '<svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs><linearGradient id="chat-gemini-logo" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4E87F8"/><stop offset="100%" stop-color="#9B51E0"/></linearGradient></defs><path d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12Z" fill="url(#chat-gemini-logo)"/></svg>';
+            } else if (/groq/i.test(text)) {
+                icon = '<svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#F55036"/><path d="M15.5 12a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm0 0v4a2 2 0 0 1-2 2h-1" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/></svg>';
+            }
+
+            const span = document.createElement('span');
+            span.textContent = text;
+            if (icon) {
+                note.innerHTML = icon;
+                note.appendChild(span);
+            } else {
+                note.appendChild(span);
+            }
             log.appendChild(note);
             log.scrollTop = log.scrollHeight;
         }
