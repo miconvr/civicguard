@@ -56,7 +56,29 @@
                         @continue(in_array($label, ['Before tracking', 'Model vote']))
                         <li>
                             <div class="flex items-center justify-between text-sm text-gray-700 dark:text-gray-300 mb-1">
-                                <span>{{ $label }}</span>
+                                <span class="inline-flex items-center gap-1.5">
+                                    @if ($label === 'Gemini')
+                                        <svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <defs>
+                                                <linearGradient id="cg-gemini-logo-{{ $loop->index }}" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                    <stop offset="0%" stop-color="#4E87F8"/>
+                                                    <stop offset="100%" stop-color="#9B51E0"/>
+                                                </linearGradient>
+                                            </defs>
+                                            <path d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12Z" fill="url(#cg-gemini-logo-{{ $loop->index }})"/>
+                                        </svg>
+                                    @elseif ($label === 'Groq')
+                                        <svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <rect width="24" height="24" rx="5" fill="#F55036"/>
+                                            <path d="M15.5 12a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm0 0v4a2 2 0 0 1-2 2h-1" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    @elseif ($label === 'Keyword rules')
+                                        <svg class="h-3.5 w-3.5 shrink-0 text-gray-400 dark:text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 12h9.75M10.5 18h9.75M3.75 6H6m-2.25 6H6m-2.25 6H6"/>
+                                        </svg>
+                                    @endif
+                                    <span>{{ $label }}</span>
+                                </span>
                                 <span class="font-semibold">{{ $count }}</span>
                             </div>
                             <div class="h-2 rounded-full bg-gray-100 dark:bg-white/10">
@@ -101,7 +123,7 @@
                             <ul id="ai-risks-list" class="space-y-2 text-sm text-gray-700 dark:text-gray-300"></ul>
                         </div>
                     </div>
-                    <p id="ai-model-note" class="text-xs text-gray-500 dark:text-gray-400"></p>
+                    <p id="ai-model-note" class="text-xs text-gray-500 dark:text-gray-400 mt-4 flex items-center gap-1.5"></p>
                 </div>
             </div>
 
@@ -197,9 +219,20 @@
                 fillList('ai-recommendations-list', data.recommendations, 'text-maroon-700');
                 fillList('ai-patterns-list', data.patterns, 'text-maroon-700');
                 fillList('ai-risks-list', data.riskFlags, 'text-red-600');
-                document.getElementById('ai-model-note').textContent = data.model
+
+                const modelName = data.model || '';
+                let modelIcon = '';
+                if (/gemini/i.test(modelName)) {
+                    modelIcon = '<svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs><linearGradient id="ai-gemini-logo" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4E87F8"/><stop offset="100%" stop-color="#9B51E0"/></linearGradient></defs><path d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12Z" fill="url(#ai-gemini-logo)"/></svg>';
+                } else if (/groq/i.test(modelName)) {
+                    modelIcon = '<svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#F55036"/><path d="M15.5 12a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm0 0v4a2 2 0 0 1-2 2h-1" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/></svg>';
+                }
+
+                const modelNoteEl = document.getElementById('ai-model-note');
+                const modelText = data.model
                     ? 'Insights written by ' + data.model + '.'
                     : 'Insights built from the data with built-in rules (AI unavailable).';
+                modelNoteEl.innerHTML = (modelIcon ? modelIcon : '') + '<span>' + modelText + '</span>';
 
                 document.getElementById('ai-insights-prompt').classList.add('hidden');
                 document.getElementById('ai-insights-results').classList.remove('hidden');
