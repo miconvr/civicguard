@@ -45,14 +45,9 @@ return [
         'fast_model' => env('GROQ_FAST_MODEL', 'llama-3.1-8b-instant'),
     ],
 
-    'mistral' => [
-        'key' => env('MISTRAL_API_KEY'),
-        'model' => env('MISTRAL_MODEL', 'mistral-small-latest'),
-        'fast_model' => env('MISTRAL_FAST_MODEL', 'mistral-small-latest'),
-    ],
 
     'ai' => [
-        'order' => array_filter(array_map('trim', explode(',', (string) env('AI_PROVIDERS', 'gemini,groq,mistral')))),
+        'order' => array_filter(array_map('trim', explode(',', (string) env('AI_PROVIDERS', 'gemini,groq')))),
         'severity_vote' => (bool) env('AI_SEVERITY_VOTE', false),
     ],
 
