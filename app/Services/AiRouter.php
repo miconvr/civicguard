@@ -6,7 +6,6 @@ class AiRouter
 {
     protected const OPENAI_COMPATIBLE = [
         'groq' => 'https://api.groq.com/openai/v1',
-        'mistral' => 'https://api.mistral.ai/v1',
     ];
 
     protected ?string $lastProvider = null;
