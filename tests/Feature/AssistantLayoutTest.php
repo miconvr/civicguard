@@ -2,17 +2,17 @@
 
 use App\Models\User;
 
-test('assistant page has no purple gradient and shows the CivicGuard header', function () {
+test('chatbot page has no purple gradient and shows the CivicGuard header', function () {
     $user = User::factory()->create(['role' => 'resident']);
 
     $this->actingAs($user)->get(route('chatbot.widget'))
         ->assertOk()
         ->assertDontSee('from-purple', false)
         ->assertDontSee('purple-950', false)
-        ->assertSee('AI Assistant');
+        ->assertSee('AI Chatbot');
 });
 
-test('assistant shows a back button only when opened from the report form', function () {
+test('chatbot shows a back button only when opened from the report form', function () {
     $user = User::factory()->create(['role' => 'resident']);
 
     $this->actingAs($user)->get(route('chatbot.widget', ['from' => 'report']))
@@ -25,7 +25,7 @@ test('assistant shows a back button only when opened from the report form', func
         ->assertDontSee('Back to report form');
 });
 
-test('the report form links to the assistant with the back marker and no gradient', function () {
+test('the report form links to the chatbot with the back marker and no gradient', function () {
     $user = User::factory()->create(['role' => 'resident']);
 
     $this->actingAs($user)->get(route('reports.create'))
