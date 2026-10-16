@@ -1,18 +1,39 @@
+@php
+    $unreadCount = auth()->check()
+        ? \App\Models\AppNotification::where('user_id', auth()->id())->where('is_read', false)->count()
+        : 0;
+@endphp
 <div x-data="{ open: false }"
      x-effect="document.body.classList.toggle('overflow-hidden', open)"
      @keydown.escape.window="open = false"
      @resize.window="if (window.innerWidth >= 1024) open = false"
      class="lg:h-full">
     <!-- Mobile top bar -->
-    <div class="cg-sidebar-mobilebar lg:hidden flex items-center gap-2 h-16 px-3 border-b border-stone-200 dark:border-[#3d3d3a]">
-        <button @click="open = true" :aria-expanded="open.toString()" aria-controls="primary-navigation" aria-label="{{ __('Open menu') }}" class="p-2.5 rounded-xl text-stone-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5 focus-visible:outline-offset-0">
-            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+    <div class="cg-sidebar-mobilebar lg:hidden flex items-center justify-between h-16 px-3 border-b border-stone-200 dark:border-[#3d3d3a]">
+        <div class="flex items-center gap-2">
+            <button @click="open = true" :aria-expanded="open.toString()" aria-controls="primary-navigation" aria-label="{{ __('Open menu') }}" class="p-2.5 rounded-xl text-stone-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5 focus-visible:outline-offset-0">
+                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
+                <x-application-logo class="h-8 w-auto text-maroon-700" />
+                <span class="font-bold text-sm text-maroon-800 dark:text-gray-100">CivicGuard</span>
+            </a>
+        </div>
+        <a href="{{ route('notifications.index') }}"
+           class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl text-stone-700 hover:bg-black/5 dark:text-gray-200 dark:hover:bg-white/5 focus-visible:outline-offset-0 {{ request()->routeIs('notifications.index') ? '!text-maroon-700 dark:!text-white' : '' }}"
+           title="{{ __('Notifications') }}"
+           aria-label="{{ __('Notifications') }}">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
             </svg>
-        </button>
-        <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
-            <x-application-logo class="h-8 w-auto text-maroon-700" />
-            <span class="font-bold text-sm text-maroon-800 dark:text-gray-100">CivicGuard</span>
+            @if ($unreadCount > 0)
+                <span class="absolute top-1.5 right-1.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-maroon-700 px-1 text-[10px] font-bold text-white ring-2 ring-white dark:bg-maroon-600 dark:ring-gray-900">
+                    {{ $unreadCount > 99 ? '99+' : $unreadCount }}
+                    <span class="sr-only"> {{ __('unread') }}</span>
+                </span>
+            @endif
         </a>
     </div>
 
@@ -63,7 +84,6 @@
         @php
             $role = Auth::user()->role;
             $isStaff = in_array($role, ['tanod', 'admin', 'official']);
-            $unreadCount = \App\Models\AppNotification::where('user_id', auth()->id())->where('is_read', false)->count();
             $groupLabel = 'cg-sidebar-label px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-white/60';
         @endphp
         <nav class="flex-1 overflow-y-auto overscroll-contain px-3 py-4 space-y-1" aria-label="{{ __('Main menu') }}">
@@ -114,15 +134,6 @@
                     <span class="font-bold text-white">{{ __('AI') }}</span> {{ __('Chatbot') }}
                 </x-sidebar-link>
             @endif
-
-            <x-sidebar-link icon="bell" :href="route('notifications.index')" :active="request()->routeIs('notifications.index')">
-                <span class="flex items-center justify-between">
-                    <span>{{ __('Notifications') }}</span>
-                    @if ($unreadCount > 0)
-                        <span class="bg-[#fffaf5] text-maroon-800 text-[11px] font-bold rounded-full min-w-[1.25rem] h-5 px-1.5 flex items-center justify-center">{{ $unreadCount > 99 ? '99+' : $unreadCount }}<span class="sr-only"> {{ __('unread') }}</span></span>
-                    @endif
-                </span>
-            </x-sidebar-link>
         </nav>
 
         <!-- Bottom section -->
