@@ -45,12 +45,16 @@ class NotificationController extends Controller
         return redirect()->route('notifications.index');
     }
 
-    public function readAll()
+    public function readAll(\Illuminate\Http\Request $request)
     {
         AppNotification::where('user_id', Auth::id())
             ->where('is_read', false)
             ->update(['is_read' => true]);
 
-        return redirect()->route('notifications.index');
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->back();
     }
 }
