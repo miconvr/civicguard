@@ -49,11 +49,11 @@
 
             <div class="cg-card">
                 <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Severity Rated By</h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Which model rated each report when it was submitted. Reports from before tracking started are counted separately.</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Which model rated each report when it was submitted.</p>
                 @php $usageMax = max(1, max($modelUsage)); @endphp
                 <ul class="space-y-3">
                     @foreach ($modelUsage as $label => $count)
-                        @continue($label === 'Model vote')
+                        @continue(in_array($label, ['Before tracking', 'Model vote']))
                         <li>
                             <div class="flex items-center justify-between text-sm text-gray-700 dark:text-gray-300 mb-1">
                                 <span>{{ $label }}</span>
