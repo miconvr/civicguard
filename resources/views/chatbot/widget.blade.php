@@ -2,7 +2,7 @@
     <x-slot name="headerWidth">max-w-2xl</x-slot>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
-            {{ __('CivicGuard AI Assistant') }}
+            {{ __('CivicGuard AI Chatbot') }}
         </h2>
     </x-slot>
 
@@ -46,7 +46,7 @@
                     <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-gray-200 dark:ring-gray-600" aria-hidden="true"><x-application-logo class="h-8 w-8" /></span>
                     <div class="min-w-0">
                         <p class="text-base font-bold leading-tight text-maroon-900 dark:text-gray-100">CivicGuard</p>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('AI Assistant · Barangay Maimpis') }}</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('AI Chatbot') }}</p>
                     </div>
                 </div>
 
@@ -357,7 +357,7 @@
 
                 const data = await response.json();
                 sessionId = data.session_id;
-                conversationHistory += 'Assistant: ' + data.reply + '\n';
+                conversationHistory += 'Chatbot: ' + data.reply + '\n';
                 hideTyping();
                 addMessage(data.reply, 'bot');
                 if (data.model_note) addModelNote(data.model_note);
