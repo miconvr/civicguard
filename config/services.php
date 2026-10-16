@@ -39,4 +39,21 @@ return [
         'key' => env('GEMINI_API_KEY'),
     ],
 
+    'groq' => [
+        'key' => env('GROQ_API_KEY'),
+        'model' => env('GROQ_MODEL', 'llama-3.3-70b-versatile'),
+        'fast_model' => env('GROQ_FAST_MODEL', 'llama-3.1-8b-instant'),
+    ],
+
+    'mistral' => [
+        'key' => env('MISTRAL_API_KEY'),
+        'model' => env('MISTRAL_MODEL', 'mistral-small-latest'),
+        'fast_model' => env('MISTRAL_FAST_MODEL', 'mistral-small-latest'),
+    ],
+
+    'ai' => [
+        'order' => array_filter(array_map('trim', explode(',', (string) env('AI_PROVIDERS', 'gemini,groq,mistral')))),
+        'severity_vote' => (bool) env('AI_SEVERITY_VOTE', false),
+    ],
+
 ];
