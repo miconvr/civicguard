@@ -1,8 +1,3 @@
-@php
-    $unreadCount = auth()->check()
-        ? \App\Models\AppNotification::where('user_id', auth()->id())->where('is_read', false)->count()
-        : 0;
-@endphp
 <div x-data="{ open: false }"
      x-effect="document.body.classList.toggle('overflow-hidden', open)"
      @keydown.escape.window="open = false"
@@ -21,20 +16,7 @@
                 <span class="font-bold text-sm text-maroon-800 dark:text-gray-100">CivicGuard</span>
             </a>
         </div>
-        <a href="{{ route('notifications.index') }}"
-           class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl text-stone-700 hover:bg-black/5 dark:text-gray-200 dark:hover:bg-white/5 focus-visible:outline-offset-0 {{ request()->routeIs('notifications.index') ? '!text-maroon-700 dark:!text-white' : '' }}"
-           title="{{ __('Notifications') }}"
-           aria-label="{{ __('Notifications') }}">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-            </svg>
-            @if ($unreadCount > 0)
-                <span class="absolute top-1.5 right-1.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-maroon-700 px-1 text-[10px] font-bold text-white ring-2 ring-white dark:bg-maroon-600 dark:ring-gray-900">
-                    {{ $unreadCount > 99 ? '99+' : $unreadCount }}
-                    <span class="sr-only"> {{ __('unread') }}</span>
-                </span>
-            @endif
-        </a>
+        <x-notification-dropdown :mobile="true" />
     </div>
 
     <!-- Mobile overlay -->
