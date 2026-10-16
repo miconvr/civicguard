@@ -23,8 +23,8 @@
                     </span>
                     <span class="min-w-0 flex-1">
                         <span class="block font-semibold">{{ __('Need help making a report?') }}</span>
-                        <span class="mt-1 block text-sm text-white/85">{{ __('Describe what happened to the AI Assistant and get help preparing your report.') }}</span>
-                        <span class="mt-2 block text-sm font-semibold transition-transform group-hover:translate-x-1">{{ __('Chat with AI Assistant →') }}</span>
+                        <span class="mt-1 block text-sm text-white/85">{{ __('Describe what happened to the AI Chatbot and get help preparing your report.') }}</span>
+                        <span class="mt-2 block text-sm font-semibold transition-transform group-hover:translate-x-1">{{ __('Chat with AI Chatbot →') }}</span>
                     </span>
                 </a>
 
