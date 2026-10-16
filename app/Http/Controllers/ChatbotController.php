@@ -67,6 +67,7 @@ class ChatbotController extends Controller
             true
         );
 
+        $modelNote = $this->modelNote($ai, (bool) $rawReply);
         $rawReply = $rawReply ?: $this->faqFallback($validated['message']);
 
         $reportData = null;
@@ -93,7 +94,23 @@ class ChatbotController extends Controller
             'reply' => $rawReply,
             'session_id' => $sessionId,
             'report_data' => $reportData,
+            'model_note' => $modelNote,
         ]);
+    }
+
+    private function modelNote(AiRouter $ai, bool $answeredByAi): ?string
+    {
+        if (! $answeredByAi) {
+            return __('Built-in answer (AI unavailable)');
+        }
+
+        try {
+            $label = $ai->providerLabel();
+        } catch (\Throwable) {
+            return null;
+        }
+
+        return $label ? __('Answered by :model', ['model' => $label]) : null;
     }
 
     private function looksLikeEmergency(string $message): bool
