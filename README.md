@@ -16,46 +16,19 @@ CivicGuard is a web-based system that lets residents of Barangay Maimpis, City o
 
 ## Features
 
-**Reporting**
-
-* Multipart report form with server-side validation: description up to 2,000 characters, category, location text, and an optional photo (JPG, PNG, or WebP, up to 5 MB and 8000x8000 px)
-* Optional GPS pin through the browser Geolocation API, stored as latitude and longitude
-* Photos are kept on a private storage disk and served through an authorized route with `nosniff` headers, never from a public URL
-
-**AI**
-
-* Category suggestion and severity classification (low, moderate, high, critical) through the Google Gemini API, with a keyword-based fallback so reports are never blocked when the API is down
-* Conversational report assistant that collects category, description, and location and returns them as structured JSON for a review-before-submit card
-* Emergency keyword detection in English and Tagalog that returns fixed guidance without calling the API
-* Staff can override any AI severity rating, and every change is logged
-
-**Workflow**
-
-* Status pipeline: pending, in progress, resolved, with a timeline built from audit log entries
-* Assignment of reports to tanods, with in-app notifications for status changes, assignments, and reopened reports
-* Residents can confirm a fix or reopen a resolved report within a 7-day window
-
-**Access control and audit**
-
-* Role-based access (resident, tanod, official, admin) through route middleware and ownership checks
-* Tanod queries are limited by an Eloquent scope to reports assigned to them and curfew logs they created, including exports and file downloads
-* Audit log table that records report, assignment, severity, status, curfew, and staff actions, with search, action filters, and PDF export
-* Rate limiting on login, registration, password reset, reports, and the AI endpoints, plus per-hour caps on AI calls
-
-**Staff tools**
-
-* Incident queue sorted by urgency, with status tabs, search, severity filter, and pagination
-* Analytics dashboard with Chart.js charts, KPI cards, and on-demand AI insights cached for 30 minutes
-* Curfew violation logging for tanods, wrapped in a database transaction that creates the report and the curfew record together
-* PDF exports for reports, consolidated reports, analytics, and audit logs through DomPDF
-
-**Platform**
-
-* Installable Progressive Web App: web app manifest, service worker with an offline fallback page, `beforeinstallprompt` handling, and an animated install guide for iOS and Android
-* English and Tagalog interface, light and dark mode in the signed-in app, and responsive layouts with safe-area insets
-* Offline banner, request timeouts, and retry handling on forms and the chat
-* Account deletion that removes a resident's reports and photo files, with a privacy policy, terms of use, and consent at registration
-* Feature test suite (63 tests) covering authentication, access control, reports, the chatbot, account deletion, and the PWA
+* **Incident reporting:** pick a category, describe the problem, add a location, and optionally a photo and GPS pin
+* **AI assistant:** a chat that helps residents write a report, with emergency warnings in English and Tagalog
+* **AI suggestions:** automatic category and urgency rating, which staff can always change
+* **Report tracking:** follow a report from Received to Assigned, In progress, and Resolved, with notifications
+* **Confirm or reopen:** residents can confirm a fix or reopen a report within 7 days
+* **Incident queue:** reports sorted by urgency, with tabs, search, and filters
+* **Role-based access:** residents, tanods, officials, and admins, where tanods only see reports assigned to them
+* **Curfew logging:** tanods can record curfew violations
+* **Analytics:** charts, key numbers, and AI-written insights
+* **Audit logs and PDF exports:** a record of who did what, and downloadable reports
+* **Install as an app:** works on iPhone and Android from the browser, with an offline page
+* **English and Tagalog**, with light and dark mode
+* **Privacy tools:** account deletion, a privacy policy, and terms of use
 
 ---
 
@@ -82,19 +55,26 @@ New sign-ups are always residents.
 
 ## Built with
 
-| Layer | Technology |
-| --- | --- |
-| Backend | Laravel 12, PHP 8.2+ |
-| Authentication | Laravel Breeze (session-based) with custom role middleware |
-| Database | MySQL 8.4, Eloquent ORM, migrations with cascade and null-on-delete foreign keys |
-| Frontend | Blade templates, Alpine.js 3, Tailwind CSS 4, Vite 6 |
-| Charts | Chart.js |
-| PDF | barryvdh/laravel-dompdf |
-| AI | Google Gemini API, called server-side with the key sent in a request header |
-| PWA | Web app manifest, service worker |
-| Testing | Pest feature tests |
-| Development | Laravel Sail (Docker Compose), phpMyAdmin |
-| Hosting | Wasmer |
+**Backend**
+
+* Laravel 12
+* PHP 8.2+
+* MySQL 8.4
+
+**Frontend**
+
+* Blade
+* Alpine.js 3
+* Tailwind CSS 4
+* Vite 6
+* Chart.js
+
+**Services & tools**
+
+* Google Gemini API
+* DomPDF
+* Laravel Sail (Docker)
+* Wasmer (hosting)
 
 ---
 
