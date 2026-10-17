@@ -1,16 +1,4 @@
 <x-app-layout>
-    <style>
-        @keyframes report-choice-enter {
-            from { opacity: 0; transform: translateY(0.75rem); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .report-choice-card { animation: report-choice-enter 360ms cubic-bezier(.2,.7,.2,1) both; }
-        .report-choice-card-delayed { animation-delay: 80ms; }
-        @media (prefers-reduced-motion: reduce) {
-            .report-choice-card, .report-choice-card-delayed { animation: none; }
-        }
-    </style>
-
     <x-slot name="headerWidth">max-w-2xl</x-slot>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
@@ -26,11 +14,11 @@
                     <h3 id="report-method-heading" class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('How would you like to report?') }}</h3>
                     <p class="mb-5 text-sm text-gray-600 dark:text-gray-400">{{ __('Choose the option that feels easiest. You can review everything before submitting.') }}</p>
                     <div class="grid gap-3 sm:grid-cols-2">
-                        <button type="button" x-show="!reportMode" x-cloak x-transition:enter="transition ease-out duration-300 motion-reduce:transition-none" x-transition:enter-start="translate-y-4 opacity-0" x-transition:enter-end="translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-150 motion-reduce:transition-none" x-transition:leave-start="translate-y-0 opacity-100" x-transition:leave-end="translate-y-2 opacity-0" @click="reportMode = 'assistant'; chatOpen = true; $nextTick(() => document.getElementById('chat-input')?.focus())" class="report-choice-card flex min-h-28 w-full items-start gap-3 rounded-xl border-2 border-maroon-700 bg-maroon-50 p-4 text-left transition hover:bg-maroon-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-[#b98286] dark:bg-white/5 dark:hover:bg-white/10">
+                        <button type="button" data-reveal="step" @click="reportMode = 'assistant'; chatOpen = true; $nextTick(() => document.getElementById('chat-input')?.focus())" class="flex min-h-28 w-full items-start gap-3 rounded-xl border-2 border-maroon-700 bg-maroon-50 p-4 text-left transition hover:bg-maroon-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-[#b98286] dark:bg-white/5 dark:hover:bg-white/10">
                             <span class="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[#ddc9b7] bg-[#f7eee5]" aria-hidden="true">@include('chatbot.mascot')</span>
                             <span><span class="block font-semibold text-gray-900 dark:text-gray-100">{{ __('Get help from CivicGuard AI') }}</span><span class="mt-1 block text-sm leading-5 text-gray-600 dark:text-gray-300">{{ __('Chat about what happened. The assistant prepares your details for you to review and submit.') }}</span></span>
                         </button>
-                        <button type="button" x-show="!reportMode" x-cloak x-transition:enter="transition ease-out duration-300 motion-reduce:transition-none" x-transition:enter-start="translate-y-4 opacity-0" x-transition:enter-end="translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-150 motion-reduce:transition-none" x-transition:leave-start="translate-y-0 opacity-100" x-transition:leave-end="translate-y-2 opacity-0" style="transition-delay: 80ms" @click="reportMode = 'form'" class="report-choice-card report-choice-card-delayed flex min-h-28 w-full items-start gap-3 rounded-xl border border-gray-300 bg-white p-4 text-left transition hover:border-maroon-700 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-gray-600 dark:bg-[#262624] dark:hover:bg-white/5">
+                        <button type="button" data-reveal="step" @click="reportMode = 'form'" class="flex min-h-28 w-full items-start gap-3 rounded-xl border border-gray-300 bg-white p-4 text-left transition hover:border-maroon-700 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-gray-600 dark:bg-[#262624] dark:hover:bg-white/5">
                             <svg class="mt-0.5 h-6 w-6 shrink-0 text-maroon-700 dark:text-[#c27872]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 6h12M8 12h12M8 18h12M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
                             <span><span class="block font-semibold text-gray-900 dark:text-gray-100">{{ __('Fill out the form myself') }}</span><span class="mt-1 block text-sm leading-5 text-gray-600 dark:text-gray-300">{{ __('Enter the details directly, add a photo, or pin your location.') }}</span></span>
                         </button>
