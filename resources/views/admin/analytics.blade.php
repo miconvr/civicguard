@@ -49,11 +49,11 @@
 
             <div class="cg-card">
                 <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Severity Rated By</h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Which model rated each report when it was submitted.</p>
-                @php $usageMax = max(1, max($modelUsage)); @endphp
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Which model or rating method assessed each report when it was submitted.</p>
+                @php $usageMax = max(1, max(collect($modelUsage)->except('Before tracking')->all() ?: [0])); @endphp
                 <ul class="space-y-3">
                     @foreach ($modelUsage as $label => $count)
-                        @continue(in_array($label, ['Before tracking', 'Model vote']))
+                        @continue($label === 'Before tracking')
                         <li>
                             <div class="flex items-center justify-between text-sm text-gray-700 dark:text-gray-300 mb-1">
                                 <span class="inline-flex items-center gap-1.5">
@@ -75,6 +75,10 @@
                                     @elseif ($label === 'Keyword rules')
                                         <svg class="h-3.5 w-3.5 shrink-0 text-gray-400 dark:text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 12h9.75M10.5 18h9.75M3.75 6H6m-2.25 6H6m-2.25 6H6"/>
+                                        </svg>
+                                    @elseif ($label === 'Model vote')
+                                        <svg class="h-3.5 w-3.5 shrink-0 text-maroon-700 dark:text-[#c27872]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h11m0 0-3-3m3 3-3 3M16 17H5m0 0 3 3m-3-3 3-3"/>
                                         </svg>
                                     @endif
                                     <span>{{ $label }}</span>
