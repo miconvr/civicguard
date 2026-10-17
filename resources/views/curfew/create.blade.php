@@ -88,7 +88,7 @@
                                         <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
                                     </div>
                                     <div id="cf-calendar-days" class="cg-calendar-grid mt-1"></div>
-                                    <button type="button" id="cf-calendar-today" class="mt-3 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:border-[#6b1d35] hover:text-[#6b1d35]">Today</button>
+                                    <button type="button" id="cf-calendar-today" class="mt-3 min-h-11 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:border-[#6b1d35] hover:text-[#6b1d35]">Today</button>
                                 </div>
                                 <input id="cf-apprehension-date" type="hidden" value="{{ old('apprehension_datetime') ? substr(old('apprehension_datetime'), 0, 10) : '' }}">
                             </div>

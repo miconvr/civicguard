@@ -825,6 +825,66 @@
     }
     table.cg-queue td:last-child { display: none; }
     .dark table.cg-queue tr { border-color: var(--cg-border); }
+
+    table.cg-mobile-table,
+    table.cg-mobile-table tbody { display: block; width: 100%; }
+    table.cg-mobile-table thead { display: none; }
+    table.cg-mobile-table tbody { padding: 0.75rem; }
+    table.cg-mobile-table tr {
+        display: block;
+        margin-bottom: 0.75rem;
+        padding: 0.75rem;
+        border: 1px solid var(--cg-border);
+        border-radius: 0.75rem;
+        background: var(--cg-surface);
+    }
+    table.cg-mobile-table tr:last-child { margin-bottom: 0; }
+    table.cg-mobile-table td {
+        display: grid;
+        width: 100%;
+        grid-template-columns: minmax(5.5rem, 34%) minmax(0, 1fr);
+        gap: 0.5rem;
+        padding: 0.4rem 0.25rem;
+        border: 0;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+    table.cg-mobile-table td[data-label]::before {
+        content: attr(data-label);
+        color: var(--cg-muted);
+        font-size: 0.7rem;
+        font-weight: 700;
+    }
+    table.cg-mobile-table td[colspan] {
+        display: block;
+        padding: 0.75rem;
+        text-align: center;
+    }
+    table.cg-mobile-table td[colspan]::before { content: none; }
+    .dark table.cg-mobile-table tr { border-color: var(--cg-border); }
+}
+
+@media (max-width: 639px) {
+    #main-content > .py-8,
+    #main-content > .py-12 { padding-block: 1.5rem; }
+
+    #main-content > .py-8 > [class*="max-w-"],
+    #main-content > .py-12 > [class*="max-w-"] { padding-inline: 1rem; }
+
+    #main-content .cg-card:not(.p-0) { padding: 1rem; }
+
+    .cg-app-shell .cg-btn,
+    .cg-app-shell .cg-btn-secondary {
+        min-height: 44px;
+        padding: 0.5rem 0.875rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+
+    .cg-app-shell .cg-kpi {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
 }
 
 /* ---- Design system additions ---- */
@@ -1835,4 +1895,17 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 .dark .cg-calendar-panel #cf-calendar-today {
     border-color: #514548;
     color: #f0a0b5;
+}
+
+@media (max-width: 767px) {
+    .cg-calendar-day,
+    .cg-time-option { min-height: 44px; }
+
+    .cg-calendar-nav,
+    .cg-calendar-panel .cg-calendar-nav {
+        width: 44px;
+        height: 44px;
+    }
+
+    .cg-time-button { min-height: 44px; }
 }

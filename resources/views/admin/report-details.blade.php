@@ -30,13 +30,13 @@
                             <a href="https://www.google.com/maps?q={{ (float) $report->latitude }},{{ (float) $report->longitude }}" target="_blank" rel="noopener" class="mt-1 inline-block text-sm font-semibold text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('Open in Maps') }} &rarr;</a>
                         @endif
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                         <span class="cg-sev cg-sev-{{ $report->severity }}">{{ __(ucfirst($report->severity)) }}</span>
                         <span class="cg-pill cg-pill-{{ $report->status }}">{{ __(ucwords(str_replace('_', ' ', $report->status))) }}</span>
                     </div>
                 </div>
 
-                <ol class="mt-5 grid grid-cols-4 gap-2" aria-label="{{ __('Progress') }}">
+                <ol class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="{{ __('Progress') }}">
                     @foreach ($steps as [$label, $done, $at])
                         <li>
                             <div class="h-1.5 rounded-full {{ $done ? 'cg-bar-fill bg-maroon-700 dark:bg-[#b56764]' : 'bg-gray-200 dark:bg-gray-700' }}" @if ($done) style="--cg-bar-delay: {{ $loop->index * 140 + 250 }}ms" @endif></div>
@@ -101,7 +101,7 @@
                 </div>
             </div>
 
-            <a href="{{ route('admin.dashboard') }}" class="inline-block text-sm font-semibold text-maroon-700 hover:underline dark:text-[#c27872]">&larr; {{ __('Back to Incident Queue') }}</a>
+            <a href="{{ route('admin.dashboard') }}" class="inline-flex min-h-11 items-center text-sm font-semibold text-maroon-700 hover:underline dark:text-[#c27872]">&larr; {{ __('Back to Incident Queue') }}</a>
         </div>
     </div>
 </x-app-layout>
