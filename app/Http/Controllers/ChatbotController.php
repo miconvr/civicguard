@@ -9,11 +9,6 @@ use Illuminate\Support\Str;
 
 class ChatbotController extends Controller
 {
-    public function widget()
-    {
-        return view('chatbot.widget');
-    }
-
     public function send(Request $request, AiRouter $ai)
     {
         $validated = $request->validate([
