@@ -22,13 +22,18 @@
         @media (prefers-reduced-motion: reduce) {
             .typing-dot { animation: typing-fade 1.6s infinite ease-in-out both; }
         }
+        .cg-chat-mascot { animation: cg-chat-float 3.2s ease-in-out infinite; }
+        .cg-chat-mascot::after { content: ''; position: absolute; inset: -5px; border: 2px solid rgba(127, 29, 29, .22); border-radius: 1.35rem; animation: cg-chat-pulse 2.4s ease-out infinite; }
+        @keyframes cg-chat-float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-6px) rotate(2deg); } }
+        @keyframes cg-chat-pulse { 0% { transform: scale(.92); opacity: .8; } 75%, 100% { transform: scale(1.2); opacity: 0; } }
+        @media (prefers-reduced-motion: reduce) { .cg-chat-mascot, .cg-chat-mascot::after { animation: none; } }
     </style>
 
-    <div class="mb-6">
-        <div class="cg-card p-3 sm:p-6">
+    <div x-data="{ chatOpen: false }" @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.mascot.focus()); }" class="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-4 z-40 sm:right-6">
+        <div x-show="chatOpen" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-3 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0 scale-100" x-transition:leave-end="opacity-0 translate-y-3 scale-95" id="report-ai-chat" role="dialog" aria-label="{{ __('CivicGuard AI Chatbot') }}" class="absolute bottom-[4.5rem] right-0 flex max-h-[min(76dvh,42rem)] w-[min(24rem,calc(100vw-2rem))] origin-bottom-right flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl dark:border-gray-700 dark:bg-[#262624]">
 
-                <div class="mb-3 flex items-center gap-3 border-b border-gray-100 pb-3 dark:border-gray-700 sm:mb-4 sm:pb-4">
-                    <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-maroon-50 shadow-sm ring-1 ring-maroon-100 dark:bg-maroon-900/30 dark:ring-maroon-800" aria-hidden="true">
+                <div class="flex shrink-0 items-center gap-3 border-b border-gray-100 bg-[#fffaf5] px-4 py-3 dark:border-gray-700 dark:bg-[#302b29]">
+                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-maroon-50 shadow-sm ring-1 ring-maroon-100 dark:bg-maroon-900/30 dark:ring-maroon-800" aria-hidden="true">
                         <svg class="h-10 w-10" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M24 4 40 10v12c0 10-6.6 17.8-16 22-9.4-4.2-16-12-16-22V10L24 4Z" fill="#7F1D1D"/>
                             <path d="M15 20c0-5 4-8 9-8s9 3 9 8v8c0 5-4 8-9 8s-9-3-9-8v-8Z" fill="#FFF7ED"/>
@@ -37,13 +42,14 @@
                             <path d="M34 12v7m-3.5-3.5h7" stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </span>
-                    <div class="min-w-0">
-                        <p class="text-base font-bold leading-tight text-maroon-900 dark:text-gray-100">{{ __('Report helper') }}</p>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-sm font-bold leading-tight text-maroon-900 dark:text-gray-100">{{ __('Report helper') }}</p>
                         <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('CivicGuard AI Chatbot') }}</p>
                     </div>
+                    <button type="button" @click="chatOpen = false; $nextTick(() => $refs.mascot.focus())" aria-label="{{ __('Close') }}" class="inline-flex h-10 w-10 items-center justify-center rounded-full text-gray-600 transition hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-maroon-700 dark:text-gray-300 dark:hover:bg-white/10"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="m6 6 12 12M18 6 6 18"/></svg></button>
                 </div>
 
-                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="space-y-3 overflow-y-auto p-4 sm:p-6" style="height:min(52dvh,32rem)">
+                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="min-h-40 flex-1 space-y-3 overflow-y-auto p-4" style="height:min(38dvh,24rem)">
                     <div class="text-sm text-left">
                         <span class="px-4 py-3 rounded-2xl rounded-tl-sm inline-block max-w-[90%] text-left bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
                             {{ __('Hi! Tell me what happened and I can help you put together a clear incident report.') }}
@@ -51,13 +57,13 @@
                     </div>
                 </div>
 
-                <div id="chat-chips" class="flex flex-nowrap gap-2 overflow-x-auto border-t border-gray-100 px-4 pb-3 pt-4 dark:border-gray-700 sm:flex-wrap sm:overflow-visible sm:px-6">
+                <div id="chat-chips" class="flex shrink-0 flex-nowrap gap-2 overflow-x-auto border-t border-gray-100 px-4 pb-3 pt-3 dark:border-gray-700 sm:flex-wrap sm:overflow-visible">
                     @foreach ([__('I want to report an incident'), __('How do I track my report?'), __('What counts as an emergency?'), __('What do the urgency levels mean?')] as $chip)
                         <button type="button" class="shrink-0 whitespace-nowrap min-h-[40px] sm:min-h-[44px] rounded-full border border-gray-300 dark:border-gray-600 px-3.5 sm:px-4 py-1.5 sm:py-2 text-[13px] sm:text-sm font-medium text-gray-800 dark:text-gray-200 transition hover:border-maroon-700 hover:text-maroon-700 dark:hover:text-white disabled:opacity-50">{{ $chip }}</button>
                     @endforeach
                 </div>
 
-                <form id="chat-form" class="flex gap-2 border-t border-gray-100 p-4 dark:border-gray-700 sm:px-6">
+                <form id="chat-form" class="flex shrink-0 gap-2 border-t border-gray-100 p-3 dark:border-gray-700">
                     <input type="text" id="chat-input" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Describe your concern or ask a question…') }}" class="cg-input min-w-0 flex-1 min-h-[44px]" autocomplete="off">
                     <button type="submit" id="chat-send" class="cg-btn min-h-[44px] disabled:cursor-wait disabled:opacity-60" aria-busy="false">
                         <span id="chat-send-label">{{ __('Send') }}</span>
@@ -65,12 +71,23 @@
                     </button>
                 </form>
 
-                <p class="mt-2 sm:mt-3 text-xs sm:text-sm cg-muted">
+                <p class="shrink-0 px-3 pb-3 text-xs cg-muted">
                     <strong>{{ __('In immediate danger? Call 911 first.') }}</strong>
                     {{ __('Reports are reviewed by staff and are not answered instantly.') }}
                 </p>
 
-        </div>
+        <button type="button" x-ref="mascot" @click="chatOpen = !chatOpen; if (chatOpen) $nextTick(() => document.getElementById('chat-input')?.focus())" :aria-expanded="chatOpen.toString()" aria-controls="report-ai-chat" :aria-label="chatOpen ? @js(__('Close AI chat')) : @js(__('Open AI chat'))" :title="chatOpen ? @js(__('Close AI chat')) : @js(__('Chat with CivicGuard AI'))" class="group relative flex h-14 w-14 items-center justify-center rounded-2xl bg-maroon-800 text-white shadow-lg ring-4 ring-white/80 transition duration-200 hover:-translate-y-1 hover:bg-maroon-900 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-maroon-800 dark:ring-[#262624] sm:h-16 sm:w-16">
+            <span class="cg-chat-mascot relative flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm sm:h-12 sm:w-12" aria-hidden="true">
+                <svg class="h-full w-full" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 4 40 10v12c0 10-6.6 17.8-16 22-9.4-4.2-16-12-16-22V10L24 4Z" fill="#7F1D1D"/>
+                    <path d="M15 20c0-5 4-8 9-8s9 3 9 8v8c0 5-4 8-9 8s-9-3-9-8v-8Z" fill="#FFF7ED"/>
+                    <circle cx="21" cy="23" r="1.7" fill="#292524"/><circle cx="27" cy="23" r="1.7" fill="#292524"/>
+                    <path d="M20 29c1.1 1.2 2.4 1.8 4 1.8s2.9-.6 4-1.8" stroke="#7F1D1D" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M34 12v7m-3.5-3.5h7" stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </span>
+            <span class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-amber-400 text-[10px] font-bold text-maroon-900 dark:border-[#262624]" aria-hidden="true">AI</span>
+        </button>
     </div>
 
     <script>
