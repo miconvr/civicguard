@@ -68,7 +68,7 @@ class AnalyticsController extends Controller
 
     private function modelUsage(): array
     {
-        $usage = ['Gemini' => 0, 'Groq' => 0, 'Model vote' => 0, 'Keyword rules' => 0, 'Before tracking' => 0];
+        $usage = ['Gemini' => 0, 'Groq' => 0, 'Keyword rules' => 0, 'Before tracking' => 0];
 
         AuditLog::where('action', 'report_submitted')->get(['metadata'])->each(function ($log) use (&$usage) {
             $source = is_array($log->metadata) ? ($log->metadata['severity_source'] ?? null) : null;
@@ -76,7 +76,6 @@ class AnalyticsController extends Controller
             if (! is_string($source)) {
                 $usage['Before tracking']++;
             } elseif (str_starts_with($source, 'model vote')) {
-                $usage['Model vote']++;
                 preg_match_all('/([A-Za-z][A-Za-z0-9_-]*)\s*:\s*(?:low|moderate|high|critical)\b/i', $source, $ratings);
                 $models = array_unique(array_map(
                     fn (string $name) => ucfirst(strtolower($name)),

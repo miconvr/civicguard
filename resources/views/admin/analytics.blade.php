@@ -53,7 +53,7 @@
                 @php $usageMax = max(1, max(collect($modelUsage)->except('Before tracking')->all() ?: [0])); @endphp
                 <ul class="space-y-3">
                     @foreach ($modelUsage as $label => $count)
-                        @continue($label === 'Before tracking' || ($label === 'Model vote' && $count === 0))
+                        @continue($label === 'Before tracking')
                         <li>
                             <div class="flex items-center justify-between text-sm text-gray-700 dark:text-gray-300 mb-1">
                                 <span class="inline-flex items-center gap-1.5">
