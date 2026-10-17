@@ -75,6 +75,7 @@
                     <strong>{{ __('In immediate danger? Call 911 first.') }}</strong>
                     {{ __('Reports are reviewed by staff and are not answered instantly.') }}
                 </p>
+        </div>
 
         <button type="button" x-ref="mascot" @click="chatOpen = !chatOpen; if (chatOpen) $nextTick(() => document.getElementById('chat-input')?.focus())" :aria-expanded="chatOpen.toString()" aria-controls="report-ai-chat" :aria-label="chatOpen ? @js(__('Close AI chat')) : @js(__('Open AI chat'))" :title="chatOpen ? @js(__('Close AI chat')) : @js(__('Chat with CivicGuard AI'))" class="group relative flex h-14 w-14 items-center justify-center rounded-2xl bg-maroon-800 text-white shadow-lg ring-4 ring-white/80 transition duration-200 hover:-translate-y-1 hover:bg-maroon-900 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-maroon-800 dark:ring-[#262624] sm:h-16 sm:w-16">
             <span class="cg-chat-mascot relative flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm sm:h-12 sm:w-12" aria-hidden="true">
