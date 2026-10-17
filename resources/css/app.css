@@ -109,7 +109,16 @@
     }
 
     .cg-page-exit {
-        animation: cg-page-enter var(--cg-motion-page) var(--cg-ease-out) reverse both;
+        animation: cg-page-enter var(--cg-motion-fast) var(--cg-ease-out) reverse both;
+    }
+
+    .cg-report-form-panel {
+        transition: opacity var(--cg-motion-fast) var(--cg-ease-out), transform var(--cg-motion-fast) var(--cg-ease-out);
+    }
+
+    .cg-report-form-panel.is-leaving {
+        opacity: 0;
+        transform: translateY(8px);
     }
 
     .cg-page-enter-late { animation-delay: 60ms; }
@@ -1321,6 +1330,10 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
     .cg-page-enter,
     .cg-page-exit {
         animation: none !important;
+    }
+
+    .cg-report-form-panel {
+        transition: none !important;
     }
 }
 
