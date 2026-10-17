@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:admin,official'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create');
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
 });
