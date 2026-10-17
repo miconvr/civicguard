@@ -44,7 +44,7 @@
                 <div class="cg-card" data-reveal>
                     <div class="mb-3 flex items-center justify-between">
                         <h3 class="font-semibold text-gray-900 dark:text-gray-100">{{ __('Latest reports') }}</h3>
-                        <a href="{{ route('reports.index') }}" class="text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('View all') }}</a>
+                        <a href="{{ route('reports.index') }}" class="inline-flex min-h-11 items-center text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('View all') }}</a>
                     </div>
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse ($recent as $report)
@@ -63,7 +63,7 @@
                     </ul>
                 </div>
 
-                <a data-reveal href="{{ route('reports.create') }}" class="cg-btn-secondary w-full sm:w-auto">{{ __('Prefer to just talk it through?') }} <span aria-hidden="true">&rarr;</span></a>
+                <a data-reveal href="{{ route('reports.create') }}" class="cg-btn-secondary self-start sm:self-auto">{{ __('Prefer to just talk it through?') }} <span aria-hidden="true">&rarr;</span></a>
 
             @elseif ($user->role === 'tanod')
 
@@ -109,7 +109,7 @@
                 <div class="cg-card" data-reveal>
                     <div class="mb-3 flex items-center justify-between">
                         <h3 class="font-semibold text-gray-900 dark:text-gray-100">{{ __('Needs attention') }}</h3>
-                        <a href="{{ route('admin.dashboard') }}" class="text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('Open incident queue') }}</a>
+                        <a href="{{ route('admin.dashboard') }}" class="inline-flex min-h-11 items-center text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('Open incident queue') }}</a>
                     </div>
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse ($urgent as $report)
