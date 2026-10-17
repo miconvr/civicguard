@@ -77,6 +77,15 @@ class AnalyticsController extends Controller
                 $usage['Before tracking']++;
             } elseif (str_starts_with($source, 'model vote')) {
                 $usage['Model vote']++;
+                preg_match_all('/([A-Za-z][A-Za-z0-9_-]*)\s*:\s*(?:low|moderate|high|critical)\b/i', $source, $ratings);
+                $models = array_unique(array_map(
+                    fn (string $name) => ucfirst(strtolower($name)),
+                    $ratings[1] ?? []
+                ));
+
+                foreach ($models as $model) {
+                    $usage[$model] = ($usage[$model] ?? 0) + 1;
+                }
             } elseif ($source === 'keyword rules') {
                 $usage['Keyword rules']++;
             } elseif (isset($usage[$source])) {
