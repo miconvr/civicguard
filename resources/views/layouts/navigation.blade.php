@@ -101,7 +101,7 @@
                 <x-sidebar-link icon="shield" :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
                     {{ __('Audit Logs') }}
                 </x-sidebar-link>
-                @if ($role === 'admin')
+                @if (in_array($role, ['admin', 'official']))
                     <x-sidebar-link icon="user-plus" :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
                         {{ __('Add Staff') }}
                     </x-sidebar-link>
@@ -136,8 +136,12 @@
                      id="account-menu" aria-label="{{ __('Account menu') }}" role="group"
                      :class="collapsed ? 'lg:w-64' : ''"
                      class="absolute bottom-full left-0 right-0 mb-2 rounded-xl border border-stone-200 cg-surface-raised py-1 shadow-lg dark:border-gray-700 dark:bg-[#262624]">
-                    <a href="{{ route('profile.edit') }}" class="block px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
-                        {{ __('Profile') }}
+                    <a href="{{ route('profile.edit') }}" class="flex min-h-11 items-center gap-2 px-4 py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
+                        <svg class="h-4 w-4 shrink-0 text-stone-500 dark:text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                            <circle cx="12" cy="8" r="3.25" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.5 20a6.5 6.5 0 0 1 13 0" />
+                        </svg>
+                        <span>{{ __('Profile') }}</span>
                     </a>
                     <button type="button" role="switch" aria-label="{{ __('Toggle dark mode') }}" :aria-checked="darkMode.toString()" @click="darkMode = !darkMode"
                             class="flex min-h-11 w-full items-center justify-between px-4 py-2 text-left text-sm text-stone-700 hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-maroon-700 dark:text-gray-200 dark:hover:bg-white/5">
