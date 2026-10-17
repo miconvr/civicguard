@@ -8,25 +8,17 @@
 
     <div class="py-8">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="cg-card p-6 sm:p-8" x-data="{ chatOpen: false, showManualForm: {{ $errors->any() ? 'true' : 'false' }} }">
+            <div class="cg-card p-6 sm:p-8" x-data="{ chatOpen: false }" @report-draft-applied.window="chatOpen = false">
 
                 <div class="mb-5 flex gap-2.5 rounded-lg border border-red-300 bg-red-50 dark:bg-red-900/20 dark:border-red-800 px-3 py-2.5 text-sm text-red-800 dark:text-red-200" role="note">
                     <svg class="h-5 w-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
                     <p><strong>{{ __('In immediate danger? Call 911 first.') }}</strong> {{ __('Reports are reviewed by staff and are not answered instantly.') }}</p>
                 </div>
 
-                <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('How can we help with your report?') }}</h3>
+                <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('Tell us what happened') }}</h3>
 
                 @include('chatbot.inline')
 
-                <button type="button" x-show="!showManualForm && !chatOpen" @click="showManualForm = true" class="mx-auto mb-1 block min-h-[44px] px-3 text-sm font-medium text-gray-600 underline decoration-gray-400 underline-offset-4 transition hover:text-maroon-700 dark:text-gray-300 dark:hover:text-white">
-                    {{ __('Use the standard report form instead') }}
-                </button>
-
-                <div x-show="showManualForm && !chatOpen" x-cloak>
-                <button type="button" @click="showManualForm = false" class="mb-4 min-h-[44px] text-sm font-medium text-maroon-700 underline decoration-maroon-300 underline-offset-4 dark:text-[#c27872]">
-                    {{ __('Use the AI assistant instead') }}
-                </button>
                 <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-6"
                       x-data="{ cat: '{{ old('category_id') }}', descs: {{ Js::from($categories->pluck('description', 'id')) }}, len: {{ strlen(old('description', '')) }}, preview: null, tooBig: false, suggested: false, timer: null,
                           pick(e) { const f = e.target.files[0]; this.tooBig = f ? f.size > 5242880 : false; this.preview = f && !this.tooBig ? URL.createObjectURL(f) : null; if (this.tooBig) e.target.value = ''; },
@@ -93,7 +85,6 @@
                         
                     </div>
                 </form>
-                </div>
 
             </div>
         </div>
