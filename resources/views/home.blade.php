@@ -63,7 +63,7 @@
                     </ul>
                 </div>
 
-                <a data-reveal href="{{ route('chatbot.widget') }}" class="cg-btn-secondary w-full sm:w-auto">{{ __('Prefer to just talk it through?') }} <span aria-hidden="true">&rarr;</span></a>
+                <a data-reveal href="{{ route('reports.create') }}" class="cg-btn-secondary w-full sm:w-auto">{{ __('Prefer to just talk it through?') }} <span aria-hidden="true">&rarr;</span></a>
 
             @elseif ($user->role === 'tanod')
 
