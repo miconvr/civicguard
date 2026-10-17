@@ -49,11 +49,11 @@
 
             <div class="cg-card">
                 <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Severity Rated By</h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Which model or rating method assessed each report when it was submitted.</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">A report counts under each model that rated it, so a multi-model report can appear more than once.</p>
                 @php $usageMax = max(1, max(collect($modelUsage)->except('Before tracking')->all() ?: [0])); @endphp
                 <ul class="space-y-3">
                     @foreach ($modelUsage as $label => $count)
-                        @continue($label === 'Before tracking')
+                        @continue($label === 'Before tracking' || ($label === 'Model vote' && $count === 0))
                         <li>
                             <div class="flex items-center justify-between text-sm text-gray-700 dark:text-gray-300 mb-1">
                                 <span class="inline-flex items-center gap-1.5">
