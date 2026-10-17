@@ -87,7 +87,13 @@
             'category' => __('Category'),
             'description' => __('What happened?'),
             'location' => __('Location'),
-            'useDetails' => __('Use these details in the form'),
+            'submitReport' => __('Submit Report'),
+            'submitting' => __('Submitting...'),
+            'submitted' => __('Report submitted'),
+            'success' => __('Your report is now with barangay staff. You can track its status on My Reports.'),
+            'viewReports' => __('View My Reports'),
+            'reportsUrl' => route('reports.index'),
+            'submitError' => __('We could not submit your report. Please try again or use the standard form.'),
             'keepChatting' => __('Keep chatting instead'),
         ]) }};
 
@@ -172,20 +178,20 @@
             });
 
             const btnRow = document.createElement('div');
-            btnRow.className = 'flex gap-2 pt-2';
+            btnRow.className = 'flex flex-wrap gap-2 pt-2';
 
-            const useBtn = document.createElement('button');
-            useBtn.type = 'button';
-            useBtn.className = 'cg-btn text-sm';
-            useBtn.textContent = reviewText.useDetails;
-            useBtn.onclick = () => applyReportDraft(data);
+            const submitBtn = document.createElement('button');
+            submitBtn.type = 'button';
+            submitBtn.className = 'cg-btn min-h-[44px] text-sm';
+            submitBtn.textContent = reviewText.submitReport;
+            submitBtn.onclick = () => submitReport(data, submitBtn);
 
             const cancelBtn = document.createElement('button');
             cancelBtn.className = 'text-sm text-gray-500 dark:text-gray-400 hover:underline';
             cancelBtn.textContent = reviewText.keepChatting;
             cancelBtn.onclick = () => card.closest('div.text-left').remove();
 
-            btnRow.appendChild(useBtn);
+            btnRow.appendChild(submitBtn);
             btnRow.appendChild(cancelBtn);
             card.appendChild(btnRow);
 
@@ -193,33 +199,80 @@
             log.appendChild(row);
             log.scrollTop = log.scrollHeight;
         }
-        function applyReportDraft(data) {
-            const description = document.getElementById('description');
-            const category = document.getElementById('category_id');
-            const location = document.getElementById('location_text');
+        function showSuccessCard() {
+            const row = document.createElement('div');
+            row.className = 'text-left';
 
-            if (description && data.description) {
-                description.value = data.description;
-                description.dispatchEvent(new Event('input', { bubbles: true }));
-            }
-            if (category && data.category_id) {
-                category.value = String(data.category_id);
-                category.dispatchEvent(new Event('change', { bubbles: true }));
-            }
-            if (location && data.location) {
-                location.value = data.location;
-                location.dispatchEvent(new Event('input', { bubbles: true }));
-            }
+            const card = document.createElement('div');
+            card.className = 'border-2 border-green-600 rounded-lg p-4 bg-green-50 dark:bg-gray-900 flex items-start gap-3';
 
-            window.dispatchEvent(new CustomEvent('report-draft-applied'));
-            description?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            window.setTimeout(() => description?.focus(), 250);
+            const icon = document.createElement('span');
+            icon.className = 'text-green-700 dark:text-green-300';
+            icon.setAttribute('aria-hidden', 'true');
+            icon.innerHTML = '<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
+
+            const content = document.createElement('div');
+            const title = document.createElement('p');
+            title.className = 'text-sm font-semibold text-green-800 dark:text-green-300';
+            title.textContent = reviewText.submitted;
+
+            const description = document.createElement('p');
+            description.className = 'mt-1 text-sm text-gray-700 dark:text-gray-200';
+            description.textContent = reviewText.success;
+
+            const link = document.createElement('a');
+            link.className = 'mt-2 inline-flex min-h-[44px] items-center font-semibold text-maroon-700 underline dark:text-[#c27872]';
+            link.href = reviewText.reportsUrl;
+            link.textContent = reviewText.viewReports;
+
+            content.append(title, description, link);
+            card.append(icon, content);
+            row.appendChild(card);
+            log.appendChild(row);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        async function submitReport(data, btn) {
+            const originalLabel = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = reviewText.submitting;
+
+            const formData = new FormData();
+            formData.append('category_id', data.category_id);
+            formData.append('description', data.description);
+            formData.append('location_text', data.location);
+
+            try {
+                const response = await fetch("{{ route('reports.store') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    },
+                    body: formData,
+                });
+                const landedOnReports = response.redirected
+                    && new URL(response.url).pathname === new URL(reviewText.reportsUrl, window.location.origin).pathname;
+
+                if (!response.ok || !landedOnReports) {
+                    throw new Error(response.status === 419 ? 'expired' : 'submit');
+                }
+
+                btn.textContent = reviewText.submitted;
+                showSuccessCard();
+            } catch (error) {
+                btn.disabled = false;
+                btn.textContent = originalLabel;
+                addMessage(error.message === 'expired' ? t.expired : !navigator.onLine ? t.offline : reviewText.submitError, 'bot');
+            }
         }
 
         const t = {{ Js::from([
             'error' => __('Sorry, something went wrong. Please try again.'),
             'offline' => __("You're offline. Please check your connection and try again."),
             'expired' => __('Your session expired. Please refresh the page and try again.'),
+            'submitError' => __('We could not submit your report. Please try again or use the standard form.'),
             'slow' => __('That took too long. Please try again.'),
             'rate' => __('You are sending messages too quickly. Please wait a moment.'),
             'retry' => __('Try again'),
