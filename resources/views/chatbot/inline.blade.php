@@ -25,7 +25,7 @@
     </style>
 
     <div @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="my-6 overflow-hidden rounded-xl border border-stone-200 bg-[#fbf8f3] dark:border-[#3d3d3a] dark:bg-[#211f1e]">
-        <div class="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:px-8">
+        <div x-show="!chatOpen" x-cloak class="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:px-8">
             <div class="flex min-w-0 flex-1 items-center gap-3">
                 <span class="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-[#ddc9b7] bg-[#f7eee5]" aria-hidden="true">
                     @include('chatbot.mascot')
