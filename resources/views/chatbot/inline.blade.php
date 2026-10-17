@@ -22,28 +22,38 @@
         @media (prefers-reduced-motion: reduce) {
             .typing-dot { animation: typing-fade 1.6s infinite ease-in-out both; }
         }
-        .cg-chat-mark { animation: cg-chat-drift 3.6s ease-in-out infinite; }
-        .cg-chat-signal { transform-origin: 50% 50%; animation: cg-chat-signal 2.8s ease-in-out infinite; }
-        @keyframes cg-chat-drift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-        @keyframes cg-chat-signal { 0%, 75%, 100% { transform: scale(1); } 82% { transform: scale(1.12); } 89% { transform: scale(1); } }
-        @media (prefers-reduced-motion: reduce) { .cg-chat-mark, .cg-chat-signal { animation: none; } }
     </style>
 
-    <div x-data="{ chatOpen: false }" @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.mascot.focus()); }" class="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-4 z-40 sm:right-6">
-        <div x-show="chatOpen" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-3 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0 scale-100" x-transition:leave-end="opacity-0 translate-y-3 scale-95" id="report-ai-chat" role="dialog" aria-label="{{ __('CivicGuard AI Chatbot') }}" class="absolute bottom-[4.5rem] right-0 flex w-[min(24rem,calc(100vw-2rem))] origin-bottom-right flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl dark:border-gray-700 dark:bg-[#262624]" style="height:min(76dvh,42rem,calc(100dvh - 6rem))">
+    <div x-data="{ chatOpen: false }" @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="my-6 -mx-6 border-y border-stone-200 bg-[#fbf8f3] dark:border-[#3d3d3a] dark:bg-[#211f1e] sm:-mx-8">
+        <div class="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:px-8">
+            <div class="flex min-w-0 flex-1 items-center gap-3">
+                <span class="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-[#ddc9b7] bg-[#f7eee5]" aria-hidden="true">
+                    @include('chatbot.mascot')
+                </span>
+                <span class="min-w-0">
+                    <span class="block text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('Need a hand with your report?') }}</span>
+                    <span class="mt-0.5 block text-sm leading-5 text-gray-600 dark:text-gray-400">{{ __('CivicGuard AI can help you organize the details.') }}</span>
+                </span>
+            </div>
+            <button type="button" x-ref="chatToggle" @click="chatOpen = !chatOpen; if (chatOpen) $nextTick(() => document.getElementById('chat-input')?.focus())" :aria-expanded="chatOpen.toString()" aria-controls="report-ai-chat" class="inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 rounded-lg border border-maroon-700 px-4 py-2 text-sm font-semibold text-maroon-800 transition-colors hover:bg-maroon-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-[#b98286] dark:text-gray-100 dark:hover:bg-white/5 sm:w-auto">
+                <span x-text="chatOpen ? @js(__('Close chat')) : @js(__('Open chat'))">{{ __('Open chat') }}</span>
+                <svg class="h-4 w-4 transition-transform" :class="chatOpen ? 'rotate-180' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
+            </button>
+        </div>
 
-                <div class="flex shrink-0 items-center gap-3 border-b border-gray-100 bg-[#fffaf5] px-4 py-3 dark:border-gray-700 dark:bg-[#302b29]">
-                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-maroon-100 dark:bg-[#252321] dark:ring-maroon-800" aria-hidden="true">
-                        <x-application-logo class="h-7 w-7" />
+        <div x-show="chatOpen" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" id="report-ai-chat" role="region" aria-label="{{ __('CivicGuard AI') }}" class="border-t border-stone-200 bg-white dark:border-[#3d3d3a] dark:bg-[#262624]">
+                <div class="flex items-center gap-3 px-4 py-3 sm:px-6">
+                    <span class="h-9 w-9 shrink-0 overflow-hidden rounded-full border border-[#ddc9b7] bg-[#f7eee5]" aria-hidden="true">
+                        @include('chatbot.mascot')
                     </span>
                     <div class="min-w-0 flex-1">
-                        <p class="text-sm font-bold leading-tight text-maroon-900 dark:text-gray-100">{{ __('Report helper') }}</p>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('CivicGuard AI Chatbot') }}</p>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('CivicGuard AI') }}</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('Your report-writing assistant') }}</p>
                     </div>
-                    <button type="button" @click="chatOpen = false; $nextTick(() => $refs.mascot.focus())" aria-label="{{ __('Close') }}" class="inline-flex h-10 w-10 items-center justify-center rounded-full text-gray-600 transition hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-maroon-700 dark:text-gray-300 dark:hover:bg-white/10"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="m6 6 12 12M18 6 6 18"/></svg></button>
+                    <button type="button" @click="chatOpen = false; $nextTick(() => $refs.chatToggle.focus())" aria-label="{{ __('Close chat') }}" class="inline-flex h-10 w-10 items-center justify-center rounded-full text-gray-600 transition hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-maroon-700 dark:text-gray-300 dark:hover:bg-white/10"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="m6 6 12 12M18 6 6 18"/></svg></button>
                 </div>
 
-                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="min-h-0 flex-1 space-y-3 overflow-y-auto p-4">
+                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="min-h-36 space-y-3 overflow-y-auto border-y border-gray-100 px-4 py-4 dark:border-gray-700 sm:px-6" style="height:min(38dvh,22rem)">
                     <div class="text-sm text-left">
                         <span class="px-4 py-3 rounded-2xl rounded-tl-sm inline-block max-w-[90%] text-left bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
                             {{ __('Hi! Tell me what happened and I can help you put together a clear incident report.') }}
@@ -51,13 +61,13 @@
                     </div>
                 </div>
 
-                <div id="chat-chips" class="flex shrink-0 flex-nowrap gap-2 overflow-x-auto border-t border-gray-100 px-4 pb-3 pt-3 dark:border-gray-700 sm:flex-wrap sm:overflow-visible">
+                <div id="chat-chips" class="flex flex-nowrap gap-2 overflow-x-auto px-4 pb-3 pt-3 sm:flex-wrap sm:overflow-visible sm:px-6">
                     @foreach ([__('I want to report an incident'), __('How do I track my report?'), __('What counts as an emergency?'), __('What do the urgency levels mean?')] as $chip)
                         <button type="button" class="shrink-0 whitespace-nowrap min-h-[40px] sm:min-h-[44px] rounded-full border border-gray-300 dark:border-gray-600 px-3.5 sm:px-4 py-1.5 sm:py-2 text-[13px] sm:text-sm font-medium text-gray-800 dark:text-gray-200 transition hover:border-maroon-700 hover:text-maroon-700 dark:hover:text-white disabled:opacity-50">{{ $chip }}</button>
                     @endforeach
                 </div>
 
-                <form id="chat-form" class="flex shrink-0 gap-2 border-t border-gray-100 p-3 dark:border-gray-700">
+                <form id="chat-form" class="flex gap-2 border-t border-gray-100 p-3 dark:border-gray-700 sm:px-6">
                     <input type="text" id="chat-input" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Describe your concern or ask a question…') }}" class="cg-input min-w-0 flex-1 min-h-[44px]" autocomplete="off">
                     <button type="submit" id="chat-send" class="cg-btn min-h-[44px] disabled:cursor-wait disabled:opacity-60" aria-busy="false">
                         <span id="chat-send-label">{{ __('Send') }}</span>
@@ -65,20 +75,11 @@
                     </button>
                 </form>
 
-                <p class="shrink-0 px-3 pb-3 text-xs cg-muted">
+                <p class="px-3 pb-3 text-xs cg-muted sm:px-6">
                     <strong>{{ __('In immediate danger? Call 911 first.') }}</strong>
                     {{ __('Reports are reviewed by staff and are not answered instantly.') }}
                 </p>
         </div>
-
-        <button type="button" x-ref="mascot" @click="chatOpen = !chatOpen; if (chatOpen) $nextTick(() => document.getElementById('chat-input')?.focus())" :aria-expanded="chatOpen.toString()" aria-controls="report-ai-chat" :aria-label="chatOpen ? @js(__('Close AI chat')) : @js(__('Open AI chat'))" :title="chatOpen ? @js(__('Close AI chat')) : @js(__('Chat with CivicGuard AI'))" class="group relative flex h-14 w-14 items-center justify-center rounded-2xl border border-[#ead8d1] bg-[#fffaf5] shadow-lg shadow-maroon-950/15 transition duration-200 hover:-translate-y-1 hover:border-maroon-300 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-maroon-800 dark:border-[#554340] dark:bg-[#302b29] sm:h-16 sm:w-16">
-            <span class="cg-chat-mark relative flex h-10 w-10 items-center justify-center sm:h-11 sm:w-11" aria-hidden="true">
-                <x-application-logo class="h-full w-full" />
-            </span>
-            <span class="cg-chat-signal absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-[#fffaf5] bg-amber-300 text-maroon-900 shadow-sm dark:border-[#302b29]" aria-hidden="true">
-                <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4.75A2.75 2.75 0 0 1 5.75 2h8.5A2.75 2.75 0 0 1 17 4.75v5.5A2.75 2.75 0 0 1 14.25 13H9l-4.8 3.6A.75.75 0 0 1 3 16v-3.2a2.75 2.75 0 0 1-1-2.1V4.75h1Zm3.25 2a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8Zm3.75 0a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8Zm3.75 0a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8Z"/></svg>
-            </span>
-        </button>
     </div>
 
     <script>
