@@ -47,7 +47,6 @@
                         <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('CivicGuard AI') }}</p>
                         <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('Your report-writing assistant') }}</p>
                     </div>
-                    <button type="button" @click="chatOpen = false; $nextTick(() => $refs.chatToggle.focus())" aria-label="{{ __('Close chat') }}" class="inline-flex h-10 w-10 items-center justify-center rounded-full text-gray-600 transition hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-maroon-700 dark:text-gray-300 dark:hover:bg-white/10"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="m6 6 12 12M18 6 6 18"/></svg></button>
                 </div>
 
                 <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="min-h-36 space-y-3 overflow-y-auto border-y border-gray-100 px-4 py-4 dark:border-gray-700 sm:px-6" style="height:min(38dvh,22rem)">
