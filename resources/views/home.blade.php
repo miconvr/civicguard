@@ -63,8 +63,6 @@
                     </ul>
                 </div>
 
-                <a data-reveal href="{{ route('reports.create') }}" class="cg-btn-secondary self-start sm:self-auto">{{ __('Prefer to just talk it through?') }} <span aria-hidden="true">&rarr;</span></a>
-
             @elseif ($user->role === 'tanod')
 
                 <div class="flex flex-wrap gap-3" data-reveal>
