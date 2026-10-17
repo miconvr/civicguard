@@ -14,9 +14,9 @@
 
     <div class="py-8">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="cg-card p-6 sm:p-8" x-data="{ reportMode: {{ Js::from($initialReportMode) }}, chatOpen: {{ Js::from($initialReportMode === 'assistant') }}, formLeaving: false, formExitTimer: null, setReportMode(mode) { window.clearTimeout(this.formExitTimer); this.formExitTimer = null; this.formLeaving = false; this.reportMode = mode; const url = new URL(window.location.href); if (mode) url.searchParams.set('report_mode', mode); else url.searchParams.delete('report_mode'); window.history.replaceState({}, '', url); }, leaveForm() { if (this.formLeaving) return; if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { this.setReportMode(null); return; } this.formLeaving = true; this.formExitTimer = window.setTimeout(() => this.finishFormExit(), 220); }, finishFormExit() { if (!this.formLeaving) return; window.clearTimeout(this.formExitTimer); this.formExitTimer = null; this.formLeaving = false; this.setReportMode(null); } }" x-init="if (reportMode && !new URLSearchParams(window.location.search).has('report_mode')) setReportMode(reportMode)" @report-draft-applied.window="setReportMode('form')">
+            <div class="cg-card p-6 sm:p-8" x-data="{ reportMode: {{ Js::from($initialReportMode) }}, chatOpen: {{ Js::from($initialReportMode === 'assistant') }}, panelLeaving: false, panelExitTimer: null, setReportMode(mode) { window.clearTimeout(this.panelExitTimer); this.panelExitTimer = null; this.panelLeaving = false; this.reportMode = mode; const url = new URL(window.location.href); if (mode) url.searchParams.set('report_mode', mode); else url.searchParams.delete('report_mode'); window.history.replaceState({}, '', url); }, leavePanel() { if (this.panelLeaving) return; if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { this.setReportMode(null); return; } this.panelLeaving = true; this.panelExitTimer = window.setTimeout(() => this.finishPanelExit(), 220); }, finishPanelExit() { if (!this.panelLeaving) return; window.clearTimeout(this.panelExitTimer); this.panelExitTimer = null; this.panelLeaving = false; this.setReportMode(null); } }" x-init="if (reportMode && !new URLSearchParams(window.location.search).has('report_mode')) setReportMode(reportMode)" @report-draft-applied.window="setReportMode('form')">
 
-                <section x-show="!reportMode" x-cloak aria-labelledby="report-method-heading">
+                <section x-show="!reportMode" x-cloak x-transition:enter="cg-report-panel-transition" x-transition:enter-start="cg-report-panel-enter-start" x-transition:enter-end="cg-report-panel-enter-end" aria-labelledby="report-method-heading">
                     <h3 id="report-method-heading" class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('How would you like to report?') }}</h3>
                     <p class="mb-5 text-sm text-gray-600 dark:text-gray-400">{{ __('Choose the option that feels easiest. You can review everything before submitting.') }}</p>
                     <div class="grid gap-3 sm:grid-cols-2">
@@ -31,16 +31,16 @@
                     </div>
                 </section>
 
-                <section x-show="reportMode === 'assistant'" x-cloak aria-label="{{ __('AI report assistant') }}">
-                    <button type="button" @click="setReportMode(null)" class="mb-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">
+                <section x-show="reportMode === 'assistant'" x-cloak x-transition:enter="cg-report-panel-transition" x-transition:enter-start="cg-report-panel-enter-start" x-transition:enter-end="cg-report-panel-enter-end" class="cg-report-mode-panel" :class="panelLeaving ? 'is-leaving' : ''" @transitionend.self="if ($event.propertyName === 'opacity') finishPanelExit()" aria-label="{{ __('AI report assistant') }}">
+                    <button type="button" @click="leavePanel()" class="mb-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6M9 12h12"/></svg>
                         {{ __('Choose another way to report') }}
                     </button>
                     @include('chatbot.inline')
                 </section>
 
-                <section x-show="reportMode === 'form'" x-cloak class="cg-report-form-panel" :class="formLeaving ? 'is-leaving' : ''" @transitionend.self="if ($event.propertyName === 'opacity') finishFormExit()" aria-label="{{ __('Incident report form') }}">
-                    <button type="button" @click="leaveForm()" class="mb-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">
+                <section x-show="reportMode === 'form'" x-cloak x-transition:enter="cg-report-panel-transition" x-transition:enter-start="cg-report-panel-enter-start" x-transition:enter-end="cg-report-panel-enter-end" class="cg-report-mode-panel" :class="panelLeaving ? 'is-leaving' : ''" @transitionend.self="if ($event.propertyName === 'opacity') finishPanelExit()" aria-label="{{ __('Incident report form') }}">
+                    <button type="button" @click="leavePanel()" class="mb-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6M9 12h12"/></svg>
                         {{ __('Choose another way to report') }}
                     </button>
