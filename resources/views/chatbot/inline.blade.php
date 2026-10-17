@@ -83,6 +83,14 @@
         const input = document.getElementById('chat-input');
         const sendBtn = document.getElementById('chat-send');
         const log = document.getElementById('chat-log');
+        const reviewText = {{ Js::from([
+            'title' => __('Review Before Submitting'),
+            'category' => __('Category'),
+            'description' => __('What happened?'),
+            'location' => __('Location'),
+            'useDetails' => __('Use these details in the form'),
+            'keepChatting' => __('Keep chatting instead'),
+        ]) }};
 
         function addMessage(text, who) {
             const row = document.createElement('div');
@@ -146,13 +154,13 @@
 
             const title = document.createElement('p');
             title.className = 'text-xs font-semibold uppercase tracking-wider text-maroon-700 dark:text-gray-200';
-            title.textContent = 'Review Before Submitting';
+            title.textContent = reviewText.title;
             card.appendChild(title);
 
             const fields = [
-                ['Category', data.category_name],
-                ['What happened', data.description],
-                ['Location', data.location],
+                [reviewText.category, data.category_name],
+                [reviewText.description, data.description],
+                [reviewText.location, data.location],
             ];
             fields.forEach(([label, value]) => {
                 const p = document.createElement('p');
@@ -170,12 +178,12 @@
             const useBtn = document.createElement('button');
             useBtn.type = 'button';
             useBtn.className = 'cg-btn text-sm';
-            useBtn.textContent = 'Use these details in the form';
+            useBtn.textContent = reviewText.useDetails;
             useBtn.onclick = () => applyReportDraft(data);
 
             const cancelBtn = document.createElement('button');
             cancelBtn.className = 'text-sm text-gray-500 dark:text-gray-400 hover:underline';
-            cancelBtn.textContent = 'Keep chatting instead';
+            cancelBtn.textContent = reviewText.keepChatting;
             cancelBtn.onclick = () => card.closest('div.text-left').remove();
 
             btnRow.appendChild(useBtn);
