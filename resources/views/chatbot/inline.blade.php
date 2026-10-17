@@ -72,10 +72,7 @@
                     </button>
                 </form>
 
-                <p class="px-3 pb-3 text-xs cg-muted sm:px-6">
-                    <strong>{{ __('In immediate danger? Call 911 first.') }}</strong>
-                    {{ __('Reports are reviewed by staff and are not answered instantly.') }}
-                </p>
+                <p class="px-3 pb-3 text-xs cg-muted sm:px-6">{{ __('Reports are reviewed by staff and are not answered instantly.') }}</p>
         </div>
     </div>
 

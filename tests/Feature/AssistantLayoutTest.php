@@ -17,6 +17,8 @@ test('residents can choose between the AI assistant and the standard report form
         ->assertSee('Fill out the form myself')
         ->assertSee('sm:grid-cols-2', false)
         ->assertSee('min-h-11', false)
+        ->assertSee('report-choice-card-delayed', false)
+        ->assertDontSee('In immediate danger? Call 911 first.')
         ->assertSee('id="description"', false)
         ->assertSee('Need a hand with your report?')
         ->assertSee('Open chat')
