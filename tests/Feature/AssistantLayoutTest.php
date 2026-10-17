@@ -30,3 +30,19 @@ test('the standalone chatbot page route has been removed while message sending r
     expect(Route::has('chatbot.widget'))->toBeFalse()
         ->and(Route::has('chatbot.send'))->toBeTrue();
 });
+
+test('changing language returns residents to their selected reporting method', function () {
+    $user = User::factory()->create(['role' => 'resident']);
+    $selectedAssistant = route('reports.create', ['report_mode' => 'assistant']);
+
+    $this->actingAs($user)
+        ->from($selectedAssistant)
+        ->get(route('locale.switch', 'tl'))
+        ->assertRedirect($selectedAssistant)
+        ->assertSessionHas('locale', 'tl');
+
+    $this->get($selectedAssistant)
+        ->assertOk()
+        ->assertSee('Paano mo gustong mag-ulat?')
+        ->assertSee('Pumili ng ibang paraan ng pag-uulat');
+});
