@@ -108,6 +108,10 @@
         animation: cg-page-enter var(--cg-motion-page) var(--cg-ease-out) both;
     }
 
+    .cg-page-exit {
+        animation: cg-page-enter var(--cg-motion-page) var(--cg-ease-out) reverse both;
+    }
+
     .cg-page-enter-late { animation-delay: 60ms; }
 
     .t-dropdown {
@@ -1314,7 +1318,8 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .cg-page-enter {
+    .cg-page-enter,
+    .cg-page-exit {
         animation: none !important;
     }
 }
