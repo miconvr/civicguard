@@ -108,7 +108,6 @@
                 @endif
                 @endif
 
-                <p class="{{ $groupLabel }} pt-4">{{ __('General') }}</p>
             @endif
 
         </nav>
