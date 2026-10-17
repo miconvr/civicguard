@@ -24,7 +24,7 @@
 
             <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <p class="text-sm text-gray-700 dark:text-gray-300">{{ __('Your reports are private to you and barangay staff.') }}</p>
-                <a href="{{ route('reports.create') }}" class="cg-btn w-full sm:w-auto">
+                <a href="{{ route('reports.create') }}" class="cg-btn self-start sm:self-auto">
                     {{ __('+ Report New Incident') }}
                 </a>
             </div>

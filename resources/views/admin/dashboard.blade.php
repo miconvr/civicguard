@@ -54,7 +54,7 @@
                     @foreach (['active' => 'Active', 'pending' => 'Pending', 'in_progress' => 'In progress', 'resolved' => 'Resolved', 'all' => 'All'] as $key => $label)
                         <a href="{{ route('admin.dashboard', array_merge(request()->except('page'), ['tab' => $key])) }}"
                            @if ($tab === $key) aria-current="page" @endif
-                           class="px-4 py-2 -mb-px {{ $tab === $key ? 'border-b-2 border-maroon-700 font-semibold text-maroon-700 dark:text-white dark:border-white' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
+                           class="inline-flex min-h-11 items-center px-3 sm:px-4 -mb-px {{ $tab === $key ? 'border-b-2 border-maroon-700 font-semibold text-maroon-700 dark:text-white dark:border-white' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
                             {{ $label }}
                         </a>
                     @endforeach
@@ -147,7 +147,7 @@
                x-transition:enter="transition duration-200" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
                x-transition:leave="transition duration-150" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
                role="dialog" aria-modal="true" aria-label="Report details"
-               class="fixed inset-y-0 right-0 z-50 w-full max-w-md overflow-y-auto cg-surface-raised dark:bg-gray-900 p-6 shadow-xl">
+               class="fixed inset-y-0 right-0 z-50 w-full max-w-md overflow-y-auto cg-surface-raised dark:bg-gray-900 p-4 sm:p-6 shadow-xl">
             <template x-if="r">
                 <div class="space-y-5">
                     <div class="flex items-start justify-between gap-4">
@@ -155,7 +155,7 @@
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100" x-text="r.category"></h3>
                             <p class="text-sm text-gray-500 dark:text-gray-400" x-text="r.location"></p>
                         </div>
-                        <button type="button" @click="open = false" aria-label="Close" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-xl leading-none">✕</button>
+                        <button type="button" @click="open = false" aria-label="Close" class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-gray-400 hover:bg-black/5 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-white text-xl leading-none">✕</button>
                     </div>
 
                     <div class="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
@@ -189,7 +189,7 @@
                                     <option value="high">High</option>
                                     <option value="critical">Critical</option>
                                 </select>
-                                <button class="bg-maroon-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-maroon-800">Save</button>
+                                <button class="min-h-11 shrink-0 rounded-lg bg-maroon-700 px-3 py-2 text-sm font-medium text-white hover:bg-maroon-800 sm:px-4">Save</button>
                             </div>
                             <p class="text-xs text-gray-500 dark:text-gray-400">Set automatically from the report text. Correct it if it is wrong.</p>
                         </form>
@@ -205,7 +205,7 @@
                                 <option value="in_progress">In progress</option>
                                 <option value="resolved">Resolved</option>
                             </select>
-                            <button class="bg-maroon-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-maroon-800">Save</button>
+                                <button class="min-h-11 shrink-0 rounded-lg bg-maroon-700 px-3 py-2 text-sm font-medium text-white hover:bg-maroon-800 sm:px-4">Save</button>
                         </div>
                     </form>
 
@@ -223,7 +223,7 @@
                                     <option value="{{ $tanod->id }}">{{ $tanod->name }}</option>
                                 @endforeach
                             </select>
-                            <button class="bg-maroon-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-maroon-800">Assign</button>
+                            <button class="min-h-11 shrink-0 rounded-lg bg-maroon-700 px-3 py-2 text-sm font-medium text-white hover:bg-maroon-800 sm:px-4">Assign</button>
                         </div>
                     </form>
 
