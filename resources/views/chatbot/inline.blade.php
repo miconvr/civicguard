@@ -1,11 +1,3 @@
-<x-app-layout>
-    <x-slot name="headerWidth">max-w-2xl</x-slot>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
-            {{ __('CivicGuard AI Chatbot') }}
-        </h2>
-    </x-slot>
-
     <style>
         .typing-dot {
             width: 7px;
@@ -32,21 +24,22 @@
         }
     </style>
 
-    <div class="py-3 sm:py-8">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            @if (request()->query('from') === 'report')
-                <a href="{{ route('reports.create') }}" class="mb-3 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-3 text-sm font-semibold text-maroon-700 transition-colors hover:bg-maroon-50 dark:text-gray-200 dark:hover:bg-white/5">
-                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-                    {{ __('Back to report form') }}
-                </a>
-            @endif
-            <div class="cg-card p-3 sm:p-6">
+    <div class="mb-6">
+        <div class="cg-card p-3 sm:p-6">
 
                 <div class="mb-3 flex items-center gap-3 border-b border-gray-100 pb-3 dark:border-gray-700 sm:mb-4 sm:pb-4">
-                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-gray-200 dark:ring-gray-600" aria-hidden="true"><x-application-logo class="h-8 w-8" /></span>
+                    <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-maroon-50 shadow-sm ring-1 ring-maroon-100 dark:bg-maroon-900/30 dark:ring-maroon-800" aria-hidden="true">
+                        <svg class="h-10 w-10" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24 4 40 10v12c0 10-6.6 17.8-16 22-9.4-4.2-16-12-16-22V10L24 4Z" fill="#7F1D1D"/>
+                            <path d="M15 20c0-5 4-8 9-8s9 3 9 8v8c0 5-4 8-9 8s-9-3-9-8v-8Z" fill="#FFF7ED"/>
+                            <circle cx="21" cy="23" r="1.7" fill="#292524"/><circle cx="27" cy="23" r="1.7" fill="#292524"/>
+                            <path d="M20 29c1.1 1.2 2.4 1.8 4 1.8s2.9-.6 4-1.8" stroke="#7F1D1D" stroke-width="1.8" stroke-linecap="round"/>
+                            <path d="M34 12v7m-3.5-3.5h7" stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </span>
                     <div class="min-w-0">
-                        <p class="text-base font-bold leading-tight text-maroon-900 dark:text-gray-100">CivicGuard</p>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('AI Chatbot') }}</p>
+                        <p class="text-base font-bold leading-tight text-maroon-900 dark:text-gray-100">{{ __('Report helper') }}</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('CivicGuard AI Chatbot') }}</p>
                     </div>
                 </div>
 
@@ -77,7 +70,6 @@
                     {{ __('Reports are reviewed by staff and are not answered instantly.') }}
                 </p>
 
-            </div>
         </div>
     </div>
 
@@ -385,4 +377,3 @@
         });
         chips.querySelectorAll('button').forEach(b => b.addEventListener('click', () => sendMessage(b.textContent)));
     </script>
-</x-app-layout>

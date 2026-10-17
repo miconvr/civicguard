@@ -111,11 +111,6 @@
                 <p class="{{ $groupLabel }} pt-4">{{ __('General') }}</p>
             @endif
 
-            @if (in_array($role, ['resident', 'admin', 'official']))
-                <x-sidebar-link icon="bot" :href="route('chatbot.widget')" :active="request()->routeIs('chatbot.widget')">
-                    <span class="font-bold text-white">{{ __('AI') }}</span> {{ __('Chatbot') }}
-                </x-sidebar-link>
-            @endif
         </nav>
 
         <!-- Bottom section -->
