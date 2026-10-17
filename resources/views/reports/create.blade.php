@@ -17,16 +17,7 @@
 
                 <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('Tell us what happened') }}</h3>
 
-                <a href="{{ route('chatbot.widget', ['from' => 'report']) }}" class="group mb-6 flex items-center gap-4 rounded-xl bg-maroon-700 p-4 text-white shadow-sm transition-colors hover:bg-maroon-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700">
-                    <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/15" aria-hidden="true">
-                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8m-8 4h5m-9 6 1.8-4.5A8 8 0 1 1 20 15.5L22 20l-5-1.5A8 8 0 0 1 4 12c0-1 .2-2 .6-3"/></svg>
-                    </span>
-                    <span class="min-w-0 flex-1">
-                        <span class="block font-semibold">{{ __('Need help making a report?') }}</span>
-                        <span class="mt-1 block text-sm text-white/85">{{ __('Describe what happened to the AI Chatbot and get help preparing your report.') }}</span>
-                        <span class="mt-2 block text-sm font-semibold transition-transform group-hover:translate-x-1">{{ __('Chat with AI Chatbot →') }}</span>
-                    </span>
-                </a>
+                @include('chatbot.inline')
 
                 <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-6"
                       x-data="{ cat: '{{ old('category_id') }}', descs: {{ Js::from($categories->pluck('description', 'id')) }}, len: {{ strlen(old('description', '')) }}, preview: null, tooBig: false, suggested: false, timer: null,
