@@ -63,9 +63,9 @@
                     @endforeach
                 </div>
 
-                <form id="chat-form" class="flex gap-2 border-t border-gray-100 p-3 dark:border-gray-700 sm:px-6">
-                    <input type="text" id="chat-input" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Describe your concern or ask a question…') }}" class="cg-input min-w-0 flex-1 min-h-[44px]" autocomplete="off">
-                    <button type="submit" id="chat-send" class="cg-btn min-h-[44px] disabled:cursor-wait disabled:opacity-60" aria-busy="false">
+                <form id="chat-form" class="flex items-end gap-2 border-t border-gray-100 p-3 dark:border-gray-700 sm:px-6">
+                    <textarea id="chat-input" rows="1" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Type your message...') }}" class="cg-input min-h-[44px] max-h-32 min-w-0 flex-1 resize-none overflow-y-hidden py-2.5 leading-5" style="height:44px" autocomplete="off"></textarea>
+                    <button type="submit" id="chat-send" class="cg-btn min-h-[44px] shrink-0 disabled:cursor-wait disabled:opacity-60" aria-busy="false">
                         <span id="chat-send-label">{{ __('Send') }}</span>
                         <span id="chat-send-spinner" class="hidden"><span class="inline-flex items-center gap-2" role="status"><svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>{{ __('Sending...') }}</span></span>
                     </button>
@@ -96,6 +96,14 @@
             'submitError' => __('We could not submit your report. Please try again or use the standard form.'),
             'keepChatting' => __('Keep chatting instead'),
         ]) }};
+
+        function resizeChatInput() {
+            const maxHeight = 128;
+            input.style.height = '44px';
+            const height = Math.min(input.scrollHeight, maxHeight);
+            input.style.height = height + 'px';
+            input.style.overflowY = input.scrollHeight > maxHeight ? 'auto' : 'hidden';
+        }
 
         function addMessage(text, who) {
             const row = document.createElement('div');
@@ -347,6 +355,7 @@
                 conversationHistory += 'Resident: ' + message + '\n';
             }
             input.value = '';
+            resizeChatInput();
             setBusy(true);
             showTyping();
 
@@ -396,6 +405,13 @@
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             sendMessage(input.value);
+        });
+        input.addEventListener('input', resizeChatInput);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                form.requestSubmit();
+            }
         });
         chips.querySelectorAll('button').forEach(b => b.addEventListener('click', () => sendMessage(b.textContent)));
     </script>
