@@ -24,7 +24,7 @@
         }
     </style>
 
-    <div x-data="{ chatOpen: false }" @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="my-6 -mx-6 border-y border-stone-200 bg-[#fbf8f3] dark:border-[#3d3d3a] dark:bg-[#211f1e] sm:-mx-8">
+    <div @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" x-show="!showManualForm" x-cloak class="my-6 overflow-hidden rounded-xl border border-stone-200 bg-[#fbf8f3] dark:border-[#3d3d3a] dark:bg-[#211f1e]">
         <div class="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:px-8">
             <div class="flex min-w-0 flex-1 items-center gap-3">
                 <span class="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-[#ddc9b7] bg-[#f7eee5]" aria-hidden="true">
@@ -43,9 +43,6 @@
 
         <div x-show="chatOpen" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" id="report-ai-chat" role="region" aria-label="{{ __('CivicGuard AI') }}" class="border-t border-stone-200 bg-white dark:border-[#3d3d3a] dark:bg-[#262624]">
                 <div class="flex items-center gap-3 px-4 py-3 sm:px-6">
-                    <span class="h-9 w-9 shrink-0 overflow-hidden rounded-full border border-[#ddc9b7] bg-[#f7eee5]" aria-hidden="true">
-                        @include('chatbot.mascot')
-                    </span>
                     <div class="min-w-0 flex-1">
                         <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('CivicGuard AI') }}</p>
                         <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('Your report-writing assistant') }}</p>
