@@ -39,8 +39,8 @@ test('analytics counts reports by the model that rated them', function () {
 
     $this->actingAs($official)->get(route('admin.analytics'))
         ->assertOk()
-        ->assertViewHas('modelUsage', fn ($u) => $u['Groq'] === 1
-            && $u['Gemini'] === 1
-            && $u['Model vote'] === 1
+        ->assertViewHas('modelUsage', fn ($u) => $u['Groq'] === 2
+            && $u['Gemini'] === 2
+            && ! array_key_exists('Model vote', $u)
             && $u['Before tracking'] === 1);
 });
