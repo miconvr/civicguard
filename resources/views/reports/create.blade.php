@@ -77,7 +77,8 @@
                         <input type="hidden" name="latitude" value="{{ old('latitude') }}">
                         <input type="hidden" name="longitude" value="{{ old('longitude') }}">
                         <button type="button" id="use-location" class="mt-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-60 transition">
-                            <span id="use-location-label">{{ __('Pin my current location') }}</span>
+                            <svg class="h-4 w-4 text-maroon-700 dark:text-[#c27872]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                            <span id="use-location-label">{{ __('Pin') }}</span>
                         </button>
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('Optional. Helps staff find the spot.') }}</p>
                         <p id="location-status" class="mt-1 text-sm text-gray-600 dark:text-gray-400" aria-live="polite"></p>
@@ -119,30 +120,56 @@
     <script>
         const msg = {{ Js::from([
             'unsupported' => __('Location is not supported by this browser. Please type the location above.'),
+            'insecure' => __('Location access needs a secure connection (HTTPS). Please type the location above.'),
             'asking' => __('Finding your location...'),
             'ok' => __('Location pinned. Please still describe the place above so staff can find it.'),
-            'denied' => __('We could not get your location. Please type it in the box above instead.'),
-            'again' => __('Pin again'),
+            'denied' => __('Location permission was denied. Allow location access in your browser settings, then try again.'),
+            'unavailable' => __('Your location is unavailable. Turn on location services and try again.'),
+            'timeout' => __('Finding your location took too long. Move to an open area and try again.'),
+            'failed' => __('We could not get your location. Please type it in the box above instead.'),
         ]) }};
 
         document.getElementById('use-location')?.addEventListener('click', (e) => {
             const btn = e.currentTarget;
             const status = document.getElementById('location-status');
-            const label = document.getElementById('use-location-label');
             if (!navigator.geolocation) { status.textContent = msg.unsupported; return; }
+            if (!window.isSecureContext) { status.textContent = msg.insecure; return; }
             btn.disabled = true;
             status.textContent = msg.asking;
-            navigator.geolocation.getCurrentPosition(
-                (p) => {
-                    document.querySelector('input[name="latitude"]').value = p.coords.latitude.toFixed(7);
-                    document.querySelector('input[name="longitude"]').value = p.coords.longitude.toFixed(7);
-                    status.textContent = msg.ok;
-                    label.textContent = msg.again;
-                    btn.disabled = false;
-                },
-                () => { status.textContent = msg.denied; btn.disabled = false; },
-                { enableHighAccuracy: true, timeout: 10000 }
-            );
+            const latitude = document.querySelector('input[name="latitude"]');
+            const longitude = document.querySelector('input[name="longitude"]');
+            const finishWithError = (error) => {
+                status.textContent = error?.code === error.PERMISSION_DENIED ? msg.denied
+                    : error?.code === error.POSITION_UNAVAILABLE ? msg.unavailable
+                    : error?.code === error.TIMEOUT ? msg.timeout
+                    : msg.failed;
+                btn.disabled = false;
+            };
+            const savePosition = (position) => {
+                latitude.value = position.coords.latitude.toFixed(7);
+                longitude.value = position.coords.longitude.toFixed(7);
+                status.textContent = msg.ok;
+                btn.disabled = false;
+            };
+
+            navigator.geolocation.getCurrentPosition(savePosition, (error) => {
+                if (error.code === error.PERMISSION_DENIED) {
+                    finishWithError(error);
+                    return;
+                }
+
+                // Some phones cannot get a high-accuracy GPS fix indoors. Retry using
+                // the network or cached location before asking the resident to type it.
+                navigator.geolocation.getCurrentPosition(savePosition, finishWithError, {
+                    enableHighAccuracy: false,
+                    maximumAge: 120000,
+                    timeout: 20000,
+                });
+            }, {
+                enableHighAccuracy: true,
+                maximumAge: 30000,
+                timeout: 15000,
+            });
         });
     </script>
 </x-app-layout>
