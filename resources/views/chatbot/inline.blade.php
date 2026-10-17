@@ -41,7 +41,7 @@
             </button>
         </div>
 
-        <div x-show="chatOpen" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" id="report-ai-chat" role="region" aria-label="{{ __('CivicGuard AI') }}" class="border-t border-stone-200 bg-white dark:border-[#3d3d3a] dark:bg-[#262624]">
+        <div x-show="chatOpen" x-cloak id="report-ai-chat" role="region" aria-label="{{ __('CivicGuard AI') }}" class="border-t border-stone-200 bg-white dark:border-[#3d3d3a] dark:bg-[#262624]">
                 <div class="flex items-center gap-3 px-4 py-3 sm:px-6">
                     <div class="min-w-0 flex-1">
                         <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('CivicGuard AI') }}</p>
