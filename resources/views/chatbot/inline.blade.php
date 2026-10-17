@@ -24,7 +24,7 @@
         }
     </style>
 
-    <div @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" x-show="!showManualForm" x-cloak class="my-6 overflow-hidden rounded-xl border border-stone-200 bg-[#fbf8f3] dark:border-[#3d3d3a] dark:bg-[#211f1e]">
+    <div @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="my-6 overflow-hidden rounded-xl border border-stone-200 bg-[#fbf8f3] dark:border-[#3d3d3a] dark:bg-[#211f1e]">
         <div class="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:px-8">
             <div class="flex min-w-0 flex-1 items-center gap-3">
                 <span class="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-[#ddc9b7] bg-[#f7eee5]" aria-hidden="true">
@@ -170,17 +170,18 @@
             const btnRow = document.createElement('div');
             btnRow.className = 'flex gap-2 pt-2';
 
-            const submitBtn = document.createElement('button');
-            submitBtn.className = 'cg-btn text-sm';
-            submitBtn.textContent = 'Submit Report';
-            submitBtn.onclick = () => submitReport(data, submitBtn);
+            const useBtn = document.createElement('button');
+            useBtn.type = 'button';
+            useBtn.className = 'cg-btn text-sm';
+            useBtn.textContent = 'Use these details in the form';
+            useBtn.onclick = () => applyReportDraft(data);
 
             const cancelBtn = document.createElement('button');
             cancelBtn.className = 'text-sm text-gray-500 dark:text-gray-400 hover:underline';
             cancelBtn.textContent = 'Keep chatting instead';
             cancelBtn.onclick = () => card.closest('div.text-left').remove();
 
-            btnRow.appendChild(submitBtn);
+            btnRow.appendChild(useBtn);
             btnRow.appendChild(cancelBtn);
             card.appendChild(btnRow);
 
@@ -188,69 +189,27 @@
             log.appendChild(row);
             log.scrollTop = log.scrollHeight;
         }
-        function showSuccessCard() {
-            const row = document.createElement('div');
-            row.className = 'text-left';
+        function applyReportDraft(data) {
+            const description = document.getElementById('description');
+            const category = document.getElementById('category_id');
+            const location = document.getElementById('location_text');
 
-            const card = document.createElement('div');
-            card.className = 'border-2 border-green-600 rounded-lg p-4 bg-green-50 dark:bg-gray-900 flex items-start gap-3';
-
-            const icon = document.createElement('div');
-            icon.innerHTML = '<svg class="h-6 w-6 text-green-600 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>';
-
-            const textWrap = document.createElement('div');
-            const title = document.createElement('p');
-            title.className = 'text-sm font-semibold text-green-800 dark:text-green-300';
-            title.textContent = 'Report Submitted';
-            const desc = document.createElement('p');
-            desc.className = 'text-sm text-gray-700 dark:text-gray-200 mt-1';
-            desc.textContent = 'You can check its status under "My Reports."';
-
-            textWrap.appendChild(title);
-            textWrap.appendChild(desc);
-            card.appendChild(icon);
-            card.appendChild(textWrap);
-            row.appendChild(card);
-            log.appendChild(row);
-            log.scrollTop = log.scrollHeight;
-        }
-        async function submitReport(data, btn) {
-            const originalLabel = btn.textContent;
-            let submitted = false;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="inline-flex items-center gap-2">Submitting<svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg></span>';
-
-            const formData = new FormData();
-            formData.append('_token', document.querySelector('meta[name="csrf-token"]')?.content);
-            formData.append('category_id', data.category_id);
-            formData.append('description', data.description);
-            formData.append('location_text', data.location);
-
-            try {
-                const response = await fetch("{{ route('reports.store') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: formData
-                });
-
-                if (response.ok || response.redirected) {
-                    btn.innerHTML = '<span class="inline-flex items-center gap-2">Submitted<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></span>';
-                    submitted = true;
-                    showSuccessCard();
-                } else {
-                    addMessage('Something went wrong submitting the report. Please try the incident report form directly.', 'bot');
-                }
-            } catch (err) {
-                addMessage(navigator.onLine ? 'Something went wrong submitting the report. Please try the incident report form directly.' : t.offline, 'bot');
-            } finally {
-                if (!submitted) {
-                    btn.disabled = false;
-                    btn.textContent = originalLabel;
-                }
+            if (description && data.description) {
+                description.value = data.description;
+                description.dispatchEvent(new Event('input', { bubbles: true }));
             }
+            if (category && data.category_id) {
+                category.value = String(data.category_id);
+                category.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            if (location && data.location) {
+                location.value = data.location;
+                location.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+
+            window.dispatchEvent(new CustomEvent('report-draft-applied'));
+            description?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            window.setTimeout(() => description?.focus(), 250);
         }
 
         const t = {{ Js::from([
