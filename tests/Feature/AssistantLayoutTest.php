@@ -12,7 +12,9 @@ test('the report form has a collapsed CivicGuard assistant launcher', function (
         ->assertSee('aria-controls="report-ai-chat"', false)
         ->assertSee('x-show="chatOpen"', false)
         ->assertSee('chatbot/send', false)
-        ->assertSee('CivicGuard AI Chatbot');
+        ->assertSee('Need a hand with your report?')
+        ->assertSee('Open chat')
+        ->assertSee('CivicGuard AI');
 });
 
 test('the standalone chatbot page route has been removed while message sending remains available', function () {

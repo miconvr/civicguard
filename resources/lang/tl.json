@@ -166,7 +166,11 @@
     "Use at least 8 characters.": "Gumamit ng hindi bababa sa 8 character.",
     "Already have an account?": "May account ka na?",
     "Log in here": "Mag-log in dito",
-    "CivicGuard AI Chatbot": "CivicGuard AI Chatbot",
+    "Need a hand with your report?": "Kailangan mo ba ng tulong sa iyong ulat?",
+    "Open chat": "Buksan ang chat",
+    "Close chat": "Isara ang chat",
+    "CivicGuard AI": "CivicGuard AI",
+    "CivicGuard AI can help you organize the details.": "Makakatulong ang CivicGuard AI na ayusin ang mga detalye.",
     "Conversation": "Usapan",
     "Hi! Tell me what happened and I can help you put together a clear incident report.": "Kumusta! Ikuwento mo ang nangyari at tutulungan kitang gumawa ng malinaw na ulat.",
     "I want to report an incident": "Gusto kong mag-ulat ng insidente",
@@ -178,5 +182,6 @@
     "Sorry, something went wrong. Please try again.": "Paumanhin, may nangyaring mali. Pakisubukan muli.",
     "That took too long. Please try again.": "Natagalan ito. Pakisubukan muli.",
     "You are sending messages too quickly. Please wait a moment.": "Masyadong mabilis ang pagpapadala mo ng mensahe. Maghintay sandali.",
+    "Your report-writing assistant": "Katulong sa pagsulat ng iyong ulat",
     "Try again": "Subukan muli"
 }
