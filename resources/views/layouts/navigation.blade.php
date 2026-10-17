@@ -156,10 +156,9 @@
                         </span>
                         <span class="text-xs text-stone-600 dark:text-gray-400" x-text='darkMode ? @js(__('Dark')) : @js(__('Light'))'></span>
                     </button>
-                    <div class="mx-4 my-1 border-t border-stone-200 dark:border-gray-700"></div>
-                    <div class="flex items-center gap-2 px-4 pt-1 pb-1">
+                    <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
+                    <div class="px-4 pt-1 pb-1">
                         <span class="text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400">{{ __('Language') }}</span>
-                        <span class="h-px flex-1 bg-stone-200 dark:bg-gray-700" aria-hidden="true"></span>
                     </div>
                     @foreach (['en' => __('English'), 'tl' => __('Tagalog')] as $code => $name)
                         <a href="{{ route('locale.switch', $code) }}" class="flex items-center justify-between px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5" @if (app()->getLocale() === $code) aria-current="true" @endif>
@@ -167,7 +166,7 @@
                             @if (app()->getLocale() === $code) <span aria-hidden="true">&#10003;</span> @endif
                         </a>
                     @endforeach
-                    <div class="mx-4 my-1 border-t border-stone-200 dark:border-gray-700"></div>
+                    <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="block w-full px-4 py-3 lg:py-2 text-left text-sm font-semibold text-red-700 hover:bg-red-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-red-600 dark:text-red-400 dark:hover:bg-red-400/10 dark:focus-visible:outline-red-400">
