@@ -39,7 +39,7 @@
                     @include('chatbot.inline')
                 </section>
 
-                <section x-show="reportMode === 'form'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-3" aria-label="{{ __('Incident report form') }}">
+                <section x-show="reportMode === 'form'" x-cloak x-transition:enter="cg-page-enter" x-transition:leave="cg-page-exit" aria-label="{{ __('Incident report form') }}">
                     <button type="button" @click="setReportMode(null)" class="mb-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6M9 12h12"/></svg>
                         {{ __('Choose another way to report') }}
