@@ -35,7 +35,7 @@
                     <span class="mt-0.5 block text-sm leading-5 text-gray-600 dark:text-gray-400">{{ __('CivicGuard AI can help you organize the details.') }}</span>
                 </span>
             </div>
-            <button type="button" x-ref="chatToggle" @click="chatOpen = !chatOpen; if (chatOpen) $nextTick(() => document.getElementById('chat-input')?.focus())" :aria-expanded="chatOpen.toString()" aria-controls="report-ai-chat" class="inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 rounded-lg border border-maroon-700 px-4 py-2 text-sm font-semibold text-maroon-800 transition-colors hover:bg-maroon-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-[#b98286] dark:text-gray-100 dark:hover:bg-white/5 sm:w-auto">
+            <button type="button" x-ref="chatToggle" @click="chatOpen = !chatOpen" :aria-expanded="chatOpen.toString()" aria-controls="report-ai-chat" class="inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 rounded-lg border border-maroon-700 px-4 py-2 text-sm font-semibold text-maroon-800 transition-colors hover:bg-maroon-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-[#b98286] dark:text-gray-100 dark:hover:bg-white/5 sm:w-auto">
                 <span x-text="chatOpen ? @js(__('Close chat')) : @js(__('Open chat'))">{{ __('Open chat') }}</span>
                 <svg class="h-4 w-4 transition-transform" :class="chatOpen ? 'rotate-180' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
             </button>
