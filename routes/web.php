@@ -70,7 +70,6 @@ Route::middleware(['auth', 'role:resident,admin,official'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:resident,admin,official'])->group(function () {
-    Route::get('/chatbot', [ChatbotController::class, 'widget'])->name('chatbot.widget');
     Route::post('/chatbot/send', [ChatbotController::class, 'send'])->name('chatbot.send')->middleware(['throttle:20,1', 'throttle:150,60,chatbot_hour']);
 });
 
