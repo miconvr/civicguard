@@ -1,35 +1,21 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Route;
 
-test('chatbot page has no purple gradient and shows the CivicGuard header', function () {
-    $user = User::factory()->create(['role' => 'resident']);
-
-    $this->actingAs($user)->get(route('chatbot.widget'))
-        ->assertOk()
-        ->assertDontSee('from-purple', false)
-        ->assertDontSee('purple-950', false)
-        ->assertSee('AI Chatbot');
-});
-
-test('chatbot shows a back button only when opened from the report form', function () {
-    $user = User::factory()->create(['role' => 'resident']);
-
-    $this->actingAs($user)->get(route('chatbot.widget', ['from' => 'report']))
-        ->assertOk()
-        ->assertSee('Back to report form')
-        ->assertSee(route('reports.create'));
-
-    $this->actingAs($user)->get(route('chatbot.widget'))
-        ->assertOk()
-        ->assertDontSee('Back to report form');
-});
-
-test('the report form links to the chatbot with the back marker and no gradient', function () {
+test('the report form has a collapsed CivicGuard assistant launcher', function () {
     $user = User::factory()->create(['role' => 'resident']);
 
     $this->actingAs($user)->get(route('reports.create'))
         ->assertOk()
-        ->assertSee('from=report', false)
-        ->assertDontSee('from-purple', false);
+        ->assertSee('report-ai-chat', false)
+        ->assertSee('aria-controls="report-ai-chat"', false)
+        ->assertSee('x-show="chatOpen"', false)
+        ->assertSee('chatbot/send', false)
+        ->assertSee('CivicGuard AI Chatbot');
+});
+
+test('the standalone chatbot page route has been removed while message sending remains available', function () {
+    expect(Route::has('chatbot.widget'))->toBeFalse()
+        ->and(Route::has('chatbot.send'))->toBeTrue();
 });
