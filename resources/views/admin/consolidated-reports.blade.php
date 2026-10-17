@@ -35,17 +35,17 @@
             <div class="cg-card p-6">
                 <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-100 mb-4">Incident Summary</h3>
                 <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
-                    <table class="cg-table">
+                    <table class="cg-table cg-mobile-table">
                         <thead><tr><th>Date</th><th>Category</th><th>Reported By</th><th>Severity</th><th>Status</th><th>Assigned To</th></tr></thead>
                         <tbody>
                             @forelse ($reports as $report)
                                 <tr>
-                                    <td class="whitespace-nowrap">{{ $report->created_at->format('M d, Y g:i A') }}</td>
-                                    <td>{{ $report->category->name }}</td>
-                                    <td>{{ $report->user->name }}</td>
-                                    <td>{{ ucfirst($report->severity) }}</td>
-                                    <td>{{ ucwords(str_replace('_', ' ', $report->status)) }}</td>
-                                    <td>{{ $report->assignedTo->name ?? '-' }}</td>
+                                    <td data-label="Date" class="whitespace-nowrap">{{ $report->created_at->format('M d, Y g:i A') }}</td>
+                                    <td data-label="Category">{{ $report->category->name }}</td>
+                                    <td data-label="Reported by">{{ $report->user->name }}</td>
+                                    <td data-label="Severity">{{ ucfirst($report->severity) }}</td>
+                                    <td data-label="Status">{{ ucwords(str_replace('_', ' ', $report->status)) }}</td>
+                                    <td data-label="Assigned to">{{ $report->assignedTo->name ?? '-' }}</td>
                                 </tr>
                             @empty
                                 <tr><td colspan="6" class="py-8 text-center text-gray-500">No incident reports yet.</td></tr>
@@ -58,19 +58,19 @@
             <div class="cg-card p-6">
                 <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-100 mb-4">Curfew Monitoring</h3>
                 <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
-                    <table class="cg-table">
+                    <table class="cg-table cg-mobile-table">
                         <thead><tr><th>Date</th><th>Minor</th><th>Age</th><th>Location</th><th>Prior Violations</th><th>Guardian Notified</th><th>Follow-up</th><th>Logged By</th></tr></thead>
                         <tbody>
                             @forelse ($curfewLogs as $log)
                                 <tr>
-                                    <td class="whitespace-nowrap">{{ $log->apprehension_datetime->format('M d, Y g:i A') }}</td>
-                                    <td>{{ $log->minor_name }}</td>
-                                    <td>{{ $log->minor_age ?? '-' }}</td>
-                                    <td>{{ $log->apprehension_location }}</td>
-                                    <td>{{ $log->prior_violations_count }}</td>
-                                    <td>{{ $log->guardian_notified ? 'Yes' : 'No' }}</td>
-                                    <td>{{ $log->referral_action ?? '-' }}</td>
-                                    <td>{{ $log->tanod->name ?? '-' }}</td>
+                                    <td data-label="Date" class="whitespace-nowrap">{{ $log->apprehension_datetime->format('M d, Y g:i A') }}</td>
+                                    <td data-label="Minor">{{ $log->minor_name }}</td>
+                                    <td data-label="Age">{{ $log->minor_age ?? '-' }}</td>
+                                    <td data-label="Location">{{ $log->apprehension_location }}</td>
+                                    <td data-label="Prior violations">{{ $log->prior_violations_count }}</td>
+                                    <td data-label="Guardian notified">{{ $log->guardian_notified ? 'Yes' : 'No' }}</td>
+                                    <td data-label="Follow-up">{{ $log->referral_action ?? '-' }}</td>
+                                    <td data-label="Logged by">{{ $log->tanod->name ?? '-' }}</td>
                                 </tr>
                             @empty
                                 <tr><td colspan="8" class="py-8 text-center text-gray-500">No curfew logs yet.</td></tr>
@@ -84,15 +84,15 @@
             <div class="cg-card p-6">
                 <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-100 mb-4">Recent System Activity</h3>
                 <div class="overflow-x-auto rounded-lg border border-gray-100 dark:border-gray-700">
-                    <table class="cg-table">
+                    <table class="cg-table cg-mobile-table">
                         <thead><tr><th>Date</th><th>Actor</th><th>Action</th><th>Description</th></tr></thead>
                         <tbody>
                             @forelse ($auditLogs as $auditLog)
                                 <tr>
-                                    <td class="whitespace-nowrap">{{ $auditLog->created_at->format('M d, Y g:i A') }}</td>
-                                    <td>{{ $auditLog->user->name ?? 'System' }}</td>
-                                    <td>{{ ucwords(str_replace('_', ' ', $auditLog->action)) }}</td>
-                                    <td>{{ $auditLog->description ?? '-' }}</td>
+                                    <td data-label="Date" class="whitespace-nowrap">{{ $auditLog->created_at->format('M d, Y g:i A') }}</td>
+                                    <td data-label="Actor">{{ $auditLog->user->name ?? 'System' }}</td>
+                                    <td data-label="Action">{{ ucwords(str_replace('_', ' ', $auditLog->action)) }}</td>
+                                    <td data-label="Description">{{ $auditLog->description ?? '-' }}</td>
                                 </tr>
                             @empty
                                 <tr><td colspan="4" class="py-8 text-center text-gray-500">No system activity yet.</td></tr>
