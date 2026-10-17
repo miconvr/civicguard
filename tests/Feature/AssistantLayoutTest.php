@@ -3,7 +3,7 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
-test('the report form has a collapsed CivicGuard assistant launcher', function () {
+test('residents can choose between the AI assistant and the standard report form', function () {
     $user = User::factory()->create(['role' => 'resident']);
 
     $this->actingAs($user)->get(route('reports.create'))
@@ -12,6 +12,12 @@ test('the report form has a collapsed CivicGuard assistant launcher', function (
         ->assertSee('aria-controls="report-ai-chat"', false)
         ->assertSee('x-show="chatOpen"', false)
         ->assertSee('chatbot/send', false)
+        ->assertSee('How would you like to report?')
+        ->assertSee('Get help from CivicGuard AI')
+        ->assertSee('Fill out the form myself')
+        ->assertSee('sm:grid-cols-2', false)
+        ->assertSee('min-h-11', false)
+        ->assertSee('id="description"', false)
         ->assertSee('Need a hand with your report?')
         ->assertSee('Open chat')
         ->assertSee('CivicGuard AI');

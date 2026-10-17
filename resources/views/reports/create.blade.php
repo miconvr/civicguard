@@ -8,17 +8,41 @@
 
     <div class="py-8">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="cg-card p-6 sm:p-8" x-data="{ chatOpen: false }" @report-draft-applied.window="chatOpen = false">
+            <div class="cg-card p-6 sm:p-8" x-data="{ reportMode: {{ Js::from($errors->any() ? 'form' : null) }}, chatOpen: false }" @report-draft-applied.window="chatOpen = false; reportMode = 'form'">
 
                 <div class="mb-5 flex gap-2.5 rounded-lg border border-red-300 bg-red-50 dark:bg-red-900/20 dark:border-red-800 px-3 py-2.5 text-sm text-red-800 dark:text-red-200" role="note">
                     <svg class="h-5 w-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
                     <p><strong>{{ __('In immediate danger? Call 911 first.') }}</strong> {{ __('Reports are reviewed by staff and are not answered instantly.') }}</p>
                 </div>
 
-                <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('Tell us what happened') }}</h3>
+                <section x-show="!reportMode" x-cloak aria-labelledby="report-method-heading">
+                    <h3 id="report-method-heading" class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('How would you like to report?') }}</h3>
+                    <p class="mb-5 text-sm text-gray-600 dark:text-gray-400">{{ __('Choose the option that feels easiest. You can review everything before submitting.') }}</p>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        <button type="button" @click="reportMode = 'assistant'; chatOpen = true; $nextTick(() => document.getElementById('chat-input')?.focus())" class="flex min-h-28 w-full items-start gap-3 rounded-xl border-2 border-maroon-700 bg-maroon-50 p-4 text-left transition hover:bg-maroon-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-[#b98286] dark:bg-white/5 dark:hover:bg-white/10">
+                            <span class="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[#ddc9b7] bg-[#f7eee5]" aria-hidden="true">@include('chatbot.mascot')</span>
+                            <span><span class="block font-semibold text-gray-900 dark:text-gray-100">{{ __('Get help from CivicGuard AI') }}</span><span class="mt-1 block text-sm leading-5 text-gray-600 dark:text-gray-300">{{ __('Chat about what happened. The assistant prepares your details for you to review and submit.') }}</span></span>
+                        </button>
+                        <button type="button" @click="reportMode = 'form'" class="flex min-h-28 w-full items-start gap-3 rounded-xl border border-gray-300 bg-white p-4 text-left transition hover:border-maroon-700 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-gray-600 dark:bg-[#262624] dark:hover:bg-white/5">
+                            <svg class="mt-0.5 h-6 w-6 shrink-0 text-maroon-700 dark:text-[#c27872]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 6h12M8 12h12M8 18h12M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+                            <span><span class="block font-semibold text-gray-900 dark:text-gray-100">{{ __('Fill out the form myself') }}</span><span class="mt-1 block text-sm leading-5 text-gray-600 dark:text-gray-300">{{ __('Enter the details directly, add a photo, or pin your location.') }}</span></span>
+                        </button>
+                    </div>
+                </section>
 
-                @include('chatbot.inline')
+                <section x-show="reportMode === 'assistant'" x-cloak aria-label="{{ __('AI report assistant') }}">
+                    <button type="button" @click="chatOpen = false; reportMode = null" class="mb-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6M9 12h12"/></svg>
+                        {{ __('Choose another way to report') }}
+                    </button>
+                    @include('chatbot.inline')
+                </section>
 
+                <section x-show="reportMode === 'form'" x-cloak aria-label="{{ __('Incident report form') }}">
+                    <button type="button" @click="reportMode = null" class="mb-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-maroon-700 hover:underline dark:text-[#c27872]">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6M9 12h12"/></svg>
+                        {{ __('Choose another way to report') }}
+                    </button>
                 <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-6"
                       x-data="{ cat: '{{ old('category_id') }}', descs: {{ Js::from($categories->pluck('description', 'id')) }}, len: {{ strlen(old('description', '')) }}, preview: null, tooBig: false, suggested: false, timer: null,
                           pick(e) { const f = e.target.files[0]; this.tooBig = f ? f.size > 5242880 : false; this.preview = f && !this.tooBig ? URL.createObjectURL(f) : null; if (this.tooBig) e.target.value = ''; },
@@ -85,6 +109,7 @@
                         
                     </div>
                 </form>
+                </section>
 
             </div>
         </div>
