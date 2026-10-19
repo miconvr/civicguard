@@ -78,6 +78,29 @@ New sign-ups are always residents.
 
 ---
 
+## Getting started
+
+You need Docker (via WSL2 on Windows), Composer, and Node.js.
+
+```bash
+git clone https://github.com/miconvr/civicguard.git
+cd civicguard
+cp .env.example .env        # then add your Gemini and Groq keys
+composer install
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate --seed
+npm install && npm run dev
+```
+
+Run the tests with `./vendor/bin/sail artisan test`.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
+
+---
+
 ## Good to know
 
 * **Not for emergencies.** Reports are reviewed by staff and are not monitored in real time. In an emergency, call 911 or go to the barangay hall.
