@@ -80,7 +80,7 @@ New sign-ups are always residents.
 You need Docker (via WSL2 on Windows), Composer, and Node.js.
 
 ```bash
-git clone [https://github.com/miconvr/civicguard.git](https://github.com/miconvr/civicguard.git)
+git clone https://github.com/miconvr/civicguard.git
 cd civicguard
 cp .env.example .env        # then add your Gemini and Groq keys
 composer install
