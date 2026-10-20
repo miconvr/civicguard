@@ -92,10 +92,6 @@ npm install && npm run dev
 
 Run the tests with `./vendor/bin/sail artisan test`.
 
-## License
-
-MIT. See [LICENSE](LICENSE).
-
 ---
 
 ## Good to know
