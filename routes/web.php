@@ -63,6 +63,7 @@ Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name(
     Route::get('/analytics/export/pdf', [AnalyticsController::class, 'exportPdf'])->name('analytics.exportPdf');
     Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('auditLogs')->middleware('role:admin,official');
     Route::get('/audit-logs/export/pdf', [AuditLogController::class, 'exportPdf'])->name('auditLogs.exportPdf')->middleware('role:admin,official');
+    Route::get('/data-management', [DataResetController::class, 'index'])->name('dataManagement')->middleware('role:admin');
     Route::delete('/data/reset', DataResetController::class)->name('data.reset')->middleware('role:admin');
     Route::get('/reports/consolidated', [ConsolidatedReportController::class, 'index'])->name('consolidatedReports');
     Route::get('/reports/consolidated/export/pdf', [ConsolidatedReportController::class, 'exportPdf'])->name('consolidatedReports.exportPdf');
