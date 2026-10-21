@@ -1021,13 +1021,13 @@
 }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    button:not(:disabled):not([aria-disabled="true"]):hover,
-    [role="button"]:not([aria-disabled="true"]):hover {
+    button.cg-motion-lift:not(:disabled):not([aria-disabled="true"]):hover,
+    [role="button"].cg-motion-lift:not([aria-disabled="true"]):hover {
         transform: translateY(-1px);
     }
 
-    button:not(:disabled):not([aria-disabled="true"]):active,
-    [role="button"]:not([aria-disabled="true"]):active {
+    button.cg-motion-lift:not(:disabled):not([aria-disabled="true"]):active,
+    [role="button"].cg-motion-lift:not([aria-disabled="true"]):active {
         transform: translateY(0) scale(0.99);
     }
 
