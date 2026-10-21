@@ -22,13 +22,15 @@
         --cg-radius: 0.75rem;
         --cg-ease-out: cubic-bezier(0.2, 0.75, 0.25, 1);
         --cg-ease-in: cubic-bezier(0.4, 0, 1, 1);
-        --cg-motion-exit: 140ms;
-        --cg-motion-fast: 180ms;
-        --cg-motion-interaction: 180ms;
-        --cg-motion-enter: 240ms;
-        --cg-motion-page: 280ms;
-        --cg-motion-emphasis: 360ms;
+        --cg-motion-exit: 170ms;
+        --cg-motion-fast: 210ms;
+        --cg-motion-interaction: 240ms;
+        --cg-motion-enter: 300ms;
+        --cg-motion-page: 380ms;
+        --cg-motion-emphasis: 420ms;
+        --cg-motion-progress: 520ms;
         --cg-motion-typing-cycle: 1100ms;
+        --cg-motion-flow-cycle: 15s;
         --dropdown-open-dur: var(--cg-motion-enter);
         --dropdown-close-dur: var(--cg-motion-exit);
         --dropdown-pre-scale: 0.97;
@@ -149,7 +151,7 @@
     }
 
     .cg-report-panel-transition {
-        transition: opacity var(--cg-motion-interaction) var(--cg-ease-out), transform var(--cg-motion-interaction) var(--cg-ease-out);
+        transition: opacity var(--cg-motion-page) var(--cg-ease-out), transform var(--cg-motion-page) var(--cg-ease-out);
     }
 
     /* Let the shared page entrance handle first paint; keep panel motion for user-driven mode changes. */
@@ -412,9 +414,9 @@
         animation: cg-intro-enter var(--cg-motion-page) var(--cg-ease-out) both;
     }
 
-    .cg-intro-enter-1 { animation-delay: 50ms; }
-    .cg-intro-enter-2 { animation-delay: 110ms; }
-    .cg-intro-enter-3 { animation-delay: 170ms; }
+    .cg-intro-enter-1 { animation-delay: 80ms; }
+    .cg-intro-enter-2 { animation-delay: 160ms; }
+    .cg-intro-enter-3 { animation-delay: 240ms; }
 
     .cg-motion-ready [data-reveal] {
         opacity: 0;
@@ -1374,30 +1376,30 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
 @keyframes cg-flow-node-5 { 0% { background-color:#e7e0d6;color:#78716c;transform:scale(1) } 74% { background-color:#e7e0d6;color:#78716c;transform:scale(1) } 77% { background-color:#7a1f1f;color:#fff;transform:scale(1.14) } 81% { background-color:#7a1f1f;color:#fff;transform:scale(1) } 92% { background-color:#7a1f1f;color:#fff;transform:scale(1) } 96% { background-color:#e7e0d6;color:#78716c;transform:scale(1) } 100% { background-color:#e7e0d6;color:#78716c;transform:scale(1) } }
 @keyframes cg-flow-ring-5 { 0% { opacity:0;transform:scale(1) } 76% { opacity:0;transform:scale(1) } 77% { opacity:.55;transform:scale(1) } 84% { opacity:0;transform:scale(1.9) } 100% { opacity:0;transform:scale(1.9) } }
 @keyframes cg-flow-pill-5 { 0% { opacity:0 } 72% { opacity:0 } 75% { opacity:1 } 96% { opacity:1 } 99% { opacity:0 } 100% { opacity:0 } }
-.cg-flow-row-1 { animation: cg-flow-row-1 12s ease-in-out infinite both; }
-.cg-flow-row-1 .cg-flow-node { animation: cg-flow-node-1 12s ease-in-out infinite both; }
-.cg-flow-row-1 .cg-flow-node::after { animation: cg-flow-ring-1 12s ease-out infinite both; }
-.cg-flow-pill-1 { animation: cg-flow-pill-1 12s ease-in-out infinite both; }
-.cg-flow-row-1::after { animation: cg-flow-fill-1 12s linear infinite both; }
-.cg-flow-row-2 { animation: cg-flow-row-2 12s ease-in-out infinite both; }
-.cg-flow-row-2 .cg-flow-node { animation: cg-flow-node-2 12s ease-in-out infinite both; }
-.cg-flow-row-2 .cg-flow-node::after { animation: cg-flow-ring-2 12s ease-out infinite both; }
-.cg-flow-pill-2 { animation: cg-flow-pill-2 12s ease-in-out infinite both; }
-.cg-flow-row-2::after { animation: cg-flow-fill-2 12s linear infinite both; }
-.cg-flow-row-3 { animation: cg-flow-row-3 12s ease-in-out infinite both; }
-.cg-flow-row-3 .cg-flow-node { animation: cg-flow-node-3 12s ease-in-out infinite both; }
-.cg-flow-row-3 .cg-flow-node::after { animation: cg-flow-ring-3 12s ease-out infinite both; }
-.cg-flow-pill-3 { animation: cg-flow-pill-3 12s ease-in-out infinite both; }
-.cg-flow-row-3::after { animation: cg-flow-fill-3 12s linear infinite both; }
-.cg-flow-row-4 { animation: cg-flow-row-4 12s ease-in-out infinite both; }
-.cg-flow-row-4 .cg-flow-node { animation: cg-flow-node-4 12s ease-in-out infinite both; }
-.cg-flow-row-4 .cg-flow-node::after { animation: cg-flow-ring-4 12s ease-out infinite both; }
-.cg-flow-pill-4 { animation: cg-flow-pill-4 12s ease-in-out infinite both; }
-.cg-flow-row-4::after { animation: cg-flow-fill-4 12s linear infinite both; }
-.cg-flow-row-5 { animation: cg-flow-row-5 12s ease-in-out infinite both; }
-.cg-flow-row-5 .cg-flow-node { animation: cg-flow-node-5 12s ease-in-out infinite both; }
-.cg-flow-row-5 .cg-flow-node::after { animation: cg-flow-ring-5 12s ease-out infinite both; }
-.cg-flow-pill-5 { animation: cg-flow-pill-5 12s ease-in-out infinite both; }
+.cg-flow-row-1 { animation: cg-flow-row-1 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-1 .cg-flow-node { animation: cg-flow-node-1 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-1 .cg-flow-node::after { animation: cg-flow-ring-1 var(--cg-motion-flow-cycle) ease-out infinite both; }
+.cg-flow-pill-1 { animation: cg-flow-pill-1 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-1::after { animation: cg-flow-fill-1 var(--cg-motion-flow-cycle) linear infinite both; }
+.cg-flow-row-2 { animation: cg-flow-row-2 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-2 .cg-flow-node { animation: cg-flow-node-2 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-2 .cg-flow-node::after { animation: cg-flow-ring-2 var(--cg-motion-flow-cycle) ease-out infinite both; }
+.cg-flow-pill-2 { animation: cg-flow-pill-2 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-2::after { animation: cg-flow-fill-2 var(--cg-motion-flow-cycle) linear infinite both; }
+.cg-flow-row-3 { animation: cg-flow-row-3 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-3 .cg-flow-node { animation: cg-flow-node-3 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-3 .cg-flow-node::after { animation: cg-flow-ring-3 var(--cg-motion-flow-cycle) ease-out infinite both; }
+.cg-flow-pill-3 { animation: cg-flow-pill-3 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-3::after { animation: cg-flow-fill-3 var(--cg-motion-flow-cycle) linear infinite both; }
+.cg-flow-row-4 { animation: cg-flow-row-4 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-4 .cg-flow-node { animation: cg-flow-node-4 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-4 .cg-flow-node::after { animation: cg-flow-ring-4 var(--cg-motion-flow-cycle) ease-out infinite both; }
+.cg-flow-pill-4 { animation: cg-flow-pill-4 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-4::after { animation: cg-flow-fill-4 var(--cg-motion-flow-cycle) linear infinite both; }
+.cg-flow-row-5 { animation: cg-flow-row-5 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-5 .cg-flow-node { animation: cg-flow-node-5 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
+.cg-flow-row-5 .cg-flow-node::after { animation: cg-flow-ring-5 var(--cg-motion-flow-cycle) ease-out infinite both; }
+.cg-flow-pill-5 { animation: cg-flow-pill-5 var(--cg-motion-flow-cycle) ease-in-out infinite both; }
 @media (prefers-reduced-motion: reduce) {
     .cg-flow *, .cg-flow *::before, .cg-flow *::after { animation: none !important; }
 }
@@ -1521,7 +1523,7 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 @keyframes cg-bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 .cg-bar-fill {
     transform-origin: left center;
-    animation: cg-bar-grow var(--cg-motion-emphasis) var(--cg-ease-out) both;
+    animation: cg-bar-grow var(--cg-motion-progress) var(--cg-ease-out) both;
     animation-delay: var(--cg-bar-delay, 0ms);
 }
 .cg-motion-ready [data-reveal]:not(.is-visible) .cg-bar-fill { animation: none; transform: scaleX(0); }
