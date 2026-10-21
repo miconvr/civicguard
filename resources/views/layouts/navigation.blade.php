@@ -101,6 +101,11 @@
                 <x-sidebar-link icon="shield" :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
                     {{ __('Audit Logs') }}
                 </x-sidebar-link>
+                @if ($role === 'admin')
+                    <x-sidebar-link icon="database" :href="route('admin.dataManagement')" :active="request()->routeIs('admin.dataManagement')">
+                        {{ __('Data Management') }}
+                    </x-sidebar-link>
+                @endif
                 @if (in_array($role, ['admin', 'official']))
                     <x-sidebar-link icon="shield" :href="route('admin.verifications.index')" :active="request()->routeIs('admin.verifications.*')">
                         {{ __('Residence Verification') }}
