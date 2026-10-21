@@ -75,7 +75,6 @@ New sign-ups are always residents.
 - Google Gemini and Groq (automatic failover)
 - DomPDF
 - Laravel Sail (Docker)
-- Wasmer (hosting)
 
 ---
 
@@ -100,17 +99,17 @@ Run the tests with `./vendor/bin/sail artisan test`.
 
 The `database/migrations` directory is the source of truth for the schema. It includes the `resident_verifications` table and the report, audit log, notification, and staff-assignment fields used by the app. For a new clone, `migrate --seed` creates the schema and default report categories. Do not create these tables manually with SQL.
 
-When deploying an update to an existing database, run Laravel's pending migrations against that database:
+When you pull an update that adds a migration, apply pending migrations to your local database:
 
 ```bash
-php artisan migrate --force
+./vendor/bin/sail artisan migrate
 ```
 
-On Wasmer, run that command in the deployed app environment after the new code is available, using the same MySQL connection the live app uses. If the verification table was created manually earlier, the migration checks for the existing table and skips recreating it; running `migrate --force` lets Laravel record the migration as applied. You can inspect migration state with `php artisan migrate:status`. Avoid `migrate:fresh` on a live database because it drops application tables and their data.
+Check local migration state with `./vendor/bin/sail artisan migrate:status`. Avoid `migrate:fresh` if you need to keep your local database data, because it drops and recreates application tables.
 
 ### Uploaded image storage
 
-Report photos, profile pictures, and pending residence proof images use the private `report_photos` disk. Locally it defaults to `storage/app/public`; the disk can be pointed at a persistent directory with `PHOTO_DISK_ROOT`. In production, configure that variable to the persistent storage mount provided to the app, and make sure the app can write to it. The database stores image paths, while the image files live on this disk. If the storage directory is ephemeral, images can disappear when the app restarts or redeploys. Verification proof images are deleted after an admin or official records a decision.
+Report photos, profile pictures, and pending residence proof images use the private `report_photos` disk. It defaults to `storage/app/public`; for local development, ensure the app can write to that directory. You can set `PHOTO_DISK_ROOT` in `.env` to use a different local directory. The database stores image paths, while image files live on this disk. Verification proof images are deleted after an admin or official records a decision.
 
 ---
 
