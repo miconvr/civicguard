@@ -27,7 +27,7 @@ CivicGuard is a web-based system that lets residents of Barangay Maimpis, City o
 - **Analytics:** charts, key numbers, and AI-written insights
 - **Audit logs and PDF exports:** a record of key report, staff, and verification actions, with downloadable reports
 - **Notifications:** in-app updates for report assignments, report changes, and account/verification events
-- **Admin test-data reset:** clear operational test records and related report/verification uploads while preserving user accounts, profile pictures, and report categories
+- **Admin test-data reset:** the admin-only Data Management page can clear operational test records and related report/verification uploads while preserving user accounts, profile pictures, and report categories
 - **Install as an app:** works on iPhone and Android from the browser, with an offline page
 - **English and Tagalog**, with light and dark mode
 - **Privacy tools:** account deletion, a privacy policy, and terms of use
