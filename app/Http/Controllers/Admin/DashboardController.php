@@ -10,6 +10,7 @@ use App\Models\Report;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class DashboardController extends Controller
@@ -115,6 +116,107 @@ class DashboardController extends Controller
         ]);
 
         return redirect()->back()->with('status', 'Report status updated.');
+    }
+
+    public function updateQueueReport(Request $request, Report $report)
+    {
+        $actor = $request->user();
+        abort_unless($report->isVisibleTo($actor), 403);
+
+        $canManage = in_array($actor->role, ['admin', 'official'], true);
+        $canUpdateStatus = $canManage || (int) $report->assigned_to === (int) $actor->id;
+        abort_unless($canManage || $canUpdateStatus, 403);
+
+        $rules = [];
+        if ($request->exists('status')) {
+            abort_unless($canUpdateStatus, 403);
+            $rules['status'] = ['required', 'in:pending,in_progress,resolved'];
+        }
+        if ($request->exists('severity')) {
+            abort_unless($canManage, 403);
+            $rules['severity'] = ['required', 'in:low,moderate,high,critical'];
+        }
+        if ($request->exists('assigned_to')) {
+            abort_unless($canManage, 403);
+            $rules['assigned_to'] = ['nullable', Rule::exists('users', 'id')->where('role', 'tanod')];
+        }
+
+        $validated = $request->validate($rules);
+        $report->loadMissing('category');
+
+        DB::transaction(function () use ($actor, $canManage, $report, $validated) {
+            if (isset($validated['severity']) && $report->severity !== $validated['severity']) {
+                $from = $report->severity;
+                $report->severity = $validated['severity'];
+                AuditLog::create([
+                    'user_id' => $actor->id,
+                    'action' => 'report_severity_changed',
+                    'auditable_type' => Report::class,
+                    'auditable_id' => $report->id,
+                    'description' => "Severity changed from {$from} to {$validated['severity']}.",
+                    'metadata' => ['from' => $from, 'to' => $validated['severity']],
+                ]);
+            }
+
+            if (isset($validated['status']) && $report->status !== $validated['status']) {
+                $from = $report->status;
+                $report->status = $validated['status'];
+                $report->resolved_at = $validated['status'] === 'resolved' ? now() : null;
+                $report->confirmed_at = null;
+                AuditLog::create([
+                    'user_id' => $actor->id,
+                    'action' => $validated['status'] === 'resolved' ? 'report_resolved' : 'report_status_changed',
+                    'auditable_type' => Report::class,
+                    'auditable_id' => $report->id,
+                    'description' => 'Report status changed to '.str_replace('_', ' ', $validated['status']).'.',
+                    'metadata' => ['from' => $from, 'status' => $validated['status']],
+                ]);
+                AppNotification::create([
+                    'user_id' => $report->user_id,
+                    'report_id' => $report->id,
+                    'message' => "Your report (\"{$report->category->name}\") status changed to ".ucfirst(str_replace('_', ' ', $validated['status'])).'.',
+                ]);
+            }
+
+            if ($canManage && ! empty($validated['assigned_to'])) {
+                $tanod = User::findOrFail($validated['assigned_to']);
+                $previousAssigneeId = $report->assigned_to ? (int) $report->assigned_to : null;
+
+                if ($previousAssigneeId !== (int) $tanod->id) {
+                    $report->assigned_to = $tanod->id;
+                    CaseAssignment::create([
+                        'report_id' => $report->id,
+                        'assigned_to' => $tanod->id,
+                        'assigned_by' => $actor->id,
+                        'assigned_at' => now(),
+                        'status' => 'assigned',
+                    ]);
+                    AuditLog::create([
+                        'user_id' => $actor->id,
+                        'action' => 'report_assigned',
+                        'auditable_type' => Report::class,
+                        'auditable_id' => $report->id,
+                        'description' => 'Report assigned to '.$tanod->name.'.',
+                        'metadata' => ['from' => $previousAssigneeId, 'assigned_to' => $tanod->id, 'assigned_name' => $tanod->name],
+                    ]);
+
+                    AppNotification::create([
+                        'user_id' => $tanod->id,
+                        'report_id' => $report->id,
+                        'message' => "You've been assigned to a report: \"{$report->category->name}\" at {$report->location_text}.",
+                    ]);
+                    AppNotification::create([
+                        'user_id' => $report->user_id,
+                        'report_id' => $report->id,
+                        'message' => __('A tanod has been assigned to your report: :name.', ['name' => $tanod->name]),
+                    ]);
+                }
+            }
+
+            $report->save();
+        });
+
+        return redirect()->back()->with('status', 'Report changes saved.');
     }
 
     public function updateSeverity(Request $request, Report $report)
