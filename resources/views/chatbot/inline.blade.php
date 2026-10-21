@@ -271,7 +271,7 @@
             photoActions.className = 'flex flex-wrap items-center gap-3';
             const pickPhotoBtn = document.createElement('button');
             pickPhotoBtn.type = 'button';
-            pickPhotoBtn.className = 'min-h-10 rounded-lg border border-white/40 bg-white px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-maroon-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
+            pickPhotoBtn.className = 'chat-review-light-button min-h-10 rounded-lg border border-white/40 bg-white px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-maroon-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
             pickPhotoBtn.textContent = reviewText.addPhoto;
             pickPhotoBtn.setAttribute('aria-label', reviewText.addPhoto);
             pickPhotoBtn.onclick = () => photoInput.click();
@@ -380,7 +380,7 @@
             categoryEditorLabel.className = 'block text-xs font-semibold text-white/80';
             categoryEditorLabel.textContent = reviewText.category;
             const categorySelect = document.createElement('select');
-            categorySelect.className = 'cg-input mt-1 min-h-10 w-full bg-white py-1.5 text-sm text-gray-900 dark:!border-gray-300 dark:!bg-white dark:!text-gray-900';
+            categorySelect.className = 'cg-input chat-review-field mt-1 min-h-10 w-full bg-white py-1.5 text-sm text-gray-900';
             categorySelect.setAttribute('aria-label', reviewText.category);
             reviewText.categories.forEach((category) => {
                 const option = document.createElement('option');
@@ -395,7 +395,7 @@
             descriptionEditorLabel.className = 'block text-xs font-semibold text-white/80';
             descriptionEditorLabel.textContent = reviewText.description;
             const descriptionEditor = document.createElement('textarea');
-            descriptionEditor.className = 'cg-input mt-1 min-h-20 w-full bg-white py-2 text-sm text-gray-900 dark:!border-gray-300 dark:!bg-white dark:!text-gray-900';
+            descriptionEditor.className = 'cg-input chat-review-field mt-1 min-h-20 w-full bg-white py-2 text-sm text-gray-900';
             descriptionEditor.rows = 3;
             descriptionEditor.maxLength = 2000;
             descriptionEditor.value = data.description;
@@ -406,7 +406,7 @@
             locationEditorLabel.textContent = reviewText.location;
             const locationEditor = document.createElement('input');
             locationEditor.type = 'text';
-            locationEditor.className = 'cg-input mt-1 min-h-10 w-full bg-white text-sm text-gray-900 dark:!border-gray-300 dark:!bg-white dark:!text-gray-900';
+            locationEditor.className = 'cg-input chat-review-field mt-1 min-h-10 w-full bg-white text-sm text-gray-900';
             locationEditor.maxLength = 255;
             locationEditor.value = data.location;
             locationEditorLabel.appendChild(locationEditor);
@@ -429,7 +429,7 @@
             cancelEditBtn.textContent = reviewText.cancel;
             const saveEditBtn = document.createElement('button');
             saveEditBtn.type = 'button';
-            saveEditBtn.className = 'min-h-10 rounded-lg bg-white px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-maroon-50';
+            saveEditBtn.className = 'chat-review-light-button min-h-10 rounded-lg bg-white px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-maroon-50';
             saveEditBtn.textContent = reviewText.saveChanges;
             editorActions.append(cancelEditBtn, saveEditBtn);
             editPanel.appendChild(editorActions);
@@ -484,7 +484,7 @@
 
             const submitBtn = document.createElement('button');
             submitBtn.type = 'button';
-            submitBtn.className = 'min-h-[44px] rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-maroon-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-wait disabled:opacity-60';
+            submitBtn.className = 'chat-review-light-button min-h-[44px] rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-maroon-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-wait disabled:opacity-60';
             submitBtn.textContent = reviewText.submitReport;
             submitBtn.onclick = () => submitReport(data, submitBtn);
 
