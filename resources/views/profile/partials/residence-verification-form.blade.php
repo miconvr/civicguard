@@ -5,13 +5,13 @@
     </header>
 
     @if ($verification?->status === \App\Models\ResidentVerification::VERIFIED)
-        <div class="mt-5 flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-900 dark:bg-emerald-900/20">
-            <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white" aria-hidden="true">
+        <div class="mt-5 flex items-start gap-3 rounded-xl border border-green-200 bg-green-50 p-4 dark:border-green-900 dark:bg-green-900/20">
+            <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-600 text-white" aria-hidden="true">
                 <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.13a1 1 0 0 1-1.42.006L3.29 8.71a1 1 0 1 1 1.42-1.407l4.217 4.26 6.363-6.414a1 1 0 0 1 1.414-.006Z" clip-rule="evenodd"/></svg>
             </span>
             <div>
-                <p class="font-semibold text-emerald-900 dark:text-emerald-200">{{ __('Your Maimpis residency is verified.') }}</p>
-            <p class="mt-1 text-sm text-emerald-800 dark:text-emerald-300">{{ __('Your verified badge will stay on your account. The submitted proof image was deleted after review.') }}</p>
+                <p class="font-semibold text-green-900 dark:text-green-200">{{ __('Your Maimpis residency is verified.') }}</p>
+            <p class="mt-1 text-sm text-green-800 dark:text-green-300">{{ __('Your verified badge will stay on your account. The submitted proof image was deleted after review.') }}</p>
             </div>
         </div>
     @elseif ($verification?->status === \App\Models\ResidentVerification::PENDING)
@@ -21,7 +21,7 @@
         </div>
     @else
         @if ($verification?->status === \App\Models\ResidentVerification::REJECTED)
-            <div class="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-200">
+            <div class="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900 dark:border-red-900 dark:bg-red-900/20 dark:text-red-200">
                 {{ __('The previous proof was not approved. You can submit a different image.') }}
             </div>
         @endif
