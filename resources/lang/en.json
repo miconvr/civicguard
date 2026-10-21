@@ -132,6 +132,6 @@
     "Confirm your password": "Confirm your password",
     "Delete all test data": "Delete all test data",
     "All test data was deleted. User accounts, profile pictures, and report categories were kept.": "All test data was deleted. User accounts, profile pictures, and report categories were kept.",
-    "Data Management": "Data Management",
-    "Manage test data for the application. This page is only available to administrators.": "Manage test data for the application. This page is only available to administrators."
+    "Verify residency!": "Verify residency!",
+    "Pending review": "Pending review"
 }

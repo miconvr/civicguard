@@ -7,15 +7,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
 
 class DataResetController extends Controller
 {
-    public function index(): View
-    {
-        return view('admin.data-management');
-    }
-
     public function __invoke(Request $request): RedirectResponse
     {
         $request->validate([
@@ -37,6 +31,6 @@ class DataResetController extends Controller
         $disk->deleteDirectory('report-photos');
         $disk->deleteDirectory('verification-documents');
 
-        return redirect()->route('admin.dataManagement')->with('status', __('All test data was deleted. User accounts, profile pictures, and report categories were kept.'));
+        return redirect()->route('profile.edit')->with('data-reset-status', __('All test data was deleted. User accounts, profile pictures, and report categories were kept.'));
     }
 }
