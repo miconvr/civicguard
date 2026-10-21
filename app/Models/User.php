@@ -56,10 +56,8 @@ class User extends Authenticatable
         $disk = Storage::disk('report_photos');
         $directory = 'profile-photos/'.$this->id;
 
-        foreach (['jpg', 'jpeg', 'png', 'webp'] as $extension) {
-            $path = $directory.'/avatar.'.$extension;
-
-            if ($disk->exists($path)) {
+        foreach ($disk->files($directory) as $path) {
+            if (preg_match('/\.(jpg|jpeg|png|webp)$/i', $path)) {
                 return $path;
             }
         }
