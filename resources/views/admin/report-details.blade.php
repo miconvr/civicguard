@@ -122,7 +122,7 @@
             </div>
             @else
             <div class="cg-card">
-                <form method="POST" action="{{ route('admin.reports.updateStatus', $report) }}" class="flex flex-col items-start gap-3">
+                <form method="POST" action="{{ route('admin.reports.updateStatus', $report) }}" class="flex flex-col gap-3 sm:flex-row sm:items-end">
                     @csrf
                     @method('PATCH')
                     <div class="w-full sm:max-w-xs">
