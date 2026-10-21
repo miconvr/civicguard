@@ -104,7 +104,7 @@
         }
     </style>
 
-    <div @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="my-6 overflow-hidden rounded-xl border border-stone-200 cg-surface-raised dark:border-gray-700">
+    <div id="chat-widget" @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="my-6 overflow-hidden rounded-xl border border-stone-200 cg-surface-raised dark:border-gray-700">
         <div x-show="!chatOpen" x-cloak class="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:px-8">
             <div class="flex min-w-0 flex-1 items-center gap-3">
                 <span class="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-[#ddc9b7] bg-[#f7eee5]" aria-hidden="true">
@@ -127,6 +127,9 @@
                         <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('CivicGuard AI') }}</p>
                         <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('Your report-writing assistant') }}</p>
                     </div>
+                    <button id="chat-keyboard-dismiss" type="button" @click="chatOpen = false" aria-label="{{ __('Close chat') }}" class="hidden h-11 w-11 shrink-0 items-center justify-center rounded-lg text-gray-600 hover:bg-black/5 dark:text-gray-300 dark:hover:bg-white/10">
+                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M6 9l6 6 6-6"/></svg>
+                    </button>
                 </div>
 
                 <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="cg-chat-log min-h-36 space-y-3 border-y border-gray-100 px-3 py-4 dark:border-gray-700 sm:px-6">
@@ -158,6 +161,40 @@
         const sendBtn = document.getElementById('chat-send');
         const sendButtonLabels = {{ Js::from(['send' => __('Send'), 'sending' => __('Sending...')]) }};
         const log = document.getElementById('chat-log');
+        const chatWidget = document.getElementById('chat-widget');
+
+        function syncMobileChatViewport() {
+            if (!chatWidget.classList.contains('cg-chat-keyboard-mode')) return;
+            const viewport = window.visualViewport;
+            chatWidget.style.setProperty('--cg-chat-viewport-height', `${viewport?.height ?? window.innerHeight}px`);
+            chatWidget.style.setProperty('--cg-chat-viewport-top', `${viewport?.offsetTop ?? 0}px`);
+        }
+
+        function enterMobileChatMode() {
+            if (!window.matchMedia('(max-width: 639px)').matches) return;
+            chatWidget.classList.add('cg-chat-keyboard-mode');
+            document.documentElement.classList.add('cg-chat-keyboard-open');
+            syncMobileChatViewport();
+        }
+
+        function leaveMobileChatMode() {
+            chatWidget.classList.remove('cg-chat-keyboard-mode');
+            document.documentElement.classList.remove('cg-chat-keyboard-open');
+            chatWidget.style.removeProperty('--cg-chat-viewport-height');
+            chatWidget.style.removeProperty('--cg-chat-viewport-top');
+        }
+
+        input.addEventListener('focus', enterMobileChatMode);
+        input.addEventListener('blur', () => window.setTimeout(() => {
+            if (document.activeElement !== input) leaveMobileChatMode();
+        }, 0));
+        sendBtn.addEventListener('pointerdown', (event) => event.preventDefault());
+        window.visualViewport?.addEventListener('resize', syncMobileChatViewport);
+        window.visualViewport?.addEventListener('scroll', syncMobileChatViewport);
+        window.addEventListener('resize', () => {
+            if (!window.matchMedia('(max-width: 639px)').matches) leaveMobileChatMode();
+            else syncMobileChatViewport();
+        });
         const reviewText = {{ Js::from([
             'title' => __('Review Before Submitting'),
             'category' => __('Category'),
