@@ -176,9 +176,13 @@
                 </div>
 
                 <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu" aria-label="{{ Auth::user()->name }} {{ __('Account menu') }}" :title='collapsed ? @js(Auth::user()->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/10 transition">
-                    <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#fffaf5] text-sm font-semibold text-maroon-800">
-                        {{ strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}
-                    </span>
+                    @if (Auth::user()->avatar_path)
+                        <img src="{{ route('profile.photo', ['v' => Auth::user()->updated_at?->timestamp]) }}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-white/30">
+                    @else
+                        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#fffaf5] text-sm font-semibold text-maroon-800">
+                            {{ strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}
+                        </span>
+                    @endif
                     <span class="cg-sidebar-label min-w-0 flex-1 leading-tight">
                         <span class="block truncate text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
                         <span class="block truncate text-xs font-medium text-white/70">{{ $roleLabel }}</span>
