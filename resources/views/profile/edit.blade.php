@@ -13,6 +13,14 @@
                 </div>
             </div>
 
+            @if ($user->role === 'resident')
+                <div class="cg-card p-4 sm:p-8">
+                    <div class="max-w-xl">
+                        @include('profile.partials.residence-verification-form', ['verification' => $user->residentVerification])
+                    </div>
+                </div>
+            @endif
+
             <div class="cg-card p-4 sm:p-8">
                 <div class="max-w-xl">
                     @include('profile.partials.update-password-form')

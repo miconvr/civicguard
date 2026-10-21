@@ -102,6 +102,9 @@
                     {{ __('Audit Logs') }}
                 </x-sidebar-link>
                 @if (in_array($role, ['admin', 'official']))
+                    <x-sidebar-link icon="shield" :href="route('admin.verifications.index')" :active="request()->routeIs('admin.verifications.*')">
+                        {{ __('Residence Verification') }}
+                    </x-sidebar-link>
                     <x-sidebar-link icon="user-plus" :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
                         {{ __('Add Staff') }}
                     </x-sidebar-link>
@@ -122,6 +125,7 @@
                     'resident' => __('Resident'),
                     default    => ucfirst(Auth::user()->role),
                 };
+                $isResidenceVerified = Auth::user()->hasVerifiedResidence();
             @endphp
 
             <!-- Profile (menu opens upward) -->
@@ -184,7 +188,15 @@
                         </span>
                     @endif
                     <span class="cg-sidebar-label min-w-0 flex-1 leading-tight">
-                        <span class="block truncate text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
+                        <span class="flex min-w-0 items-center gap-1.5">
+                            <span class="truncate text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
+                            @if ($isResidenceVerified)
+                                <span class="inline-flex shrink-0 items-center gap-0.5 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold leading-none text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200" title="{{ __('Verified resident') }}">
+                                    <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.13a1 1 0 0 1-1.42.006L3.29 8.71a1 1 0 1 1 1.42-1.407l4.217 4.26 6.363-6.414a1 1 0 0 1 1.414-.006Z" clip-rule="evenodd"/></svg>
+                                    {{ __('Verified') }}
+                                </span>
+                            @endif
+                        </span>
                         <span class="block truncate text-xs font-medium text-white/70">{{ $roleLabel }}</span>
                     </span>
                     <svg class="cg-sidebar-label h-4 w-4 shrink-0 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
