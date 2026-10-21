@@ -10,7 +10,7 @@ class ProfilePhotoController extends Controller
 {
     public function show(Request $request): StreamedResponse
     {
-        $path = $request->user()->avatar_path;
+        $path = $request->user()->avatarPath();
 
         abort_unless($path && Storage::disk('report_photos')->exists($path), 404);
 

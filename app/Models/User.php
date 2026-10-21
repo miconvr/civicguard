@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -25,7 +26,6 @@ class User extends Authenticatable
         'role',
         'phone_number',
         'address',
-        'avatar_path',
     ];
 
     /**
@@ -49,5 +49,21 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function avatarPath(): ?string
+    {
+        $disk = Storage::disk('report_photos');
+        $directory = 'profile-photos/'.$this->id;
+
+        foreach (['jpg', 'jpeg', 'png', 'webp'] as $extension) {
+            $path = $directory.'/avatar.'.$extension;
+
+            if ($disk->exists($path)) {
+                return $path;
+            }
+        }
+
+        return null;
     }
 }

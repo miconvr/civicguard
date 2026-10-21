@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -31,17 +30,31 @@ class ProfileController extends Controller
     {
         $user = $request->user();
         $validated = $request->validated();
-        $oldPhotoPath = null;
+        $disk = Storage::disk('report_photos');
+        $photoDirectory = 'profile-photos/'.$user->id;
 
         if ($request->boolean('remove_avatar') || $request->hasFile('avatar')) {
-            $oldPhotoPath = $user->avatar_path;
-            $user->avatar_path = $request->boolean('remove_avatar')
-                ? null
-                : $request->file('avatar')->storeAs(
-                    'profile-photos/'.$user->id,
-                    Str::uuid().'.'.$request->file('avatar')->extension(),
+            if ($request->boolean('remove_avatar')) {
+                $disk->deleteDirectory($photoDirectory);
+            } else {
+                $avatarPath = $request->file('avatar')->storeAs(
+                    $photoDirectory,
+                    'avatar.'.$request->file('avatar')->extension(),
                     'report_photos'
                 );
+
+                if (! $avatarPath) {
+                    return Redirect::back()->withInput()->withErrors([
+                        'avatar' => __('The profile picture could not be saved. Please try again.'),
+                    ]);
+                }
+
+                foreach ($disk->files($photoDirectory) as $path) {
+                    if ($path !== $avatarPath) {
+                        $disk->delete($path);
+                    }
+                }
+            }
         }
 
         $user->fill($validated);
@@ -51,10 +64,6 @@ class ProfileController extends Controller
         }
 
         $user->save();
-
-        if ($oldPhotoPath) {
-            Storage::disk('report_photos')->delete($oldPhotoPath);
-        }
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
@@ -73,7 +82,6 @@ class ProfileController extends Controller
         $user = $request->user();
 
         $photoPaths = Report::where('user_id', $user->id)->whereNotNull('photo_path')->pluck('photo_path');
-        $avatarPath = $user->avatar_path;
 
         Auth::logout();
 
@@ -81,9 +89,7 @@ class ProfileController extends Controller
 
         $photoPaths->each(fn ($path) => Storage::disk('report_photos')->delete($path));
 
-        if ($avatarPath) {
-            Storage::disk('report_photos')->delete($avatarPath);
-        }
+        Storage::disk('report_photos')->deleteDirectory('profile-photos/'.$user->id);
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
