@@ -176,7 +176,7 @@
                 </div>
 
                 <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu" aria-label="{{ Auth::user()->name }} {{ __('Account menu') }}" :title='collapsed ? @js(Auth::user()->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/10 transition">
-                    @if (Auth::user()->avatar_path)
+                    @if (Auth::user()->avatarPath())
                         <img src="{{ route('profile.photo', ['v' => Auth::user()->updated_at?->timestamp]) }}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-white/30">
                     @else
                         <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#fffaf5] text-sm font-semibold text-maroon-800">
