@@ -61,7 +61,7 @@ class="relative inline-flex items-center">
          x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]"
          x-transition:leave-start="opacity-100 scale-100"
          x-transition:leave-end="opacity-0 scale-95"
-         class="absolute right-0 top-full mt-2 w-80 sm:w-96 max-w-[calc(100vw-1.5rem)] rounded-2xl border border-stone-200 bg-white shadow-2xl dark:border-white/10 dark:bg-[#1f1e1d] z-50 overflow-hidden"
+         class="absolute right-0 top-full mt-2 w-80 sm:w-96 max-w-[calc(100vw-1.5rem)] rounded-2xl border border-stone-200 cg-surface shadow-2xl dark:border-white/10 z-50 overflow-hidden"
          style="display: none;">
 
         <div class="flex items-center justify-between border-b border-stone-100 px-4 py-3 dark:border-white/10 bg-stone-50/50 dark:bg-white/[0.02]">

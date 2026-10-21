@@ -50,7 +50,7 @@
             <p class="rounded-lg bg-stone-50 p-3 text-xs leading-5 text-stone-700 dark:bg-white/5 dark:text-gray-300">{{ __('Only admins and barangay officials can view this image for residency review. We delete it as soon as a decision is made. We keep the result, consent time, and review record while your account exists. Cover ID numbers, QR codes, birth dates, and details not needed to show your name and Maimpis residence.') }}</p>
 
             <label for="verification_consent" class="flex min-h-11 items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
-                <input id="verification_consent" name="consent" type="checkbox" value="1" required @checked(old('consent')) class="mt-1 rounded border-gray-300 text-maroon-700 shadow-sm focus:ring-maroon-500 dark:border-gray-600 dark:bg-gray-900">
+                <input id="verification_consent" name="consent" type="checkbox" value="1" required @checked(old('consent')) class="mt-1 rounded border-gray-300 text-maroon-700 shadow-sm focus:ring-maroon-500 dark:border-gray-600">
                 <span>{{ __('I agree to let admins and barangay officials review this image only to verify my Maimpis residency.') }}</span>
             </label>
             <x-input-error :messages="$errors->get('consent')" />

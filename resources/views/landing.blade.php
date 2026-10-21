@@ -16,7 +16,7 @@
         <noscript><link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700|bitter:600,700&display=swap" rel="stylesheet"></noscript>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="min-h-[100dvh] bg-paper font-sans antialiased text-ink dark:bg-[#1c1c1b] dark:text-gray-100">
+    <body class="min-h-[100dvh] bg-paper font-sans antialiased text-ink">
         <a href="#main-content" class="sr-only fixed left-4 top-4 z-[100] rounded-lg bg-maroon-700 px-4 py-3 font-semibold text-white focus:not-sr-only">
             {{ __('Skip to content') }}
         </a>

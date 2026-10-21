@@ -46,7 +46,7 @@
                             name="guardian_notified"
                             value="1"
                             {{ old('guardian_notified') ? 'checked' : '' }}
-                            class="h-4 w-4 rounded border-gray-400 bg-[#292524] accent-[#6b1d35] focus:ring-[#6b1d35] dark:border-gray-600 dark:bg-[#292524]"
+                            class="rounded border-gray-400 text-maroon-700 dark:border-gray-600"
                         >
                         Guardian notified
                     </label>

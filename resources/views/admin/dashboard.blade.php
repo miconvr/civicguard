@@ -34,8 +34,8 @@
                     @if (request('assignee') === 'none')
                         <input type="hidden" name="assignee" value="none">
                     @endif
-                    <input type="search" name="search" value="{{ request('search') }}" placeholder="Search by category, location, or report details…"
-                           class="cg-select w-full sm:w-80 lg:w-96" aria-label="Search reports">
+                    <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Search by category, location, or report details…') }}"
+                           class="cg-select w-full sm:w-80 lg:w-96" aria-label="{{ __('Search reports') }}">
                     <select name="severity" onchange="this.form.submit()" class="cg-select" aria-label="Filter by severity">
                         <option value="">All severities</option>
                         @foreach (['critical', 'high', 'moderate', 'low'] as $s)
@@ -161,7 +161,7 @@
                x-transition:enter="transform transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100"
                x-transition:leave="transform transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="translate-x-0 opacity-100" x-transition:leave-end="translate-x-full opacity-0"
                role="dialog" aria-modal="true" aria-label="Report details"
-               class="fixed inset-y-0 right-0 z-50 w-full max-w-md overflow-y-auto cg-surface-raised dark:bg-gray-900 p-4 sm:p-6 shadow-xl">
+               class="fixed inset-y-0 right-0 z-50 w-full max-w-md overflow-y-auto cg-surface-raised p-4 sm:p-6 shadow-xl">
             <template x-if="r">
                 <div class="space-y-5">
                     <div class="flex items-start justify-between gap-4">
