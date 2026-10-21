@@ -1,6 +1,6 @@
 @extends('legal.layout')
 @section('title', 'Privacy Policy')
-@section('updated', 'October 15, 2026')
+@section('updated', 'October 21, 2026')
 @section('content')
 <p>CivicGuard is an incident reporting system for Barangay Maimpis, City of San Fernando, Pampanga. This policy explains what personal data we collect and how we handle it, in line with the Data Privacy Act of 2012 (Republic Act 10173).</p>
 
@@ -14,13 +14,15 @@
     <li>Chat messages you send to the AI Chatbot.</li>
     <li>Activity records: actions such as filing, assigning, or resolving a report, kept in an audit log.</li>
     <li>For barangay tanods only: curfew records about minors, which staff enter themselves.</li>
+    <li>If you request resident verification: an image showing your name and Maimpis residence, plus the time you agreed to its review. Please cover ID numbers, QR codes, birth dates, and unrelated details.</li>
 </ul>
 
 <h2 class="mt-8 text-xl font-semibold">Why we collect it</h2>
 <p>To let you report incidents, let barangay staff review and respond, show you the status of your reports, and keep an accountable record of how reports are handled.</p>
+<p>Resident verification is optional. We use the submitted image only to decide whether to show a Maimpis resident badge. Admins and barangay officials can review it. The image is deleted as soon as a decision is made; the result, consent time, and review record remain while your account exists.</p>
 
 <h2 class="mt-8 text-xl font-semibold">Who can see it</h2>
-<p>Your reports are visible to barangay officials and administrators. Tanods see only the reports assigned to them and curfew records they logged themselves. Other residents cannot see your reports.</p>
+<p>Your reports are visible to barangay officials and administrators. Tanods see only the reports assigned to them and curfew records they logged themselves. Other residents cannot see your reports. Only admins and barangay officials can view a pending residency proof image.</p>
 
 <h2 class="mt-8 text-xl font-semibold">Services we use</h2>
 <ul class="list-disc space-y-1 pl-6">
