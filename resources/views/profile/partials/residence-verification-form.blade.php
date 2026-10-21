@@ -37,12 +37,14 @@
             </div>
 
             <div x-show="previewUrl" x-cloak class="relative rounded-xl border border-stone-200 bg-stone-50 p-3 dark:border-gray-700 dark:bg-white/5" :class="shakePreview ? 'cg-pending-shake' : ''">
-                <button type="button" x-on:click="clearSelection()" aria-label="{{ __('Remove selected image') }}" title="{{ __('Remove selected image') }}" class="absolute right-2 top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-stone-800 text-xl font-bold leading-none text-white shadow transition hover:scale-110 hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700">&times;</button>
+                <button type="button" x-on:click="clearSelection()" aria-label="{{ __('Remove selected image') }}" title="{{ __('Remove selected image') }}" class="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-500 shadow-sm transition hover:border-red-300 hover:bg-red-50 hover:text-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-red-800 dark:hover:bg-red-950/40 dark:hover:text-red-300">
+                    <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="m5 5 10 10M15 5 5 15"/></svg>
+                </button>
                 <p class="mb-2 text-sm font-medium text-gray-800 dark:text-gray-100">{{ __('Proof image preview') }}</p>
                 <img x-show="!previewError" :src="previewUrl" x-on:error="previewError = true" alt="{{ __('Preview of your proof image') }}" class="max-h-72 w-full rounded-lg object-contain">
                 <p x-show="previewError" role="alert" class="text-sm text-red-700 dark:text-red-300">{{ __('This image could not be previewed. Please choose another one.') }}</p>
                 <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{{ __('This is the image that will be sent for review.') }}</p>
-                <p class="mt-1 text-xs font-medium text-amber-800 dark:text-amber-300">{{ __('Your proof image is ready. Submit it for review.') }}</p>
+                <p class="mt-1 text-xs text-stone-600 dark:text-gray-400">{{ __('Your proof image is ready. Submit it for review.') }}</p>
             </div>
 
             <p class="rounded-lg bg-stone-50 p-3 text-xs leading-5 text-stone-700 dark:bg-white/5 dark:text-gray-300">{{ __('Only admins and barangay officials can view this image for residency review. We delete it as soon as a decision is made. We keep the result, consent time, and review record while your account exists. Cover ID numbers, QR codes, birth dates, and details not needed to show your name and Maimpis residence.') }}</p>
