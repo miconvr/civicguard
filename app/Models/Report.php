@@ -60,6 +60,7 @@ class Report extends Model
             'admin', 'official' => true,
             'tanod' => (int) $this->assigned_to === (int) $user->id
                 || (int) $this->user_id === (int) $user->id,
+            'resident' => (int) $this->user_id === (int) $user->id,
             default => false,
         };
     }

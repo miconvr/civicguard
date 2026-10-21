@@ -38,7 +38,7 @@
                             'resolved' => 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300',
                         ][$report->status];
                     @endphp
-                    <article id="report-{{ $report->id }}" class="cg-card scroll-mt-20 border border-gray-200 p-5 shadow-sm transition-colors sm:p-6 dark:border-gray-700">
+                    <article id="report-{{ $report->id }}" x-data="{ detailsOpen: false }" class="cg-card scroll-mt-20 border border-gray-200 p-5 shadow-sm transition-colors sm:p-6 dark:border-gray-700">
                         <div class="flex items-start justify-between gap-3">
                             <div class="min-w-0">
                                 <h3 class="font-semibold text-gray-900 dark:text-gray-100">
@@ -54,6 +54,42 @@
 
                         <p class="mt-2 line-clamp-2 text-sm text-gray-700 dark:text-gray-300">{{ $report->description }}</p>
                         <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('Filed') }} {{ $report->created_at->format('M d, Y g:i A') }}</p>
+
+                        <button type="button" @click="detailsOpen = !detailsOpen" :aria-expanded="detailsOpen.toString()"
+                                class="mt-3 inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-medium text-maroon-700 transition hover:bg-maroon-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon-600 dark:text-[#d59690] dark:hover:bg-white/5">
+                            <span x-text="detailsOpen ? @js(__('Hide details')) : @js(__('View report details'))"></span>
+                            <svg class="h-4 w-4 transition-transform duration-200" :class="detailsOpen ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0l-4.25-4.25a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+                        </button>
+
+                        <div x-show="detailsOpen" x-cloak x-transition.opacity class="mt-4 space-y-4 border-t border-gray-200 pt-4 dark:border-gray-700">
+                            <div>
+                                <h4 class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ __('What happened') }}</h4>
+                                <p class="mt-1 whitespace-pre-line text-sm text-gray-800 dark:text-gray-200">{{ $report->description }}</p>
+                            </div>
+
+                            <dl class="grid gap-3 text-sm sm:grid-cols-2">
+                                <div>
+                                    <dt class="text-xs text-gray-500 dark:text-gray-400">{{ __('Location') }}</dt>
+                                    <dd class="mt-0.5 text-gray-800 dark:text-gray-200">{{ $report->location_text }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-xs text-gray-500 dark:text-gray-400">{{ __('Severity') }}</dt>
+                                    <dd class="mt-0.5 text-gray-800 dark:text-gray-200">{{ __(ucfirst($report->severity)) }}</dd>
+                                </div>
+                            </dl>
+
+                            @if ($report->photo_path)
+                                <div>
+                                    <h4 class="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ __('Attached photo') }}</h4>
+                                    <a href="{{ route('reports.photo', $report) }}" target="_blank" rel="noopener" class="block overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-black/20">
+                                        <img src="{{ route('reports.photo', $report) }}" alt="{{ __('Photo attached to report #:id', ['id' => $report->id]) }}" loading="lazy" class="max-h-[28rem] w-full object-contain">
+                                    </a>
+                                    <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400">{{ __('Select the photo to open it at full size.') }}</p>
+                                </div>
+                            @else
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('No photo was attached to this report.') }}</p>
+                            @endif
+                        </div>
 
                         @if ($report->assignedTo)
                             @php($tanodAvatar = $report->assignedTo->avatarPath())
