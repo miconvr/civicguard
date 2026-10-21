@@ -163,6 +163,28 @@
         opacity: 1;
     }
 
+    .cg-chat-log {
+        overscroll-behavior-y: contain;
+        scrollbar-gutter: stable;
+    }
+
+    @media (max-width: 639px) {
+        .cg-chat-log {
+            height: clamp(15rem, 42vh, 25rem);
+            height: clamp(15rem, 42dvh, 25rem);
+            min-height: 15rem;
+            overflow-y: auto;
+        }
+    }
+
+    @media (max-width: 639px) and (max-height: 680px) {
+        .cg-chat-log {
+            height: clamp(11rem, 38vh, 15rem);
+            height: clamp(11rem, 38dvh, 15rem);
+            min-height: 11rem;
+        }
+    }
+
     .cg-page-enter-late { animation-delay: 60ms; }
 
     .cg-notification-trigger[aria-expanded="true"] {
