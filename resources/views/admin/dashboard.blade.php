@@ -229,7 +229,7 @@
                             <div class="space-y-2">
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Assigned tanod</label>
                                 <select name="assigned_to" x-model="r.assigned_to" class="cg-select w-full">
-                                    <option value="" disabled :hidden="r.assigned_to !== ''">Select a tanod…</option>
+                                    <option value="" disabled :hidden="r.assigned_to !== ''">Select a tanod</option>
                                     @foreach ($tanods as $tanod)
                                         <option value="{{ $tanod->id }}">{{ $tanod->name }}</option>
                                     @endforeach
