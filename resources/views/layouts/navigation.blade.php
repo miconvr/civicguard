@@ -101,11 +101,6 @@
                 <x-sidebar-link icon="shield" :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
                     {{ __('Audit Logs') }}
                 </x-sidebar-link>
-                @if ($role === 'admin')
-                    <x-sidebar-link icon="database" :href="route('admin.dataManagement')" :active="request()->routeIs('admin.dataManagement')">
-                        {{ __('Data Management') }}
-                    </x-sidebar-link>
-                @endif
                 @if (in_array($role, ['admin', 'official']))
                     <x-sidebar-link icon="shield" :href="route('admin.verifications.index')" :active="request()->routeIs('admin.verifications.*')">
                         {{ __('Residence Verification') }}
@@ -123,14 +118,16 @@
         <!-- Bottom section -->
         <div class="border-t border-white/15 bg-black/20 p-3 space-y-2 shrink-0">
             @php
-                $roleLabel = match (Auth::user()->role) {
+                $accountUser = Auth::user();
+                $roleLabel = match ($accountUser->role) {
                     'official' => __('Barangay Official'),
                     'tanod'    => __('Barangay Tanod'),
                     'admin'    => __('Admin'),
                     'resident' => __('Resident'),
-                    default    => ucfirst(Auth::user()->role),
+                    default    => ucfirst($accountUser->role),
                 };
-                $isResidenceVerified = Auth::user()->hasVerifiedResidence();
+                $residentVerification = $accountUser->role === 'resident' ? $accountUser->residentVerification : null;
+                $isResidenceVerified = $residentVerification?->status === \App\Models\ResidentVerification::VERIFIED;
             @endphp
 
             <!-- Profile (menu opens upward) -->
@@ -145,15 +142,18 @@
                      id="account-menu" aria-label="{{ __('Account menu') }}" role="group"
                      :class="collapsed ? 'lg:w-64' : ''"
                      class="absolute bottom-full left-0 right-0 mb-2 rounded-xl border border-stone-200 cg-surface-raised py-1 shadow-lg dark:border-gray-700 dark:bg-[#262624]">
-                    <a href="{{ route('profile.edit') }}" class="flex min-h-11 items-center gap-2 px-4 py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5">
-                        <svg class="h-4 w-4 shrink-0 text-stone-500 dark:text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-                            <circle cx="12" cy="8" r="3.25" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.5 20a6.5 6.5 0 0 1 13 0" />
-                        </svg>
-                        <span>{{ __('Profile') }}</span>
-                    </a>
+                    <div class="px-4 pt-1 pb-1">
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400">{{ __('Language') }}</span>
+                    </div>
+                    @foreach (['en' => __('English'), 'tl' => __('Tagalog')] as $code => $name)
+                        <a href="{{ route('locale.switch', $code) }}" class="flex items-center justify-between px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5" @if (app()->getLocale() === $code) aria-current="true" @endif>
+                            <span>{{ $name }}</span>
+                            @if (app()->getLocale() === $code) <span aria-hidden="true">&#10003;</span> @endif
+                        </a>
+                    @endforeach
+                    <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
                     <button type="button" role="switch" aria-label="{{ __('Toggle dark mode') }}" :aria-checked="darkMode.toString()" @click="darkMode = !darkMode"
-                            class="flex min-h-11 w-full items-center justify-between px-4 py-2 text-left text-sm text-stone-700 hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-maroon-700 dark:text-gray-200 dark:hover:bg-white/5">
+                            class="flex min-h-11 w-full items-center justify-between px-4 py-2 text-left text-sm text-stone-700 transition-colors hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-maroon-700 dark:text-gray-200 dark:hover:bg-white/5">
                         <span class="flex items-center gap-2">
                             <svg x-show="!darkMode" class="h-4 w-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                                 <circle cx="12" cy="12" r="4"></circle><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l-1.42 1.42m11.3-11.3-1.42-1.42"></path>
@@ -166,15 +166,25 @@
                         <span class="text-xs text-stone-600 dark:text-gray-400" x-text='darkMode ? @js(__('Dark')) : @js(__('Light'))'></span>
                     </button>
                     <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
-                    <div class="px-4 pt-1 pb-1">
-                        <span class="text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400">{{ __('Language') }}</span>
-                    </div>
-                    @foreach (['en' => __('English'), 'tl' => __('Tagalog')] as $code => $name)
-                        <a href="{{ route('locale.switch', $code) }}" class="flex items-center justify-between px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5" @if (app()->getLocale() === $code) aria-current="true" @endif>
-                            <span>{{ $name }}</span>
-                            @if (app()->getLocale() === $code) <span aria-hidden="true">&#10003;</span> @endif
-                        </a>
-                    @endforeach
+                    <a href="{{ route('profile.edit') }}" class="flex min-h-11 items-center justify-between gap-2 px-4 py-2 text-sm text-stone-700 transition-colors hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-maroon-700 dark:text-gray-200 dark:hover:bg-white/5">
+                        <span class="flex items-center gap-2">
+                            <svg class="h-4 w-4 shrink-0 text-stone-500 dark:text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                                <circle cx="12" cy="8" r="3.25" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.5 20a6.5 6.5 0 0 1 13 0" />
+                            </svg>
+                            <span>{{ __('Profile') }}</span>
+                        </span>
+                        @if ($accountUser->role === 'resident' && ! $isResidenceVerified)
+                            @if ($residentVerification?->status === \App\Models\ResidentVerification::PENDING)
+                                <span class="inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">{{ __('Pending review') }}</span>
+                            @else
+                                <span class="inline-flex shrink-0 items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-900 dark:bg-amber-900/40 dark:text-amber-200">
+                                    <span aria-hidden="true" class="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-current text-[9px] leading-none">!</span>
+                                    {{ __('Verify residency!') }}
+                                </span>
+                            @endif
+                        @endif
+                    </a>
                     <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
@@ -184,17 +194,17 @@
                     </form>
                 </div>
 
-                <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu" aria-label="{{ Auth::user()->name }} {{ __('Account menu') }}" :title='collapsed ? @js(Auth::user()->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/10 transition">
-                    @if (Auth::user()->avatarPath())
-                        <img src="{{ route('profile.photo', ['v' => basename(Auth::user()->avatarPath())]) }}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-white/30">
+                <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu" aria-label="{{ $accountUser->name }} {{ __('Account menu') }}" :title='collapsed ? @js($accountUser->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/10 transition">
+                    @if ($accountUser->avatarPath())
+                        <img src="{{ route('profile.photo', ['v' => basename($accountUser->avatarPath())]) }}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-white/30">
                     @else
                         <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#fffaf5] text-sm font-semibold text-maroon-800">
-                            {{ strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}
+                            {{ strtoupper(mb_substr($accountUser->name, 0, 1)) }}
                         </span>
                     @endif
                     <span class="cg-sidebar-label min-w-0 flex-1 leading-tight">
                         <span class="flex min-w-0 items-center gap-1.5">
-                            <span class="truncate text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
+                            <span class="truncate text-sm font-semibold text-white">{{ $accountUser->name }}</span>
                             @if ($isResidenceVerified)
                                 <span class="inline-flex shrink-0 items-center gap-0.5 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold leading-none text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200" title="{{ __('Verified resident') }}">
                                     <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.13a1 1 0 0 1-1.42.006L3.29 8.71a1 1 0 1 1 1.42-1.407l4.217 4.26 6.363-6.414a1 1 0 0 1 1.414-.006Z" clip-rule="evenodd"/></svg>
