@@ -13,13 +13,13 @@
             </div>
 
             {{-- Summary cards --}}
-            <div class="grid grid-cols-3 gap-3 sm:gap-4" data-reveal>
+            <div class="grid grid-cols-1 min-[360px]:grid-cols-3 gap-3 sm:gap-4" data-reveal>
                 @foreach ([
                     ['Total entries', $stats['total']],
                     ['Today', $stats['today']],
                     ['Last 7 days', $stats['week']],
                 ] as [$label, $count])
-                    <div class="cg-card p-4">
+                    <div class="cg-card p-3 min-[360px]:p-4">
                         <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{{ $label }}</div>
                         <div class="text-2xl sm:text-3xl font-semibold cg-kpi">{{ $count }}</div>
                     </div>
@@ -28,10 +28,10 @@
 
             <div class="cg-card p-6">
                 {{-- Filter bar --}}
-                <form method="GET" class="flex flex-wrap items-center gap-3 mb-4">
+                <form method="GET" class="mb-4 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                     <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Search by actor, action, or description…') }}"
                            class="cg-select w-full sm:w-80 lg:w-96" aria-label="{{ __('Search audit logs') }}">
-                    <select name="action" onchange="this.form.submit()" class="cg-select" aria-label="Filter by action">
+                    <select name="action" onchange="this.form.submit()" class="cg-select w-full sm:w-auto" aria-label="Filter by action">
                         <option value="">All actions</option>
                         @foreach ($actions as $action)
                             <option value="{{ $action }}" @selected(request('action') === $action)>{{ ucwords(str_replace('_', ' ', $action)) }}</option>
@@ -39,7 +39,7 @@
                     </select>
                     @if (request()->filled('search') || request()->filled('action'))
                         <a href="{{ route('admin.auditLogs') }}"
-                           class="text-xs rounded-full bg-amber-100 text-amber-800 px-3 py-1 dark:bg-amber-900/40 dark:text-amber-300">Clear filters ✕</a>
+                           class="inline-flex min-h-11 items-center self-start rounded-full bg-amber-100 px-3 py-1 text-xs text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">Clear filters ✕</a>
                     @endif
                 </form>
 

@@ -29,14 +29,14 @@
 
             <div class="cg-card p-6" data-reveal>
                 {{-- Single filter bar --}}
-                <form method="GET" class="flex flex-wrap items-center gap-3 mb-4">
+                <form method="GET" class="mb-4 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                     <input type="hidden" name="tab" value="{{ $tab }}">
                     @if (request('assignee') === 'none')
                         <input type="hidden" name="assignee" value="none">
                     @endif
                     <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Search by category, location, or report details…') }}"
                            class="cg-select w-full sm:w-80 lg:w-96" aria-label="{{ __('Search reports') }}">
-                    <select name="severity" onchange="this.form.submit()" class="cg-select" aria-label="Filter by severity">
+                    <select name="severity" onchange="this.form.submit()" class="cg-select w-full sm:w-auto" aria-label="Filter by severity">
                         <option value="">All severities</option>
                         @foreach (['critical', 'high', 'moderate', 'low'] as $s)
                             <option value="{{ $s }}" @selected(request('severity') === $s)>{{ ucfirst($s) }}</option>
