@@ -23,7 +23,7 @@
 
         <div class="mt-4 flex items-center justify-between gap-3">
             <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-maroon-600 shadow-sm focus:ring-maroon-500" name="remember">
+                <input id="remember_me" type="checkbox" class="rounded border-gray-300 dark:border-gray-700 text-maroon-600 shadow-sm focus:ring-maroon-500" name="remember">
                 <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
             </label>
 

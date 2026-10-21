@@ -25,7 +25,7 @@
 
             @if ($user->role === 'resident')
 
-                <a data-reveal href="{{ route('reports.create') }}" class="group flex min-h-24 items-center justify-between gap-4 rounded-xl cg-surface-raised p-5 ring-1 ring-stone-200 transition-all duration-[var(--cg-motion-interaction)] hover:-translate-y-px hover:shadow-md hover:ring-maroon-700/30 focus-visible:outline-offset-4 sm:p-6 dark:bg-[#262624] dark:ring-[#3d3d3a] dark:hover:bg-[#30302e] dark:hover:ring-stone-400/30" data-reveal>
+                <a data-reveal href="{{ route('reports.create') }}" class="group flex min-h-24 items-center justify-between gap-4 rounded-xl cg-surface-raised p-5 ring-1 ring-stone-200 transition duration-[var(--cg-motion-interaction)] hover:-translate-y-px hover:shadow-md hover:ring-maroon-700/30 focus-visible:outline-offset-4 sm:p-6 dark:ring-[var(--cg-border)] dark:hover:bg-white/5 dark:hover:ring-stone-400/30" data-reveal>
                     <span>
                         <span class="block text-xs font-bold uppercase tracking-wider text-maroon-700 dark:text-[#c27872]">{{ __('Need help from the barangay?') }}</span>
                         <span class="mt-1 block text-lg font-bold text-stone-950 dark:text-white sm:text-xl">{{ __('Report an incident') }}</span>
