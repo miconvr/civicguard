@@ -152,6 +152,12 @@
         transition: opacity var(--cg-motion-interaction) var(--cg-ease-out), transform var(--cg-motion-interaction) var(--cg-ease-out);
     }
 
+    /* Let the shared page entrance handle first paint; keep panel motion for user-driven mode changes. */
+    .cg-report-page-no-panel-motion .cg-report-panel-transition,
+    .cg-report-page-no-panel-motion .cg-report-mode-panel {
+        transition: none !important;
+    }
+
     .cg-report-panel-enter-end {
         opacity: 1;
         transform: translateY(0);
