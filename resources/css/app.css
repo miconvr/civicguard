@@ -175,8 +175,7 @@
         animation: cg-notification-bell-ring var(--cg-motion-emphasis) var(--cg-ease-out) both;
     }
     .cg-verification-result-enter {
-        animation: cg-verification-result-enter var(--cg-motion-page) var(--cg-ease-out) both;
-        animation-delay: var(--cg-verification-delay, 0ms);
+        animation: cg-verification-result-enter var(--cg-motion-interaction) var(--cg-ease-out) both;
     }
 
     .t-dropdown {
