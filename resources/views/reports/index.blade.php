@@ -43,7 +43,7 @@
                             <div class="min-w-0">
                                 <h3 class="font-semibold text-gray-900 dark:text-gray-100">
                                     {{ $report->category->name }}
-                                    <span class="font-normal text-gray-500 dark:text-gray-400">#{{ $report->id }}</span>
+                                    <span class="font-normal text-gray-500 dark:text-gray-400">#{{ $report->resident_number }}</span>
                                 </h3>
                                 <p class="truncate text-sm text-gray-600 dark:text-gray-400">{{ $report->location_text }}</p>
                             </div>
