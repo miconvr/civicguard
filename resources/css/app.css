@@ -141,17 +141,16 @@
     }
 
     .cg-report-mode-panel {
-        transition: opacity var(--cg-motion-interaction) var(--cg-ease-out), transform var(--cg-motion-interaction) var(--cg-ease-out);
+        transition: opacity var(--cg-motion-interaction) var(--cg-ease-out);
     }
 
     .cg-report-mode-panel.is-leaving,
     .cg-report-panel-enter-start {
         opacity: 0;
-        transform: translateY(8px);
     }
 
     .cg-report-panel-transition {
-        transition: opacity var(--cg-motion-page) var(--cg-ease-out), transform var(--cg-motion-page) var(--cg-ease-out);
+        transition: opacity var(--cg-motion-page) var(--cg-ease-out);
     }
 
     /* Let the shared page entrance handle first paint; keep panel motion for user-driven mode changes. */
@@ -162,7 +161,6 @@
 
     .cg-report-panel-enter-end {
         opacity: 1;
-        transform: translateY(0);
     }
 
     .cg-page-enter-late { animation-delay: 60ms; }
