@@ -153,10 +153,13 @@
         </div>
 
         {{-- Drawer: all editing lives here --}}
-        <div x-show="open" x-cloak x-transition.opacity class="fixed inset-0 z-40 bg-black/40" @click="open = false"></div>
+        <div x-show="open" x-cloak
+             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-40 bg-black/40" @click="open = false"></div>
         <aside x-show="open" x-cloak
-               x-transition:enter="transition duration-200" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
-               x-transition:leave="transition duration-150" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
+               x-transition:enter="transform transition ease-out duration-300" x-transition:enter-start="translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100"
+               x-transition:leave="transform transition ease-in duration-200" x-transition:leave-start="translate-x-0 opacity-100" x-transition:leave-end="translate-x-full opacity-0"
                role="dialog" aria-modal="true" aria-label="Report details"
                class="fixed inset-y-0 right-0 z-50 w-full max-w-md overflow-y-auto cg-surface-raised dark:bg-gray-900 p-4 sm:p-6 shadow-xl">
             <template x-if="r">
@@ -194,57 +197,53 @@
 
                     <hr class="border-gray-200 dark:border-gray-700">
 
-                    {{-- Severity --}}
-                    @if (in_array(auth()->user()->role, ['admin', 'official']))
-                        <form method="POST" :action="'{{ url('/admin/reports') }}/' + r.id + '/severity'" class="space-y-2">
-                            @csrf @method('PATCH')
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Severity</label>
-                            <div class="flex gap-2">
-                                <select name="severity" x-model="r.sev" class="cg-select flex-1">
+                    <form method="POST" :action="'{{ url('/admin/reports') }}/' + r.id" x-show="r.canStatus" class="space-y-4">
+                        @csrf @method('PATCH')
+
+                        {{-- Severity --}}
+                        @if (in_array(auth()->user()->role, ['admin', 'official']))
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Severity</label>
+                                <select name="severity" x-model="r.sev" class="cg-select w-full">
                                     <option value="low">Low</option>
                                     <option value="moderate">Moderate</option>
                                     <option value="high">High</option>
                                     <option value="critical">Critical</option>
                                 </select>
-                                <button class="min-h-11 shrink-0 rounded-lg bg-maroon-700 px-3 py-2 text-sm font-medium text-white hover:bg-maroon-800 sm:px-4">Save</button>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Set automatically from the report text. Correct it if it is wrong.</p>
                             </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">Set automatically from the report text. Correct it if it is wrong.</p>
-                        </form>
-                    @endif
+                        @endif
 
-                    {{-- Status --}}
-                    <form method="POST" :action="'{{ url('/admin/reports') }}/' + r.id + '/status'" x-show="r.canStatus" class="space-y-2">
-                        @csrf @method('PATCH')
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
-                        <div class="flex gap-2">
-                            <select name="status" x-model="r.status" class="cg-select flex-1">
+                        {{-- Status --}}
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+                            <select name="status" x-model="r.status" :disabled="!r.canStatus" class="cg-select w-full">
                                 <option value="pending">Pending</option>
                                 <option value="in_progress">In progress</option>
                                 <option value="resolved">Resolved</option>
                             </select>
-                                <button class="min-h-11 shrink-0 rounded-lg bg-maroon-700 px-3 py-2 text-sm font-medium text-white hover:bg-maroon-800 sm:px-4">Save</button>
                         </div>
+
+                        {{-- Assignment --}}
+                        @if (in_array(auth()->user()->role, ['admin', 'official']))
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Assigned tanod</label>
+                                <select name="assigned_to" x-model="r.assigned_to" class="cg-select w-full">
+                                    <option value="">Select a tanod…</option>
+                                    @foreach ($tanods as $tanod)
+                                        <option value="{{ $tanod->id }}">{{ $tanod->name }}</option>
+                                    @endforeach
+                                </select>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Leave unchanged if no reassignment is needed.</p>
+                            </div>
+                        @endif
+
+                        <button type="submit" class="min-h-11 w-full rounded-lg bg-maroon-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-maroon-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon-600 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900">
+                            Save changes
+                        </button>
                     </form>
 
                     <p x-show="!r.canStatus" x-cloak class="text-sm text-gray-500 dark:text-gray-400">Only the assigned tanod or an admin can update this report.</p>
-
-                    {{-- Assign --}}
-                    @if (in_array(auth()->user()->role, ['admin', 'official']))
-                    <form method="POST" :action="'{{ url('/admin/reports') }}/' + r.id + '/assign'" class="space-y-2">
-                        @csrf @method('PATCH')
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Assigned tanod</label>
-                        <div class="flex gap-2">
-                            <select name="assigned_to" x-model="r.assigned_to" class="cg-select flex-1">
-                                <option value="" disabled>Select a tanod…</option>
-                                @foreach ($tanods as $tanod)
-                                    <option value="{{ $tanod->id }}">{{ $tanod->name }}</option>
-                                @endforeach
-                            </select>
-                            <button class="min-h-11 shrink-0 rounded-lg bg-maroon-700 px-3 py-2 text-sm font-medium text-white hover:bg-maroon-800 sm:px-4">Assign</button>
-                        </div>
-                    </form>
-
-                    @endif
 
                     <a :href="r.details" class="block text-sm text-gray-500 dark:text-gray-400 hover:underline">Open full details page</a>
                 </div>
