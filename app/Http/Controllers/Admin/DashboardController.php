@@ -19,7 +19,7 @@ class DashboardController extends Controller
         $tab = $request->query('tab', 'active');
         $open = ['pending', 'in_progress'];
 
-        $query = Report::with(['category', 'user', 'assignedTo'])
+        $query = Report::with(['category', 'user.residentVerification', 'assignedTo'])
             ->visibleTo($request->user())
             ->when($request->filled('search'), function ($q) use ($request) {
                 $s = $request->search;
