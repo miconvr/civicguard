@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -39,7 +40,7 @@ class ProfileController extends Controller
             } else {
                 $avatarPath = $request->file('avatar')->storeAs(
                     $photoDirectory,
-                    'avatar.'.$request->file('avatar')->extension(),
+                    'avatar-'.Str::uuid().'.'.$request->file('avatar')->extension(),
                     'report_photos'
                 );
 

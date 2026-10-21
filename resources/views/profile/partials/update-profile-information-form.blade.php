@@ -21,7 +21,7 @@
             <x-input-label for="avatar" :value="__('Profile picture')" />
             <div class="mt-2 flex items-center gap-4">
                 @if ($user->avatarPath())
-                    <img src="{{ route('profile.photo', ['v' => $user->updated_at?->timestamp]) }}" alt="{{ __('Profile picture') }}" class="h-16 w-16 rounded-full object-cover ring-2 ring-stone-200 dark:ring-gray-600">
+                    <img src="{{ route('profile.photo', ['v' => basename($user->avatarPath())]) }}" alt="{{ __('Profile picture') }}" class="h-16 w-16 rounded-full object-cover ring-2 ring-stone-200 dark:ring-gray-600">
                 @else
                     <span class="flex h-16 w-16 items-center justify-center rounded-full bg-maroon-100 text-xl font-semibold text-maroon-800 dark:bg-white/10 dark:text-white" aria-hidden="true">{{ strtoupper(mb_substr($user->name, 0, 1)) }}</span>
                 @endif
