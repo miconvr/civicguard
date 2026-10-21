@@ -40,7 +40,21 @@ class ResidentVerificationController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.verifications.index', compact('verifications', 'search', 'status', 'counts'));
+        $descriptions = [
+            ResidentVerification::PENDING => __('Review submitted proof images. Verified residents receive a permanent badge. Submitted images are deleted after a decision.'),
+            ResidentVerification::VERIFIED => __('Previously verified residents are listed here. Their proof images were deleted after review.'),
+            ResidentVerification::REJECTED => __('Declined requests are kept here for review history. Their proof images were deleted after the decision.'),
+        ];
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status' => $status,
+                'description' => $descriptions[$status],
+                'html' => view('admin.verifications.partials.results', compact('verifications', 'search', 'status'))->render(),
+            ]);
+        }
+
+        return view('admin.verifications.index', compact('verifications', 'search', 'status', 'counts', 'descriptions'));
     }
 
     public function document(ResidentVerification $verification): StreamedResponse
