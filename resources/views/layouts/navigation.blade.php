@@ -188,7 +188,7 @@
                     <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
                     <form method="POST" action="{{ route('logout') }}" class="px-1">
                         @csrf
-                        <button type="submit" class="cg-sidebar-logout block w-full rounded-lg px-4 py-3 lg:py-2 text-left text-sm font-semibold text-red-700 hover:bg-maroon-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-red-600 dark:text-red-400 dark:hover:bg-maroon-400/15 dark:focus-visible:outline-red-400">
+                        <button type="submit" class="cg-sidebar-logout block w-full rounded-lg px-4 py-3 lg:py-2 text-left text-sm font-semibold text-red-700 hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-red-600 dark:text-red-400 dark:hover:bg-white/5 dark:focus-visible:outline-red-400">
                             {{ __('Log Out') }}
                         </button>
                     </form>
