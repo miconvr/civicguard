@@ -85,8 +85,10 @@
         const reviewText = {{ Js::from([
             'title' => __('Review Before Submitting'),
             'category' => __('Category'),
-            'changeCategory' => __('Change category'),
-            'chooseCategory' => __('Choose a category'),
+            'editDetails' => __('Edit details'),
+            'saveChanges' => __('Save changes'),
+            'cancel' => __('Cancel'),
+            'editRequired' => __('Enter a description and location to continue.'),
             'reportFormHelp' => __('Add a photo or pin your location in the full report form.'),
             'openReportForm' => __('Open the full report form'),
             'categories' => $categories->map(fn ($category) => ['id' => $category->id, 'name' => $category->name])->values(),
@@ -184,15 +186,17 @@
             row.className = 'text-left';
 
             const card = document.createElement('div');
-            card.className = 'space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-5';
+            card.className = 'space-y-4 rounded-xl border border-maroon-700 bg-[#fff0f2] p-4 shadow-sm dark:border-[#713746] dark:bg-[#2b1d21] sm:p-5';
 
             const title = document.createElement('p');
-            title.className = 'text-sm font-semibold text-gray-900 dark:text-gray-100';
+            title.className = 'text-sm font-semibold text-maroon-800 dark:text-rose-200';
             title.textContent = reviewText.title;
             card.appendChild(title);
 
+            const detailsView = document.createElement('div');
+            detailsView.className = 'space-y-4';
             const categoryLine = document.createElement('div');
-            categoryLine.className = 'rounded-lg bg-gray-50 p-3 dark:bg-gray-700/40';
+            categoryLine.className = 'rounded-lg bg-[#f4e2e5] p-3 dark:bg-[#3a292e]';
             const categoryHeader = document.createElement('div');
             categoryHeader.className = 'flex items-center justify-between gap-3';
             const categoryText = document.createElement('div');
@@ -203,42 +207,11 @@
             categoryLabel.className = 'block text-xs font-medium text-gray-500 dark:text-gray-400';
             categoryLabel.textContent = reviewText.category;
             categoryText.append(categoryLabel, categoryValue);
-            const editCategoryBtn = document.createElement('button');
-            editCategoryBtn.type = 'button';
-            editCategoryBtn.className = 'text-xs text-gray-500 underline decoration-gray-300 underline-offset-2 transition-colors hover:text-gray-700 dark:text-gray-400 dark:decoration-gray-600 dark:hover:text-gray-200';
-            editCategoryBtn.textContent = reviewText.changeCategory;
+            categoryHeader.appendChild(categoryText);
+            categoryLine.appendChild(categoryHeader);
+            detailsView.appendChild(categoryLine);
 
-            const categorySelect = document.createElement('select');
-            categorySelect.className = 'cg-input mt-3 min-h-10 w-full py-1.5 text-sm';
-            categorySelect.setAttribute('aria-label', reviewText.chooseCategory);
-            categorySelect.hidden = true;
-            reviewText.categories.forEach((category) => {
-                const option = document.createElement('option');
-                option.value = String(category.id);
-                option.textContent = category.name;
-                option.selected = Number(data.category_id) === Number(category.id);
-                categorySelect.appendChild(option);
-            });
-            editCategoryBtn.setAttribute('aria-expanded', 'false');
-            editCategoryBtn.onclick = () => {
-                categorySelect.hidden = !categorySelect.hidden;
-                editCategoryBtn.setAttribute('aria-expanded', String(!categorySelect.hidden));
-                if (!categorySelect.hidden) categorySelect.focus();
-            };
-            categorySelect.onchange = () => {
-                const selectedCategory = reviewText.categories.find((category) => Number(category.id) === Number(categorySelect.value));
-                if (!selectedCategory) return;
-                data.category_id = selectedCategory.id;
-                data.category_name = selectedCategory.name;
-                categoryValue.textContent = selectedCategory.name;
-                categorySelect.hidden = true;
-                editCategoryBtn.setAttribute('aria-expanded', 'false');
-                editCategoryBtn.focus();
-            };
-            categoryHeader.append(categoryText, editCategoryBtn);
-            categoryLine.append(categoryHeader, categorySelect);
-            card.appendChild(categoryLine);
-
+            const detailValues = {};
             const fields = [
                 [reviewText.description, data.description],
                 [reviewText.location, data.location],
@@ -252,12 +225,127 @@
                 const fieldValue = document.createElement('p');
                 fieldValue.className = 'break-words text-sm leading-5 text-gray-800 dark:text-gray-100';
                 fieldValue.textContent = value;
+                detailValues[label] = fieldValue;
                 field.append(fieldLabel, fieldValue);
-                card.appendChild(field);
+                detailsView.appendChild(field);
             });
+
+            const editDetailsBtn = document.createElement('button');
+            editDetailsBtn.type = 'button';
+            editDetailsBtn.className = 'ml-auto min-h-9 rounded-lg border border-gray-300 px-3 text-xs font-semibold text-gray-600 transition-colors hover:bg-[#f4e2e5] hover:text-maroon-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white';
+            editDetailsBtn.textContent = reviewText.editDetails;
+            editDetailsBtn.setAttribute('aria-expanded', 'false');
+            card.appendChild(detailsView);
+
+            const editPanel = document.createElement('div');
+            editPanel.className = 'space-y-3 rounded-lg border border-[#e3c5ca] bg-white/70 p-3 dark:border-[#67404a] dark:bg-black/10';
+            editPanel.hidden = true;
+
+            const editorFields = document.createElement('div');
+            editorFields.className = 'space-y-3';
+
+            const categoryEditorLabel = document.createElement('label');
+            categoryEditorLabel.className = 'block text-xs font-semibold text-gray-600 dark:text-gray-300';
+            categoryEditorLabel.textContent = reviewText.category;
+            const categorySelect = document.createElement('select');
+            categorySelect.className = 'cg-input mt-1 min-h-10 w-full py-1.5 text-sm';
+            categorySelect.setAttribute('aria-label', reviewText.category);
+            reviewText.categories.forEach((category) => {
+                const option = document.createElement('option');
+                option.value = String(category.id);
+                option.textContent = category.name;
+                option.selected = Number(data.category_id) === Number(category.id);
+                categorySelect.appendChild(option);
+            });
+            categoryEditorLabel.appendChild(categorySelect);
+
+            const descriptionEditorLabel = document.createElement('label');
+            descriptionEditorLabel.className = 'block text-xs font-semibold text-gray-600 dark:text-gray-300';
+            descriptionEditorLabel.textContent = reviewText.description;
+            const descriptionEditor = document.createElement('textarea');
+            descriptionEditor.className = 'cg-input mt-1 min-h-20 w-full py-2 text-sm';
+            descriptionEditor.rows = 3;
+            descriptionEditor.maxLength = 2000;
+            descriptionEditor.value = data.description;
+            descriptionEditorLabel.appendChild(descriptionEditor);
+
+            const locationEditorLabel = document.createElement('label');
+            locationEditorLabel.className = 'block text-xs font-semibold text-gray-600 dark:text-gray-300';
+            locationEditorLabel.textContent = reviewText.location;
+            const locationEditor = document.createElement('input');
+            locationEditor.type = 'text';
+            locationEditor.className = 'cg-input mt-1 min-h-10 w-full text-sm';
+            locationEditor.maxLength = 255;
+            locationEditor.value = data.location;
+            locationEditorLabel.appendChild(locationEditor);
+
+            editorFields.append(categoryEditorLabel, descriptionEditorLabel, locationEditorLabel);
+            editPanel.appendChild(editorFields);
+
+            const editError = document.createElement('p');
+            editError.className = 'text-xs text-red-700 dark:text-red-300';
+            editError.setAttribute('role', 'alert');
+            editError.textContent = reviewText.editRequired;
+            editError.hidden = true;
+            editPanel.appendChild(editError);
+
+            const editorActions = document.createElement('div');
+            editorActions.className = 'flex justify-end gap-2';
+            const cancelEditBtn = document.createElement('button');
+            cancelEditBtn.type = 'button';
+            cancelEditBtn.className = 'min-h-10 rounded-lg px-3 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5';
+            cancelEditBtn.textContent = reviewText.cancel;
+            const saveEditBtn = document.createElement('button');
+            saveEditBtn.type = 'button';
+            saveEditBtn.className = 'min-h-10 rounded-lg bg-maroon-700 px-3 text-sm font-semibold text-white transition-colors hover:bg-maroon-800';
+            saveEditBtn.textContent = reviewText.saveChanges;
+            editorActions.append(cancelEditBtn, saveEditBtn);
+            editPanel.appendChild(editorActions);
+            card.appendChild(editPanel);
 
             const btnRow = document.createElement('div');
             btnRow.className = 'space-y-3 border-t border-gray-200 pt-4 dark:border-gray-700';
+
+            editDetailsBtn.onclick = () => {
+                categorySelect.value = String(data.category_id);
+                descriptionEditor.value = data.description;
+                locationEditor.value = data.location;
+                editError.hidden = true;
+                detailsView.hidden = true;
+                editPanel.hidden = false;
+                editDetailsBtn.setAttribute('aria-expanded', 'true');
+                btnRow.hidden = true;
+                categorySelect.focus();
+            };
+            cancelEditBtn.onclick = () => {
+                editPanel.hidden = true;
+                detailsView.hidden = false;
+                editDetailsBtn.setAttribute('aria-expanded', 'false');
+                btnRow.hidden = false;
+                editDetailsBtn.focus();
+            };
+            saveEditBtn.onclick = () => {
+                const selectedCategory = reviewText.categories.find((category) => Number(category.id) === Number(categorySelect.value));
+                if (!selectedCategory || !descriptionEditor.value.trim() || !locationEditor.value.trim()) {
+                    editError.hidden = false;
+                    if (!descriptionEditor.value.trim()) descriptionEditor.focus();
+                    else if (!locationEditor.value.trim()) locationEditor.focus();
+                    return;
+                }
+                editError.hidden = true;
+                data.category_id = selectedCategory.id;
+                data.category_name = selectedCategory.name;
+                data.description = descriptionEditor.value.trim();
+                data.location = locationEditor.value.trim();
+                categoryValue.textContent = data.category_name;
+                detailValues[reviewText.description].textContent = data.description;
+                detailValues[reviewText.location].textContent = data.location;
+                editPanel.hidden = true;
+                detailsView.hidden = false;
+                editDetailsBtn.setAttribute('aria-expanded', 'false');
+                btnRow.hidden = false;
+                editDetailsBtn.focus();
+            };
 
             const actions = document.createElement('div');
             actions.className = 'flex flex-wrap items-center gap-3';
@@ -300,12 +388,16 @@
             formHelp.textContent = reviewText.reportFormHelp;
             continueForm.addEventListener('submit', () => {
                 const categoryInput = continueForm.querySelector('[name="category_id"]');
+                const descriptionInput = continueForm.querySelector('[name="description"]');
+                const locationInput = continueForm.querySelector('[name="location_text"]');
                 if (categoryInput) categoryInput.value = String(data.category_id);
+                if (descriptionInput) descriptionInput.value = data.description;
+                if (locationInput) locationInput.value = data.location;
             });
             continueForm.appendChild(formHelp);
             continueForm.appendChild(continueBtn);
 
-            actions.append(submitBtn, cancelBtn);
+            actions.append(submitBtn, cancelBtn, editDetailsBtn);
             btnRow.append(actions, continueForm);
             card.appendChild(btnRow);
 
