@@ -95,7 +95,6 @@
                                 <option value="{{ $value }}" @selected($report->severity === $value)>{{ __($label) }}</option>
                             @endforeach
                         </select>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('Set automatically from the report text. Correct it if it is wrong.') }}</p>
                     </div>
                     <div>
                         <label for="report-status" class="mb-1.5 block text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('Status') }}</label>
@@ -115,7 +114,6 @@
                                 <option value="{{ $tanod->id }}" @selected((int) $report->assigned_to === (int) $tanod->id)>{{ $tanod->name }}</option>
                             @endforeach
                         </select>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('Leave unchanged if no reassignment is needed.') }}</p>
                     </div>
                     <div class="sm:col-span-3">
                         <button type="submit" class="cg-btn">{{ __('Save changes') }}</button>
