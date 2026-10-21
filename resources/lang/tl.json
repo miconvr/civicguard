@@ -308,5 +308,6 @@
     "Residence verification approved for :name (:email).": "Naaprubahan ang beripikasyon ng paninirahan ni :name (:email).",
     "Residence verification declined for :name (:email).": "Tinanggihan ang beripikasyon ng paninirahan ni :name (:email).",
     "Change category": "Baguhin ang kategorya",
-    "Continue with my report": "Magpatuloy sa aking ulat"
+    "Add a photo or pin your location in the full report form.": "Magdagdag ng larawan o i-pin ang lokasyon sa buong form ng ulat.",
+    "Open the full report form": "Buksan ang buong form ng ulat"
 }
