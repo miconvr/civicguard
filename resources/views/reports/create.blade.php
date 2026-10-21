@@ -50,6 +50,7 @@
                 <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-6"
                       x-data="{ cat: {{ Js::from((string) old('category_id', '')) }}, descs: {{ Js::from($categories->pluck('description', 'id')) }}, len: {{ strlen(old('description', '')) }}, preview: null, tooBig: false, suggested: false, timer: null,
                           pick(e) { const f = e.target.files[0]; this.tooBig = f ? f.size > 5242880 : false; this.preview = f && !this.tooBig ? URL.createObjectURL(f) : null; if (this.tooBig) e.target.value = ''; },
+                          clearPhoto() { if (this.preview) URL.revokeObjectURL(this.preview); this.preview = null; this.tooBig = false; const i = document.getElementById('photo'); if (i) i.value = ''; },
                           suggest(text) { if (this.cat || text.length < 20) return; clearTimeout(this.timer); this.timer = setTimeout(async () => { try { const r = await fetch('{{ route('reports.suggestCategory') }}', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' }, body: JSON.stringify({ description: text }) }); const d = await r.json(); if (d.category_id && !this.cat) { this.cat = String(d.category_id); this.suggested = true; } } catch (e) {} }, 1200); } }">
                     @csrf
 
@@ -91,14 +92,19 @@
 
                     <div>
                         <span class="cg-label">{{ __('Photo (optional)') }}</span>
-                        <label for="photo" class="mt-1 flex min-h-[72px] cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 p-3 text-center text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus-within:ring-2 focus-within:ring-maroon-600 transition">
+                        <label for="photo" x-show="!preview" class="mt-1 flex min-h-[72px] cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 p-3 text-center text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus-within:ring-2 focus-within:ring-maroon-600 transition">
                             <svg class="h-5 w-5 text-maroon-700 dark:text-[#c27872]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"/><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z"/></svg>
                             <span class="font-medium text-gray-800 dark:text-gray-200">{{ __('Tap to add a photo') }}</span>
                             <span>{{ __('Images only, up to 5 MB') }}</span>
                             <input id="photo" type="file" name="photo" accept="image/*" x-on:change="pick($event)" class="sr-only">
                         </label>
                         <p class="cg-error" role="alert" x-show="tooBig" x-cloak>{{ __('That photo is larger than 5 MB. Please choose a smaller one.') }}</p>
-                        <img x-show="preview" x-cloak :src="preview" alt="{{ __('Photo preview') }}" class="mt-3 max-h-48 rounded-lg border border-gray-200 dark:border-gray-700">
+                        <div x-show="preview" x-cloak class="relative mt-3 inline-block">
+                            <img :src="preview" alt="{{ __('Photo preview') }}" class="max-h-48 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <button type="button" @click="clearPhoto()" aria-label="{{ __('Remove selected image') }}" title="{{ __('Remove selected image') }}" class="absolute -right-2 -top-2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-stone-700 text-white shadow transition hover:bg-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-600">
+                                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="m5 5 10 10M15 5 5 15"/></svg>
+                            </button>
+                        </div>
                         @error('photo') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                     </div>
 
