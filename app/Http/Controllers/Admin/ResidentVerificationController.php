@@ -60,7 +60,9 @@ class ResidentVerificationController extends Controller
         abort_unless($path && Storage::disk('report_photos')->exists($path), 404);
 
         return Storage::disk('report_photos')->response($path, headers: [
-            'Cache-Control' => 'private, no-store',
+            // Avatars are private, but short browser caching avoids re-reading
+            // the same file when staff switch between verification tabs.
+            'Cache-Control' => 'private, max-age=60',
             'X-Content-Type-Options' => 'nosniff',
         ]);
     }
