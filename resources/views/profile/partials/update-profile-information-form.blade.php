@@ -58,7 +58,7 @@
                 </div>
                 <p x-show="previewError" role="alert" class="mt-3 text-sm text-red-700 dark:text-red-400">{{ __('We could not prepare this image. Please choose another one.') }}</p>
             </div>
-            <div x-show="pendingPhotoChange" x-cloak role="status" class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-stone-600 dark:text-gray-300">
+            <div x-show="pendingPhotoChange" x-cloak role="status" class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-stone-600 dark:text-gray-300">
                 <p>{{ __('Photo changes are not saved yet. Click Save to apply them.') }}</p>
                 <button x-show="removeExisting" type="button" @click="undoRemoval()" class="font-semibold text-maroon-700 underline underline-offset-2 hover:text-maroon-900 dark:text-[#e7a8b3] dark:hover:text-white">{{ __('Undo') }}</button>
             </div>
