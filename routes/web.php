@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\ConsolidatedReportController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ResidentVerificationController as AdminResidentVerificationController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CurfewLogController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfilePhotoController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportPhotoController;
+use App\Http\Controllers\ResidentVerificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,10 +38,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/photo', [ProfilePhotoController::class, 'show'])->name('profile.photo');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/verification', [ResidentVerificationController::class, 'store'])->name('profile.verification.store')->middleware('throttle:5,1');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::middleware(['auth', 'role:admin,official'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/verifications', [AdminResidentVerificationController::class, 'index'])->name('verifications.index');
+    Route::get('/verifications/{verification}/document', [AdminResidentVerificationController::class, 'document'])->name('verifications.document');
+    Route::patch('/verifications/{verification}', [AdminResidentVerificationController::class, 'decide'])->name('verifications.decide');
     Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create');
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
 });

@@ -21,7 +21,7 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $request->user()->load('residentVerification'),
         ]);
     }
 
@@ -118,6 +118,7 @@ class ProfileController extends Controller
         $user = $request->user();
 
         $photoPaths = Report::where('user_id', $user->id)->whereNotNull('photo_path')->pluck('photo_path');
+        $verificationDocument = $user->residentVerification?->document_path;
 
         Auth::logout();
 
@@ -126,6 +127,11 @@ class ProfileController extends Controller
         $photoPaths->each(fn ($path) => Storage::disk('report_photos')->delete($path));
 
         Storage::disk('report_photos')->deleteDirectory('profile-photos/'.$user->id);
+        Storage::disk('report_photos')->deleteDirectory('verification-documents/'.$user->id);
+
+        if ($verificationDocument) {
+            Storage::disk('report_photos')->delete($verificationDocument);
+        }
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
