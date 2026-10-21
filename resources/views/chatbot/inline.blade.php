@@ -114,8 +114,6 @@
             'addPhoto' => __('Choose photo'),
             'changePhoto' => __('Change photo'),
             'removePhoto' => __('Remove photo'),
-            'showPhoto' => __('Show photo'),
-            'hidePhoto' => __('Hide photo'),
             'photoSelected' => __('Photo selected'),
             'photoTypeError' => __('Choose a JPG, PNG, or WebP image.'),
             'photoSizeError' => __('The photo must be 5 MB or smaller.'),
@@ -288,26 +286,10 @@
             const photoStage = document.createElement('div');
             photoStage.className = 'relative h-32 overflow-hidden rounded-xl border border-white/30 bg-[#4e1427] sm:h-40';
             const previewImage = document.createElement('img');
-            previewImage.className = 'h-full w-full scale-110 object-contain blur-md transition-all duration-200';
+            previewImage.className = 'h-full w-full object-contain';
             previewImage.alt = '';
-            const revealPhotoBtn = document.createElement('button');
-            revealPhotoBtn.type = 'button';
-            revealPhotoBtn.className = 'absolute inset-0 flex items-center justify-center bg-gray-900/45 text-sm font-semibold text-white transition-colors hover:bg-gray-900/60';
-            revealPhotoBtn.textContent = reviewText.showPhoto;
-            revealPhotoBtn.setAttribute('aria-pressed', 'false');
-            let photoRevealed = false;
             let photoPreviewUrl = null;
-            revealPhotoBtn.onclick = () => {
-                photoRevealed = !photoRevealed;
-                previewImage.classList.toggle('blur-md', !photoRevealed);
-                previewImage.classList.toggle('scale-110', !photoRevealed);
-                revealPhotoBtn.className = photoRevealed
-                    ? 'absolute right-2 top-2 rounded-full bg-gray-900/75 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-gray-900'
-                    : 'absolute inset-0 flex items-center justify-center bg-gray-900/45 text-sm font-semibold text-white transition-colors hover:bg-gray-900/60';
-                revealPhotoBtn.textContent = photoRevealed ? reviewText.hidePhoto : reviewText.showPhoto;
-                revealPhotoBtn.setAttribute('aria-pressed', String(photoRevealed));
-            };
-            photoStage.append(previewImage, revealPhotoBtn);
+            photoStage.appendChild(previewImage);
             const photoMeta = document.createElement('div');
             photoMeta.className = 'flex flex-wrap items-center justify-between gap-2';
             const photoFileLabel = document.createElement('p');
@@ -349,11 +331,6 @@
                 data.photo = file;
                 photoPreviewUrl = URL.createObjectURL(file);
                 previewImage.src = photoPreviewUrl;
-                photoRevealed = false;
-                previewImage.classList.add('blur-md', 'scale-110');
-                revealPhotoBtn.className = 'absolute inset-0 flex items-center justify-center bg-gray-900/45 text-sm font-semibold text-white transition-colors hover:bg-gray-900/60';
-                revealPhotoBtn.textContent = reviewText.showPhoto;
-                revealPhotoBtn.setAttribute('aria-pressed', 'false');
                 photoFileLabel.textContent = reviewText.photoSelected + ': ' + file.name;
                 pickPhotoBtn.textContent = reviewText.changePhoto;
                 photoPreview.classList.remove('hidden');
