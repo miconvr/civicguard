@@ -286,7 +286,6 @@
     "Report submitted": "Naipasa na ang ulat",
     "Your report is now with barangay staff. You can track its status on My Reports.": "Nasa staff na ng barangay ang iyong ulat. Maaari mong subaybayan ang status nito sa Aking mga Ulat.",
     "View My Reports": "Tingnan ang Aking mga Ulat",
-    "We could not submit your report. Please try again or use the standard form.": "Hindi namin naipasa ang iyong ulat. Subukan muli o gamitin ang karaniwang form.",
     "Keep chatting instead": "Magpatuloy sa chat",
     "Enter the purok, street, or a nearby landmark": "Ilagay ang purok, kalsada, o kalapit na palatandaan",
     "Submitting...": "Isinusumite...",
@@ -310,6 +309,14 @@
     "Edit details": "I-edit ang mga detalye",
     "Save changes": "I-save ang mga pagbabago",
     "Enter a description and location to continue.": "Maglagay ng paglalarawan at lokasyon upang magpatuloy.",
-    "Add a photo or pin your location in the full report form.": "Magdagdag ng larawan o i-pin ang lokasyon sa buong form ng ulat.",
-    "Open the full report form": "Buksan ang buong form ng ulat"
+    "Would you like to add a photo? This is optional.": "Gusto mo bang magdagdag ng larawan? Opsyonal ito.",
+    "Add a photo": "Magdagdag ng larawan",
+    "Change photo": "Palitan ang larawan",
+    "Remove photo": "Alisin ang larawan",
+    "Show photo": "Ipakita ang larawan",
+    "Hide photo": "Itago ang larawan",
+    "Photo selected": "Napili ang larawan",
+    "Choose a JPG, PNG, or WebP image.": "Pumili ng JPG, PNG, o WebP na larawan.",
+    "The photo must be 5 MB or smaller.": "Dapat ay 5 MB pababa ang larawan.",
+    "We could not submit your report. Please try again.": "Hindi naisumite ang iyong ulat. Pakisubukan muli."
 }
