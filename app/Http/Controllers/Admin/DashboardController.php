@@ -150,7 +150,9 @@ class DashboardController extends Controller
             'assigned_to' => ['required', Rule::exists('users', 'id')->where('role', 'tanod')],
         ]);
 
-        $report->update(['assigned_to' => $validated['assigned_to']]);
+        $previousAssigneeId = $report->assigned_to ? (int) $report->assigned_to : null;
+        $assignedTanod = User::findOrFail($validated['assigned_to']);
+        $report->update(['assigned_to' => $assignedTanod->id]);
 
         CaseAssignment::create([
             'report_id' => $report->id,
@@ -165,17 +167,27 @@ class DashboardController extends Controller
             'action' => 'report_assigned',
             'auditable_type' => Report::class,
             'auditable_id' => $report->id,
-            'description' => 'Report assigned to a tanod.',
+            'description' => 'Report assigned to '.$assignedTanod->name.'.',
             'metadata' => [
-                'assigned_to' => $validated['assigned_to'],
+                'from' => $previousAssigneeId,
+                'assigned_to' => $assignedTanod->id,
+                'assigned_name' => $assignedTanod->name,
             ],
         ]);
 
-        AppNotification::create([
-            'user_id' => $validated['assigned_to'],
-            'report_id' => $report->id,
-            'message' => "You've been assigned to a report: \"{$report->category->name}\" at {$report->location_text}.",
-        ]);
+        if ($previousAssigneeId !== (int) $assignedTanod->id) {
+            AppNotification::create([
+                'user_id' => $assignedTanod->id,
+                'report_id' => $report->id,
+                'message' => "You've been assigned to a report: \"{$report->category->name}\" at {$report->location_text}.",
+            ]);
+
+            AppNotification::create([
+                'user_id' => $report->user_id,
+                'report_id' => $report->id,
+                'message' => __('A tanod has been assigned to your report: :name.', ['name' => $assignedTanod->name]),
+            ]);
+        }
 
         return redirect()->back()->with('status', 'Tanod assigned successfully.');
     }
