@@ -60,8 +60,12 @@
                                     <td data-label="Date" class="whitespace-nowrap">{{ $auditLog->created_at->format('M d, Y g:i A') }}</td>
                                     <td data-label="Actor" class="font-medium">{{ $auditLog->user->name ?? 'System' }}</td>
                                     <td data-label="Action">
-                                        <span class="rounded-full px-2.5 py-1 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-                                            {{ ucwords(str_replace('_', ' ', $auditLog->action)) }}
+                                        <span class="inline-flex whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                            {{ match ($auditLog->action) {
+                                                'report_status_changed' => __('Status changed'),
+                                                'report_confirmed_fixed' => __('Confirmed fixed'),
+                                                default => ucwords(str_replace('_', ' ', $auditLog->action)),
+                                            } }}
                                         </span>
                                     </td>
                                     <td data-label="Description">{{ $auditLog->description ?? '-' }}</td>
