@@ -10,16 +10,34 @@
             @endif
 
             <div>
-                <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('Review submitted proof images. Verified residents receive a permanent badge. Submitted images are deleted after a decision.') }}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    @if ($status === 'pending')
+                        {{ __('Review submitted proof images. Verified residents receive a permanent badge. Submitted images are deleted after a decision.') }}
+                    @elseif ($status === 'verified')
+                        {{ __('Previously verified residents are listed here. Their proof images were deleted after review.') }}
+                    @else
+                        {{ __('Declined requests are kept here for review history. Their proof images were deleted after the decision.') }}
+                    @endif
+                </p>
             </div>
 
+            <nav aria-label="{{ __('Verification status') }}" class="flex flex-wrap gap-2">
+                @foreach (['pending' => __('Pending'), 'verified' => __('Verified'), 'rejected' => __('Declined')] as $tabStatus => $tabLabel)
+                    <a href="{{ route('admin.verifications.index', ['status' => $tabStatus, 'search' => $search !== '' ? $search : null]) }}" @if ($status === $tabStatus) aria-current="page" @endif class="inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold transition {{ $status === $tabStatus ? 'border-maroon-800 bg-maroon-800 text-white dark:border-[#8f1d39] dark:bg-[#8f1d39]' : 'border-stone-300 bg-white text-stone-700 hover:bg-stone-50 dark:border-gray-700 dark:bg-[#1c1c1a] dark:text-gray-200 dark:hover:bg-white/5' }}">
+                        <span>{{ $tabLabel }}</span>
+                        <span class="rounded-full px-2 py-0.5 text-xs {{ $status === $tabStatus ? 'bg-white/15 text-white' : 'bg-stone-100 text-stone-600 dark:bg-white/10 dark:text-gray-300' }}">{{ $counts->get($tabStatus, 0) }}</span>
+                    </a>
+                @endforeach
+            </nav>
+
             <form method="get" action="{{ route('admin.verifications.index') }}" class="cg-card flex flex-col gap-3 p-4 sm:flex-row">
+                <input type="hidden" name="status" value="{{ $status }}">
                 <label for="verification-search" class="sr-only">{{ __('Search applicants') }}</label>
                 <input id="verification-search" type="search" name="search" value="{{ $search }}" maxlength="100" placeholder="{{ __('Search by name or email…') }}" class="min-h-11 flex-1 rounded-lg border-stone-300 bg-white text-sm shadow-sm focus:border-maroon-700 focus:ring-maroon-700 dark:border-gray-700 dark:bg-[#1c1c1a] dark:text-gray-100">
                 <div class="flex gap-2">
                     <x-primary-button>{{ __('Search') }}</x-primary-button>
                     @if ($search !== '')
-                        <a href="{{ route('admin.verifications.index') }}" class="inline-flex min-h-11 items-center rounded-lg border border-stone-300 px-4 py-2 text-sm font-semibold text-stone-700 transition hover:bg-stone-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-white/5">{{ __('Clear') }}</a>
+                        <a href="{{ route('admin.verifications.index', ['status' => $status]) }}" class="inline-flex min-h-11 items-center rounded-lg border border-stone-300 px-4 py-2 text-sm font-semibold text-stone-700 transition hover:bg-stone-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-white/5">{{ __('Clear') }}</a>
                     @endif
                 </div>
             </form>
@@ -41,22 +59,25 @@
                         </div>
                         <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{{ __('Submitted') }} {{ $verification->submitted_at->diffForHumans() }}</p>
 
-                        <div class="mt-5 flex flex-wrap gap-3">
-                            <form method="post" action="{{ route('admin.verifications.decide', $verification) }}">
-                                @csrf
-                                @method('patch')
-                                <input type="hidden" name="decision" value="verified">
-                                <x-primary-button>{{ __('Verify resident') }}</x-primary-button>
-                            </form>
-                            <form method="post" action="{{ route('admin.verifications.decide', $verification) }}" onsubmit="return confirm('{{ __('Decline this verification request?') }}')">
-                                @csrf
-                                @method('patch')
-                                <input type="hidden" name="decision" value="rejected">
-                                <button type="submit" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-800 transition hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-900/20">{{ __('Decline') }}</button>
-                            </form>
-                        </div>
+                        @if ($status === 'pending')
+                            <div class="mt-5 flex flex-wrap gap-3">
+                                <form method="post" action="{{ route('admin.verifications.decide', $verification) }}">
+                                    @csrf
+                                    @method('patch')
+                                    <input type="hidden" name="decision" value="verified">
+                                    <x-primary-button>{{ __('Verify resident') }}</x-primary-button>
+                                </form>
+                                <form method="post" action="{{ route('admin.verifications.decide', $verification) }}" onsubmit="return confirm('{{ __('Decline this verification request?') }}')">
+                                    @csrf
+                                    @method('patch')
+                                    <input type="hidden" name="decision" value="rejected">
+                                    <button type="submit" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-800 transition hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-900/20">{{ __('Decline') }}</button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
 
+                    @if ($status === 'pending')
                     <div x-data="{ revealed: false, viewerOpen: false }" @keydown.escape.window="viewerOpen = false" class="group relative min-h-48 overflow-hidden rounded-xl border border-stone-200 bg-stone-100 dark:border-gray-700 dark:bg-black/20">
                         <div x-show="!revealed" class="absolute inset-0 flex items-center justify-center bg-[repeating-linear-gradient(135deg,#e7e5e4_0px,#e7e5e4_10px,#f5f5f4_10px,#f5f5f4_20px)] p-4 dark:bg-[repeating-linear-gradient(135deg,#292524_0px,#292524_10px,#1c1917_10px,#1c1917_20px)]">
                             <span class="pointer-events-none absolute text-xs font-medium text-stone-600 transition-opacity group-hover:opacity-0 dark:text-gray-300">{{ __('Submission hidden') }}</span>
@@ -87,10 +108,34 @@
                             </div>
                         </div>
                     </div>
+                    @else
+                        <div class="flex min-h-32 flex-col justify-center rounded-xl border border-stone-200 bg-stone-50 p-4 dark:border-gray-700 dark:bg-white/5">
+                            <span class="inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold {{ $status === 'verified' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-stone-200 text-stone-700 dark:bg-gray-700 dark:text-gray-200' }}">
+                                @if ($status === 'verified')
+                                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.13a1 1 0 0 1-1.42.006L3.29 8.71a1 1 0 1 1 1.42-1.407l4.217 4.26 6.363-6.414a1 1 0 0 1 1.414-.006Z" clip-rule="evenodd"/></svg>
+                                @endif
+                                {{ $status === 'verified' ? __('Verified') : __('Declined') }}
+                            </span>
+                            <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">{{ __('Reviewed') }} {{ $verification->reviewed_at?->diffForHumans() ?? '—' }}</p>
+                            @if ($verification->reviewer)
+                                <p class="mt-1 text-xs text-gray-600 dark:text-gray-400">{{ __('Reviewed by :name', ['name' => $verification->reviewer->name]) }}</p>
+                            @endif
+                        </div>
+                    @endif
                 </article>
             @empty
                 <div class="cg-card p-8 text-center">
-                    <p class="font-semibold text-gray-800 dark:text-gray-200">{{ $search !== '' ? __('No matching verification requests.') : __('No verification requests are waiting.') }}</p>
+                    <p class="font-semibold text-gray-800 dark:text-gray-200">
+                        @if ($search !== '')
+                            {{ __('No matching verification requests.') }}
+                        @elseif ($status === 'pending')
+                            {{ __('No verification requests are waiting.') }}
+                        @elseif ($status === 'verified')
+                            {{ __('No verified residents yet.') }}
+                        @else
+                            {{ __('No declined requests.') }}
+                        @endif
+                    </p>
                 </div>
             @endforelse
 
