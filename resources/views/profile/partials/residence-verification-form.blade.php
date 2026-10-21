@@ -38,7 +38,7 @@
 
             <div x-show="previewUrl" x-cloak class="rounded-xl border border-stone-200 bg-stone-50 p-3 dark:border-gray-700 dark:bg-white/5">
                 <p class="mb-2 text-sm font-medium text-gray-800 dark:text-gray-100">{{ __('Proof image preview') }}</p>
-                <img x-show="!previewError" :src="previewUrl" @error="previewError = true" alt="{{ __('Preview of your proof image') }}" class="max-h-72 w-full rounded-lg object-contain">
+                <img x-show="!previewError" :src="previewUrl" x-on:error="previewError = true" alt="{{ __('Preview of your proof image') }}" class="max-h-72 w-full rounded-lg object-contain">
                 <p x-show="previewError" role="alert" class="text-sm text-red-700 dark:text-red-300">{{ __('This image could not be previewed. Please choose another one.') }}</p>
                 <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{{ __('This is the image that will be sent for review.') }}</p>
             </div>
