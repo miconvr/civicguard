@@ -18,12 +18,18 @@ class ResidentVerificationController extends Controller
     {
         $validated = $request->validate([
             'search' => ['nullable', 'string', 'max:100'],
+            'status' => ['nullable', 'in:pending,verified,rejected'],
         ]);
 
         $search = trim($validated['search'] ?? '');
+        $status = $validated['status'] ?? ResidentVerification::PENDING;
+        $counts = ResidentVerification::query()
+            ->selectRaw('status, count(*) as aggregate')
+            ->groupBy('status')
+            ->pluck('aggregate', 'status');
 
-        $verifications = ResidentVerification::with('user')
-            ->where('status', ResidentVerification::PENDING)
+        $verifications = ResidentVerification::with(['user', 'reviewer'])
+            ->where('status', $status)
             ->when($search !== '', function ($query) use ($search) {
                 $query->whereHas('user', function ($userQuery) use ($search) {
                     $userQuery->where('name', 'like', "%{$search}%")
@@ -34,7 +40,7 @@ class ResidentVerificationController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.verifications.index', compact('verifications', 'search'));
+        return view('admin.verifications.index', compact('verifications', 'search', 'status', 'counts'));
     }
 
     public function document(ResidentVerification $verification): StreamedResponse
