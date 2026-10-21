@@ -143,6 +143,14 @@
     "Save changes": "Save changes",
     "Cancel": "Cancel",
     "Enter a description and location to continue.": "Enter a description and location to continue.",
-    "Add a photo or pin your location in the full report form.": "Add a photo or pin your location in the full report form.",
-    "Open the full report form": "Open the full report form"
+    "Would you like to add a photo? This is optional.": "Would you like to add a photo? This is optional.",
+    "Add a photo": "Add a photo",
+    "Change photo": "Change photo",
+    "Remove photo": "Remove photo",
+    "Show photo": "Show photo",
+    "Hide photo": "Hide photo",
+    "Photo selected": "Photo selected",
+    "Choose a JPG, PNG, or WebP image.": "Choose a JPG, PNG, or WebP image.",
+    "The photo must be 5 MB or smaller.": "The photo must be 5 MB or smaller.",
+    "We could not submit your report. Please try again.": "We could not submit your report. Please try again."
 }

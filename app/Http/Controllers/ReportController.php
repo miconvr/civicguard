@@ -24,22 +24,8 @@ class ReportController extends Controller
     public function create()
     {
         $categories = ReportCategory::orderByRaw("name = 'Other'")->orderBy('name')->get();
-        $draft = session('report_form_draft', []);
 
-        return view('reports.create', compact('categories', 'draft'));
-    }
-
-    public function continueToForm(Request $request)
-    {
-        $draft = $request->validate([
-            'category_id' => ['required', 'integer', 'exists:report_categories,id'],
-            'description' => ['required', 'string', 'max:2000'],
-            'location_text' => ['required', 'string', 'max:255'],
-        ]);
-
-        $request->session()->flash('report_form_draft', $draft);
-
-        return redirect()->route('reports.create', ['report_mode' => 'form']);
+        return view('reports.create', compact('categories'));
     }
 
     public function store(Request $request, AiRouter $ai)

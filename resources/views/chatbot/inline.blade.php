@@ -89,8 +89,15 @@
             'saveChanges' => __('Save changes'),
             'cancel' => __('Cancel'),
             'editRequired' => __('Enter a description and location to continue.'),
-            'reportFormHelp' => __('Add a photo or pin your location in the full report form.'),
-            'openReportForm' => __('Open the full report form'),
+            'photoQuestion' => __('Would you like to add a photo? This is optional.'),
+            'addPhoto' => __('Add a photo'),
+            'changePhoto' => __('Change photo'),
+            'removePhoto' => __('Remove photo'),
+            'showPhoto' => __('Show photo'),
+            'hidePhoto' => __('Hide photo'),
+            'photoSelected' => __('Photo selected'),
+            'photoTypeError' => __('Choose a JPG, PNG, or WebP image.'),
+            'photoSizeError' => __('The photo must be 5 MB or smaller.'),
             'categories' => $categories->map(fn ($category) => ['id' => $category->id, 'name' => $category->name])->values(),
             'description' => __('What happened?'),
             'location' => __('Location'),
@@ -100,10 +107,8 @@
             'success' => __('Your report is now with barangay staff. You can track its status on My Reports.'),
             'viewReports' => __('View My Reports'),
             'reportsUrl' => route('reports.index'),
-            'submitError' => __('We could not submit your report. Please try again or use the standard form.'),
+            'submitError' => __('We could not submit your report. Please try again.'),
             'keepChatting' => __('Keep chatting instead'),
-            'continueFormUrl' => route('reports.continueToForm'),
-            'csrfToken' => csrf_token(),
         ]) }};
 
         function resizeChatInput() {
@@ -229,6 +234,111 @@
                 field.append(fieldLabel, fieldValue);
                 detailsView.appendChild(field);
             });
+
+            const photoSection = document.createElement('div');
+            photoSection.className = 'space-y-2 rounded-lg border border-[#e3c5ca] bg-white/60 p-3 dark:border-[#67404a] dark:bg-black/10';
+            const photoQuestion = document.createElement('p');
+            photoQuestion.className = 'text-xs font-medium text-gray-600 dark:text-gray-300';
+            photoQuestion.textContent = reviewText.photoQuestion;
+            const photoInput = document.createElement('input');
+            photoInput.type = 'file';
+            photoInput.accept = 'image/jpeg,image/png,image/webp';
+            photoInput.className = 'sr-only';
+            photoInput.tabIndex = -1;
+            const photoActions = document.createElement('div');
+            photoActions.className = 'flex flex-wrap items-center gap-3';
+            const pickPhotoBtn = document.createElement('button');
+            pickPhotoBtn.type = 'button';
+            pickPhotoBtn.className = 'min-h-10 rounded-lg border border-gray-300 px-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-white/5';
+            pickPhotoBtn.textContent = reviewText.addPhoto;
+            pickPhotoBtn.setAttribute('aria-label', reviewText.addPhoto);
+            pickPhotoBtn.onclick = () => photoInput.click();
+
+            const photoError = document.createElement('p');
+            photoError.className = 'text-xs text-red-700 dark:text-red-300';
+            photoError.setAttribute('role', 'alert');
+            photoError.hidden = true;
+
+            const photoPreview = document.createElement('div');
+            photoPreview.className = 'hidden space-y-2';
+            const photoStage = document.createElement('div');
+            photoStage.className = 'relative h-40 overflow-hidden rounded-lg border border-gray-200 bg-gray-100 dark:border-gray-700 dark:bg-gray-900';
+            const previewImage = document.createElement('img');
+            previewImage.className = 'h-full w-full scale-110 object-contain blur-md transition-all duration-200';
+            previewImage.alt = '';
+            const revealPhotoBtn = document.createElement('button');
+            revealPhotoBtn.type = 'button';
+            revealPhotoBtn.className = 'absolute inset-0 flex items-center justify-center bg-gray-900/45 text-sm font-semibold text-white transition-colors hover:bg-gray-900/60';
+            revealPhotoBtn.textContent = reviewText.showPhoto;
+            revealPhotoBtn.setAttribute('aria-pressed', 'false');
+            let photoRevealed = false;
+            let photoPreviewUrl = null;
+            revealPhotoBtn.onclick = () => {
+                photoRevealed = !photoRevealed;
+                previewImage.classList.toggle('blur-md', !photoRevealed);
+                previewImage.classList.toggle('scale-110', !photoRevealed);
+                revealPhotoBtn.className = photoRevealed
+                    ? 'absolute right-2 top-2 rounded-full bg-gray-900/75 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-gray-900'
+                    : 'absolute inset-0 flex items-center justify-center bg-gray-900/45 text-sm font-semibold text-white transition-colors hover:bg-gray-900/60';
+                revealPhotoBtn.textContent = photoRevealed ? reviewText.hidePhoto : reviewText.showPhoto;
+                revealPhotoBtn.setAttribute('aria-pressed', String(photoRevealed));
+            };
+            photoStage.append(previewImage, revealPhotoBtn);
+            const photoMeta = document.createElement('div');
+            photoMeta.className = 'flex flex-wrap items-center justify-between gap-2';
+            const photoFileLabel = document.createElement('p');
+            photoFileLabel.className = 'min-w-0 truncate text-xs text-gray-500 dark:text-gray-400';
+            const removePhotoBtn = document.createElement('button');
+            removePhotoBtn.type = 'button';
+            removePhotoBtn.className = 'min-h-9 text-xs font-medium text-gray-500 underline underline-offset-2 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-100';
+            removePhotoBtn.textContent = reviewText.removePhoto;
+            removePhotoBtn.onclick = () => {
+                if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
+                photoPreviewUrl = null;
+                data.photo = null;
+                photoInput.value = '';
+                previewImage.removeAttribute('src');
+                photoPreview.classList.add('hidden');
+                pickPhotoBtn.textContent = reviewText.addPhoto;
+                photoError.hidden = true;
+            };
+            photoMeta.append(photoFileLabel, removePhotoBtn);
+            photoPreview.append(photoStage, photoMeta);
+
+            photoInput.addEventListener('change', () => {
+                const file = photoInput.files?.[0];
+                if (!file) return;
+                if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+                    photoError.textContent = reviewText.photoTypeError;
+                    photoError.hidden = false;
+                    photoInput.value = '';
+                    return;
+                }
+                if (file.size > 5 * 1024 * 1024) {
+                    photoError.textContent = reviewText.photoSizeError;
+                    photoError.hidden = false;
+                    photoInput.value = '';
+                    return;
+                }
+
+                if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
+                data.photo = file;
+                photoPreviewUrl = URL.createObjectURL(file);
+                previewImage.src = photoPreviewUrl;
+                photoRevealed = false;
+                previewImage.classList.add('blur-md', 'scale-110');
+                revealPhotoBtn.className = 'absolute inset-0 flex items-center justify-center bg-gray-900/45 text-sm font-semibold text-white transition-colors hover:bg-gray-900/60';
+                revealPhotoBtn.textContent = reviewText.showPhoto;
+                revealPhotoBtn.setAttribute('aria-pressed', 'false');
+                photoFileLabel.textContent = reviewText.photoSelected + ': ' + file.name;
+                pickPhotoBtn.textContent = reviewText.changePhoto;
+                photoPreview.classList.remove('hidden');
+                photoError.hidden = true;
+            });
+
+            photoActions.append(pickPhotoBtn, photoInput);
+            photoSection.append(photoQuestion, photoActions, photoError, photoPreview);
+            detailsView.appendChild(photoSection);
 
             const editDetailsBtn = document.createElement('button');
             editDetailsBtn.type = 'button';
@@ -361,44 +471,8 @@
             cancelBtn.textContent = reviewText.keepChatting;
             cancelBtn.onclick = () => card.closest('div.text-left').remove();
 
-            const continueForm = document.createElement('form');
-            continueForm.method = 'POST';
-            continueForm.action = reviewText.continueFormUrl;
-            continueForm.className = 'flex flex-col items-start gap-1';
-
-            [
-                ['_token', reviewText.csrfToken],
-                ['category_id', data.category_id],
-                ['description', data.description],
-                ['location_text', data.location],
-            ].forEach(([name, value]) => {
-                const field = document.createElement('input');
-                field.type = 'hidden';
-                field.name = name;
-                field.value = String(value ?? '');
-                continueForm.appendChild(field);
-            });
-
-            const continueBtn = document.createElement('button');
-            continueBtn.type = 'submit';
-            continueBtn.className = 'min-h-9 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 hover:underline dark:text-gray-400 dark:hover:text-gray-100';
-            continueBtn.textContent = reviewText.openReportForm + ' →';
-            const formHelp = document.createElement('p');
-            formHelp.className = 'text-xs leading-5 text-gray-500 dark:text-gray-400';
-            formHelp.textContent = reviewText.reportFormHelp;
-            continueForm.addEventListener('submit', () => {
-                const categoryInput = continueForm.querySelector('[name="category_id"]');
-                const descriptionInput = continueForm.querySelector('[name="description"]');
-                const locationInput = continueForm.querySelector('[name="location_text"]');
-                if (categoryInput) categoryInput.value = String(data.category_id);
-                if (descriptionInput) descriptionInput.value = data.description;
-                if (locationInput) locationInput.value = data.location;
-            });
-            continueForm.appendChild(formHelp);
-            continueForm.appendChild(continueBtn);
-
             actions.append(submitBtn, cancelBtn, editDetailsBtn);
-            btnRow.append(actions, continueForm);
+            btnRow.appendChild(actions);
             card.appendChild(btnRow);
 
             row.appendChild(card);
@@ -447,6 +521,7 @@
             formData.append('category_id', data.category_id);
             formData.append('description', data.description);
             formData.append('location_text', data.location);
+            if (data.photo) formData.append('photo', data.photo);
 
             try {
                 const response = await fetch("{{ route('reports.store') }}", {
@@ -478,7 +553,7 @@
             'error' => __('Sorry, something went wrong. Please try again.'),
             'offline' => __("You're offline. Please check your connection and try again."),
             'expired' => __('Your session expired. Please refresh the page and try again.'),
-            'submitError' => __('We could not submit your report. Please try again or use the standard form.'),
+            'submitError' => __('We could not submit your report. Please try again.'),
             'slow' => __('That took too long. Please try again.'),
             'rate' => __('You are sending messages too quickly. Please wait a moment.'),
             'retry' => __('Try again'),
