@@ -53,8 +53,13 @@
     }
 
     html {
-        scroll-behavior: smooth;
         scroll-padding-top: 1rem;
+    }
+
+    @media (prefers-reduced-motion: no-preference) and (pointer: fine) {
+        html {
+            scroll-behavior: smooth;
+        }
     }
 
     body {
@@ -933,7 +938,7 @@
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: none;
     }
 }
 
@@ -1378,7 +1383,7 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
 }
 
 /* cg-nav-reveal: header hidden over the hero, slides in after it; bare white shield, Figtree name */
-html { scroll-padding-top: 5rem; }
+html.cg-nav-js { scroll-padding-top: 5rem; }
 .cg-public-header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding-top: env(safe-area-inset-top, 0px); background: #f6f2eb; border-bottom: 1px solid #e7e0d6; transition: transform .35s cubic-bezier(.22, 1, .36, 1), opacity .25s ease; }
 html.cg-nav-js:not(.cg-nav-on) .cg-public-header { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 html.cg-nav-js:not(.cg-nav-on) .cg-public-header:focus-within { transform: none; opacity: 1; pointer-events: auto; }
