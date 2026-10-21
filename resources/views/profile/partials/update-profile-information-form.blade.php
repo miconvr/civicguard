@@ -20,7 +20,7 @@
         <div>
             <x-input-label for="avatar" :value="__('Profile picture')" />
             <div class="mt-2 flex items-center gap-4">
-                @if ($user->avatar_path)
+                @if ($user->avatarPath())
                     <img src="{{ route('profile.photo', ['v' => $user->updated_at?->timestamp]) }}" alt="{{ __('Profile picture') }}" class="h-16 w-16 rounded-full object-cover ring-2 ring-stone-200 dark:ring-gray-600">
                 @else
                     <span class="flex h-16 w-16 items-center justify-center rounded-full bg-maroon-100 text-xl font-semibold text-maroon-800 dark:bg-white/10 dark:text-white" aria-hidden="true">{{ strtoupper(mb_substr($user->name, 0, 1)) }}</span>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
-            @if ($user->avatar_path)
+            @if ($user->avatarPath())
                 <label for="remove_avatar" class="mt-3 inline-flex min-h-11 items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                     <input id="remove_avatar" name="remove_avatar" type="checkbox" value="1" class="rounded border-gray-300 text-maroon-700 shadow-sm focus:ring-maroon-500 dark:border-gray-600 dark:bg-gray-900">
                     {{ __('Remove profile picture') }}
