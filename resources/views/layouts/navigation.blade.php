@@ -26,10 +26,10 @@
     <aside
         x-show="open"
         x-cloak
-        x-transition:enter="transition-transform duration-200 ease-out"
+        x-transition:enter="transition-transform duration-[var(--cg-motion-enter)] ease-[var(--cg-ease-out)]"
         x-transition:enter-start="-translate-x-full"
         x-transition:enter-end="translate-x-0"
-        x-transition:leave="transition-transform duration-150 ease-in"
+        x-transition:leave="transition-transform duration-[var(--cg-motion-exit)] ease-[var(--cg-ease-in)]"
         x-transition:leave-start="translate-x-0"
         x-transition:leave-end="-translate-x-full"
         id="primary-navigation"
