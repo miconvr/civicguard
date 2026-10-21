@@ -48,5 +48,10 @@
     "Profile picture": "Profile picture",
     "JPG, PNG, or WebP. Maximum 2 MB.": "JPG, PNG, or WebP. Maximum 2 MB.",
     "Remove profile picture": "Remove profile picture",
-    "The profile picture could not be saved. Please try again.": "The profile picture could not be saved. Please try again."
+    "The profile picture could not be saved. Please try again.": "The profile picture could not be saved. Please try again.",
+    "Preview profile picture": "Preview profile picture",
+    "Adjust crop": "Adjust crop",
+    "Drag the slider to zoom in or out. The circle shows what will be saved.": "Drag the slider to zoom in or out. The circle shows what will be saved.",
+    "We could not prepare this image. Please choose another one.": "We could not prepare this image. Please choose another one.",
+    "Preparing image...": "Preparing image..."
 }
