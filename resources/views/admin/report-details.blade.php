@@ -57,7 +57,7 @@
                                 <p class="text-xs cg-muted">{{ $report->created_at->format('M d, Y g:i A') }}</p>
                             </div>
                         </li>
-                        @foreach ($statusUpdates->reverse() as $update)
+                        @foreach ($statusUpdates as $update)
                             @php
                                 $status = $update->metadata['status'] ?? match ($update->action) {
                                     'report_resolved' => 'resolved',
