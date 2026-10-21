@@ -35,7 +35,7 @@
                 </a>
 
                 @if ($needsFeedback > 0)
-                    <a href="{{ route('reports.index') }}" class="block rounded-xl border-2 border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 transition hover:bg-amber-100 dark:border-amber-700 dark:bg-amber-900/20 dark:text-amber-200">
+                    <a href="{{ route('reports.index') }}" class="block rounded-xl border-2 border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 transition hover:bg-amber-100 dark:hover:bg-amber-900/30 dark:border-amber-700 dark:bg-amber-900/20 dark:text-amber-200">
                         <strong>{{ __('Was this fixed?') }}</strong>
                         {{ $needsFeedback }} {{ __('resolved report(s) are waiting for your answer.') }}
                     </a>
