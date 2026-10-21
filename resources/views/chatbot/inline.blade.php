@@ -110,8 +110,8 @@
             'saveChanges' => __('Save changes'),
             'cancel' => __('Cancel'),
             'editRequired' => __('Enter a description and location to continue.'),
-            'photoQuestion' => __('Would you like to add a photo? This is optional.'),
-            'addPhoto' => __('Add a photo'),
+            'photoQuestion' => __('Add photo (optional)'),
+            'addPhoto' => __('Choose photo'),
             'changePhoto' => __('Change photo'),
             'removePhoto' => __('Remove photo'),
             'showPhoto' => __('Show photo'),
@@ -224,7 +224,7 @@
             const detailsView = document.createElement('div');
             detailsView.className = 'grid gap-4 sm:grid-cols-[minmax(0,2fr)_minmax(10rem,1fr)]';
             const categoryLine = document.createElement('div');
-            categoryLine.className = 'inline-flex items-center rounded-full bg-white/95 px-3 py-1';
+            categoryLine.className = 'inline-flex items-center rounded-full bg-[#fffdf9] px-3 py-1';
             const categoryHeader = document.createElement('div');
             categoryHeader.className = 'flex items-center justify-between gap-3';
             const categoryText = document.createElement('div');
@@ -273,7 +273,7 @@
             photoActions.className = 'flex flex-wrap items-center gap-3';
             const pickPhotoBtn = document.createElement('button');
             pickPhotoBtn.type = 'button';
-            pickPhotoBtn.className = 'min-h-10 rounded-lg border border-white/70 bg-white px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-[#f4e9e8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
+            pickPhotoBtn.className = 'min-h-10 rounded-lg border border-white/70 bg-[#fffdf9] px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-[#f4e9e8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
             pickPhotoBtn.textContent = reviewText.addPhoto;
             pickPhotoBtn.setAttribute('aria-label', reviewText.addPhoto);
             pickPhotoBtn.onclick = () => photoInput.click();
@@ -431,7 +431,7 @@
             cancelEditBtn.textContent = reviewText.cancel;
             const saveEditBtn = document.createElement('button');
             saveEditBtn.type = 'button';
-            saveEditBtn.className = 'min-h-10 rounded-lg bg-white px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-[#f4e9e8]';
+            saveEditBtn.className = 'min-h-10 rounded-lg bg-[#fffdf9] px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-[#f4e9e8]';
             saveEditBtn.textContent = reviewText.saveChanges;
             editorActions.append(cancelEditBtn, saveEditBtn);
             editPanel.appendChild(editorActions);
@@ -486,7 +486,7 @@
 
             const submitBtn = document.createElement('button');
             submitBtn.type = 'button';
-            submitBtn.className = 'min-h-[44px] rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-[#f4e9e8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-wait disabled:opacity-60';
+            submitBtn.className = 'min-h-[44px] rounded-lg bg-[#fffdf9] px-4 py-2.5 text-sm font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-[#f4e9e8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-wait disabled:opacity-60';
             submitBtn.textContent = reviewText.submitReport;
             submitBtn.onclick = () => submitReport(data, submitBtn);
 
