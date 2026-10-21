@@ -166,8 +166,15 @@ class ReportController extends Controller
     {
         $reports = Report::where('user_id', Auth::id())
             ->with(['category', 'assignedTo'])
-            ->latest()
+            ->orderBy('created_at')
+            ->orderBy('id')
             ->get();
+
+        foreach ($reports as $index => $report) {
+            $report->resident_number = $index + 1;
+        }
+
+        $reports = $reports->reverse()->values();
 
         $logs = AuditLog::where('auditable_type', Report::class)
             ->whereIn('auditable_id', $reports->pluck('id'))
