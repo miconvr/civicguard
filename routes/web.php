@@ -74,6 +74,7 @@ Route::middleware(['auth', 'role:resident,admin,official'])->group(function () {
     Route::post('/reports', [ReportController::class, 'store'])->name('reports.store')->middleware('throttle:10,1');
     Route::post('/reports/suggest-category', [ReportController::class, 'suggestCategory'])->name('reports.suggestCategory')->middleware(['throttle:20,1', 'throttle:120,60,suggest_hour']);
     Route::get('/reports', [ReportController::class, 'myReports'])->name('reports.index');
+    Route::get('/reports/{report}/assigned-tanod/photo', [ReportPhotoController::class, 'assignedTanodAvatar'])->name('reports.assignedTanod.photo');
     Route::post('/reports/{report}/confirm', [ReportController::class, 'confirmFixed'])->name('reports.confirm')->middleware('throttle:10,1');
     Route::post('/reports/{report}/reopen', [ReportController::class, 'reopen'])->name('reports.reopen')->middleware('throttle:10,1');
 });
