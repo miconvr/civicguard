@@ -13,24 +13,15 @@ CivicGuard is a web-based system that lets residents of Barangay Maimpis, City o
 
 ## Features
 
-- **Incident reporting:** pick a category, describe the problem, add a location, and optionally a photo and GPS pin
-- **AI chatbot:** a chat that helps residents write a report, with emergency warnings in English and Tagalog
-- **AI suggestions:** automatic category and urgency rating, which staff can always change
-- **Report tracking:** follow a report from Received to Assigned, In progress, and Resolved, with notifications
-- **Assigned tanod details:** residents can see the tanod assigned to each report in My Reports
-- **Confirm or reopen:** residents can confirm a fix or reopen a report within 7 days
-- **Incident queue:** reports sorted by urgency, with tabs, search, and filters
-- **Role-based access:** residents, tanods, officials, and admins, where tanods only see reports assigned to them
-- **Profiles:** residents can update their name, email, and profile picture, with a crop/zoom preview before saving
-- **Residence verification:** residents can submit proof of Maimpis residency; admins and barangay officials review it, and approved residents receive a persistent verified badge
-- **Curfew logging:** tanods can record curfew violations
-- **Analytics:** charts, key numbers, and AI-written insights
-- **Audit logs and PDF exports:** a record of key report, staff, and verification actions, with downloadable reports
-- **Notifications:** in-app updates for report assignments, report changes, and account/verification events
-- **Admin test-data reset:** the admin Profile page can clear operational test records and related report/verification uploads while preserving user accounts, profile pictures, and report categories
-- **Installable mobile app (PWA):** add CivicGuard to an iPhone or Android home screen and open it in a standalone app window; an offline fallback page appears when the connection is unavailable
-- **English and Tagalog**, with light and dark mode
-- **Privacy tools:** account deletion, a privacy policy, and terms of use
+- **Submit reports:** use the standard form or AI chat; include a category, description, location, optional photo, and optional map pin.
+- **AI report assistance:** chat in English or Tagalog, get category and urgency suggestions, edit details before submission, and receive immediate emergency guidance for urgent messages.
+- **Track reports:** residents see status updates, assigned tanod details, and notifications; they can confirm a fix or reopen a resolved report within 7 days.
+- **Review incidents:** staff use a searchable, severity-filtered queue; officials and admins assign tanods and manage report status and severity. Tanods see reports assigned to them.
+- **Verify residency:** residents submit proof images; admins and officials review requests, and approved residents receive a verified badge.
+- **Log curfew violations:** tanods record apprehension, guardian, location, and follow-up details.
+- **Manage operations:** admins review analytics and AI insights, inspect audit logs, export PDF reports, manage staff, and clear test data while preserving accounts, profile photos, and report categories.
+- **Install on mobile:** add the PWA to an iPhone or Android home screen. When offline, it shows a fallback page; reporting and account features need a connection.
+- **Personalize and protect accounts:** use English or Tagalog, light or dark mode, profile photos, account deletion, the privacy policy, and terms of use.
 
 ---
 
