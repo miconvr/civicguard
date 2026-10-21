@@ -33,9 +33,9 @@
                 @forelse ($reports as $report)
                     @php
                         $pill = [
-                            'pending' => 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
-                            'in_progress' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300',
-                            'resolved' => 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300',
+                            'pending' => 'tone-amber',
+                            'in_progress' => 'tone-blue',
+                            'resolved' => 'tone-green',
                         ][$report->status];
                     @endphp
                     <article id="report-{{ $report->id }}" x-data="{ detailsOpen: false }" class="cg-card scroll-mt-20 border border-gray-200 p-5 shadow-sm transition-colors sm:p-6 dark:border-gray-700">
