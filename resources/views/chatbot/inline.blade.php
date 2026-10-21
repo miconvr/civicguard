@@ -223,7 +223,7 @@
             const continueBtn = document.createElement('button');
             continueBtn.type = 'submit';
             continueBtn.className = 'min-h-9 px-2 text-xs text-gray-500 transition-colors hover:text-gray-700 hover:underline dark:text-gray-400 dark:hover:text-gray-200';
-            continueBtn.textContent = reviewText.continueInForm;
+            continueBtn.textContent = reviewText.continueInForm + ' →';
             continueForm.appendChild(continueBtn);
 
             btnRow.appendChild(submitBtn);
