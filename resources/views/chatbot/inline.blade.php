@@ -276,7 +276,7 @@
             const photoSection = document.createElement('div');
             photoSection.className = 'space-y-3 border-t border-white/20 pt-3';
             const photoControls = document.createElement('div');
-            photoControls.className = 'flex flex-wrap items-center justify-between gap-3';
+            photoControls.className = 'flex flex-col items-start gap-2';
             const photoQuestion = document.createElement('p');
             photoQuestion.className = 'text-sm text-white/85';
             photoQuestion.textContent = reviewText.photoQuestion;
@@ -289,9 +289,19 @@
             photoActions.className = 'flex items-center gap-3';
             const pickPhotoBtn = document.createElement('button');
             pickPhotoBtn.type = 'button';
-            pickPhotoBtn.className = 'min-h-10 rounded-lg border border-white/70 bg-[#fffdf9] px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-[#f4e9e8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
-            pickPhotoBtn.textContent = reviewText.addPhoto;
+            pickPhotoBtn.className = 'inline-flex min-h-10 items-center gap-2 rounded-lg border border-white/70 bg-[#fffdf9] px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-[#f4e9e8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
+            const pickPhotoIcon = document.createElement('span');
+            pickPhotoIcon.className = 'inline-flex h-4 w-4 items-center justify-center';
+            pickPhotoIcon.setAttribute('aria-hidden', 'true');
+            pickPhotoIcon.innerHTML = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15V4m0 0L8 8m4-4 4 4M5 14v5h14v-5"/></svg>';
+            const pickPhotoLabel = document.createElement('span');
+            pickPhotoLabel.textContent = reviewText.addPhoto;
+            pickPhotoBtn.append(pickPhotoIcon, pickPhotoLabel);
             pickPhotoBtn.setAttribute('aria-label', reviewText.addPhoto);
+            const setPickPhotoLabel = (label) => {
+                pickPhotoLabel.textContent = label;
+                pickPhotoBtn.setAttribute('aria-label', label);
+            };
             pickPhotoBtn.onclick = () => photoInput.click();
 
             const photoError = document.createElement('p');
@@ -332,7 +342,7 @@
                     previewImage.removeAttribute('src');
                     photoPreview.classList.add('hidden');
                     photoPreview.classList.remove('chat-photo-preview-leave');
-                    pickPhotoBtn.textContent = reviewText.addPhoto;
+                    setPickPhotoLabel(reviewText.addPhoto);
                     pickPhotoBtn.disabled = false;
                     removePhotoBtn.disabled = false;
                     pickPhotoBtn.classList.remove('chat-photo-button-updated');
@@ -365,7 +375,7 @@
                 previewImage.src = photoPreviewUrl;
                 photoFileLabel.textContent = reviewText.photoSelected + ': ' + file.name;
                 photoFileLabel.title = file.name;
-                pickPhotoBtn.textContent = reviewText.changePhoto;
+                setPickPhotoLabel(reviewText.changePhoto);
                 photoPreview.classList.remove('chat-photo-preview-leave', 'chat-photo-preview-enter');
                 void photoPreview.offsetWidth;
                 photoPreview.classList.remove('hidden');
