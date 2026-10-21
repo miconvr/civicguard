@@ -28,7 +28,7 @@ CivicGuard is a web-based system that lets residents of Barangay Maimpis, City o
 - **Audit logs and PDF exports:** a record of key report, staff, and verification actions, with downloadable reports
 - **Notifications:** in-app updates for report assignments, report changes, and account/verification events
 - **Admin test-data reset:** the admin Profile page can clear operational test records and related report/verification uploads while preserving user accounts, profile pictures, and report categories
-- **Install as an app:** works on iPhone and Android from the browser, with an offline page
+- **Installable mobile app (PWA):** add CivicGuard to an iPhone or Android home screen and open it in a standalone app window; an offline fallback page appears when the connection is unavailable
 - **English and Tagalog**, with light and dark mode
 - **Privacy tools:** account deletion, a privacy policy, and terms of use
 
@@ -52,6 +52,15 @@ CivicGuard is a web-based system that lets residents of Barangay Maimpis, City o
 | **Admin** | Manage staff accounts, reports, audit logs, residence verification, and the test-data reset |
 
 New sign-ups are always residents.
+
+## Install on a phone
+
+CivicGuard is a Progressive Web App (PWA); there is no app-store download. Open the site over HTTPS, then:
+
+- **iPhone:** Open CivicGuard in Safari, tap **Share**, choose **Add to Home Screen**, leave **Open as Web App** enabled, then tap **Add**.
+- **Android:** Open CivicGuard in Chrome, open the three-dot menu, choose **Install app** (or **Add to Home screen**), then tap **Install**.
+
+The home-screen icon opens CivicGuard in its own window. Offline support is limited to an offline notice; signing in, filing reports, and viewing updates still require an internet connection. The landing page also has an illustrated installation guide.
 
 ---
 
@@ -79,22 +88,34 @@ New sign-ups are always residents.
 
 ---
 
-## Getting started
+## Run locally
 
-You need Docker (via WSL2 on Windows), Composer, and Node.js. The app uses MySQL through Laravel Sail. Set a unique `DB_PASSWORD` in `.env` before starting the containers, then use the commands below.
+You need Git, Docker Desktop (with WSL2 on Windows), PHP 8.2+, Composer, and Node.js with npm. Docker runs the Laravel app and MySQL database through Sail.
 
 ```bash
 git clone https://github.com/miconvr/civicguard.git
 cd civicguard
-cp .env.example .env        # then add your Gemini and Groq keys
+cp .env.example .env
 composer install
-./vendor/bin/sail up -d
-./vendor/bin/sail artisan key:generate
-./vendor/bin/sail artisan migrate --seed
-npm install && npm run dev
 ```
 
-Run the tests with `./vendor/bin/sail artisan test`.
+Before starting Docker, edit `.env` and set a non-empty, unique `DB_PASSWORD`. Add `GEMINI_API_KEY` and/or `GROQ_API_KEY` if you want the external AI providers; the rest of the app can run without them.
+
+```bash
+./vendor/bin/sail up -d --build
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate --seed
+npm install
+npm run dev
+```
+
+Open [http://localhost](http://localhost). Keep `npm run dev` running while using the local site. If port 80 is already in use, set `APP_PORT=8000` in `.env`, restart Sail, and use [http://localhost:8000](http://localhost:8000) instead.
+
+The seed command creates the standard report categories; it does not create admin or staff accounts. New sign-ups are residents. Local email is logged instead of sent, so verification and password-reset links can be found in `storage/logs/laravel.log`.
+
+To stop the local services, run `./vendor/bin/sail down`. Your MySQL data remains in the Docker volume.
+
+For local development tests, run `./vendor/bin/sail artisan test`.
 
 ### Database migrations
 
