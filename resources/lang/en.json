@@ -139,7 +139,10 @@
     "Residence verification approved for :name (:email).": "Residence verification approved for :name (:email).",
     "Residence verification declined for :name (:email).": "Residence verification declined for :name (:email).",
     "Reported by": "Reported by",
-    "Change category": "Change category",
+    "Edit details": "Edit details",
+    "Save changes": "Save changes",
+    "Cancel": "Cancel",
+    "Enter a description and location to continue.": "Enter a description and location to continue.",
     "Add a photo or pin your location in the full report form.": "Add a photo or pin your location in the full report form.",
     "Open the full report form": "Open the full report form"
 }
