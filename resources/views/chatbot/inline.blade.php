@@ -18,6 +18,9 @@
         .chat-message-enter-bot { transform-origin: left bottom; animation: cg-chat-message-bot 300ms cubic-bezier(.2,.8,.2,1) both; }
         .chat-typing-bubble { position: relative; transform-origin: left bottom; animation: cg-chat-bubble-float 1.8s ease-in-out infinite; }
         .chat-review-enter { transform-origin: left bottom; animation: cg-chat-review-in 420ms cubic-bezier(.16,1,.3,1) both; }
+        .chat-photo-preview-enter { transform-origin: top left; animation: cg-chat-photo-in 220ms cubic-bezier(.16,1,.3,1) both; }
+        .chat-photo-preview-leave { pointer-events: none; animation: cg-chat-photo-out 160ms ease-in both; }
+        .chat-photo-button-updated { animation: cg-chat-photo-button 260ms cubic-bezier(.16,1,.3,1) both; }
         @keyframes cg-chat-message-user {
             from { opacity: 0; transform: translate(10px, 8px) scale(.96); }
             to { opacity: 1; transform: translate(0) scale(1); }
@@ -35,6 +38,19 @@
             70% { opacity: 1; transform: translateY(-2px) scale(1.005); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
+        @keyframes cg-chat-photo-in {
+            from { opacity: 0; transform: translateY(-6px) scale(.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes cg-chat-photo-out {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-4px) scale(.985); }
+        }
+        @keyframes cg-chat-photo-button {
+            0% { transform: scale(1); }
+            45% { transform: scale(.96); }
+            100% { transform: scale(1); }
+        }
         @keyframes typing-bounce {
             0%, 80%, 100% { transform: translateY(0); opacity: 0.35; }
             40% { transform: translateY(-5px); opacity: 1; }
@@ -45,7 +61,7 @@
         }
         @media (prefers-reduced-motion: reduce) {
             .typing-dot { animation: typing-fade 1.6s infinite ease-in-out both; }
-            .chat-message-enter-user, .chat-message-enter-bot, .chat-typing-bubble, .chat-review-enter, .send-loading-dot { animation: none; }
+            .chat-message-enter-user, .chat-message-enter-bot, .chat-typing-bubble, .chat-review-enter, .chat-photo-preview-enter, .chat-photo-preview-leave, .chat-photo-button-updated, .send-loading-dot { animation: none; }
         }
     </style>
 
@@ -258,7 +274,9 @@
             });
 
             const photoSection = document.createElement('div');
-            photoSection.className = 'flex flex-wrap items-center justify-between gap-3 border-t border-white/20 pt-3';
+            photoSection.className = 'space-y-3 border-t border-white/20 pt-3';
+            const photoControls = document.createElement('div');
+            photoControls.className = 'flex flex-wrap items-center justify-between gap-3';
             const photoQuestion = document.createElement('p');
             photoQuestion.className = 'text-sm text-white/85';
             photoQuestion.textContent = reviewText.photoQuestion;
@@ -268,7 +286,7 @@
             photoInput.className = 'sr-only';
             photoInput.tabIndex = -1;
             const photoActions = document.createElement('div');
-            photoActions.className = 'flex flex-wrap items-center gap-3';
+            photoActions.className = 'flex items-center gap-3';
             const pickPhotoBtn = document.createElement('button');
             pickPhotoBtn.type = 'button';
             pickPhotoBtn.className = 'min-h-10 rounded-lg border border-white/70 bg-[#fffdf9] px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-[#f4e9e8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
@@ -282,31 +300,45 @@
             photoError.hidden = true;
 
             const photoPreview = document.createElement('div');
-            photoPreview.className = 'hidden w-full space-y-2';
+            photoPreview.className = 'hidden w-full flex items-center gap-3 rounded-xl border border-white/15 bg-black/10 p-2 sm:w-fit sm:min-w-[19rem]';
             const photoStage = document.createElement('div');
-            photoStage.className = 'relative h-32 overflow-hidden rounded-xl border border-white/30 bg-[#4e1427] sm:h-40';
+            photoStage.className = 'h-20 w-24 shrink-0 overflow-hidden rounded-lg border border-white/25 bg-[#4e1427] sm:h-24 sm:w-32';
             const previewImage = document.createElement('img');
             previewImage.className = 'h-full w-full object-contain';
             previewImage.alt = '';
             let photoPreviewUrl = null;
             photoStage.appendChild(previewImage);
             const photoMeta = document.createElement('div');
-            photoMeta.className = 'flex flex-wrap items-center justify-between gap-2';
+            photoMeta.className = 'min-w-0 flex-1 space-y-1';
             const photoFileLabel = document.createElement('p');
             photoFileLabel.className = 'min-w-0 truncate text-[13px] text-white/80';
+            photoFileLabel.title = '';
             const removePhotoBtn = document.createElement('button');
             removePhotoBtn.type = 'button';
             removePhotoBtn.className = 'min-h-9 text-[13px] font-medium text-white/80 underline underline-offset-2 hover:text-white';
             removePhotoBtn.textContent = reviewText.removePhoto;
             removePhotoBtn.onclick = () => {
-                if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
-                photoPreviewUrl = null;
-                data.photo = null;
+                if (removePhotoBtn.disabled) return;
+                removePhotoBtn.disabled = true;
+                pickPhotoBtn.disabled = true;
+                photoPreview.classList.remove('chat-photo-preview-enter');
+                photoPreview.classList.add('chat-photo-preview-leave');
                 photoInput.value = '';
-                previewImage.removeAttribute('src');
-                photoPreview.classList.add('hidden');
-                pickPhotoBtn.textContent = reviewText.addPhoto;
+                data.photo = null;
                 photoError.hidden = true;
+                window.setTimeout(() => {
+                    if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
+                    photoPreviewUrl = null;
+                    previewImage.removeAttribute('src');
+                    photoPreview.classList.add('hidden');
+                    photoPreview.classList.remove('chat-photo-preview-leave');
+                    pickPhotoBtn.textContent = reviewText.addPhoto;
+                    pickPhotoBtn.disabled = false;
+                    removePhotoBtn.disabled = false;
+                    pickPhotoBtn.classList.remove('chat-photo-button-updated');
+                    void pickPhotoBtn.offsetWidth;
+                    pickPhotoBtn.classList.add('chat-photo-button-updated');
+                }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 170);
             };
             photoMeta.append(photoFileLabel, removePhotoBtn);
             photoPreview.append(photoStage, photoMeta);
@@ -332,13 +364,21 @@
                 photoPreviewUrl = URL.createObjectURL(file);
                 previewImage.src = photoPreviewUrl;
                 photoFileLabel.textContent = reviewText.photoSelected + ': ' + file.name;
+                photoFileLabel.title = file.name;
                 pickPhotoBtn.textContent = reviewText.changePhoto;
+                photoPreview.classList.remove('chat-photo-preview-leave', 'chat-photo-preview-enter');
+                void photoPreview.offsetWidth;
                 photoPreview.classList.remove('hidden');
+                photoPreview.classList.add('chat-photo-preview-enter');
+                pickPhotoBtn.classList.remove('chat-photo-button-updated');
+                void pickPhotoBtn.offsetWidth;
+                pickPhotoBtn.classList.add('chat-photo-button-updated');
                 photoError.hidden = true;
             });
 
             photoActions.append(pickPhotoBtn, photoInput);
-            photoSection.append(photoQuestion, photoActions, photoError, photoPreview);
+            photoControls.append(photoQuestion, photoActions);
+            photoSection.append(photoControls, photoError, photoPreview);
             detailsView.appendChild(photoSection);
 
             const editDetailsBtn = document.createElement('button');
