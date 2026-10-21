@@ -49,12 +49,12 @@
             </form>
 
             @forelse ($verifications as $verification)
-                <article style="--cg-verification-delay: {{ min($loop->index * 45, 225) }}ms" class="cg-card cg-verification-result-enter grid gap-5 p-4 sm:p-6 md:grid-cols-[minmax(0,1fr)_16rem]">
+                <article class="cg-card cg-verification-result-enter grid gap-5 p-4 sm:p-6 md:grid-cols-[minmax(0,1fr)_16rem]">
                     <div>
                         @php($residentAvatar = $verification->user->avatarPath())
                         <div class="flex items-center gap-3">
                             @if ($residentAvatar)
-                                <img src="{{ route('admin.verifications.avatar', $verification) }}" alt="{{ __('Profile picture of :name', ['name' => $verification->user->name]) }}" class="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-stone-200 dark:ring-gray-700">
+                                <img src="{{ route('admin.verifications.avatar', $verification) }}" alt="{{ __('Profile picture of :name', ['name' => $verification->user->name]) }}" width="44" height="44" loading="{{ $loop->first ? 'eager' : 'lazy' }}" decoding="async" class="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-stone-200 dark:ring-gray-700">
                             @else
                                 <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fffaf5] text-sm font-semibold text-maroon-800 ring-1 ring-stone-200" aria-hidden="true">{{ strtoupper(mb_substr($verification->user->name, 0, 1)) }}</span>
                             @endif
