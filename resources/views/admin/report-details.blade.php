@@ -15,6 +15,7 @@
             ['In progress', (bool) ($startedLog || $report->resolved_at || $report->status === 'in_progress'), $startedLog?->created_at],
             ['Resolved', $report->status === 'resolved', $report->resolved_at],
         ];
+        $statusUpdates = $history->filter(fn ($log) => in_array($log->action, ['report_status_changed', 'report_resolved', 'report_reopened'], true));
         $hasCoords = $report->latitude !== null && $report->longitude !== null;
     @endphp
 
@@ -45,6 +46,41 @@
                         </li>
                     @endforeach
                 </ol>
+
+                <div class="mt-5 border-t border-gray-200 pt-4 dark:border-gray-700">
+                    <h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('Progress updates') }}</h4>
+                    <ol class="mt-3 space-y-3">
+                        <li class="flex gap-3 text-sm">
+                            <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-amber-500" aria-hidden="true"></span>
+                            <div>
+                                <p class="font-medium text-gray-800 dark:text-gray-200">{{ __('Report submitted') }} · {{ __('Pending') }}</p>
+                                <p class="text-xs cg-muted">{{ $report->created_at->format('M d, Y g:i A') }}</p>
+                            </div>
+                        </li>
+                        @foreach ($statusUpdates->reverse() as $update)
+                            @php
+                                $status = $update->metadata['status'] ?? match ($update->action) {
+                                    'report_resolved' => 'resolved',
+                                    'report_reopened' => 'pending',
+                                    default => null,
+                                };
+                                $fromStatus = $update->metadata['from'] ?? ($update->action === 'report_reopened' ? 'resolved' : null);
+                            @endphp
+                            <li class="flex gap-3 text-sm">
+                                <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full {{ $status === 'resolved' ? 'bg-green-500' : ($status === 'in_progress' ? 'bg-blue-500' : 'bg-amber-500') }}" aria-hidden="true"></span>
+                                <div>
+                                    <p class="font-medium text-gray-800 dark:text-gray-200">
+                                        @if ($fromStatus)
+                                            {{ __(ucwords(str_replace('_', ' ', $fromStatus))) }} &rarr;
+                                        @endif
+                                        {{ __(ucwords(str_replace('_', ' ', $status ?? 'Status changed'))) }}
+                                    </p>
+                                    <p class="text-xs cg-muted">{{ $update->user->name ?? __('System') }} · {{ $update->created_at->format('M d, Y g:i A') }}</p>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ol>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
