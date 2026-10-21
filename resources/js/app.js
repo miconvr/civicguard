@@ -128,6 +128,18 @@ Alpine.data('profilePhotoEditor', () => ({
     zoom: 1,
     processing: false,
     previewError: false,
+    removeExisting: false,
+    pendingPhotoChange: false,
+    shakePreview: false,
+    shakeTimer: null,
+
+    triggerShake() {
+        this.shakePreview = false;
+        cancelAnimationFrame(this.shakeFrame);
+        this.shakeFrame = requestAnimationFrame(() => { this.shakePreview = true; });
+        clearTimeout(this.shakeTimer);
+        this.shakeTimer = setTimeout(() => { this.shakePreview = false; }, 700);
+    },
 
     select(event) {
         const file = event.target.files?.[0];
@@ -139,8 +151,14 @@ Alpine.data('profilePhotoEditor', () => ({
             this.previewUrl = null;
         }
 
-        if (!file) return;
+        if (!file) {
+            this.pendingPhotoChange = this.removeExisting;
+            return;
+        }
 
+        this.removeExisting = false;
+        this.pendingPhotoChange = true;
+        this.triggerShake();
         this.previewUrl = URL.createObjectURL(file);
         this.zoom = 1;
 
@@ -148,6 +166,34 @@ Alpine.data('profilePhotoEditor', () => ({
         image.onload = () => { this.image = image; };
         image.onerror = () => { this.previewError = true; };
         image.src = this.previewUrl;
+    },
+
+    clearSelection() {
+        if (this.previewUrl) URL.revokeObjectURL(this.previewUrl);
+        this.previewUrl = null;
+        this.image = null;
+        this.previewError = false;
+        this.$refs.input.value = '';
+        this.pendingPhotoChange = this.removeExisting;
+        this.shakePreview = false;
+    },
+
+    markForRemoval() {
+        this.removeExisting = true;
+        this.pendingPhotoChange = true;
+        this.triggerShake();
+    },
+
+    undoRemoval() {
+        this.removeExisting = false;
+        this.pendingPhotoChange = false;
+        this.shakePreview = false;
+    },
+
+    destroy() {
+        if (this.previewUrl) URL.revokeObjectURL(this.previewUrl);
+        clearTimeout(this.shakeTimer);
+        cancelAnimationFrame(this.shakeFrame);
     },
 
     submit(event) {
