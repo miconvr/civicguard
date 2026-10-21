@@ -210,7 +210,6 @@
                                     <option value="high">High</option>
                                     <option value="critical">Critical</option>
                                 </select>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Set automatically from the report text. Correct it if it is wrong.</p>
                             </div>
                         @endif
 
@@ -234,7 +233,6 @@
                                         <option value="{{ $tanod->id }}">{{ $tanod->name }}</option>
                                     @endforeach
                                 </select>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Leave unchanged if no reassignment is needed.</p>
                             </div>
                         @endif
 
