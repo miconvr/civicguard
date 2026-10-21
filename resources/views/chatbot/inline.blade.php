@@ -379,10 +379,10 @@
             editorFields.className = 'space-y-3';
 
             const categoryEditorLabel = document.createElement('label');
-            categoryEditorLabel.className = 'block text-[13px] font-semibold text-white/90';
+            categoryEditorLabel.className = 'block text-[13px] font-normal text-white/90';
             categoryEditorLabel.textContent = reviewText.category;
             const categorySelect = document.createElement('select');
-            categorySelect.className = 'cg-input mt-1 min-h-10 w-full bg-[#fffdf9] py-1.5 text-sm text-gray-900';
+            categorySelect.className = 'cg-input mt-1 min-h-10 w-full bg-[#fffdf9] py-1.5 font-sans text-sm font-normal text-gray-900';
             categorySelect.setAttribute('aria-label', reviewText.category);
             reviewText.categories.forEach((category) => {
                 const option = document.createElement('option');
@@ -394,21 +394,21 @@
             categoryEditorLabel.appendChild(categorySelect);
 
             const descriptionEditorLabel = document.createElement('label');
-            descriptionEditorLabel.className = 'block text-[13px] font-semibold text-white/90';
+            descriptionEditorLabel.className = 'block text-[13px] font-normal text-white/90';
             descriptionEditorLabel.textContent = reviewText.description;
             const descriptionEditor = document.createElement('textarea');
-            descriptionEditor.className = 'cg-input mt-1 min-h-20 w-full bg-[#fffdf9] py-2 text-sm text-gray-900';
+            descriptionEditor.className = 'cg-input mt-1 min-h-20 w-full bg-[#fffdf9] py-2 font-sans text-sm font-normal text-gray-900';
             descriptionEditor.rows = 3;
             descriptionEditor.maxLength = 2000;
             descriptionEditor.value = data.description;
             descriptionEditorLabel.appendChild(descriptionEditor);
 
             const locationEditorLabel = document.createElement('label');
-            locationEditorLabel.className = 'block text-[13px] font-semibold text-white/90';
+            locationEditorLabel.className = 'block text-[13px] font-normal text-white/90';
             locationEditorLabel.textContent = reviewText.location;
             const locationEditor = document.createElement('input');
             locationEditor.type = 'text';
-            locationEditor.className = 'cg-input mt-1 min-h-10 w-full bg-[#fffdf9] text-sm text-gray-900';
+            locationEditor.className = 'cg-input mt-1 min-h-10 w-full bg-[#fffdf9] font-sans text-sm font-normal text-gray-900';
             locationEditor.maxLength = 255;
             locationEditor.value = data.location;
             locationEditorLabel.appendChild(locationEditor);
