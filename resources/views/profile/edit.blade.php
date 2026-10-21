@@ -13,6 +13,14 @@
                 </div>
             </div>
 
+            @if ($user->role === 'admin')
+                <div class="cg-card p-4 sm:p-8">
+                    <div class="max-w-3xl">
+                        @include('profile.partials.admin-data-reset-form')
+                    </div>
+                </div>
+            @endif
+
             @if ($user->role === 'resident')
                 <div class="cg-card p-4 sm:p-8">
                     <div class="max-w-xl">
