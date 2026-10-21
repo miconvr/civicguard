@@ -170,6 +170,14 @@ class ChatbotController extends Controller
     private function isTagalog(string $text): bool
     {
         $text = mb_strtolower($text);
+        // Common incident phrases can be clearly Tagalog even when they contain
+        // only one of the short function words counted below (for example,
+        // "nagaway mga bata"). Recognize these before applying the broader
+        // word-count heuristic.
+        if (preg_match('/\b(?:nag[- ]?away|nag-aaway|away sila|may away|mga bata|bata|laruan|laro|maingay|nagingay|nag-iingay|ingay|kapitbahay)\b/u', $text)) {
+            return true;
+        }
+
         $distinctiveWords = preg_match_all('/\b(?:opo|hindi|wala|saan|bakit|paano|kailan|nangyari|puwede|pwede|salamat|kumusta|tulong|kailangan|nasaan|ano)\b/u', $text);
         $commonWords = preg_match_all('/\b(?:ako|ko|mo|siya|kami|tayo|kayo|sila|ang|ng|mga|sa|po|may|dito|doon|ito|iyan|namin|natin|gusto|paki)\b/u', $text);
 
