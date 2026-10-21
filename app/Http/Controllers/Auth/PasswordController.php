@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\AppNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -22,6 +23,12 @@ class PasswordController extends Controller
 
         $request->user()->update([
             'password' => Hash::make($validated['password']),
+        ]);
+
+        AppNotification::create([
+            'user_id' => $request->user()->id,
+            'report_id' => null,
+            'message' => __('Password changed successfully.'),
         ]);
 
         return back()->with('status', 'password-updated');
