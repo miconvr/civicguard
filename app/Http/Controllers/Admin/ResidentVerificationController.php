@@ -48,6 +48,17 @@ class ResidentVerificationController extends Controller
         ]);
     }
 
+    public function avatar(ResidentVerification $verification): StreamedResponse
+    {
+        $path = $verification->user->avatarPath();
+        abort_unless($path && Storage::disk('report_photos')->exists($path), 404);
+
+        return Storage::disk('report_photos')->response($path, headers: [
+            'Cache-Control' => 'private, no-store',
+            'X-Content-Type-Options' => 'nosniff',
+        ]);
+    }
+
     public function decide(Request $request, ResidentVerification $verification): RedirectResponse
     {
         $validated = $request->validate([
