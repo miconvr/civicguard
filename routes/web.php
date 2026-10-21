@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin,official'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/verifications', [AdminResidentVerificationController::class, 'index'])->name('verifications.index');
     Route::get('/verifications/{verification}/document', [AdminResidentVerificationController::class, 'document'])->name('verifications.document');
+    Route::get('/verifications/{verification}/avatar', [AdminResidentVerificationController::class, 'avatar'])->name('verifications.avatar');
     Route::patch('/verifications/{verification}', [AdminResidentVerificationController::class, 'decide'])->name('verifications.decide');
     Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create');
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
