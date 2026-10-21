@@ -11,6 +11,27 @@
         .dark .typing-dot { background: #d1d5db; }
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        .chat-message-enter-user { transform-origin: right bottom; animation: cg-chat-message-user 260ms cubic-bezier(.2,.8,.2,1) both; }
+        .chat-message-enter-bot { transform-origin: left bottom; animation: cg-chat-message-bot 300ms cubic-bezier(.2,.8,.2,1) both; }
+        .chat-typing-bubble { position: relative; transform-origin: left bottom; animation: cg-chat-bubble-float 1.8s ease-in-out infinite; }
+        .chat-review-enter { transform-origin: left bottom; animation: cg-chat-review-in 420ms cubic-bezier(.16,1,.3,1) both; }
+        @keyframes cg-chat-message-user {
+            from { opacity: 0; transform: translate(10px, 8px) scale(.96); }
+            to { opacity: 1; transform: translate(0) scale(1); }
+        }
+        @keyframes cg-chat-message-bot {
+            from { opacity: 0; transform: translate(-6px, 8px) scale(.98); }
+            to { opacity: 1; transform: translate(0) scale(1); }
+        }
+        @keyframes cg-chat-bubble-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        @keyframes cg-chat-review-in {
+            from { opacity: 0; transform: translateY(14px) scale(.97); }
+            70% { opacity: 1; transform: translateY(-2px) scale(1.005); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
         @keyframes typing-bounce {
             0%, 80%, 100% { transform: translateY(0); opacity: 0.35; }
             40% { transform: translateY(-5px); opacity: 1; }
@@ -21,6 +42,7 @@
         }
         @media (prefers-reduced-motion: reduce) {
             .typing-dot { animation: typing-fade 1.6s infinite ease-in-out both; }
+            .chat-message-enter-user, .chat-message-enter-bot, .chat-typing-bubble, .chat-review-enter { animation: none; }
         }
     </style>
 
@@ -121,7 +143,7 @@
 
         function addMessage(text, who) {
             const row = document.createElement('div');
-            row.className = 'text-sm ' + (who === 'user' ? 'text-right' : 'text-left');
+            row.className = 'text-sm chat-message-enter-' + (who === 'user' ? 'user text-right' : 'bot text-left');
             const bubble = document.createElement('span');
             bubble.className = 'px-4 py-3 rounded-2xl inline-block max-w-[90%] text-left whitespace-pre-wrap shadow-sm ' +
                 (who === 'user'
@@ -175,7 +197,7 @@
             row.id = 'typing-row';
             row.className = 'text-sm text-left';
             row.innerHTML =
-                '<span class="px-3 py-3 rounded-lg inline-flex items-center gap-1 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-300">' +
+                '<span class="chat-typing-bubble px-3 py-3 rounded-2xl rounded-bl-sm inline-flex items-center gap-1 bg-gray-100 dark:bg-gray-700 text-gray-500 shadow-sm dark:text-gray-300">' +
                 '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>' +
                 '</span>';
             log.appendChild(row);
@@ -188,7 +210,7 @@
 
         function showReviewCard(data) {
             const row = document.createElement('div');
-            row.className = 'text-left';
+            row.className = 'text-left chat-review-enter';
 
             const card = document.createElement('div');
             card.className = 'space-y-4 rounded-xl border border-maroon-900 bg-maroon-800 p-4 text-white shadow-md sm:p-5';
