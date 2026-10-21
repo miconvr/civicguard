@@ -1,4 +1,4 @@
-<nav class="flex gap-2 border-b border-stone-200 dark:border-[#3d3d3a]" aria-label="{{ __('Report views') }}">
+<nav class="flex gap-2 border-b border-stone-200 dark:border-gray-700" aria-label="{{ __('Report views') }}">
     <a href="{{ route('admin.analytics') }}"
        @class([
            'inline-flex min-h-11 items-center border-b-2 px-3 text-sm font-semibold transition',
