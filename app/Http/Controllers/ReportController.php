@@ -158,7 +158,7 @@ class ReportController extends Controller
             'auditable_type' => Report::class,
             'auditable_id' => $report->id,
             'description' => 'Resident said the issue is not fixed. Report reopened.',
-            'metadata' => ['status' => 'pending', 'reopen_count' => $report->reopen_count],
+            'metadata' => ['from' => 'resolved', 'status' => 'pending', 'reopen_count' => $report->reopen_count],
         ]);
 
         $recipients = User::whereIn('role', ['admin', 'official'])->pluck('id');
