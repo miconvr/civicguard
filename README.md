@@ -13,15 +13,23 @@ CivicGuard is a web-based system that lets residents of Barangay Maimpis, City o
 
 ## Features
 
-- **Submit reports:** use the standard form or AI chat; include a category, description, location, optional photo, and optional map pin.
-- **AI report assistance:** chat in English or Tagalog, get category and urgency suggestions, edit details before submission, and receive immediate emergency guidance for urgent messages.
-- **Track reports:** residents see status updates, assigned tanod details, and notifications; they can confirm a fix or reopen a resolved report within 7 days.
-- **Review incidents:** staff use a searchable, severity-filtered queue; officials and admins assign tanods and manage report status and severity. Tanods see reports assigned to them.
-- **Verify residency:** residents submit proof images; admins and officials review requests, and approved residents receive a verified badge.
-- **Log curfew violations:** tanods record apprehension, guardian, location, and follow-up details.
-- **Manage operations:** admins review analytics and AI insights, inspect audit logs, export PDF reports, manage staff, and clear test data while preserving accounts, profile photos, and report categories.
-- **Install on mobile:** add the PWA to an iPhone or Android home screen. When offline, it shows a fallback page; reporting and account features need a connection.
-- **Personalize and protect accounts:** use English or Tagalog, light or dark mode, profile photos, account deletion, the privacy policy, and terms of use.
+**For residents**
+
+- Submit reports with a form or AI chat, plus an optional photo and map pin.
+- Follow report status and assigned tanods; confirm a fix or reopen it within 7 days.
+- Submit residency proof and receive a verified badge after approval.
+
+**For barangay staff**
+
+- Review and search reports by severity; officials and admins can assign tanods and update reports.
+- Record curfew incidents and follow-up details.
+- Use analytics, audit logs, PDF exports, staff management, and the admin test-data reset.
+
+**App features**
+
+- Install CivicGuard on an iPhone or Android home screen. Offline, the app shows a fallback page; reporting requires an internet connection.
+- Use the interface in English or Tagalog, with light or dark appearance.
+- Manage profile photos and accounts, and read the privacy policy and terms of use.
 
 ---
 
