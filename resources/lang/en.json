@@ -44,5 +44,8 @@
     "Low": "Low",
     "Moderate": "Moderate",
     "High": "High",
-    "Critical": "Critical"
+    "Critical": "Critical",
+    "Profile picture": "Profile picture",
+    "JPG, PNG, or WebP. Maximum 2 MB.": "JPG, PNG, or WebP. Maximum 2 MB.",
+    "Remove profile picture": "Remove profile picture"
 }
