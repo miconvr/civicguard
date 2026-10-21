@@ -25,7 +25,7 @@ class HomeController extends Controller
                 ->where('resolved_at', '>', now()->subDays(7))
                 ->count();
         } elseif ($user->role === 'tanod') {
-            $data['assigned'] = Report::with(['category', 'user:id,name'])
+            $data['assigned'] = Report::with('category')
                 ->where('assigned_to', $user->id)
                 ->whereIn('status', $open)
                 ->orderByUrgency()
@@ -38,16 +38,13 @@ class HomeController extends Controller
                 'unassigned' => Report::whereIn('status', $open)->whereNull('assigned_to')->count(),
                 'overdue' => Report::where('status', 'pending')->where('created_at', '<', now()->subHours(48))->count(),
             ];
-            $data['urgent'] = Report::with(['category', 'user:id,name'])
+            $data['urgent'] = Report::with('category')
                 ->whereIn('status', $open)
                 ->orderByUrgency()
                 ->oldest()
                 ->limit(5)
                 ->get();
         }
-
-        \App\Support\ResidentNumbers::assign($data['assigned'] ?? collect());
-        \App\Support\ResidentNumbers::assign($data['urgent'] ?? collect());
 
         return view('home', $data);
     }
