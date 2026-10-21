@@ -67,11 +67,11 @@
                 <div class="flex items-center gap-3 px-4 py-3 sm:px-6">
                     <div class="min-w-0 flex-1">
                         <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('CivicGuard AI') }}</p>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('Your report-writing assistant') }}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('Your report-writing assistant') }}</p>
                     </div>
                 </div>
 
-                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="h-[min(48dvh,30rem)] min-h-56 space-y-3 overflow-y-auto border-y border-gray-100 px-3 py-4 dark:border-gray-700 sm:px-6 md:h-[min(60dvh,42rem)] md:min-h-[24rem]">
+                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="min-h-36 space-y-3 border-y border-gray-100 px-3 py-4 dark:border-gray-700 sm:px-6">
                     <div class="text-sm text-left">
                         <span class="px-4 py-3 rounded-2xl rounded-tl-sm inline-block max-w-[90%] text-left bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
                             {{ __('Hi! Tell me what happened and I can help you put together a clear incident report.') }}
@@ -93,7 +93,7 @@
                     </button>
                 </form>
 
-                <p class="px-3 pb-3 text-xs cg-muted sm:px-6">{{ __('Reports are reviewed by staff and are not answered instantly.') }}</p>
+                <p class="px-3 pb-3 text-[13px] cg-muted sm:px-6">{{ __('Reports are reviewed by staff and are not answered instantly.') }}</p>
         </div>
     </div>
 
@@ -171,7 +171,7 @@
 
         function addModelNote(text) {
             const note = document.createElement('p');
-            note.className = 'text-xs text-gray-500 dark:text-gray-400 pl-1 flex items-center gap-1.5';
+            note.className = 'text-[13px] text-gray-500 dark:text-gray-400 pl-1 flex items-center gap-1.5';
 
             let icon = '';
             if (/gemini/i.test(text)) {
@@ -231,7 +231,7 @@
             categoryValue.className = 'mt-1 block text-sm font-semibold text-white';
             categoryValue.textContent = data.category_name;
             const categoryLabel = document.createElement('span');
-            categoryLabel.className = 'block text-xs font-medium text-white/70';
+            categoryLabel.className = 'block text-[13px] font-medium text-white/80';
             categoryLabel.textContent = reviewText.category;
             categoryText.append(categoryLabel, categoryValue);
             categoryHeader.appendChild(categoryText);
@@ -247,7 +247,7 @@
                 const field = document.createElement('div');
                 field.className = 'space-y-1';
                 const fieldLabel = document.createElement('p');
-                fieldLabel.className = 'text-xs font-medium text-white/70';
+                fieldLabel.className = 'text-[13px] font-medium text-white/80';
                 fieldLabel.textContent = label;
                 const fieldValue = document.createElement('p');
                 fieldValue.className = 'break-words text-sm leading-5 text-white';
@@ -260,7 +260,7 @@
             const photoSection = document.createElement('div');
             photoSection.className = 'space-y-2 rounded-lg border border-white/15 bg-maroon-900 p-3';
             const photoQuestion = document.createElement('p');
-            photoQuestion.className = 'text-xs font-medium text-white/85';
+            photoQuestion.className = 'text-sm font-medium text-white';
             photoQuestion.textContent = reviewText.photoQuestion;
             const photoInput = document.createElement('input');
             photoInput.type = 'file';
@@ -277,14 +277,14 @@
             pickPhotoBtn.onclick = () => photoInput.click();
 
             const photoError = document.createElement('p');
-            photoError.className = 'text-xs font-medium text-rose-100';
+            photoError.className = 'text-[13px] font-medium text-rose-100';
             photoError.setAttribute('role', 'alert');
             photoError.hidden = true;
 
             const photoPreview = document.createElement('div');
             photoPreview.className = 'hidden space-y-2';
             const photoStage = document.createElement('div');
-            photoStage.className = 'relative h-40 overflow-hidden rounded-lg border border-gray-200 bg-gray-100 dark:border-gray-700 dark:bg-gray-900';
+            photoStage.className = 'relative h-32 overflow-hidden rounded-lg border border-gray-200 bg-gray-100 dark:border-gray-700 dark:bg-gray-900 sm:h-40';
             const previewImage = document.createElement('img');
             previewImage.className = 'h-full w-full scale-110 object-contain blur-md transition-all duration-200';
             previewImage.alt = '';
@@ -309,10 +309,10 @@
             const photoMeta = document.createElement('div');
             photoMeta.className = 'flex flex-wrap items-center justify-between gap-2';
             const photoFileLabel = document.createElement('p');
-            photoFileLabel.className = 'min-w-0 truncate text-xs text-white/75';
+            photoFileLabel.className = 'min-w-0 truncate text-[13px] text-white/85';
             const removePhotoBtn = document.createElement('button');
             removePhotoBtn.type = 'button';
-            removePhotoBtn.className = 'min-h-9 text-xs font-medium text-white/80 underline underline-offset-2 hover:text-white';
+            removePhotoBtn.className = 'min-h-9 text-[13px] font-medium text-white/85 underline underline-offset-2 hover:text-white';
             removePhotoBtn.textContent = reviewText.removePhoto;
             removePhotoBtn.onclick = () => {
                 if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
@@ -364,7 +364,7 @@
 
             const editDetailsBtn = document.createElement('button');
             editDetailsBtn.type = 'button';
-            editDetailsBtn.className = 'ml-auto min-h-9 rounded-lg border border-white/40 px-3 text-xs font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
+            editDetailsBtn.className = 'ml-auto min-h-10 rounded-lg border border-white/40 px-3 text-[13px] font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
             editDetailsBtn.textContent = reviewText.editDetails;
             editDetailsBtn.setAttribute('aria-expanded', 'false');
             card.appendChild(detailsView);
@@ -415,7 +415,7 @@
             editPanel.appendChild(editorFields);
 
             const editError = document.createElement('p');
-            editError.className = 'text-xs font-medium text-rose-100';
+            editError.className = 'text-[13px] font-medium text-rose-100';
             editError.setAttribute('role', 'alert');
             editError.textContent = reviewText.editRequired;
             editError.hidden = true;
