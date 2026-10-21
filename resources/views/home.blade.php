@@ -25,13 +25,13 @@
 
             @if ($user->role === 'resident')
 
-                <a data-reveal href="{{ route('reports.create') }}" class="group flex min-h-24 items-center justify-between gap-4 rounded-xl cg-surface-raised p-5 ring-1 ring-stone-200 transition-colors hover:bg-[#e9e3da] focus-visible:outline-offset-4 sm:p-6 dark:bg-[#262624] dark:ring-[#3d3d3a] dark:hover:bg-[#30302e]" data-reveal>
+                <a data-reveal href="{{ route('reports.create') }}" class="group flex min-h-24 items-center justify-between gap-4 rounded-xl cg-surface-raised p-5 ring-1 ring-stone-200 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-maroon-700/30 focus-visible:outline-offset-4 sm:p-6 dark:bg-[#262624] dark:ring-[#3d3d3a] dark:hover:bg-[#30302e] dark:hover:ring-stone-400/30" data-reveal>
                     <span>
                         <span class="block text-xs font-bold uppercase tracking-wider text-maroon-700 dark:text-[#c27872]">{{ __('Need help from the barangay?') }}</span>
                         <span class="mt-1 block text-lg font-bold text-stone-950 dark:text-white sm:text-xl">{{ __('Report an incident') }}</span>
                         <span class="mt-0.5 block text-sm text-stone-600 dark:text-gray-300">{{ __('It takes about a minute. You can follow the response here.') }}</span>
                     </span>
-                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-xl text-white transition-colors group-hover:bg-maroon-800" aria-hidden="true">&rarr;</span>
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-xl text-white shadow-sm transition-all duration-200 group-hover:bg-maroon-800 group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
                 </a>
 
                 @if ($needsFeedback > 0)
@@ -49,7 +49,7 @@
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse ($recent as $report)
                             <li>
-                                <a href="{{ route('reports.index') }}#report-{{ $report->id }}" class="flex min-h-[56px] items-center justify-between gap-3 py-3">
+                                <a href="{{ route('reports.index') }}#report-{{ $report->id }}" class="flex min-h-[56px] items-center justify-between gap-3 px-3 py-2.5 -mx-3 rounded-lg transition-colors duration-150 hover:bg-stone-100/70 dark:hover:bg-white/5">
                                     <span class="min-w-0">
                                         <span class="block truncate font-medium text-gray-900 dark:text-gray-100">{{ $report->category->name }} <span class="font-normal cg-muted">#{{ $report->resident_number ?? $report->id }}</span></span>
                                         <span class="block truncate text-sm cg-muted">{{ $report->location_text }}</span>
@@ -97,7 +97,7 @@
                         ['Unassigned', $stats['unassigned'], ['tab' => 'active', 'assignee' => 'none'], 'cg-kpi'],
                         ['Pending 48h+', $stats['overdue'], ['tab' => 'pending'], 'cg-kpi'],
                     ] as [$label, $count, $params, $color])
-                        <a href="{{ route('admin.dashboard', $params) }}" class="cg-card block transition-colors" data-reveal>
+                        <a href="{{ route('admin.dashboard', $params) }}" class="cg-card block" data-reveal>
                             <p class="text-sm cg-muted">{{ $label }}</p>
                             <p class="text-3xl font-semibold {{ $color }}">{{ $count }}</p>
                         </a>
@@ -112,7 +112,7 @@
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse ($urgent as $report)
                             <li>
-                                <a href="{{ route('admin.reports.details', $report) }}" class="flex min-h-[56px] items-center justify-between gap-3 py-3">
+                                <a href="{{ route('admin.reports.details', $report) }}" class="flex min-h-[56px] items-center justify-between gap-3 px-3 py-2.5 -mx-3 rounded-lg transition-colors duration-150 hover:bg-stone-100/70 dark:hover:bg-white/5">
                                     <span class="min-w-0">
                                         <span class="block truncate font-medium text-gray-900 dark:text-gray-100">{{ $report->category->name }}</span>
                                         <span class="block truncate text-sm cg-muted">{{ \Illuminate\Support\Str::title($report->location_text) }} &middot; {{ $report->created_at->diffForHumans() }}</span>
