@@ -26,7 +26,15 @@
                             <form method="POST" action="{{ route('notifications.open', $notification) }}">
                                 @csrf
                                 <button type="submit" class="flex w-full min-h-[56px] items-start gap-3 px-4 py-3 text-left transition hover:bg-black/5 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-maroon-600 {{ $notification->is_read ? '' : 'bg-maroon-50/60 dark:bg-white/[0.06]' }}">
-                                    <span class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full {{ $notification->is_read ? 'bg-transparent' : 'bg-maroon-700 dark:bg-[#c27872]' }}" aria-hidden="true"></span>
+                                    @if (is_null($notification->report_id))
+                                        <span class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300" aria-label="{{ __('Profile update') }}">
+                                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="m5 12 4 4L19 6" />
+                                            </svg>
+                                        </span>
+                                    @else
+                                        <span class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full {{ $notification->is_read ? 'bg-transparent' : 'bg-maroon-700 dark:bg-[#c27872]' }}" aria-hidden="true"></span>
+                                    @endif
                                     <span class="min-w-0 flex-1">
                                         <span class="block text-sm {{ $notification->is_read ? 'text-gray-700 dark:text-gray-300' : 'font-semibold text-gray-900 dark:text-gray-100' }}">
                                             @unless ($notification->is_read)<span class="sr-only">{{ __('Unread') }}: </span>@endunless
