@@ -676,6 +676,10 @@
         transition: color var(--cg-motion-interaction) var(--cg-ease-out), background-color var(--cg-motion-interaction) var(--cg-ease-out), transform var(--cg-motion-interaction) var(--cg-ease-out);
     }
 
+    .cg-app-sidebar .cg-sidebar-logout {
+        transition: color var(--cg-motion-interaction) var(--cg-ease-out), background-color var(--cg-motion-interaction) var(--cg-ease-out);
+    }
+
     .cg-sidebar-link[aria-current="page"],
     .dark .cg-sidebar-link[aria-current="page"] {
         color: #ffffff;
@@ -1034,6 +1038,11 @@
 
     .cg-sidebar-link:hover {
         transform: translateX(1px);
+    }
+
+    .cg-app-sidebar .cg-sidebar-logout:hover,
+    .cg-app-sidebar .cg-sidebar-logout:active {
+        transform: none;
     }
 
     .cg-start-primary:hover .cg-arrow,
