@@ -11,6 +11,9 @@
         .dark .typing-dot { background: #d1d5db; }
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        .send-loading-dot { width: 4px; height: 4px; border-radius: 9999px; background: currentColor; animation: typing-bounce 900ms infinite ease-in-out both; }
+        .send-loading-dot:nth-child(2) { animation-delay: 120ms; }
+        .send-loading-dot:nth-child(3) { animation-delay: 240ms; }
         .chat-message-enter-user { transform-origin: right bottom; animation: cg-chat-message-user 260ms cubic-bezier(.2,.8,.2,1) both; }
         .chat-message-enter-bot { transform-origin: left bottom; animation: cg-chat-message-bot 300ms cubic-bezier(.2,.8,.2,1) both; }
         .chat-typing-bubble { position: relative; transform-origin: left bottom; animation: cg-chat-bubble-float 1.8s ease-in-out infinite; }
@@ -42,7 +45,7 @@
         }
         @media (prefers-reduced-motion: reduce) {
             .typing-dot { animation: typing-fade 1.6s infinite ease-in-out both; }
-            .chat-message-enter-user, .chat-message-enter-bot, .chat-typing-bubble, .chat-review-enter { animation: none; }
+            .chat-message-enter-user, .chat-message-enter-bot, .chat-typing-bubble, .chat-review-enter, .send-loading-dot { animation: none; }
         }
     </style>
 
@@ -81,9 +84,10 @@
 
                 <form id="chat-form" class="flex items-end gap-2 border-t border-gray-100 p-3 dark:border-gray-700 sm:px-6">
                     <textarea id="chat-input" rows="1" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Type your message...') }}" class="cg-input min-h-[44px] max-h-32 min-w-0 flex-1 resize-none overflow-y-hidden py-2.5 leading-5" style="height:44px" autocomplete="off"></textarea>
-                    <button type="submit" id="chat-send" class="cg-btn min-h-[44px] shrink-0 disabled:cursor-wait disabled:opacity-60" aria-busy="false">
-                        <span id="chat-send-label">{{ __('Send') }}</span>
-                        <span id="chat-send-spinner" class="hidden"><span class="inline-flex items-center gap-2" role="status"><svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>{{ __('Sending...') }}</span></span>
+                    <button type="submit" id="chat-send" class="inline-flex h-11 w-11 min-h-[44px] shrink-0 items-center justify-center rounded-lg bg-maroon-700 p-0 text-white shadow-sm transition duration-150 hover:bg-maroon-800 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 disabled:cursor-wait disabled:opacity-65" aria-label="{{ __('Send') }}" aria-busy="false">
+                        <span id="chat-send-label" class="sr-only">{{ __('Send') }}</span>
+                        <span id="chat-send-icon" aria-hidden="true"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m0 0-6 6m6-6 6 6"/></svg></span>
+                        <span id="chat-send-spinner" class="hidden items-center justify-center gap-1" role="status"><span class="inline-flex items-center gap-1" aria-hidden="true"><span class="send-loading-dot"></span><span class="send-loading-dot"></span><span class="send-loading-dot"></span></span><span class="sr-only">{{ __('Sending...') }}</span></span>
                     </button>
                 </form>
 
@@ -97,6 +101,7 @@
         const form = document.getElementById('chat-form');
         const input = document.getElementById('chat-input');
         const sendBtn = document.getElementById('chat-send');
+        const sendButtonLabels = {{ Js::from(['send' => __('Send'), 'sending' => __('Sending...')]) }};
         const log = document.getElementById('chat-log');
         const reviewText = {{ Js::from([
             'title' => __('Review Before Submitting'),
@@ -608,8 +613,11 @@
             input.disabled = busy;
             sendBtn.disabled = busy;
             sendBtn.setAttribute('aria-busy', busy ? 'true' : 'false');
+            sendBtn.setAttribute('aria-label', busy ? sendButtonLabels.sending : sendButtonLabels.send);
             document.getElementById('chat-send-label').classList.toggle('hidden', busy);
+            document.getElementById('chat-send-icon').classList.toggle('hidden', busy);
             document.getElementById('chat-send-spinner').classList.toggle('hidden', !busy);
+            document.getElementById('chat-send-spinner').classList.toggle('inline-flex', busy);
         }
 
         function showError(text) {
