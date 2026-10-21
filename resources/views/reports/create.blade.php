@@ -48,14 +48,14 @@
                         {{ __('Choose another way to report') }}
                     </button>
                 <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-6"
-                      x-data="{ cat: '{{ old('category_id') }}', descs: {{ Js::from($categories->pluck('description', 'id')) }}, len: {{ strlen(old('description', '')) }}, preview: null, tooBig: false, suggested: false, timer: null,
+                      x-data="{ cat: {{ Js::from((string) old('category_id', $draft['category_id'] ?? '')) }}, descs: {{ Js::from($categories->pluck('description', 'id')) }}, len: {{ strlen(old('description', $draft['description'] ?? '')) }}, preview: null, tooBig: false, suggested: false, timer: null,
                           pick(e) { const f = e.target.files[0]; this.tooBig = f ? f.size > 5242880 : false; this.preview = f && !this.tooBig ? URL.createObjectURL(f) : null; if (this.tooBig) e.target.value = ''; },
                           suggest(text) { if (this.cat || text.length < 20) return; clearTimeout(this.timer); this.timer = setTimeout(async () => { try { const r = await fetch('{{ route('reports.suggestCategory') }}', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' }, body: JSON.stringify({ description: text }) }); const d = await r.json(); if (d.category_id && !this.cat) { this.cat = String(d.category_id); this.suggested = true; } } catch (e) {} }, 1200); } }">
                     @csrf
 
                     <div>
                         <label for="description" class="cg-label">{{ __('What happened?') }} <span class="text-red-600" aria-hidden="true">*</span></label>
-                        <textarea id="description" name="description" rows="5" required maxlength="2000" x-on:input="len = $event.target.value.length; suggest($event.target.value)" class="cg-input" placeholder="{{ __('Say what happened, and when it happened.') }}">{{ old('description') }}</textarea>
+                        <textarea id="description" name="description" rows="5" required maxlength="2000" x-on:input="len = $event.target.value.length; suggest($event.target.value)" class="cg-input" placeholder="{{ __('Say what happened, and when it happened.') }}">{{ old('description', $draft['description'] ?? '') }}</textarea>
                         <p class="mt-1 text-right text-sm text-gray-600 dark:text-gray-400"><span x-text="len"></span> / 2000</p>
                         @error('description') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                     </div>
@@ -75,7 +75,7 @@
 
                     <div>
                         <label for="location_text" class="cg-label">{{ __('Location') }} <span class="text-red-600" aria-hidden="true">*</span></label>
-                        <input id="location_text" type="text" name="location_text" value="{{ old('location_text') }}" required placeholder="{{ __('Enter the purok, street, or a nearby landmark') }}" class="cg-input min-h-[44px] w-full">
+                        <input id="location_text" type="text" name="location_text" value="{{ old('location_text', $draft['location_text'] ?? '') }}" required placeholder="{{ __('Enter the purok, street, or a nearby landmark') }}" class="cg-input min-h-[44px] w-full">
                         @error('location_text') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                         <input type="hidden" name="latitude" value="{{ old('latitude') }}">
                         <input type="hidden" name="longitude" value="{{ old('longitude') }}">
