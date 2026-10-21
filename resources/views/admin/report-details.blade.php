@@ -83,6 +83,46 @@
                 </div>
             </div>
 
+            @if (in_array(auth()->user()->role, ['admin', 'official'], true))
+            <div class="cg-card">
+                <form method="POST" action="{{ route('admin.reports.update', $report) }}" class="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-start">
+                    @csrf
+                    @method('PATCH')
+                    <div>
+                        <label for="report-severity" class="mb-1.5 block text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('Severity') }}</label>
+                        <select id="report-severity" name="severity" class="cg-select w-full">
+                            @foreach (['low' => 'Low', 'moderate' => 'Moderate', 'high' => 'High', 'critical' => 'Critical'] as $value => $label)
+                                <option value="{{ $value }}" @selected($report->severity === $value)>{{ __($label) }}</option>
+                            @endforeach
+                        </select>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('Set automatically from the report text. Correct it if it is wrong.') }}</p>
+                    </div>
+                    <div>
+                        <label for="report-status" class="mb-1.5 block text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('Status') }}</label>
+                        <select id="report-status" name="status" class="cg-select w-full">
+                            <option value="pending" @selected($report->status === 'pending')>{{ __('Pending') }}</option>
+                            <option value="in_progress" @selected($report->status === 'in_progress')>{{ __('In Progress') }}</option>
+                            <option value="resolved" @selected($report->status === 'resolved')>{{ __('Resolved') }}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="report-assignee" class="mb-1.5 block text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('Assigned tanod') }}</label>
+                        <select id="report-assignee" name="assigned_to" class="cg-select w-full">
+                            @unless ($report->assigned_to)
+                                <option value="" selected disabled>{{ __('Select a tanod') }}</option>
+                            @endunless
+                            @foreach ($tanods as $tanod)
+                                <option value="{{ $tanod->id }}" @selected((int) $report->assigned_to === (int) $tanod->id)>{{ $tanod->name }}</option>
+                            @endforeach
+                        </select>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('Leave unchanged if no reassignment is needed.') }}</p>
+                    </div>
+                    <div class="sm:col-span-3">
+                        <button type="submit" class="cg-btn">{{ __('Save changes') }}</button>
+                    </div>
+                </form>
+            </div>
+            @else
             <div class="cg-card">
                 <form method="POST" action="{{ route('admin.reports.updateStatus', $report) }}" class="flex flex-col gap-3 sm:flex-row sm:items-end">
                     @csrf
@@ -98,6 +138,7 @@
                     <button type="submit" class="cg-btn">{{ __('Save') }}</button>
                 </form>
             </div>
+            @endif
 
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 <div class="space-y-6 lg:col-span-2">
