@@ -120,7 +120,21 @@
                 (who === 'user'
                     ? 'bg-maroon-700 text-white'
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100');
-            bubble.textContent = text;
+            if (who === 'bot') {
+                const normalized = text.replace(/\\\*\\\*/g, '**');
+                const parts = normalized.split(/(\*\*[^*\n]+?\*\*)/g);
+                parts.forEach((part) => {
+                    if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+                        const strong = document.createElement('strong');
+                        strong.textContent = part.slice(2, -2);
+                        bubble.appendChild(strong);
+                    } else {
+                        bubble.appendChild(document.createTextNode(part));
+                    }
+                });
+            } else {
+                bubble.textContent = text;
+            }
             row.appendChild(bubble);
             log.appendChild(row);
             log.scrollTop = log.scrollHeight;
