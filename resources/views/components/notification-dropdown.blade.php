@@ -79,7 +79,15 @@ class="relative inline-flex items-center">
                     <form method="POST" action="{{ route('notifications.open', $notification) }}">
                         @csrf
                         <button type="submit" class="flex w-full min-h-[52px] items-start gap-3 p-3.5 text-left transition hover:bg-stone-50 dark:hover:bg-white/5 focus:outline-none focus:bg-stone-50 dark:focus:bg-white/5 {{ $notification->is_read ? '' : 'bg-maroon-50/40 dark:bg-maroon-900/10' }}">
-                            <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full {{ $notification->is_read ? 'bg-transparent' : 'bg-maroon-700 dark:bg-[#c27872]' }}" aria-hidden="true"></span>
+                            @if (is_null($notification->report_id))
+                                <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300" aria-label="{{ __('Profile update') }}">
+                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m5 12 4 4L19 6" />
+                                    </svg>
+                                </span>
+                            @else
+                                <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full {{ $notification->is_read ? 'bg-transparent' : 'bg-maroon-700 dark:bg-[#c27872]' }}" aria-hidden="true"></span>
+                            @endif
                             <span class="min-w-0 flex-1">
                                 <span class="block text-xs sm:text-sm leading-snug {{ $notification->is_read ? 'text-stone-700 dark:text-stone-300' : 'font-semibold text-stone-900 dark:text-stone-100' }}">
                                     {{ $notification->message }}

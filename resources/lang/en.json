@@ -53,5 +53,11 @@
     "Adjust crop": "Adjust crop",
     "Drag the slider to zoom in or out. The circle shows what will be saved.": "Drag the slider to zoom in or out. The circle shows what will be saved.",
     "We could not prepare this image. Please choose another one.": "We could not prepare this image. Please choose another one.",
-    "Preparing image...": "Preparing image..."
+    "Preparing image...": "Preparing image...",
+    "Profile update": "Profile update",
+    "Profile picture uploaded successfully.": "Profile picture uploaded successfully.",
+    "Profile picture removed successfully.": "Profile picture removed successfully.",
+    "Name changed successfully.": "Name changed successfully.",
+    "Email address changed successfully.": "Email address changed successfully.",
+    "Password changed successfully.": "Password changed successfully."
 }

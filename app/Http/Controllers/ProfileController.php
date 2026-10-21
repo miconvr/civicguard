@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\AppNotification;
 use App\Models\Report;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,10 +34,18 @@ class ProfileController extends Controller
         $validated = $request->validated();
         $disk = Storage::disk('report_photos');
         $photoDirectory = 'profile-photos/'.$user->id;
+        $nameChanged = $user->name !== $validated['name'];
+        $emailChanged = $user->email !== $validated['email'];
+        $avatarChange = null;
 
         if ($request->boolean('remove_avatar') || $request->hasFile('avatar')) {
             if ($request->boolean('remove_avatar')) {
+                $hadAvatar = $user->avatarPath() !== null;
                 $disk->deleteDirectory($photoDirectory);
+
+                if ($hadAvatar) {
+                    $avatarChange = __('Profile picture removed successfully.');
+                }
             } else {
                 $avatarPath = $request->file('avatar')->storeAs(
                     $photoDirectory,
@@ -55,10 +64,15 @@ class ProfileController extends Controller
                         $disk->delete($path);
                     }
                 }
+
+                $avatarChange = __('Profile picture uploaded successfully.');
             }
         }
 
-        $user->fill($validated);
+        $user->fill([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
@@ -66,7 +80,28 @@ class ProfileController extends Controller
 
         $user->save();
 
+        if ($avatarChange) {
+            $this->notifyProfileChange($user->id, $avatarChange);
+        }
+
+        if ($nameChanged) {
+            $this->notifyProfileChange($user->id, __('Name changed successfully.'));
+        }
+
+        if ($emailChanged) {
+            $this->notifyProfileChange($user->id, __('Email address changed successfully.'));
+        }
+
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    private function notifyProfileChange(int $userId, string $message): void
+    {
+        AppNotification::create([
+            'user_id' => $userId,
+            'report_id' => null,
+            'message' => $message,
+        ]);
     }
 
     /**
