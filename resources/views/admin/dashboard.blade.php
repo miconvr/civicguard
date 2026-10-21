@@ -110,10 +110,10 @@
                                     <td data-label="Report">
                                         <div class="font-medium">{{ $report->category->name }}</div>
                                         <div class="text-xs text-gray-500 dark:text-gray-400">{{ Str::title($report->location_text) }}</div>
-                                        <div class="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400">
-                                            <span>{{ __('Reported by') }} {{ $report->user->name }}</span>
+                                        <div class="mt-1 flex min-w-0 items-center justify-between gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                            <span class="min-w-0 truncate" title="{{ __('Reported by') }} {{ $report->user->name }}">{{ __('Reported by') }} {{ $report->user->name }}</span>
                                             @if ($reporterVerified)
-                                                <span title="{{ __('Verified resident') }}" class="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200">
+                                                <span title="{{ __('Verified resident') }}" class="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200">
                                                     <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.13a1 1 0 0 1-1.42.006L3.29 8.71a1 1 0 1 1 1.42-1.407l4.217 4.26 6.363-6.414a1 1 0 0 1 1.414-.006Z" clip-rule="evenodd"/></svg>
                                                     {{ __('Verified') }}
                                                 </span>
@@ -169,10 +169,11 @@
                         <button type="button" @click="open = false" aria-label="Close" class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-gray-400 hover:bg-black/5 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-white text-xl leading-none">✕</button>
                     </div>
 
-                    <div class="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
-                        <span class="cg-sev" :class="r.sevClass" x-text="r.severity"></span>
-                        <span class="flex flex-wrap items-center gap-x-2 gap-y-1">{{ __('Reported by') }} <strong x-text="r.user"></strong>
-                            <span x-show="r.reporterVerified" class="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold leading-none text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200">
+                    <div class="flex min-w-0 items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
+                        <span class="cg-sev shrink-0" :class="r.sevClass" x-text="r.severity"></span>
+                        <span class="flex min-w-0 flex-1 items-center justify-between gap-2">
+                            <span class="min-w-0 truncate">{{ __('Reported by') }} <strong x-text="r.user"></strong></span>
+                            <span x-show="r.reporterVerified" class="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold leading-none text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200">
                                 <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.13a1 1 0 0 1-1.42.006L3.29 8.71a1 1 0 1 1 1.42-1.407l4.217 4.26 6.363-6.414a1 1 0 0 1 1.414-.006Z" clip-rule="evenodd"/></svg>
                                 {{ __('Verified') }}
                             </span>
