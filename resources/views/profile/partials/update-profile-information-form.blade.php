@@ -19,19 +19,26 @@
 
         <div>
             <x-input-label for="avatar" :value="__('Profile picture')" />
+            <input type="hidden" name="remove_avatar" value="1" disabled x-bind:disabled="!removeExisting">
             <div class="mt-2 flex items-center gap-4">
+                <div class="relative inline-flex shrink-0" :class="shakePreview ? 'cg-pending-shake' : ''">
                 @if ($user->avatarPath())
-                    <img src="{{ route('profile.photo', ['v' => basename($user->avatarPath())]) }}" alt="{{ __('Profile picture') }}" class="h-16 w-16 rounded-full object-cover ring-2 ring-stone-200 dark:ring-gray-600">
+                    <img x-show="!removeExisting" src="{{ route('profile.photo', ['v' => basename($user->avatarPath())]) }}" alt="{{ __('Profile picture') }}" class="h-16 w-16 rounded-full object-cover ring-2 ring-stone-200 dark:ring-gray-600">
+                    <span x-show="removeExisting" x-cloak class="flex h-16 w-16 items-center justify-center rounded-full bg-maroon-100 text-xl font-semibold text-maroon-800 ring-2 ring-stone-200 dark:bg-white/10 dark:text-white dark:ring-gray-600" aria-hidden="true">{{ strtoupper(mb_substr($user->name, 0, 1)) }}</span>
+                    <button x-show="!removeExisting && !previewUrl" type="button" @click="markForRemoval()" aria-label="{{ __('Remove profile picture') }}" title="{{ __('Remove profile picture') }}" class="absolute -right-1 -top-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-red-600 text-lg font-bold leading-none text-white shadow transition hover:scale-110 hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700">&times;</button>
+                    <button x-show="removeExisting && !previewUrl" x-cloak type="button" @click="undoRemoval()" class="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-stone-800 px-2 py-1 text-[10px] font-semibold text-white shadow transition hover:bg-stone-700">{{ __('Undo') }}</button>
                 @else
-                    <span class="flex h-16 w-16 items-center justify-center rounded-full bg-maroon-100 text-xl font-semibold text-maroon-800 dark:bg-white/10 dark:text-white" aria-hidden="true">{{ strtoupper(mb_substr($user->name, 0, 1)) }}</span>
+                    <span x-show="!previewUrl" class="flex h-16 w-16 items-center justify-center rounded-full bg-maroon-100 text-xl font-semibold text-maroon-800 dark:bg-white/10 dark:text-white" aria-hidden="true">{{ strtoupper(mb_substr($user->name, 0, 1)) }}</span>
                 @endif
+                </div>
                 <div class="min-w-0 flex-1">
                     <input id="avatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp" x-ref="input" @change="select($event)" class="block min-h-11 w-full text-sm text-gray-700 file:mr-3 file:min-h-11 file:rounded-lg file:border-0 file:bg-maroon-50 file:px-3 file:font-semibold file:text-maroon-800 file:transition-all file:duration-300 file:ease-out hover:file:-translate-y-0.5 hover:file:bg-maroon-100 hover:file:text-maroon-900 hover:file:shadow-sm active:file:translate-y-0 active:file:scale-[0.98] dark:text-gray-300 dark:file:bg-white/10 dark:file:text-gray-100 dark:hover:file:bg-white/20 dark:hover:file:text-white">
                     <p class="mt-1 text-xs text-gray-600 dark:text-gray-400">{{ __('JPG, PNG, or WebP. Maximum 2 MB.') }}</p>
                 </div>
             </div>
             <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
-            <div x-show="previewUrl" x-cloak class="mt-4 rounded-xl border border-stone-200 p-4 dark:border-gray-700">
+            <div x-show="previewUrl" x-cloak class="relative mt-4 rounded-xl border border-stone-200 p-4 dark:border-gray-700" :class="shakePreview ? 'cg-pending-shake' : ''">
+                <button type="button" @click="clearSelection()" aria-label="{{ __('Remove selected image') }}" title="{{ __('Remove selected image') }}" class="absolute right-2 top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-stone-800 text-xl font-bold leading-none text-white shadow transition hover:scale-110 hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700">&times;</button>
                 <p class="text-sm font-medium text-gray-800 dark:text-gray-100">{{ __('Preview profile picture') }}</p>
                 <div class="mt-3 flex flex-col items-center gap-4 sm:flex-row">
                     <div class="h-40 w-40 shrink-0 overflow-hidden rounded-full bg-stone-100 ring-2 ring-stone-200 dark:bg-gray-800 dark:ring-gray-600">
@@ -48,12 +55,7 @@
                 </div>
                 <p x-show="previewError" role="alert" class="mt-3 text-sm text-red-700 dark:text-red-400">{{ __('We could not prepare this image. Please choose another one.') }}</p>
             </div>
-            @if ($user->avatarPath())
-                <label for="remove_avatar" class="mt-3 inline-flex min-h-11 items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                    <input id="remove_avatar" name="remove_avatar" type="checkbox" value="1" class="rounded border-gray-300 text-maroon-700 shadow-sm focus:ring-maroon-500 dark:border-gray-600 dark:bg-gray-900">
-                    {{ __('Remove profile picture') }}
-                </label>
-            @endif
+            <p x-show="pendingPhotoChange" x-cloak role="status" class="text-sm font-medium text-amber-800 dark:text-amber-300">{{ __('Photo changes are not saved yet. Click Save to apply them.') }}</p>
         </div>
 
         <div>
