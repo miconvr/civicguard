@@ -83,6 +83,22 @@
                 </div>
             </div>
 
+            <div class="cg-card">
+                <form method="POST" action="{{ route('admin.reports.updateStatus', $report) }}" class="flex flex-col gap-3 sm:flex-row sm:items-end">
+                    @csrf
+                    @method('PATCH')
+                    <div class="w-full sm:max-w-xs">
+                        <label for="report-status" class="mb-1.5 block text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('Update status') }}</label>
+                        <select id="report-status" name="status" class="cg-select w-full">
+                            <option value="pending" @selected($report->status === 'pending')>{{ __('Pending') }}</option>
+                            <option value="in_progress" @selected($report->status === 'in_progress')>{{ __('In Progress') }}</option>
+                            <option value="resolved" @selected($report->status === 'resolved')>{{ __('Resolved') }}</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="cg-btn">{{ __('Save') }}</button>
+                </form>
+            </div>
+
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 <div class="space-y-6 lg:col-span-2">
                     <div class="cg-card">
