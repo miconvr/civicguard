@@ -37,6 +37,8 @@ Use this document as visual guidance, not as permission to change routes, roles,
 
 - Keep controls at least 44px high when practical, with visible keyboard focus and clear disabled, loading, error, and success states.
 - Motion should clarify an entrance, reveal, or action response. Keep routine interactions quick and subtle.
+- Use the shared motion tokens in `resources/css/app.css`: 180ms for interaction feedback, 240ms for enter transitions, 140ms for exits, 280ms for page/reveal motion, and the shared `--cg-ease-out` / `--cg-ease-in` curves. Tailwind transition utilities inherit the same defaults.
+- Keep chatbot message, review, photo, and success transitions on those shared timings. Distinctive looping motion is reserved for status indicators and the public install walkthrough illustration.
 - The public hero may use a single slow contour-ring animation, staggered copy entrance, and ordered process reveals. Keep routine page motion brief and avoid continuous motion elsewhere.
 - Use transform and opacity for movement. Respect `prefers-reduced-motion`; content must remain visible and fully usable without animation.
 - Do not make keyboard navigation depend on hover or animation.

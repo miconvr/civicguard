@@ -25,17 +25,17 @@
 
             @if ($user->role === 'resident')
 
-                <a data-reveal href="{{ route('reports.create') }}" class="group flex min-h-24 items-center justify-between gap-4 rounded-xl cg-surface-raised p-5 ring-1 ring-stone-200 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-maroon-700/30 focus-visible:outline-offset-4 sm:p-6 dark:bg-[#262624] dark:ring-[#3d3d3a] dark:hover:bg-[#30302e] dark:hover:ring-stone-400/30" data-reveal>
+                <a data-reveal href="{{ route('reports.create') }}" class="group flex min-h-24 items-center justify-between gap-4 rounded-xl cg-surface-raised p-5 ring-1 ring-stone-200 transition-all duration-[var(--cg-motion-interaction)] hover:-translate-y-px hover:shadow-md hover:ring-maroon-700/30 focus-visible:outline-offset-4 sm:p-6 dark:bg-[#262624] dark:ring-[#3d3d3a] dark:hover:bg-[#30302e] dark:hover:ring-stone-400/30" data-reveal>
                     <span>
                         <span class="block text-xs font-bold uppercase tracking-wider text-maroon-700 dark:text-[#c27872]">{{ __('Need help from the barangay?') }}</span>
                         <span class="mt-1 block text-lg font-bold text-stone-950 dark:text-white sm:text-xl">{{ __('Report an incident') }}</span>
                         <span class="mt-0.5 block text-sm text-stone-600 dark:text-gray-300">{{ __('It takes about a minute. You can follow the response here.') }}</span>
                     </span>
-                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-xl text-white shadow-sm transition-all duration-200 group-hover:bg-maroon-800 group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-xl text-white shadow-sm transition-all duration-[var(--cg-motion-interaction)] group-hover:bg-maroon-800 group-hover:translate-x-[3px]" aria-hidden="true">&rarr;</span>
                 </a>
 
                 @if ($needsFeedback > 0)
-                    <a href="{{ route('reports.index') }}" class="block rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 transition hover:-translate-y-0.5 hover:border-amber-300 hover:bg-amber-100 hover:shadow-sm motion-reduce:hover:translate-y-0 dark:border-amber-900/60 dark:bg-amber-900/10 dark:text-amber-200/90 dark:hover:border-amber-800 dark:hover:bg-amber-900/25">
+                    <a href="{{ route('reports.index') }}" class="block rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 transition hover:-translate-y-px hover:border-amber-300 hover:bg-amber-100 hover:shadow-sm motion-reduce:hover:translate-y-0 dark:border-amber-900/60 dark:bg-amber-900/10 dark:text-amber-200/90 dark:hover:border-amber-800 dark:hover:bg-amber-900/25">
                         <strong>{{ __('Was this fixed?') }}</strong>
                         {{ $needsFeedback }} {{ __('resolved report(s) are waiting for your answer.') }}
                     </a>
@@ -49,7 +49,7 @@
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse ($recent as $report)
                             <li>
-                                <a href="{{ route('reports.index') }}#report-{{ $report->id }}" class="flex min-h-[56px] items-center justify-between gap-3 px-3 py-2.5 -mx-3 rounded-lg transition-colors duration-150 hover:bg-stone-100/70 dark:hover:bg-white/5">
+                                <a href="{{ route('reports.index') }}#report-{{ $report->id }}" class="flex min-h-[56px] items-center justify-between gap-3 px-3 py-2.5 -mx-3 rounded-lg transition-colors duration-[var(--cg-motion-interaction)] hover:bg-stone-100/70 dark:hover:bg-white/5">
                                     <span class="min-w-0">
                                         <span class="block truncate font-medium text-gray-900 dark:text-gray-100">{{ $report->category->name }} <span class="font-normal cg-muted">#{{ $report->resident_number ?? $report->id }}</span></span>
                                         <span class="block truncate text-sm cg-muted">{{ $report->location_text }}</span>
@@ -112,7 +112,7 @@
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse ($urgent as $report)
                             <li>
-                                <a href="{{ route('admin.reports.details', $report) }}" class="flex min-h-[56px] items-center justify-between gap-3 px-3 py-2.5 -mx-3 rounded-lg transition-colors duration-150 hover:bg-stone-100/70 dark:hover:bg-white/5">
+                                <a href="{{ route('admin.reports.details', $report) }}" class="flex min-h-[56px] items-center justify-between gap-3 px-3 py-2.5 -mx-3 rounded-lg transition-colors duration-[var(--cg-motion-interaction)] hover:bg-stone-100/70 dark:hover:bg-white/5">
                                     <span class="min-w-0">
                                         <span class="block truncate font-medium text-gray-900 dark:text-gray-100">{{ $report->category->name }}</span>
                                         <span class="block truncate text-sm cg-muted">{{ \Illuminate\Support\Str::title($report->location_text) }} &middot; {{ $report->created_at->diffForHumans() }}</span>
