@@ -6,33 +6,33 @@
             background: #6b7280;
             display: inline-block;
             opacity: 0.35;
-            animation: typing-bounce 1.2s infinite ease-in-out both;
+            animation: typing-bounce var(--cg-motion-typing-cycle) infinite ease-in-out both;
         }
         .dark .typing-dot { background: #d1d5db; }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        .send-loading-dot { width: 4px; height: 4px; border-radius: 9999px; background: currentColor; animation: typing-bounce 900ms infinite ease-in-out both; }
-        .send-loading-dot:nth-child(2) { animation-delay: 120ms; }
-        .send-loading-dot:nth-child(3) { animation-delay: 240ms; }
-        .chat-message-enter-user { transform-origin: right bottom; animation: cg-chat-message-user 260ms cubic-bezier(.2,.8,.2,1) both; }
-        .chat-message-enter-bot { transform-origin: left bottom; animation: cg-chat-message-bot 300ms cubic-bezier(.2,.8,.2,1) both; }
-        .chat-typing-bubble { position: relative; transform-origin: left bottom; animation: cg-chat-bubble-float 1.8s ease-in-out infinite; }
-        .chat-review-enter { transform-origin: left bottom; animation: cg-chat-review-in 420ms cubic-bezier(.16,1,.3,1) both; }
-        .chat-photo-preview-enter { transform-origin: top left; animation: cg-chat-photo-in 220ms cubic-bezier(.16,1,.3,1) both; }
-        .chat-photo-preview-leave { pointer-events: none; animation: cg-chat-photo-out 160ms ease-in both; }
-        .chat-photo-button-updated { animation: cg-chat-photo-button 260ms cubic-bezier(.16,1,.3,1) both; }
-        .chat-edit-panel-enter { transform-origin: top center; animation: cg-chat-edit-in 240ms cubic-bezier(.16,1,.3,1) both; }
-        .chat-edit-panel-leave { pointer-events: none; animation: cg-chat-edit-out 140ms ease-in both; }
-        .chat-edit-panel-enter .chat-edit-field { animation: cg-chat-edit-field-in 220ms cubic-bezier(.16,1,.3,1) both; }
+        .typing-dot:nth-child(2) { animation-delay: 140ms; }
+        .typing-dot:nth-child(3) { animation-delay: 280ms; }
+        .send-loading-dot { width: 4px; height: 4px; border-radius: 9999px; background: currentColor; animation: typing-bounce var(--cg-motion-typing-cycle) infinite ease-in-out both; }
+        .send-loading-dot:nth-child(2) { animation-delay: 140ms; }
+        .send-loading-dot:nth-child(3) { animation-delay: 280ms; }
+        .chat-message-enter-user { transform-origin: right bottom; animation: cg-chat-message-user var(--cg-motion-enter) var(--cg-ease-out) both; }
+        .chat-message-enter-bot { transform-origin: left bottom; animation: cg-chat-message-bot var(--cg-motion-enter) var(--cg-ease-out) both; }
+        .chat-typing-bubble { position: relative; transform-origin: left bottom; animation: cg-chat-bubble-float 2.4s ease-in-out infinite; }
+        .chat-review-enter { transform-origin: left bottom; animation: cg-chat-review-in var(--cg-motion-page) var(--cg-ease-out) both; }
+        .chat-photo-preview-enter { transform-origin: top left; animation: cg-chat-photo-in var(--cg-motion-interaction) var(--cg-ease-out) both; }
+        .chat-photo-preview-leave { pointer-events: none; animation: cg-chat-photo-out var(--cg-motion-exit) var(--cg-ease-in) both; }
+        .chat-photo-button-updated { animation: cg-chat-photo-button var(--cg-motion-interaction) var(--cg-ease-out) both; }
+        .chat-edit-panel-enter { transform-origin: top center; animation: cg-chat-edit-in var(--cg-motion-enter) var(--cg-ease-out) both; }
+        .chat-edit-panel-leave { pointer-events: none; animation: cg-chat-edit-out var(--cg-motion-exit) var(--cg-ease-in) both; }
+        .chat-edit-panel-enter .chat-edit-field { animation: cg-chat-edit-field-in var(--cg-motion-interaction) var(--cg-ease-out) both; }
         .chat-edit-panel-enter .chat-edit-field:nth-child(2) { animation-delay: 35ms; }
         .chat-edit-panel-enter .chat-edit-field:nth-child(3) { animation-delay: 70ms; }
-        .chat-review-details-enter { transform-origin: top center; animation: cg-chat-details-in 200ms cubic-bezier(.16,1,.3,1) both; }
-        .chat-detail-updated { transform-origin: left center; animation: cg-chat-detail-updated 280ms cubic-bezier(.16,1,.3,1) both; }
-        .chat-success-enter { transform-origin: left bottom; animation: cg-chat-success-in 360ms cubic-bezier(.16,1,.3,1) both; }
-        .chat-success-icon { animation: cg-chat-success-pop 360ms cubic-bezier(.16,1,.3,1) both; }
-        .chat-success-check { stroke-dasharray: 24; stroke-dashoffset: 24; animation: cg-chat-check-draw 240ms ease-out 120ms forwards; }
+        .chat-review-details-enter { transform-origin: top center; animation: cg-chat-details-in var(--cg-motion-interaction) var(--cg-ease-out) both; }
+        .chat-detail-updated { transform-origin: left center; animation: cg-chat-detail-updated var(--cg-motion-interaction) var(--cg-ease-out) both; }
+        .chat-success-enter { transform-origin: left bottom; animation: cg-chat-success-in var(--cg-motion-page) var(--cg-ease-out) both; }
+        .chat-success-icon { animation: cg-chat-success-pop var(--cg-motion-enter) var(--cg-ease-out) both; }
+        .chat-success-check { stroke-dasharray: 24; stroke-dashoffset: 24; animation: cg-chat-check-draw var(--cg-motion-interaction) var(--cg-ease-out) 40ms forwards; }
         .chat-submit-loading { animation: cg-chat-submit-pulse 1.1s ease-in-out infinite; }
-        .chat-submit-complete { background-color: #dcfce7 !important; color: #166534 !important; transition: background-color 220ms ease, color 220ms ease; }
+        .chat-submit-complete { background-color: #dcfce7 !important; color: #166534 !important; transition: background-color var(--cg-motion-enter) var(--cg-ease-out), color var(--cg-motion-enter) var(--cg-ease-out); }
         @keyframes cg-chat-message-user {
             from { opacity: 0; transform: translate(10px, 8px) scale(.96); }
             to { opacity: 1; transform: translate(0) scale(1); }
@@ -46,9 +46,8 @@
             50% { transform: translateY(-4px); }
         }
         @keyframes cg-chat-review-in {
-            from { opacity: 0; transform: translateY(14px) scale(.97); }
-            70% { opacity: 1; transform: translateY(-2px) scale(1.005); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         @keyframes cg-chat-photo-in {
             from { opacity: 0; transform: translateY(-6px) scale(.98); }
@@ -84,14 +83,12 @@
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes cg-chat-success-in {
-            from { opacity: 0; transform: translateY(8px) scale(.985); }
-            70% { opacity: 1; transform: translateY(-1px) scale(1.003); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         @keyframes cg-chat-success-pop {
-            0% { opacity: 0; transform: scale(.55) rotate(-12deg); }
-            70% { opacity: 1; transform: scale(1.12) rotate(2deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0); }
+            from { opacity: 0; transform: scale(.9); }
+            to { opacity: 1; transform: scale(1); }
         }
         @keyframes cg-chat-check-draw { to { stroke-dashoffset: 0; } }
         @keyframes cg-chat-submit-pulse {
@@ -102,12 +99,7 @@
             0%, 80%, 100% { transform: translateY(0); opacity: 0.35; }
             40% { transform: translateY(-5px); opacity: 1; }
         }
-        @keyframes typing-fade {
-            0%, 100% { opacity: 0.25; }
-            50% { opacity: 1; }
-        }
         @media (prefers-reduced-motion: reduce) {
-            .typing-dot { animation: typing-fade 1.6s infinite ease-in-out both; }
             .chat-message-enter-user, .chat-message-enter-bot, .chat-typing-bubble, .chat-review-enter, .chat-photo-preview-enter, .chat-photo-preview-leave, .chat-photo-button-updated, .chat-edit-panel-enter, .chat-edit-panel-leave, .chat-edit-panel-enter .chat-edit-field, .chat-review-details-enter, .chat-detail-updated, .chat-success-enter, .chat-success-icon, .chat-success-check, .chat-submit-loading, .send-loading-dot { animation: none; }
         }
     </style>
@@ -147,7 +139,7 @@
 
                 <form id="chat-form" class="flex items-end gap-2 border-t border-gray-100 p-3 dark:border-gray-700 sm:px-6">
                     <textarea id="chat-input" rows="1" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Type your message...') }}" class="cg-input min-h-[44px] max-h-32 min-w-0 flex-1 resize-none overflow-y-hidden py-2.5 leading-5" style="height:44px" autocomplete="off"></textarea>
-                    <button type="submit" id="chat-send" class="inline-flex h-11 w-11 min-h-[44px] shrink-0 items-center justify-center rounded-lg bg-maroon-700 p-0 text-white shadow-sm transition duration-150 hover:bg-maroon-800 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 disabled:cursor-wait disabled:opacity-65" aria-label="{{ __('Send') }}" aria-busy="false">
+                    <button type="submit" id="chat-send" class="inline-flex h-11 w-11 min-h-[44px] shrink-0 items-center justify-center rounded-lg bg-maroon-700 p-0 text-white shadow-sm transition duration-[var(--cg-motion-interaction)] hover:bg-maroon-800 active:scale-[.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 disabled:cursor-wait disabled:opacity-65" aria-label="{{ __('Send') }}" aria-busy="false">
                         <span id="chat-send-label" class="sr-only">{{ __('Send') }}</span>
                         <span id="chat-send-icon" aria-hidden="true"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m0 0-6 6m6-6 6 6"/></svg></span>
                         <span id="chat-send-spinner" class="hidden items-center justify-center gap-1" role="status"><span class="inline-flex items-center gap-1" aria-hidden="true"><span class="send-loading-dot"></span><span class="send-loading-dot"></span><span class="send-loading-dot"></span></span><span class="sr-only">{{ __('Sending...') }}</span></span>

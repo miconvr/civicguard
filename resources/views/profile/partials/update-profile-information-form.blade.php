@@ -33,7 +33,7 @@
                 @endif
                 </div>
                 <div class="min-w-0 flex-1">
-                    <input id="avatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp" x-ref="input" @change="select($event)" class="block min-h-11 w-full text-sm text-gray-700 file:mr-3 file:min-h-11 file:rounded-lg file:border-0 file:bg-maroon-50 file:px-3 file:font-semibold file:text-maroon-800 file:transition-all file:duration-300 file:ease-out hover:file:-translate-y-0.5 hover:file:bg-maroon-100 hover:file:text-maroon-900 hover:file:shadow-sm active:file:translate-y-0 active:file:scale-[0.98] dark:text-gray-300 dark:file:bg-white/10 dark:file:text-gray-100 dark:hover:file:bg-white/20 dark:hover:file:text-white">
+                    <input id="avatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp" x-ref="input" @change="select($event)" class="block min-h-11 w-full text-sm text-gray-700 file:mr-3 file:min-h-11 file:rounded-lg file:border-0 file:bg-maroon-50 file:px-3 file:font-semibold file:text-maroon-800 file:transition-all file:duration-[var(--cg-motion-interaction)] file:ease-out hover:file:-translate-y-px hover:file:bg-maroon-100 hover:file:text-maroon-900 hover:file:shadow-sm active:file:translate-y-0 active:file:scale-[0.99] dark:text-gray-300 dark:file:bg-white/10 dark:file:text-gray-100 dark:hover:file:bg-white/20 dark:hover:file:text-white">
                     <p class="mt-1 text-xs text-gray-600 dark:text-gray-400">{{ __('JPG, PNG, or WebP. Maximum 2 MB.') }}</p>
                 </div>
             </div>

@@ -2,6 +2,11 @@
 @config "../../tailwind.config.js";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+    --default-transition-duration: var(--cg-motion-interaction);
+    --default-transition-timing-function: var(--cg-ease-out);
+}
+
 @layer base {
     :root {
         color-scheme: light;
@@ -15,20 +20,25 @@
         --cg-focus: #8f1d39;
         --cg-radius: 0.75rem;
         --cg-ease-out: cubic-bezier(0.2, 0.75, 0.25, 1);
-        --cg-motion-fast: 150ms;
+        --cg-ease-in: cubic-bezier(0.4, 0, 1, 1);
+        --cg-motion-exit: 140ms;
+        --cg-motion-fast: 180ms;
         --cg-motion-interaction: 180ms;
-        --cg-motion-page: 260ms;
-        --dropdown-open-dur: 180ms;
-        --dropdown-close-dur: 120ms;
+        --cg-motion-enter: 240ms;
+        --cg-motion-page: 280ms;
+        --cg-motion-emphasis: 360ms;
+        --cg-motion-typing-cycle: 1100ms;
+        --dropdown-open-dur: var(--cg-motion-enter);
+        --dropdown-close-dur: var(--cg-motion-exit);
         --dropdown-pre-scale: 0.97;
         --dropdown-closing-scale: 0.99;
-        --dropdown-ease: cubic-bezier(0.22, 1, 0.36, 1);
-        --check-opacity-dur: 240ms;
-        --check-path-dur: 220ms;
-        --check-path-delay: 35ms;
+        --dropdown-ease: var(--cg-ease-out);
+        --check-opacity-dur: var(--cg-motion-enter);
+        --check-path-dur: var(--cg-motion-interaction);
+        --check-path-delay: 40ms;
         --check-rotate-from: -12deg;
         --check-y-amount: 5px;
-        --check-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+        --check-ease-out: var(--cg-ease-out);
     }
 
     @media (max-width: 639px) {
@@ -119,15 +129,15 @@
     }
 
     .cg-page-exit {
-        animation: cg-page-enter var(--cg-motion-fast) var(--cg-ease-out) reverse both;
+        animation: cg-page-enter var(--cg-motion-exit) var(--cg-ease-in) reverse both;
     }
 
     .cg-pending-shake {
-        animation: cg-pending-shake 520ms ease-in-out both;
+        animation: cg-pending-shake var(--cg-motion-emphasis) var(--cg-ease-out) both;
     }
 
     .cg-report-mode-panel {
-        transition: opacity var(--cg-motion-fast) var(--cg-ease-out), transform var(--cg-motion-fast) var(--cg-ease-out);
+        transition: opacity var(--cg-motion-interaction) var(--cg-ease-out), transform var(--cg-motion-interaction) var(--cg-ease-out);
     }
 
     .cg-report-mode-panel.is-leaving,
@@ -137,7 +147,7 @@
     }
 
     .cg-report-panel-transition {
-        transition: opacity var(--cg-motion-fast) var(--cg-ease-out), transform var(--cg-motion-fast) var(--cg-ease-out);
+        transition: opacity var(--cg-motion-interaction) var(--cg-ease-out), transform var(--cg-motion-interaction) var(--cg-ease-out);
     }
 
     .cg-report-panel-enter-end {
@@ -160,10 +170,10 @@
     }
     .cg-notification-trigger[aria-expanded="true"] svg {
         transform-origin: 50% 12%;
-        animation: cg-notification-bell-ring 360ms cubic-bezier(.2,.8,.2,1) both;
+        animation: cg-notification-bell-ring var(--cg-motion-emphasis) var(--cg-ease-out) both;
     }
     .cg-verification-result-enter {
-        animation: cg-verification-result-enter 260ms var(--cg-ease-out) both;
+        animation: cg-verification-result-enter var(--cg-motion-page) var(--cg-ease-out) both;
         animation-delay: var(--cg-verification-delay, 0ms);
     }
 
@@ -225,7 +235,7 @@
         border: 1px solid var(--cg-border);
         border-radius: var(--cg-radius);
         box-shadow: 0 1px 3px 0 rgb(36 25 29 / 4%), 0 1px 2px -1px rgb(36 25 29 / 4%);
-        transition: transform 200ms var(--cg-ease-out), box-shadow 200ms var(--cg-ease-out), border-color 200ms var(--cg-ease-out), background-color 200ms var(--cg-ease-out);
+        transition: transform var(--cg-motion-interaction) var(--cg-ease-out), box-shadow var(--cg-motion-interaction) var(--cg-ease-out), border-color var(--cg-motion-interaction) var(--cg-ease-out), background-color var(--cg-motion-interaction) var(--cg-ease-out);
     }
 
     .dark .cg-card {
@@ -274,7 +284,7 @@
         background-color: var(--cg-surface-raised);
         border-color: var(--cg-border);
         border-radius: 0.5rem;
-        transition: border-color 150ms var(--cg-ease-out), box-shadow 150ms var(--cg-ease-out), background-color 150ms var(--cg-ease-out);
+        transition: border-color var(--cg-motion-interaction) var(--cg-ease-out), box-shadow var(--cg-motion-interaction) var(--cg-ease-out), background-color var(--cg-motion-interaction) var(--cg-ease-out);
     }
 
     .cg-input::placeholder {
@@ -315,7 +325,7 @@
 
     .cg-btn {
         @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-md bg-maroon-700 px-5 py-2.5 font-semibold text-white;
-        transition: background-color 160ms var(--cg-ease-out), transform 160ms var(--cg-ease-out), box-shadow 160ms var(--cg-ease-out);
+        transition: background-color var(--cg-motion-interaction) var(--cg-ease-out), transform var(--cg-motion-interaction) var(--cg-ease-out), box-shadow var(--cg-motion-interaction) var(--cg-ease-out);
     }
 
     .cg-btn:hover {
@@ -345,7 +355,7 @@
     .cg-table tbody td {
         @apply px-4 py-3 text-gray-700 dark:text-gray-200 border-t border-gray-100 dark:border-[#3d3d3a];
     }
-    .cg-table tbody tr { transition: background-color 140ms ease; }
+    .cg-table tbody tr { transition: background-color var(--cg-motion-fast) var(--cg-ease-out); }
     .cg-table tbody tr:hover { @apply bg-maroon-50/70 dark:bg-white/[0.04]; }
 
     .cg-badge { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold; }
@@ -383,7 +393,7 @@
     }
 
     .cg-intro-enter {
-        animation: cg-intro-enter 360ms var(--cg-ease-out) both;
+        animation: cg-intro-enter var(--cg-motion-page) var(--cg-ease-out) both;
     }
 
     .cg-intro-enter-1 { animation-delay: 50ms; }
@@ -393,7 +403,7 @@
     .cg-motion-ready [data-reveal] {
         opacity: 0;
         transform: translateY(12px);
-        transition: opacity 260ms var(--cg-ease-out) var(--cg-reveal-delay, 0ms), transform 260ms var(--cg-ease-out) var(--cg-reveal-delay, 0ms);
+        transition: opacity var(--cg-motion-page) var(--cg-ease-out) var(--cg-reveal-delay, 0ms), transform var(--cg-motion-page) var(--cg-ease-out) var(--cg-reveal-delay, 0ms);
     }
 
     .cg-motion-ready [data-reveal].is-visible {
@@ -440,7 +450,7 @@
         color: var(--cg-accent);
         font-size: 1.25rem;
         line-height: 1;
-        transition: transform 160ms var(--cg-ease-out);
+        transition: transform var(--cg-motion-interaction) var(--cg-ease-out);
     }
 
     .cg-help-panel[open] summary::after {
@@ -663,7 +673,7 @@
     }
 
     .cg-sidebar-link {
-        transition: color 150ms var(--cg-ease-out), background-color 150ms var(--cg-ease-out), transform 150ms var(--cg-ease-out);
+        transition: color var(--cg-motion-interaction) var(--cg-ease-out), background-color var(--cg-motion-interaction) var(--cg-ease-out), transform var(--cg-motion-interaction) var(--cg-ease-out);
     }
 
     .cg-sidebar-link[aria-current="page"],
@@ -1063,8 +1073,8 @@
 @media (prefers-reduced-motion: no-preference) {
     .cg-scroll {
         opacity: 0;
-        transform: translateY(24px);
-        transition: opacity 0.7s ease, transform 0.7s ease;
+        transform: translateY(8px);
+        transition: opacity var(--cg-motion-page) var(--cg-ease-out), transform var(--cg-motion-page) var(--cg-ease-out);
         transition-delay: var(--cg-delay, 0ms);
     }
     .cg-scroll.is-visible {
@@ -1080,17 +1090,17 @@
 @keyframes cg-ping { 0% { transform: scale(1); opacity: 0.8; } 75%, 100% { transform: scale(2.6); opacity: 0; } }
 
 @media (prefers-reduced-motion: no-preference) {
-    .cg-sample-text { animation: cg-rise 0.5s ease both; animation-delay: 0.3s; }
-    .cg-fill { transform-origin: left; animation: cg-grow 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .cg-sample-text { animation: cg-rise var(--cg-motion-emphasis) var(--cg-ease-out) both; animation-delay: 0.3s; }
+    .cg-fill { transform-origin: left; animation: cg-grow var(--cg-motion-emphasis) var(--cg-ease-out) both; }
     .cg-fill-1 { animation-delay: 0.6s; }
     .cg-fill-2 { animation-delay: 1.2s; }
-    .cg-label { animation: cg-rise 0.4s ease both; }
+    .cg-label { animation: cg-rise var(--cg-motion-emphasis) var(--cg-ease-out) both; }
     .cg-label-1 { animation-delay: 0.8s; }
     .cg-label-2 { animation-delay: 1.4s; }
     .cg-label-3 { animation-delay: 1.8s; }
     .cg-pending { animation: cg-pulse 2s ease-in-out 1.9s infinite; }
     .cg-ping-ring { animation: cg-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
-    .cg-sample-foot { animation: cg-rise 0.5s ease both; animation-delay: 2s; }
+    .cg-sample-foot { animation: cg-rise var(--cg-motion-emphasis) var(--cg-ease-out) both; animation-delay: 2s; }
 }
 
 /* --- Store readiness: safe areas, keyboard, sticky actions --- */
@@ -1259,7 +1269,7 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
 .cg-hero-head > h1 { flex: 1 1 auto; min-width: 0; }
 .cg-landing-copy .cg-hero-title { max-width: none; font-size: clamp(2.05rem, 1.15rem + 3.6vw, 3.6rem); line-height: 1.05; text-wrap: balance; }
 .cg-hero-title .cg-landing-accent { display: block; }
-.cg-hero-phone { display: none; flex: none; flex-direction: column; align-items: center; gap: .55rem; width: 5.6rem; padding: 0; border: 0; background: none; color: #fff; cursor: pointer; transform: rotate(4deg); transition: transform .25s ease; }
+.cg-hero-phone { display: none; flex: none; flex-direction: column; align-items: center; gap: .55rem; width: 5.6rem; padding: 0; border: 0; background: none; color: #fff; cursor: pointer; transform: rotate(4deg); transition: transform var(--cg-motion-interaction) var(--cg-ease-out); }
 @media (min-width: 40rem) { .cg-hero-phone { display: flex; } }
 .cg-hero-phone:hover { transform: rotate(0deg) translateY(-.2rem); }
 .cg-hp-body { position: relative; display: block; width: 4.6rem; height: 9.2rem; padding: .28rem; border-radius: 1.15rem; background: #1c1c1e; box-shadow: 0 14px 30px -12px rgba(0,0,0,.55), 0 0 0 1.5px rgba(255,255,255,.28); animation: cg-hp-float 5s ease-in-out infinite; }
@@ -1346,7 +1356,7 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
     .cg-flow *, .cg-flow *::before, .cg-flow *::after { animation: none !important; }
 }
 
-.cg-phone-chip { display: flex; align-items: center; gap: 1rem; width: 100%; margin-top: 1.25rem; padding: .7rem .9rem; border: 1px solid #e7e0d6; border-radius: .75rem; background: #fff; cursor: pointer; transition: border-color .2s ease, box-shadow .2s ease; }
+.cg-phone-chip { display: flex; align-items: center; gap: 1rem; width: 100%; margin-top: 1.25rem; padding: .7rem .9rem; border: 1px solid #e7e0d6; border-radius: .75rem; background: #fff; cursor: pointer; transition: border-color var(--cg-motion-interaction) var(--cg-ease-out), box-shadow var(--cg-motion-interaction) var(--cg-ease-out); }
 .cg-phone-chip:hover { border-color: #7a1f1f; box-shadow: 0 6px 18px -10px rgba(122,31,31,.5); }
 .cg-phone-chip .cg-hp-body { flex: none; width: 3.2rem; height: 4.4rem; padding: .2rem; border-radius: .85rem; animation: none; box-shadow: 0 6px 14px -6px rgba(0,0,0,.5); }
 .cg-phone-chip .cg-hp-island { top: .32rem; width: .9rem; height: .26rem; }
@@ -1428,7 +1438,7 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
 
 /* cg-nav-reveal: header hidden over the hero, slides in after it; bare white shield, Figtree name */
 html.cg-nav-js { scroll-padding-top: 5rem; }
-.cg-public-header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding-top: env(safe-area-inset-top, 0px); background: #f6f2eb; border-bottom: 1px solid #e7e0d6; transition: transform .35s cubic-bezier(.22, 1, .36, 1), opacity .25s ease; }
+.cg-public-header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding-top: env(safe-area-inset-top, 0px); background: #f6f2eb; border-bottom: 1px solid #e7e0d6; transition: transform var(--cg-motion-page) var(--cg-ease-out), opacity var(--cg-motion-interaction) var(--cg-ease-out); }
 html.cg-nav-js:not(.cg-nav-on) .cg-public-header { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 html.cg-nav-js:not(.cg-nav-on) .cg-public-header:focus-within { transform: none; opacity: 1; pointer-events: auto; }
 .cg-landing-hero { position: relative; padding-top: calc(3.25rem + env(safe-area-inset-top, 0px)); }
@@ -1436,7 +1446,7 @@ html.cg-nav-js:not(.cg-nav-on) .cg-public-header:focus-within { transform: none;
 .cg-hero-strip { position: absolute; top: calc(env(safe-area-inset-top, 0px) + .75rem); right: 1rem; z-index: 5; display: flex; align-items: center; gap: .35rem; }
 @media (min-width: 40rem) { .cg-hero-strip { right: max(1.5rem, calc((100% - 80rem) / 2 + 1.5rem)); } }
 @media (min-width: 64rem) { .cg-hero-strip { top: 1rem; right: max(2rem, calc((100% - 80rem) / 2 + 2rem)); } }
-.cg-hero-strip-btn, .cg-hero-strip-link { display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; padding: 0 .85rem; border-radius: .5rem; color: #fff; font-size: .9rem; font-weight: 600; text-decoration: none; transition: background-color .2s ease; }
+.cg-hero-strip-btn, .cg-hero-strip-link { display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; padding: 0 .85rem; border-radius: .5rem; color: #fff; font-size: .9rem; font-weight: 600; text-decoration: none; transition: background-color var(--cg-motion-interaction) var(--cg-ease-out); }
 .cg-hero-strip-btn { min-width: 2.75rem; border: 1px solid rgba(255,255,255,.45); letter-spacing: .04em; }
 .cg-hero-strip-btn:hover, .cg-hero-strip-link:hover { background: rgba(255,255,255,.14); }
 .cg-hero-strip-btn:focus-visible, .cg-hero-strip-link:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
@@ -1465,7 +1475,7 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 @keyframes cg-bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 .cg-bar-fill {
     transform-origin: left center;
-    animation: cg-bar-grow 700ms var(--cg-ease-out, cubic-bezier(.22, 1, .36, 1)) both;
+    animation: cg-bar-grow var(--cg-motion-emphasis) var(--cg-ease-out) both;
     animation-delay: var(--cg-bar-delay, 0ms);
 }
 .cg-motion-ready [data-reveal]:not(.is-visible) .cg-bar-fill { animation: none; transform: scaleX(0); }
@@ -1623,7 +1633,7 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
     border-radius: 8px;
     color: #374151;
     font-size: .875rem;
-    transition: background-color .12s ease, color .12s ease;
+    transition: background-color var(--cg-motion-interaction) var(--cg-ease-out), color var(--cg-motion-interaction) var(--cg-ease-out);
 }
 
 .cg-calendar-day:hover,

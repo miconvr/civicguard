@@ -55,10 +55,10 @@ class="relative inline-flex items-center">
 
     <div x-show="open"
          x-cloak
-         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter="transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]"
          x-transition:enter-start="opacity-0 scale-95"
          x-transition:enter-end="opacity-100 scale-100"
-         x-transition:leave="transition ease-in duration-75"
+         x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]"
          x-transition:leave-start="opacity-100 scale-100"
          x-transition:leave-end="opacity-0 scale-95"
          class="absolute right-0 top-full mt-2 w-80 sm:w-96 max-w-[calc(100vw-1.5rem)] rounded-2xl border border-stone-200 bg-white shadow-2xl dark:border-white/10 dark:bg-[#1f1e1d] z-50 overflow-hidden"

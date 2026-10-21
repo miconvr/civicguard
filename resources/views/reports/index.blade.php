@@ -58,7 +58,7 @@
                         <button type="button" @click="detailsOpen = !detailsOpen" :aria-expanded="detailsOpen.toString()"
                                 class="mt-3 inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-medium text-maroon-700 transition hover:bg-maroon-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon-600 dark:text-[#d59690] dark:hover:bg-white/5">
                             <span x-text="detailsOpen ? @js(__('Hide details')) : @js(__('View report details'))"></span>
-                            <svg class="h-4 w-4 transition-transform duration-200" :class="detailsOpen ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0l-4.25-4.25a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+                            <svg class="h-4 w-4 transition-transform duration-[var(--cg-motion-interaction)]" :class="detailsOpen ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0l-4.25-4.25a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
                         </button>
 
                         <div x-show="detailsOpen" x-cloak x-transition.opacity class="mt-4 space-y-4 border-t border-gray-200 pt-4 dark:border-gray-700">
