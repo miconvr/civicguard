@@ -306,7 +306,11 @@ class DashboardController extends Controller
             ->oldest()
             ->get();
 
-        return view('admin.report-details', compact('report', 'history'));
+        $tanods = in_array(auth()->user()->role, ['admin', 'official'], true)
+            ? User::where('role', 'tanod')->get(['id', 'name'])
+            : collect();
+
+        return view('admin.report-details', compact('report', 'history', 'tanods'));
     }
 
     public function showCurfewDetails(Report $report)
