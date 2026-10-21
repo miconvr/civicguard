@@ -133,5 +133,7 @@
     "Delete all test data": "Delete all test data",
     "All test data was deleted. User accounts, profile pictures, and report categories were kept.": "All test data was deleted. User accounts, profile pictures, and report categories were kept.",
     "Verify residency!": "Verify residency!",
-    "Pending review": "Pending review"
+    "Pending review": "Pending review",
+    "Residence verification approved for :name (:email).": "Residence verification approved for :name (:email).",
+    "Residence verification declined for :name (:email).": "Residence verification declined for :name (:email)."
 }
