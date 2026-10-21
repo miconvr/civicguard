@@ -212,44 +212,47 @@
             row.className = 'text-left chat-review-enter';
 
             const card = document.createElement('div');
-            card.className = 'space-y-4 rounded-2xl border border-[#e3d8cc] border-l-4 border-l-maroon-800 bg-[#fffdf9] p-4 text-gray-900 shadow-sm dark:border-[#4a3b3b] dark:border-l-[#b56764] dark:bg-[#262120] dark:text-gray-100 sm:p-5';
+            card.className = 'space-y-4 rounded-2xl border border-[#e3d8cc] bg-[#fffdf9] p-4 text-gray-900 shadow-sm dark:border-[#433a37] dark:bg-[#262120] dark:text-gray-100 sm:p-5';
 
+            const heading = document.createElement('div');
+            heading.className = 'flex flex-wrap items-center justify-between gap-3';
             const title = document.createElement('p');
             title.className = 'text-base font-semibold tracking-tight text-gray-900 dark:text-gray-100';
             title.textContent = reviewText.title;
-            card.appendChild(title);
+            heading.appendChild(title);
 
             const detailsView = document.createElement('div');
-            detailsView.className = 'space-y-3';
+            detailsView.className = 'grid gap-4 sm:grid-cols-[minmax(0,2fr)_minmax(10rem,1fr)]';
             const categoryLine = document.createElement('div');
-            categoryLine.className = 'flex items-center justify-between gap-3';
+            categoryLine.className = 'inline-flex items-center rounded-full bg-maroon-100 px-3 py-1 dark:bg-[#493236]';
             const categoryHeader = document.createElement('div');
             categoryHeader.className = 'flex items-center justify-between gap-3';
             const categoryText = document.createElement('div');
             const categoryValue = document.createElement('span');
-            categoryValue.className = 'mt-1 inline-flex rounded-full bg-maroon-100 px-2.5 py-1 text-sm font-semibold text-maroon-900 dark:bg-[#493236] dark:text-[#f1dce0]';
+            categoryValue.className = 'text-sm font-semibold text-maroon-900 dark:text-[#f1dce0]';
             categoryValue.textContent = data.category_name;
             const categoryLabel = document.createElement('span');
-            categoryLabel.className = 'block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400';
+            categoryLabel.className = 'mr-2 text-xs font-medium text-maroon-800 dark:text-[#e6cbd0]';
             categoryLabel.textContent = reviewText.category;
             categoryText.append(categoryLabel, categoryValue);
             categoryHeader.appendChild(categoryText);
             categoryLine.appendChild(categoryHeader);
-            detailsView.appendChild(categoryLine);
+            heading.appendChild(categoryLine);
+            card.appendChild(heading);
 
             const detailValues = {};
             const fields = [
                 [reviewText.description, data.description],
                 [reviewText.location, data.location],
             ];
-            fields.forEach(([label, value], index) => {
+            fields.forEach(([label, value]) => {
                 const field = document.createElement('div');
-                field.className = index === 0 ? 'space-y-1' : 'space-y-1 border-t border-gray-200 pt-3 dark:border-gray-700';
+                field.className = 'min-w-0 space-y-1';
                 const fieldLabel = document.createElement('p');
-                fieldLabel.className = 'text-[13px] font-medium text-gray-600 dark:text-gray-400';
+                fieldLabel.className = 'text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400';
                 fieldLabel.textContent = label;
                 const fieldValue = document.createElement('p');
-                fieldValue.className = 'break-words text-sm leading-5 text-gray-900 dark:text-gray-100';
+                fieldValue.className = 'break-words text-sm leading-6 text-gray-900 dark:text-gray-100';
                 fieldValue.textContent = value;
                 detailValues[label] = fieldValue;
                 field.append(fieldLabel, fieldValue);
@@ -257,9 +260,9 @@
             });
 
             const photoSection = document.createElement('div');
-            photoSection.className = 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-3 border-t border-gray-200 pt-4 dark:border-gray-700';
+            photoSection.className = 'flex flex-wrap items-center justify-between gap-3 border-t border-gray-200 pt-3 dark:border-gray-700';
             const photoQuestion = document.createElement('p');
-            photoQuestion.className = 'text-sm font-medium text-gray-700 dark:text-gray-200';
+            photoQuestion.className = 'text-sm text-gray-600 dark:text-gray-300';
             photoQuestion.textContent = reviewText.photoQuestion;
             const photoInput = document.createElement('input');
             photoInput.type = 'file';
@@ -281,7 +284,7 @@
             photoError.hidden = true;
 
             const photoPreview = document.createElement('div');
-            photoPreview.className = 'col-span-2 hidden w-full space-y-2';
+            photoPreview.className = 'hidden w-full space-y-2';
             const photoStage = document.createElement('div');
             photoStage.className = 'relative h-32 overflow-hidden rounded-xl border border-gray-200 bg-gray-100 dark:border-gray-700 dark:bg-gray-900 sm:h-40';
             const previewImage = document.createElement('img');
@@ -435,7 +438,7 @@
             card.appendChild(editPanel);
 
             const btnRow = document.createElement('div');
-            btnRow.className = 'space-y-3 border-t border-gray-200 pt-4 dark:border-gray-700';
+            btnRow.className = 'space-y-3 border-t border-gray-200 pt-3 dark:border-gray-700';
 
             editDetailsBtn.onclick = () => {
                 categorySelect.value = String(data.category_id);
