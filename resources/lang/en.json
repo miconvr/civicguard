@@ -122,5 +122,7 @@
     "The proof image is no longer available.": "The proof image is no longer available.",
     "Assigned to": "Assigned to",
     "Barangay Tanod": "Barangay Tanod",
-    "A tanod has been assigned to your report: :name.": "A tanod has been assigned to your report: :name."
+    "A tanod has been assigned to your report: :name.": "A tanod has been assigned to your report: :name.",
+    "Status changed": "Status changed",
+    "Confirmed fixed": "Confirmed fixed"
 }
