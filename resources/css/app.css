@@ -791,6 +791,22 @@
     .dark select::placeholder { color: #aaa79f !important; opacity: 1; }
     .dark select option { background-color: #1c1c1b; color: #f2f0eb; }
     .dark select option:disabled { color: #aaa79f; }
+
+    .dark .cg-input.chat-review-field {
+        color: #24191d !important;
+        background-color: #fffdf9 !important;
+        border-color: #d6c9c0 !important;
+        color-scheme: light;
+    }
+    .dark .cg-input.chat-review-field option {
+        color: #24191d !important;
+        background-color: #fffdf9 !important;
+    }
+    .dark .chat-review-light-button {
+        color: #5c162a !important;
+        background-color: #fffdf9 !important;
+        border-color: #fffdf9 !important;
+    }
 }
 
 [x-cloak] { display: none !important; }
