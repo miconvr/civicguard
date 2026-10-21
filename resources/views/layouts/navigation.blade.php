@@ -202,9 +202,9 @@
                             {{ strtoupper(mb_substr($accountUser->name, 0, 1)) }}
                         </span>
                     @endif
-                    <span class="cg-sidebar-label min-w-0 flex-1 leading-tight">
+                    <span class="cg-sidebar-label flex min-w-0 flex-1 flex-col gap-1 leading-tight">
                         <span class="block truncate text-sm font-semibold text-white">{{ $accountUser->name }}</span>
-                        <span class="flex min-w-0 items-center justify-between gap-1">
+                        <span class="flex min-w-0 items-center justify-start gap-2">
                             <span class="truncate text-xs font-medium text-white/70">{{ $roleLabel }}</span>
                             @if ($isResidenceVerified)
                                 <span class="inline-flex shrink-0 items-center gap-0.5 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold leading-none text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200" title="{{ __('Verified resident') }}">
