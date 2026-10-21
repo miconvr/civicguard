@@ -152,7 +152,7 @@
                         </a>
                     @endforeach
                     <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
-                    <button type="button" role="switch" aria-label="{{ __('Toggle dark mode') }}" :aria-checked="darkMode.toString()" @click="darkMode = !darkMode"
+                    <button type="button" role="switch" aria-label="{{ __('Toggle dark mode') }}" :aria-checked="darkMode.toString()" @click="document.documentElement.classList.add('cg-theme-switching'); darkMode = !darkMode; requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.remove('cg-theme-switching')))"
                             class="flex min-h-11 w-full items-center justify-between px-4 py-2 text-left text-sm text-stone-700 transition-colors hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-maroon-700 dark:text-gray-200 dark:hover:bg-white/5">
                         <span class="flex items-center gap-2">
                             <svg x-show="!darkMode" class="h-4 w-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">

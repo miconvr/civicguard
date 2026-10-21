@@ -1998,3 +1998,12 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
   .tone-red     { background: var(--tone-red-bg);     color: var(--tone-red-fg);     border-color: var(--tone-red-bd); }
   .tone-neutral { background: var(--tone-neutral-bg); color: var(--tone-neutral-fg); border-color: var(--tone-neutral-bd); }
 }
+
+
+/* Switch every element to the new theme at the same moment */
+html.cg-theme-switching,
+html.cg-theme-switching *,
+html.cg-theme-switching *::before,
+html.cg-theme-switching *::after {
+    transition: none !important;
+}
