@@ -77,7 +77,7 @@
                             <li>
                                 <a href="{{ route('admin.reports.details', $report) }}" class="flex min-h-[64px] items-center justify-between gap-3 py-3">
                                     <span class="min-w-0">
-                                        <span class="block truncate font-medium text-gray-900 dark:text-gray-100">{{ $report->category->name }}</span>
+                                        <span class="block truncate font-medium text-gray-900 dark:text-gray-100">{{ $report->category->name }} <span class="font-normal cg-muted">#{{ $report->resident_number }} &middot; {{ $report->user->name }}</span></span>
                                         <span class="block truncate text-sm cg-muted">{{ \Illuminate\Support\Str::title($report->location_text) }} &middot; {{ $report->created_at->diffForHumans() }}</span>
                                     </span>
                                     <span class="cg-sev cg-sev-{{ $report->severity }}">{{ __(ucfirst($report->severity)) }}</span>
@@ -114,7 +114,7 @@
                             <li>
                                 <a href="{{ route('admin.reports.details', $report) }}" class="flex min-h-[56px] items-center justify-between gap-3 py-3">
                                     <span class="min-w-0">
-                                        <span class="block truncate font-medium text-gray-900 dark:text-gray-100">{{ $report->category->name }}</span>
+                                        <span class="block truncate font-medium text-gray-900 dark:text-gray-100">{{ $report->category->name }} <span class="font-normal cg-muted">#{{ $report->resident_number }} &middot; {{ $report->user->name }}</span></span>
                                         <span class="block truncate text-sm cg-muted">{{ \Illuminate\Support\Str::title($report->location_text) }} &middot; {{ $report->created_at->diffForHumans() }}</span>
                                     </span>
                                     <span class="flex items-center gap-3">
