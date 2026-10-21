@@ -27,20 +27,22 @@
         @endif
 
         <form method="post" action="{{ route('profile.verification.store') }}" enctype="multipart/form-data" class="mt-5 space-y-4"
-              x-data="{ previewUrl: null, previewError: false, select(event) { if (this.previewUrl) URL.revokeObjectURL(this.previewUrl); const file = event.target.files?.[0]; this.previewUrl = file ? URL.createObjectURL(file) : null; this.previewError = false; }, destroy() { if (this.previewUrl) URL.revokeObjectURL(this.previewUrl); } }">
+              x-data="{ previewUrl: null, previewError: false, shakePreview: false, shakeTimer: null, triggerShake() { this.shakePreview = false; cancelAnimationFrame(this.shakeFrame); this.shakeFrame = requestAnimationFrame(() => { this.shakePreview = true; }); clearTimeout(this.shakeTimer); this.shakeTimer = setTimeout(() => { this.shakePreview = false; }, 700); }, select(event) { if (this.previewUrl) URL.revokeObjectURL(this.previewUrl); const file = event.target.files?.[0]; this.previewUrl = file ? URL.createObjectURL(file) : null; this.previewError = false; if (file) this.triggerShake(); }, clearSelection() { if (this.previewUrl) URL.revokeObjectURL(this.previewUrl); this.previewUrl = null; this.previewError = false; this.$refs.proofInput.value = ''; this.shakePreview = false; }, destroy() { if (this.previewUrl) URL.revokeObjectURL(this.previewUrl); clearTimeout(this.shakeTimer); cancelAnimationFrame(this.shakeFrame); } }">
             @csrf
             <div>
                 <x-input-label for="verification_proof" :value="__('Proof image')" />
-                <input id="verification_proof" name="proof" type="file" accept="image/jpeg,image/png,image/webp" required @change="select($event)" class="mt-1 block min-h-11 w-full text-sm text-gray-700 file:mr-3 file:min-h-11 file:rounded-lg file:border-0 file:bg-maroon-50 file:px-3 file:font-semibold file:text-maroon-800 file:transition-all file:duration-300 file:ease-out hover:file:-translate-y-0.5 hover:file:bg-maroon-100 hover:file:shadow-sm dark:text-gray-300 dark:file:bg-white/10 dark:file:text-gray-100 dark:hover:file:bg-white/20">
+                <input id="verification_proof" name="proof" type="file" accept="image/jpeg,image/png,image/webp" x-ref="proofInput" required x-on:change="select($event)" class="mt-1 block min-h-11 w-full text-sm text-gray-700 file:mr-3 file:min-h-11 file:rounded-lg file:border-0 file:bg-maroon-50 file:px-3 file:font-semibold file:text-maroon-800 file:transition-all file:duration-300 file:ease-out hover:file:-translate-y-0.5 hover:file:bg-maroon-100 hover:file:shadow-sm dark:text-gray-300 dark:file:bg-white/10 dark:file:text-gray-100 dark:hover:file:bg-white/20">
                 <p class="mt-1 text-xs text-gray-600 dark:text-gray-400">{{ __('JPG, PNG, or WebP. Maximum 5 MB.') }}</p>
                 <x-input-error class="mt-2" :messages="$errors->get('proof')" />
             </div>
 
-            <div x-show="previewUrl" x-cloak class="rounded-xl border border-stone-200 bg-stone-50 p-3 dark:border-gray-700 dark:bg-white/5">
+            <div x-show="previewUrl" x-cloak class="relative rounded-xl border border-stone-200 bg-stone-50 p-3 dark:border-gray-700 dark:bg-white/5" :class="shakePreview ? 'cg-pending-shake' : ''">
+                <button type="button" x-on:click="clearSelection()" aria-label="{{ __('Remove selected image') }}" title="{{ __('Remove selected image') }}" class="absolute right-2 top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-stone-800 text-xl font-bold leading-none text-white shadow transition hover:scale-110 hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700">&times;</button>
                 <p class="mb-2 text-sm font-medium text-gray-800 dark:text-gray-100">{{ __('Proof image preview') }}</p>
                 <img x-show="!previewError" :src="previewUrl" x-on:error="previewError = true" alt="{{ __('Preview of your proof image') }}" class="max-h-72 w-full rounded-lg object-contain">
                 <p x-show="previewError" role="alert" class="text-sm text-red-700 dark:text-red-300">{{ __('This image could not be previewed. Please choose another one.') }}</p>
                 <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{{ __('This is the image that will be sent for review.') }}</p>
+                <p class="mt-1 text-xs font-medium text-amber-800 dark:text-amber-300">{{ __('Your proof image is ready. Submit it for review.') }}</p>
             </div>
 
             <p class="rounded-lg bg-stone-50 p-3 text-xs leading-5 text-stone-700 dark:bg-white/5 dark:text-gray-300">{{ __('Only admins and barangay officials can view this image for residency review. We delete it as soon as a decision is made. We keep the result, consent time, and review record while your account exists. Cover ID numbers, QR codes, birth dates, and details not needed to show your name and Maimpis residence.') }}</p>

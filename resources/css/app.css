@@ -112,6 +112,10 @@
         animation: cg-page-enter var(--cg-motion-fast) var(--cg-ease-out) reverse both;
     }
 
+    .cg-pending-shake {
+        animation: cg-pending-shake 520ms ease-in-out both;
+    }
+
     .cg-report-mode-panel {
         transition: opacity var(--cg-motion-fast) var(--cg-ease-out), transform var(--cg-motion-fast) var(--cg-ease-out);
     }
@@ -910,6 +914,16 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+@keyframes cg-pending-shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cg-pending-shake { animation: none; }
 }
 
 @keyframes cg-hero-contours {
