@@ -27,6 +27,22 @@ class DataResetController extends Controller
             DB::table('audit_logs')->delete();
         });
 
+        // DELETE leaves MySQL's auto-increment counters where they were, so restart them at 1.
+        // This runs after the transaction because ALTER TABLE causes an implicit commit.
+        if (DB::getDriverName() === 'mysql') {
+            foreach ([
+                'curfew_logs',
+                'case_assignments',
+                'app_notifications',
+                'chatbot_conversations',
+                'resident_verifications',
+                'reports',
+                'audit_logs',
+            ] as $table) {
+                DB::statement("ALTER TABLE `{$table}` AUTO_INCREMENT = 1");
+            }
+        }
+
         $disk = Storage::disk('report_photos');
         $disk->deleteDirectory('report-photos');
         $disk->deleteDirectory('verification-documents');
