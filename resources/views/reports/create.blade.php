@@ -5,16 +5,16 @@
             : (in_array(request()->query('report_mode'), ['assistant', 'form'], true) ? request()->query('report_mode') : null);
     @endphp
 
-    <x-slot name="headerWidth">max-w-2xl</x-slot>
+    <x-slot name="headerWidth">max-w-5xl</x-slot>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
             {{ __('Report an Incident') }}
         </h2>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="cg-card p-6 sm:p-8" x-data="{ reportMode: {{ Js::from($initialReportMode) }}, chatOpen: {{ Js::from($initialReportMode === 'assistant') }}, panelLeaving: false, panelExitTimer: null, setReportMode(mode) { window.clearTimeout(this.panelExitTimer); this.panelExitTimer = null; this.panelLeaving = false; this.reportMode = mode; const url = new URL(window.location.href); if (mode) url.searchParams.set('report_mode', mode); else url.searchParams.delete('report_mode'); window.history.replaceState({}, '', url); }, leavePanel() { if (this.panelLeaving) return; if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { this.setReportMode(null); return; } this.panelLeaving = true; this.panelExitTimer = window.setTimeout(() => this.finishPanelExit(), 220); }, finishPanelExit() { if (!this.panelLeaving) return; window.clearTimeout(this.panelExitTimer); this.panelExitTimer = null; this.panelLeaving = false; this.setReportMode(null); } }" x-init="if (reportMode && !new URLSearchParams(window.location.search).has('report_mode')) setReportMode(reportMode)">
+    <div class="py-4 sm:py-8">
+        <div class="mx-auto max-w-5xl px-3 sm:px-6 lg:px-8">
+            <div class="cg-card p-3 sm:p-5 lg:p-8" x-data="{ reportMode: {{ Js::from($initialReportMode) }}, chatOpen: {{ Js::from($initialReportMode === 'assistant') }}, panelLeaving: false, panelExitTimer: null, setReportMode(mode) { window.clearTimeout(this.panelExitTimer); this.panelExitTimer = null; this.panelLeaving = false; this.reportMode = mode; const url = new URL(window.location.href); if (mode) url.searchParams.set('report_mode', mode); else url.searchParams.delete('report_mode'); window.history.replaceState({}, '', url); }, leavePanel() { if (this.panelLeaving) return; if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { this.setReportMode(null); return; } this.panelLeaving = true; this.panelExitTimer = window.setTimeout(() => this.finishPanelExit(), 220); }, finishPanelExit() { if (!this.panelLeaving) return; window.clearTimeout(this.panelExitTimer); this.panelExitTimer = null; this.panelLeaving = false; this.setReportMode(null); } }" x-init="if (reportMode && !new URLSearchParams(window.location.search).has('report_mode')) setReportMode(reportMode)">
 
                 <section x-show="!reportMode" x-cloak x-transition:enter="cg-report-panel-transition" x-transition:enter-start="cg-report-panel-enter-start" x-transition:enter-end="cg-report-panel-enter-end" aria-labelledby="report-method-heading">
                     <h3 id="report-method-heading" class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('How would you like to report?') }}</h3>
