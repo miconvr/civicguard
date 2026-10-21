@@ -54,7 +54,8 @@
                         @php($residentAvatar = $verification->user->avatarPath())
                         <div class="flex items-center gap-3">
                             @if ($residentAvatar)
-                                <img src="{{ route('admin.verifications.avatar', $verification) }}" alt="{{ __('Profile picture of :name', ['name' => $verification->user->name]) }}" width="44" height="44" loading="{{ $loop->first ? 'eager' : 'lazy' }}" decoding="async" class="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-stone-200 dark:ring-gray-700">
+                                <img src="{{ route('admin.verifications.avatar', ['verification' => $verification, 'v' => basename($residentAvatar)]) }}" alt="{{ __('Profile picture of :name', ['name' => $verification->user->name]) }}" width="44" height="44" loading="{{ $loop->first ? 'eager' : 'lazy' }}" decoding="async" fetchpriority="{{ $loop->first ? 'high' : 'auto' }}" x-on:error="$el.hidden = true; $el.nextElementSibling.hidden = false" class="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-stone-200 dark:ring-gray-700">
+                                <span hidden class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fffaf5] text-sm font-semibold text-maroon-800 ring-1 ring-stone-200" aria-hidden="true">{{ strtoupper(mb_substr($verification->user->name, 0, 1)) }}</span>
                             @else
                                 <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fffaf5] text-sm font-semibold text-maroon-800 ring-1 ring-stone-200" aria-hidden="true">{{ strtoupper(mb_substr($verification->user->name, 0, 1)) }}</span>
                             @endif
