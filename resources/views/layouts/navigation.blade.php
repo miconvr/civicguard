@@ -154,36 +154,36 @@
                     <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
                     <button type="button" role="switch" aria-label="{{ __('Toggle dark mode') }}" :aria-checked="darkMode.toString()" @click="darkMode = !darkMode"
                             class="flex min-h-11 w-full items-center justify-between px-4 py-2 text-left text-sm text-stone-700 transition-colors hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-maroon-700 dark:text-gray-200 dark:hover:bg-white/5">
-                        <span>{{ __('Appearance') }}</span>
                         <span class="flex items-center gap-2">
-                            <span class="text-xs text-stone-600 dark:text-gray-400" x-text='darkMode ? @js(__('Dark')) : @js(__('Light'))'></span>
                             <svg x-show="!darkMode" class="h-4 w-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                                 <circle cx="12" cy="12" r="4"></circle><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l-1.42 1.42m11.3-11.3-1.42-1.42"></path>
                             </svg>
                             <svg x-show="darkMode" class="h-4 w-4 text-maroon-600 dark:text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"></path>
                             </svg>
+                            <span>{{ __('Appearance') }}</span>
                         </span>
+                        <span class="text-xs text-stone-600 dark:text-gray-400" x-text='darkMode ? @js(__('Dark')) : @js(__('Light'))'></span>
                     </button>
                     <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
-                    <a href="{{ route('profile.edit') }}" class="flex min-h-11 items-center justify-between gap-2 px-4 py-2 text-sm text-stone-700 transition-colors hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-maroon-700 dark:text-gray-200 dark:hover:bg-white/5">
-                        <span>{{ __('Profile') }}</span>
-                        <span class="flex items-center gap-2">
+                    <a href="{{ route('profile.edit') }}" class="flex min-h-11 items-center justify-between gap-3 px-4 py-2 text-sm text-stone-700 transition-colors hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-maroon-700 dark:text-gray-200 dark:hover:bg-white/5">
+                        <span class="flex min-w-0 items-center gap-2">
+                            <svg class="h-4 w-4 shrink-0 text-stone-500 dark:text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                                <circle cx="12" cy="8" r="3.25" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.5 20a6.5 6.5 0 0 1 13 0" />
+                            </svg>
+                            <span>{{ __('Profile') }}</span>
+                        </span>
                         @if ($accountUser->role === 'resident' && ! $isResidenceVerified)
                             @if ($residentVerification?->status === \App\Models\ResidentVerification::PENDING)
-                                <span class="inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">{{ __('Pending review') }}</span>
+                                <span class="ml-auto inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">{{ __('Pending review') }}</span>
                             @else
-                                <span class="inline-flex shrink-0 items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-900 dark:bg-amber-900/40 dark:text-amber-200">
+                                <span class="ml-auto inline-flex shrink-0 items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-900 dark:bg-amber-900/40 dark:text-amber-200">
                                     <span aria-hidden="true" class="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-current text-[9px] leading-none">!</span>
                                     {{ __('Verify residency!') }}
                                 </span>
                             @endif
                         @endif
-                            <svg class="h-4 w-4 shrink-0 text-stone-500 dark:text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-                                <circle cx="12" cy="8" r="3.25" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.5 20a6.5 6.5 0 0 1 13 0" />
-                            </svg>
-                        </span>
                     </a>
                     <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
                     <form method="POST" action="{{ route('logout') }}">
