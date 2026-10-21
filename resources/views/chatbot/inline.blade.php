@@ -104,7 +104,7 @@
         }
     </style>
 
-    <div @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="my-6 overflow-hidden rounded-xl border border-stone-200 bg-[#fbf8f3] dark:border-[#3d3d3a] dark:bg-[#211f1e]">
+    <div @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="my-6 overflow-hidden rounded-xl border border-stone-200 cg-surface-raised dark:border-gray-700">
         <div x-show="!chatOpen" x-cloak class="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:px-8">
             <div class="flex min-w-0 flex-1 items-center gap-3">
                 <span class="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-[#ddc9b7] bg-[#f7eee5]" aria-hidden="true">
@@ -121,7 +121,7 @@
             </button>
         </div>
 
-        <div x-show="chatOpen" x-cloak id="report-ai-chat" role="region" aria-label="{{ __('CivicGuard AI') }}" class="border-t border-stone-200 bg-white dark:border-[#3d3d3a] dark:bg-[#262624]">
+        <div x-show="chatOpen" x-cloak id="report-ai-chat" role="region" aria-label="{{ __('CivicGuard AI') }}" class="border-t border-stone-200 cg-surface dark:border-gray-700">
                 <div class="flex items-center gap-3 px-4 py-3 sm:px-6">
                     <div class="min-w-0 flex-1">
                         <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('CivicGuard AI') }}</p>
@@ -601,7 +601,7 @@
             row.className = 'text-left chat-success-enter';
 
             const card = document.createElement('div');
-            card.className = 'border-2 border-green-600 rounded-lg p-4 bg-green-50 dark:bg-gray-900 flex items-start gap-3';
+            card.className = 'border border-green-700 rounded-lg p-4 bg-green-50 dark:border-green-800 dark:bg-green-950 flex items-start gap-3';
             card.setAttribute('role', 'status');
             card.setAttribute('aria-live', 'polite');
 

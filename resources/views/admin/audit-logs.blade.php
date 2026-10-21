@@ -29,8 +29,8 @@
             <div class="cg-card p-6">
                 {{-- Filter bar --}}
                 <form method="GET" class="flex flex-wrap items-center gap-3 mb-4">
-                    <input type="search" name="search" value="{{ request('search') }}" placeholder="Search by actor, action, or description…"
-                           class="cg-select w-full sm:w-80 lg:w-96" aria-label="Search audit logs">
+                    <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Search by actor, action, or description…') }}"
+                           class="cg-select w-full sm:w-80 lg:w-96" aria-label="{{ __('Search audit logs') }}">
                     <select name="action" onchange="this.form.submit()" class="cg-select" aria-label="Filter by action">
                         <option value="">All actions</option>
                         @foreach ($actions as $action)

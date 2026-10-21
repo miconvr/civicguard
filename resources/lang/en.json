@@ -16,7 +16,7 @@
     "Log Out": "Log Out",
     "English": "English",
     "Tagalog": "Tagalog",
-        "Language": "Language",
+    "Language": "Language",
     "Report an Incident": "Report an Incident",
     "Tips for a helpful report": "Tips for a helpful report",
     "Say what happened, and when it happened.": "Say what happened, and when it happened.",
@@ -151,5 +151,9 @@
     "Photo selected": "Photo selected",
     "Choose a JPG, PNG, or WebP image.": "Choose a JPG, PNG, or WebP image.",
     "The photo must be 5 MB or smaller.": "The photo must be 5 MB or smaller.",
-    "We could not submit your report. Please try again.": "We could not submit your report. Please try again."
+    "We could not submit your report. Please try again.": "We could not submit your report. Please try again.",
+    "Search by actor, action, or description…": "Search by actor, action, or description…",
+    "Search audit logs": "Search audit logs",
+    "Search by category, location, or report details…": "Search by category, location, or report details…",
+    "Search reports": "Search reports"
 }

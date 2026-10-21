@@ -4,7 +4,7 @@
      @resize.window="if (window.innerWidth >= 1024) open = false"
      class="lg:h-full">
     <!-- Mobile top bar -->
-    <div class="cg-sidebar-mobilebar lg:hidden flex items-center justify-between h-16 px-3 border-b border-stone-200 dark:border-[#3d3d3a]">
+    <div class="cg-sidebar-mobilebar lg:hidden flex items-center justify-between h-16 px-3 border-b border-stone-200 dark:border-gray-700">
         <div class="flex items-center gap-2">
             <button @click="open = true" :aria-expanded="open.toString()" aria-controls="primary-navigation" aria-label="{{ __('Open menu') }}" class="p-2.5 rounded-xl text-stone-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5 focus-visible:outline-offset-0">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -141,7 +141,7 @@
                      x-transition:leave-end="t-dropdown-close"
                      id="account-menu" aria-label="{{ __('Account menu') }}" role="group"
                      :class="collapsed ? 'lg:w-64' : ''"
-                     class="absolute bottom-full left-0 right-0 mb-2 rounded-xl border border-stone-200 cg-surface-raised py-1 shadow-lg dark:border-gray-700 dark:bg-[#262624]">
+                     class="absolute bottom-full left-0 right-0 mb-2 rounded-xl border border-stone-200 cg-surface-raised py-1 shadow-lg dark:border-gray-700">
                     <div class="px-4 pt-1 pb-1">
                         <span class="text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400">{{ __('Language') }}</span>
                     </div>

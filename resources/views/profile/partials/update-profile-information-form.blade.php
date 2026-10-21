@@ -44,7 +44,7 @@
                 </button>
                 <p class="text-sm font-medium text-gray-800 dark:text-gray-100">{{ __('Preview profile picture') }}</p>
                 <div class="mt-3 flex flex-col items-center gap-4 sm:flex-row">
-                    <div class="h-40 w-40 shrink-0 overflow-hidden rounded-full bg-stone-100 ring-2 ring-stone-200 dark:bg-gray-800 dark:ring-gray-600">
+                    <div class="h-40 w-40 shrink-0 overflow-hidden rounded-full bg-stone-100 ring-2 ring-stone-200 dark:bg-gray-700 dark:ring-gray-600">
                         <img :src="previewUrl" alt="{{ __('Preview profile picture') }}" class="h-full w-full object-cover" :style="`transform: scale(${zoom})`">
                     </div>
                     <div class="w-full min-w-0">
