@@ -14,14 +14,27 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ResidentVerificationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $validated = $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $search = trim($validated['search'] ?? '');
+
         $verifications = ResidentVerification::with('user')
             ->where('status', ResidentVerification::PENDING)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->whereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
             ->oldest('submitted_at')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
-        return view('admin.verifications.index', compact('verifications'));
+        return view('admin.verifications.index', compact('verifications', 'search'));
     }
 
     public function document(ResidentVerification $verification): StreamedResponse
