@@ -50,7 +50,7 @@
                             @if ($residentAvatar)
                                 <img src="{{ route('admin.verifications.avatar', $verification) }}" alt="{{ __('Profile picture of :name', ['name' => $verification->user->name]) }}" class="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-stone-200 dark:ring-gray-700">
                             @else
-                                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-maroon-100 text-sm font-semibold text-maroon-800 dark:bg-white/10 dark:text-gray-100" aria-hidden="true">{{ strtoupper(mb_substr($verification->user->name, 0, 1)) }}</span>
+                                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fffaf5] text-sm font-semibold text-maroon-800 ring-1 ring-stone-200" aria-hidden="true">{{ strtoupper(mb_substr($verification->user->name, 0, 1)) }}</span>
                             @endif
                             <div class="min-w-0">
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $verification->user->name }}</h3>
