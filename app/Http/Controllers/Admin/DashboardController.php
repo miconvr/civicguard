@@ -300,6 +300,15 @@ class DashboardController extends Controller
 
         $report->load(['category', 'user', 'assignedTo', 'curfewLog']);
 
+        $report->resident_number = Report::where('user_id', $report->user_id)
+            ->where(function ($q) use ($report) {
+                $q->where('created_at', '<', $report->created_at)
+                    ->orWhere(function ($q) use ($report) {
+                        $q->where('created_at', $report->created_at)->where('id', '<=', $report->id);
+                    });
+            })
+            ->count();
+
         $history = AuditLog::with('user:id,name')
             ->where('auditable_type', Report::class)
             ->where('auditable_id', $report->id)
