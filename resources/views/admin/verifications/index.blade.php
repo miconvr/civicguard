@@ -30,12 +30,18 @@
                 @endforeach
             </nav>
 
-            <form method="get" action="{{ route('admin.verifications.index') }}" class="cg-card flex flex-col gap-3 p-4 sm:flex-row">
+            <form method="get" action="{{ route('admin.verifications.index') }}" x-data="{ searching: false }" @submit="searching = true" class="cg-card flex flex-col gap-3 p-4 sm:flex-row">
                 <input type="hidden" name="status" value="{{ $status }}">
                 <label for="verification-search" class="sr-only">{{ __('Search applicants') }}</label>
-                <input id="verification-search" type="search" name="search" value="{{ $search }}" maxlength="100" placeholder="{{ __('Search by name or email…') }}" class="min-h-11 flex-1 rounded-lg border-stone-300 bg-white text-sm shadow-sm focus:border-maroon-700 focus:ring-maroon-700 dark:border-gray-700 dark:bg-[#1c1c1a] dark:text-gray-100">
+                <input id="verification-search" type="search" name="search" value="{{ $search }}" maxlength="100" placeholder="{{ __('Search by name or email…') }}" class="min-h-11 flex-1 rounded-lg border-stone-300 bg-white text-sm shadow-sm focus:border-stone-400 focus:outline-none focus:ring-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-stone-500 dark:border-gray-700 dark:bg-[#1c1c1a] dark:text-gray-100 dark:focus:border-gray-500 dark:focus-visible:outline-gray-400">
                 <div class="flex gap-2">
-                    <x-primary-button>{{ __('Search') }}</x-primary-button>
+                    <x-primary-button x-bind:disabled="searching" class="gap-2 transition-transform duration-150 active:scale-[.97] focus:ring-0 focus:ring-offset-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-500 dark:focus-visible:outline-gray-400 disabled:cursor-wait disabled:opacity-80">
+                        <span x-show="!searching">{{ __('Search') }}</span>
+                        <span x-show="searching" x-cloak class="inline-flex items-center gap-2">
+                            <svg class="h-4 w-4 animate-spin motion-reduce:animate-none" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3"/><path class="opacity-80" fill="currentColor" d="M12 3a9 9 0 0 0-9 9h3a6 6 0 0 1 6-6V3Z"/></svg>
+                            {{ __('Searching...') }}
+                        </span>
+                    </x-primary-button>
                     @if ($search !== '')
                         <a href="{{ route('admin.verifications.index', ['status' => $status]) }}" class="inline-flex min-h-11 items-center rounded-lg border border-stone-300 px-4 py-2 text-sm font-semibold text-stone-700 transition hover:bg-stone-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-white/5">{{ __('Clear') }}</a>
                     @endif
@@ -43,7 +49,7 @@
             </form>
 
             @forelse ($verifications as $verification)
-                <article class="cg-card grid gap-5 p-4 sm:p-6 md:grid-cols-[minmax(0,1fr)_16rem]">
+                <article style="--cg-verification-delay: {{ min($loop->index * 45, 225) }}ms" class="cg-card cg-verification-result-enter grid gap-5 p-4 sm:p-6 md:grid-cols-[minmax(0,1fr)_16rem]">
                     <div>
                         @php($residentAvatar = $verification->user->avatarPath())
                         <div class="flex items-center gap-3">

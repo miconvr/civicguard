@@ -137,6 +137,26 @@
 
     .cg-page-enter-late { animation-delay: 60ms; }
 
+    .cg-notification-trigger[aria-expanded="true"] {
+        background-color: #6b1d35 !important;
+        border-color: #6b1d35 !important;
+        color: #fff !important;
+        box-shadow: 0 2px 8px rgb(53 15 29 / 20%);
+    }
+    .dark .cg-notification-trigger[aria-expanded="true"] {
+        background-color: #8f1d39 !important;
+        border-color: #8f1d39 !important;
+        color: #fff !important;
+    }
+    .cg-notification-trigger[aria-expanded="true"] svg {
+        transform-origin: 50% 12%;
+        animation: cg-notification-bell-ring 360ms cubic-bezier(.2,.8,.2,1) both;
+    }
+    .cg-verification-result-enter {
+        animation: cg-verification-result-enter 260ms var(--cg-ease-out) both;
+        animation-delay: var(--cg-verification-delay, 0ms);
+    }
+
     .t-dropdown {
         transform-origin: bottom left;
         transition:
@@ -917,6 +937,19 @@
     }
 }
 
+@keyframes cg-notification-bell-ring {
+    0%, 100% { transform: rotate(0); }
+    22% { transform: rotate(-12deg); }
+    45% { transform: rotate(9deg); }
+    66% { transform: rotate(-5deg); }
+    84% { transform: rotate(3deg); }
+}
+
+@keyframes cg-verification-result-enter {
+    from { opacity: 0; transform: translateY(7px) scale(.99); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 @keyframes cg-pending-shake {
     0%, 100% { transform: translateX(0); }
     20%, 60% { transform: translateX(-4px); }
@@ -1414,6 +1447,11 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 @media (prefers-reduced-motion: reduce) {
     .cg-page-enter,
     .cg-page-exit {
+        animation: none !important;
+    }
+
+    .cg-verification-result-enter,
+    .cg-notification-trigger[aria-expanded="true"] svg {
         animation: none !important;
     }
 
