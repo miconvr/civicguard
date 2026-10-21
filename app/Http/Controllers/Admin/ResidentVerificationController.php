@@ -62,7 +62,7 @@ class ResidentVerificationController extends Controller
         return Storage::disk('report_photos')->response($path, headers: [
             // Avatars are private, but short browser caching avoids re-reading
             // the same file when staff switch between verification tabs.
-            'Cache-Control' => 'private, max-age=60',
+            'Cache-Control' => 'private, max-age=300',
             'X-Content-Type-Options' => 'nosniff',
         ]);
     }
