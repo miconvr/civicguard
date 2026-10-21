@@ -87,6 +87,8 @@
             'category' => __('Category'),
             'changeCategory' => __('Change category'),
             'chooseCategory' => __('Choose a category'),
+            'reportFormHelp' => __('Add a photo or pin your location in the full report form.'),
+            'openReportForm' => __('Open the full report form'),
             'categories' => $categories->map(fn ($category) => ['id' => $category->id, 'name' => $category->name])->values(),
             'description' => __('What happened?'),
             'location' => __('Location'),
@@ -98,7 +100,6 @@
             'reportsUrl' => route('reports.index'),
             'submitError' => __('We could not submit your report. Please try again or use the standard form.'),
             'keepChatting' => __('Keep chatting instead'),
-            'continueWithReport' => __('Continue with my report'),
             'continueFormUrl' => route('reports.continueToForm'),
             'csrfToken' => csrf_token(),
         ]) }};
@@ -169,26 +170,32 @@
             row.className = 'text-left';
 
             const card = document.createElement('div');
-            card.className = 'border-2 border-maroon-700 rounded-lg p-4 bg-maroon-50 dark:bg-gray-900 space-y-2';
+            card.className = 'space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-5';
 
             const title = document.createElement('p');
-            title.className = 'text-xs font-semibold uppercase tracking-wider text-maroon-700 dark:text-gray-200';
+            title.className = 'text-sm font-semibold text-gray-900 dark:text-gray-100';
             title.textContent = reviewText.title;
             card.appendChild(title);
 
             const categoryLine = document.createElement('div');
-            categoryLine.className = 'flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-800 dark:text-gray-100';
-            const categoryLabel = document.createElement('strong');
-            categoryLabel.textContent = reviewText.category + ': ';
+            categoryLine.className = 'rounded-lg bg-gray-50 p-3 dark:bg-gray-700/40';
+            const categoryHeader = document.createElement('div');
+            categoryHeader.className = 'flex items-center justify-between gap-3';
+            const categoryText = document.createElement('div');
             const categoryValue = document.createElement('span');
+            categoryValue.className = 'mt-1 block text-sm font-semibold text-gray-900 dark:text-gray-100';
             categoryValue.textContent = data.category_name;
+            const categoryLabel = document.createElement('span');
+            categoryLabel.className = 'block text-xs font-medium text-gray-500 dark:text-gray-400';
+            categoryLabel.textContent = reviewText.category;
+            categoryText.append(categoryLabel, categoryValue);
             const editCategoryBtn = document.createElement('button');
             editCategoryBtn.type = 'button';
             editCategoryBtn.className = 'text-xs text-gray-500 underline decoration-gray-300 underline-offset-2 transition-colors hover:text-gray-700 dark:text-gray-400 dark:decoration-gray-600 dark:hover:text-gray-200';
             editCategoryBtn.textContent = reviewText.changeCategory;
 
             const categorySelect = document.createElement('select');
-            categorySelect.className = 'cg-input min-h-9 w-full max-w-xs py-1.5 text-sm';
+            categorySelect.className = 'cg-input mt-3 min-h-10 w-full py-1.5 text-sm';
             categorySelect.setAttribute('aria-label', reviewText.chooseCategory);
             categorySelect.hidden = true;
             reviewText.categories.forEach((category) => {
@@ -214,7 +221,8 @@
                 editCategoryBtn.setAttribute('aria-expanded', 'false');
                 editCategoryBtn.focus();
             };
-            categoryLine.append(categoryLabel, categoryValue, editCategoryBtn, categorySelect);
+            categoryHeader.append(categoryText, editCategoryBtn);
+            categoryLine.append(categoryHeader, categorySelect);
             card.appendChild(categoryLine);
 
             const fields = [
@@ -222,17 +230,23 @@
                 [reviewText.location, data.location],
             ];
             fields.forEach(([label, value]) => {
-                const p = document.createElement('p');
-                p.className = 'text-sm text-gray-800 dark:text-gray-100';
-                const strong = document.createElement('strong');
-                strong.textContent = label + ': ';
-                p.appendChild(strong);
-                p.appendChild(document.createTextNode(value));
-                card.appendChild(p);
+                const field = document.createElement('div');
+                field.className = 'space-y-1';
+                const fieldLabel = document.createElement('p');
+                fieldLabel.className = 'text-xs font-medium text-gray-500 dark:text-gray-400';
+                fieldLabel.textContent = label;
+                const fieldValue = document.createElement('p');
+                fieldValue.className = 'break-words text-sm leading-5 text-gray-800 dark:text-gray-100';
+                fieldValue.textContent = value;
+                field.append(fieldLabel, fieldValue);
+                card.appendChild(field);
             });
 
             const btnRow = document.createElement('div');
-            btnRow.className = 'flex flex-wrap gap-2 pt-2';
+            btnRow.className = 'space-y-3 border-t border-gray-200 pt-4 dark:border-gray-700';
+
+            const actions = document.createElement('div');
+            actions.className = 'flex flex-wrap items-center gap-3';
 
             const submitBtn = document.createElement('button');
             submitBtn.type = 'button';
@@ -248,7 +262,7 @@
             const continueForm = document.createElement('form');
             continueForm.method = 'POST';
             continueForm.action = reviewText.continueFormUrl;
-            continueForm.className = 'inline-flex';
+            continueForm.className = 'flex flex-col items-start gap-1';
 
             [
                 ['_token', reviewText.csrfToken],
@@ -265,17 +279,20 @@
 
             const continueBtn = document.createElement('button');
             continueBtn.type = 'submit';
-            continueBtn.className = 'min-h-9 px-2 text-xs text-gray-500 transition-colors hover:text-gray-700 hover:underline dark:text-gray-400 dark:hover:text-gray-200';
-            continueBtn.textContent = reviewText.continueWithReport + ' →';
+            continueBtn.className = 'min-h-9 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 hover:underline dark:text-gray-400 dark:hover:text-gray-100';
+            continueBtn.textContent = reviewText.openReportForm + ' →';
+            const formHelp = document.createElement('p');
+            formHelp.className = 'text-xs leading-5 text-gray-500 dark:text-gray-400';
+            formHelp.textContent = reviewText.reportFormHelp;
             continueForm.addEventListener('submit', () => {
                 const categoryInput = continueForm.querySelector('[name="category_id"]');
                 if (categoryInput) categoryInput.value = String(data.category_id);
             });
+            continueForm.appendChild(formHelp);
             continueForm.appendChild(continueBtn);
 
-            btnRow.appendChild(submitBtn);
-            btnRow.appendChild(cancelBtn);
-            btnRow.appendChild(continueForm);
+            actions.append(submitBtn, cancelBtn);
+            btnRow.append(actions, continueForm);
             card.appendChild(btnRow);
 
             row.appendChild(card);
