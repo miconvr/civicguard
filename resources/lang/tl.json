@@ -293,5 +293,12 @@
     "Your session expired. Please refresh the page and try again.": "Nag-expire na ang iyong session. I-refresh ang pahina at subukan muli.",
     "Call 911": "Tumawag sa 911",
     "I'm safe, continue my report": "Ligtas ako, ituloy ang aking ulat",
-    "I'm safe, and I would like to continue with a report.": "Ligtas ako at nais kong magpatuloy sa paggawa ng ulat."
+    "I'm safe, and I would like to continue with a report.": "Ligtas ako at nais kong magpatuloy sa paggawa ng ulat.",
+    "Reset test data": "I-reset ang test data",
+    "This permanently deletes all incident reports, assignments, curfew logs, notifications, chatbot history, residence verification records, audit logs, report photos, and verification documents. User accounts, profile pictures, and report categories are kept.": "Permanenteng buburahin nito ang lahat ng ulat ng insidente, pagtatalaga, tala ng curfew, notification, kasaysayan ng chatbot, tala ng beripikasyon ng paninirahan, audit log, larawan ng ulat, at dokumento ng beripikasyon. Mananatili ang mga account, larawan sa profile, at kategorya ng ulat.",
+    "This cannot be undone. Delete all test data now?": "Hindi na ito maibabalik. Burahin na ang lahat ng test data?",
+    "Type DELETE ALL TEST DATA to confirm": "I-type ang DELETE ALL TEST DATA upang kumpirmahin",
+    "Confirm your password": "Kumpirmahin ang iyong password",
+    "Delete all test data": "Burahin ang lahat ng test data",
+    "All test data was deleted. User accounts, profile pictures, and report categories were kept.": "Nabura na ang lahat ng test data. Napanatili ang mga account, larawan sa profile, at kategorya ng ulat."
 }

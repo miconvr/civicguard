@@ -27,6 +27,7 @@ CivicGuard is a web-based system that lets residents of Barangay Maimpis, City o
 - **Analytics:** charts, key numbers, and AI-written insights
 - **Audit logs and PDF exports:** a record of key report, staff, and verification actions, with downloadable reports
 - **Notifications:** in-app updates for report assignments, report changes, and account/verification events
+- **Admin test-data reset:** clear operational test records and related report/verification uploads while preserving user accounts, profile pictures, and report categories
 - **Install as an app:** works on iPhone and Android from the browser, with an offline page
 - **English and Tagalog**, with light and dark mode
 - **Privacy tools:** account deletion, a privacy policy, and terms of use
@@ -48,7 +49,7 @@ CivicGuard is a web-based system that lets residents of Barangay Maimpis, City o
 | **Residents** | File reports, follow progress and assigned tanods, manage their profile, and request residence verification |
 | **Tanods** | Handle reports assigned to them and record curfew violations |
 | **Officials** | Review and assign reports, and review residence verification requests |
-| **Admin** | Manage staff accounts, reports, audit logs, and residence verification |
+| **Admin** | Manage staff accounts, reports, audit logs, residence verification, and the test-data reset |
 
 New sign-ups are always residents.
 
