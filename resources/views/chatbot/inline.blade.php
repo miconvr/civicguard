@@ -85,6 +85,9 @@
         const reviewText = {{ Js::from([
             'title' => __('Review Before Submitting'),
             'category' => __('Category'),
+            'changeCategory' => __('Change category'),
+            'chooseCategory' => __('Choose a category'),
+            'categories' => $categories->map(fn ($category) => ['id' => $category->id, 'name' => $category->name])->values(),
             'description' => __('What happened?'),
             'location' => __('Location'),
             'submitReport' => __('Submit Report'),
@@ -95,7 +98,7 @@
             'reportsUrl' => route('reports.index'),
             'submitError' => __('We could not submit your report. Please try again or use the standard form.'),
             'keepChatting' => __('Keep chatting instead'),
-            'continueInForm' => __('Continue in the standard form to add a photo'),
+            'continueWithReport' => __('Continue with my report'),
             'continueFormUrl' => route('reports.continueToForm'),
             'csrfToken' => csrf_token(),
         ]) }};
@@ -173,8 +176,48 @@
             title.textContent = reviewText.title;
             card.appendChild(title);
 
+            const categoryLine = document.createElement('div');
+            categoryLine.className = 'flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-800 dark:text-gray-100';
+            const categoryLabel = document.createElement('strong');
+            categoryLabel.textContent = reviewText.category + ': ';
+            const categoryValue = document.createElement('span');
+            categoryValue.textContent = data.category_name;
+            const editCategoryBtn = document.createElement('button');
+            editCategoryBtn.type = 'button';
+            editCategoryBtn.className = 'text-xs text-gray-500 underline decoration-gray-300 underline-offset-2 transition-colors hover:text-gray-700 dark:text-gray-400 dark:decoration-gray-600 dark:hover:text-gray-200';
+            editCategoryBtn.textContent = reviewText.changeCategory;
+
+            const categorySelect = document.createElement('select');
+            categorySelect.className = 'cg-input min-h-9 w-full max-w-xs py-1.5 text-sm';
+            categorySelect.setAttribute('aria-label', reviewText.chooseCategory);
+            categorySelect.hidden = true;
+            reviewText.categories.forEach((category) => {
+                const option = document.createElement('option');
+                option.value = String(category.id);
+                option.textContent = category.name;
+                option.selected = Number(data.category_id) === Number(category.id);
+                categorySelect.appendChild(option);
+            });
+            editCategoryBtn.setAttribute('aria-expanded', 'false');
+            editCategoryBtn.onclick = () => {
+                categorySelect.hidden = !categorySelect.hidden;
+                editCategoryBtn.setAttribute('aria-expanded', String(!categorySelect.hidden));
+                if (!categorySelect.hidden) categorySelect.focus();
+            };
+            categorySelect.onchange = () => {
+                const selectedCategory = reviewText.categories.find((category) => Number(category.id) === Number(categorySelect.value));
+                if (!selectedCategory) return;
+                data.category_id = selectedCategory.id;
+                data.category_name = selectedCategory.name;
+                categoryValue.textContent = selectedCategory.name;
+                categorySelect.hidden = true;
+                editCategoryBtn.setAttribute('aria-expanded', 'false');
+                editCategoryBtn.focus();
+            };
+            categoryLine.append(categoryLabel, categoryValue, editCategoryBtn, categorySelect);
+            card.appendChild(categoryLine);
+
             const fields = [
-                [reviewText.category, data.category_name],
                 [reviewText.description, data.description],
                 [reviewText.location, data.location],
             ];
@@ -223,7 +266,11 @@
             const continueBtn = document.createElement('button');
             continueBtn.type = 'submit';
             continueBtn.className = 'min-h-9 px-2 text-xs text-gray-500 transition-colors hover:text-gray-700 hover:underline dark:text-gray-400 dark:hover:text-gray-200';
-            continueBtn.textContent = reviewText.continueInForm + ' →';
+            continueBtn.textContent = reviewText.continueWithReport + ' →';
+            continueForm.addEventListener('submit', () => {
+                const categoryInput = continueForm.querySelector('[name="category_id"]');
+                if (categoryInput) categoryInput.value = String(data.category_id);
+            });
             continueForm.appendChild(continueBtn);
 
             btnRow.appendChild(submitBtn);
