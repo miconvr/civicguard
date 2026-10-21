@@ -24,7 +24,7 @@
                     ];
                 @endphp
                 @foreach ($kpis as [$label, $value, $tab, $color, $note])
-                    <a href="{{ route('admin.dashboard', ['tab' => $tab]) }}" class="cg-card block text-center transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-maroon-600">
+                    <a href="{{ route('admin.dashboard', ['tab' => $tab]) }}" class="cg-card block text-center focus:outline-none focus:ring-2 focus:ring-maroon-600">
                         <p class="text-3xl font-bold {{ $color }}">{{ $value }}</p>
                         <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">{{ $label }}</p>
                         @if ($note)<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ $note }}</p>@endif

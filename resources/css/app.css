@@ -219,24 +219,41 @@
         background-color: var(--cg-surface);
         border: 1px solid var(--cg-border);
         border-radius: var(--cg-radius);
-        box-shadow: none;
-        transition: border-color 180ms var(--cg-ease-out), background-color 180ms var(--cg-ease-out), transform 180ms var(--cg-ease-out);
+        box-shadow: 0 1px 3px 0 rgb(36 25 29 / 4%), 0 1px 2px -1px rgb(36 25 29 / 4%);
+        transition: transform 200ms var(--cg-ease-out), box-shadow 200ms var(--cg-ease-out), border-color 200ms var(--cg-ease-out), background-color 200ms var(--cg-ease-out);
     }
 
     .dark .cg-card {
         background-color: var(--cg-surface);
         border-color: var(--cg-border);
-        box-shadow: none;
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 25%), 0 1px 2px -1px rgb(0 0 0 / 20%);
     }
 
-    @media (hover: hover) and (pointer: fine) {
-        a.cg-card:hover {
-            border-color: rgb(149 31 61 / 48%);
-            background-color: var(--cg-surface-raised);
+    @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+        a.cg-card:hover,
+        .cg-card-hover:hover {
+            border-color: rgb(149 31 61 / 32%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgb(36 25 29 / 10%), 0 8px 10px -6px rgb(36 25 29 / 6%);
         }
 
-        .dark a.cg-card:hover {
-            border-color: rgb(214 210 200 / 48%);
+        .dark a.cg-card:hover,
+        .dark .cg-card-hover:hover {
+            border-color: rgb(214 210 200 / 35%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 50%), 0 8px 10px -6px rgb(0 0 0 / 40%);
+        }
+
+        a.cg-card:active,
+        .cg-card-hover:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px -1px rgb(36 25 29 / 8%);
+        }
+
+        .dark a.cg-card:active,
+        .dark .cg-card-hover:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px -1px rgb(0 0 0 / 30%);
         }
     }
 
@@ -631,10 +648,6 @@
         background: rgb(255 250 245 / 16%);
     }
 
-    .cg-card {
-        border-radius: 0.875rem;
-        background: var(--cg-surface);
-    }
 
     .cg-app-shell .cg-btn,
     .cg-app-shell .cg-btn-secondary {
@@ -974,9 +987,6 @@
         transform: translateY(-1px);
     }
 
-    a.cg-card:hover {
-        transform: translateY(-2px);
-    }
 
     .cg-sidebar-link:hover {
         transform: translateX(2px);
