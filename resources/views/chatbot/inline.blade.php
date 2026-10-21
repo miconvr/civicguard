@@ -95,6 +95,9 @@
             'reportsUrl' => route('reports.index'),
             'submitError' => __('We could not submit your report. Please try again or use the standard form.'),
             'keepChatting' => __('Keep chatting instead'),
+            'continueInForm' => __('Continue in the standard form to add a photo'),
+            'continueFormUrl' => route('reports.continueToForm'),
+            'csrfToken' => csrf_token(),
         ]) }};
 
         function resizeChatInput() {
@@ -199,8 +202,33 @@
             cancelBtn.textContent = reviewText.keepChatting;
             cancelBtn.onclick = () => card.closest('div.text-left').remove();
 
+            const continueForm = document.createElement('form');
+            continueForm.method = 'POST';
+            continueForm.action = reviewText.continueFormUrl;
+            continueForm.className = 'inline-flex';
+
+            [
+                ['_token', reviewText.csrfToken],
+                ['category_id', data.category_id],
+                ['description', data.description],
+                ['location_text', data.location],
+            ].forEach(([name, value]) => {
+                const field = document.createElement('input');
+                field.type = 'hidden';
+                field.name = name;
+                field.value = String(value ?? '');
+                continueForm.appendChild(field);
+            });
+
+            const continueBtn = document.createElement('button');
+            continueBtn.type = 'submit';
+            continueBtn.className = 'min-h-9 px-2 text-xs text-gray-500 transition-colors hover:text-gray-700 hover:underline dark:text-gray-400 dark:hover:text-gray-200';
+            continueBtn.textContent = reviewText.continueInForm;
+            continueForm.appendChild(continueBtn);
+
             btnRow.appendChild(submitBtn);
             btnRow.appendChild(cancelBtn);
+            btnRow.appendChild(continueForm);
             card.appendChild(btnRow);
 
             row.appendChild(card);
