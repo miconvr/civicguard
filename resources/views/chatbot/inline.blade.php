@@ -79,12 +79,6 @@
                     </div>
                 </div>
 
-                <div id="chat-chips" class="flex flex-nowrap gap-2 overflow-x-auto px-4 pb-3 pt-3 sm:flex-wrap sm:overflow-visible sm:px-6">
-                    @foreach ([__('I want to report an incident'), __('How do I track my report?'), __('What counts as an emergency?'), __('What do the urgency levels mean?')] as $chip)
-                        <button type="button" class="shrink-0 whitespace-nowrap min-h-[40px] sm:min-h-[44px] rounded-full border border-gray-300 dark:border-gray-600 px-3.5 sm:px-4 py-1.5 sm:py-2 text-[13px] sm:text-sm font-medium text-gray-800 dark:text-gray-200 transition hover:border-maroon-700 hover:text-maroon-700 dark:hover:text-white disabled:opacity-50">{{ $chip }}</button>
-                    @endforeach
-                </div>
-
                 <form id="chat-form" class="flex items-end gap-2 border-t border-gray-100 p-3 dark:border-gray-700 sm:px-6">
                     <textarea id="chat-input" rows="1" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Type your message...') }}" class="cg-input min-h-[44px] max-h-32 min-w-0 flex-1 resize-none overflow-y-hidden py-2.5 leading-5" style="height:44px" autocomplete="off"></textarea>
                     <button type="submit" id="chat-send" class="cg-btn min-h-[44px] shrink-0 disabled:cursor-wait disabled:opacity-60" aria-busy="false">
@@ -583,7 +577,6 @@
             'safeContinue' => __("I'm safe, continue my report"),
             'safeMessage' => __("I'm safe, and I would like to continue with a report."),
         ]) }};
-        const chips = document.getElementById('chat-chips');
         let lastMessage = '';
         let emergencyAcked = false;
 
@@ -617,7 +610,6 @@
             sendBtn.setAttribute('aria-busy', busy ? 'true' : 'false');
             document.getElementById('chat-send-label').classList.toggle('hidden', busy);
             document.getElementById('chat-send-spinner').classList.toggle('hidden', !busy);
-            chips.querySelectorAll('button').forEach(b => b.disabled = busy);
         }
 
         function showError(text) {
@@ -642,7 +634,6 @@
             message = message.trim();
             if (!message || input.disabled) return;
             lastMessage = message;
-            chips.classList.add('hidden');
             document.querySelectorAll('[data-emergency-actions]').forEach(el => el.remove());
 
             if (!isRetry) {
@@ -708,5 +699,4 @@
                 form.requestSubmit();
             }
         });
-        chips.querySelectorAll('button').forEach(b => b.addEventListener('click', () => sendMessage(b.textContent)));
     </script>
