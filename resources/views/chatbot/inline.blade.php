@@ -129,7 +129,7 @@
                     </div>
                 </div>
 
-                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="min-h-36 space-y-3 border-y border-gray-100 px-3 py-4 dark:border-gray-700 sm:px-6">
+                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="cg-chat-log min-h-36 space-y-3 border-y border-gray-100 px-3 py-4 dark:border-gray-700 sm:px-6">
                     <div class="text-sm text-left">
                         <span class="px-4 py-3 rounded-2xl rounded-tl-sm inline-block max-w-[90%] text-left bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
                             {{ __('Hi! Tell me what happened and I can help you put together a clear incident report.') }}
