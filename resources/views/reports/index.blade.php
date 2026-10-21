@@ -110,9 +110,6 @@
                     <div class="cg-card border border-gray-200 py-10 text-center shadow-sm dark:border-gray-700">
                         <p class="font-semibold text-gray-900 dark:text-gray-100">{{ __('You haven\'t filed any reports yet.') }}</p>
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('File your first incident so barangay staff can follow up.') }}</p>
-                        <a href="{{ route('reports.create') }}" class="cg-btn mt-4">
-                            {{ __('Report an Incident') }}
-                        </a>
                     </div>
                 @endforelse
             </div>
