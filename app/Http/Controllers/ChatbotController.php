@@ -24,7 +24,9 @@ class ChatbotController extends Controller
         // Fixed emergency guidance, shown instantly (no AI call) the first time a message sounds urgent.
         if (! $emergencyAcknowledged && $this->looksLikeEmergency($validated['message'])) {
             return response()->json([
-                'reply' => __('This may be an emergency. If someone is in danger right now, call 911 or contact the barangay officials immediately. Please do not wait for the app.'),
+                'reply' => $this->isTagalog($validated['message'])
+                    ? 'Maaaring emergency ito. Kung may taong nasa panganib ngayon, tumawag sa 911 o makipag-ugnayan agad sa mga opisyal ng barangay. Huwag hintayin ang app.'
+                    : __('This may be an emergency. If someone is in danger right now, call 911 or contact the barangay officials immediately. Please do not wait for the app.'),
                 'session_id' => $sessionId,
                 'report_data' => null,
                 'emergency' => true,
@@ -39,6 +41,7 @@ class ChatbotController extends Controller
             ."- How are curfew violations recorded? Authorized tanods log the minor's details, guardian information, apprehension location, prior violations, and notes.";
 
         $systemPrompt = "You are CivicGuard's AI chatbot, helping residents file incident reports through conversation. "
+            .'Reply in the same language as the resident. Detect the language from their latest message and recent resident messages, and use Tagalog when they write in Tagalog or Taglish. Keep doing so when they give short answers such as a category or location; switch only if they switch languages. Translate your conversational replies and FAQ answers, but keep report category names exactly as listed and keep the hidden report JSON category value in its exact listed form. '
             .'Your job is to gather exactly three pieces of information by asking ONE clear question at a time if missing: '
             ."1) the category (must be one of exactly: {$categoryNames}), "
             .'2) a description of what happened, '
@@ -55,6 +58,10 @@ class ChatbotController extends Controller
         }
 
         $conversationHistory = mb_substr($validated['history'] ?? '', -6000);
+        $residentMessages = preg_match_all('/(?:^|\n)Resident:\s*(.*)/u', $conversationHistory, $residentTurns)
+            ? implode("\n", $residentTurns[1])."\n"
+            : '';
+        $tagalogResponse = $this->isTagalog($residentMessages.$validated['message']);
 
         $rawReply = $ai->generateText(
             $systemPrompt."\n\nConversation so far:\n".$conversationHistory."\n\nResident's latest message: ".$validated['message'],
@@ -63,7 +70,7 @@ class ChatbotController extends Controller
         );
 
         $modelNote = $this->modelNote($ai, (bool) $rawReply);
-        $rawReply = $rawReply ?: $this->faqFallback($validated['message']);
+        $rawReply = $rawReply ?: $this->faqFallback($validated['message'], $tagalogResponse);
 
         $reportData = null;
         if (preg_match('/###REPORT_DATA###(.*?)###END###/s', $rawReply, $matches)) {
@@ -115,30 +122,51 @@ class ChatbotController extends Controller
         return (bool) preg_match($pattern, $message);
     }
 
-    private function faqFallback(string $message): string
+    private function faqFallback(string $message, bool $tagalog = false): string
     {
         $message = strtolower($message);
 
         if (str_contains($message, 'emergency') || str_contains($message, 'urgent')) {
-            return 'For an active emergency, contact barangay officials or emergency authorities immediately. Do not wait for the app.';
+            return $tagalog
+                ? 'Kung may agarang emergency, makipag-ugnayan agad sa mga opisyal ng barangay o awtoridad. Huwag hintayin ang app.'
+                : 'For an active emergency, contact barangay officials or emergency authorities immediately. Do not wait for the app.';
         }
 
         if (str_contains($message, 'status') || str_contains($message, 'track')) {
-            return 'Sign in and open My Reports to track a report as Pending, In Progress, or Resolved.';
+            return $tagalog
+                ? 'Mag-sign in at buksan ang My Reports para makita kung ang ulat ay Pending, In Progress, o Resolved.'
+                : 'Sign in and open My Reports to track a report as Pending, In Progress, or Resolved.';
         }
 
         if (str_contains($message, 'severity') || str_contains($message, 'urgency') || str_contains($message, 'priority')) {
-            return 'Reports are prioritized as Low, Moderate, High, or Critical so officials can respond appropriately.';
+            return $tagalog
+                ? 'Ginagamit ang Low, Moderate, High, at Critical para matulungan ang mga opisyal na unahin ang mga ulat.'
+                : 'Reports are prioritized as Low, Moderate, High, or Critical so officials can respond appropriately.';
         }
 
         if (str_contains($message, 'curfew')) {
-            return 'Authorized tanods record curfew violations with the minor\'s details, guardian information, location, prior violations, and notes.';
+            return $tagalog
+                ? 'Itinatala ng mga awtorisadong tanod ang detalye ng menor de edad, impormasyon ng magulang o tagapag-alaga, lokasyon, mga naunang paglabag, at mga tala.'
+                : 'Authorized tanods record curfew violations with the minor\'s details, guardian information, location, prior violations, and notes.';
         }
 
         if (str_contains($message, 'how do i report') || str_contains($message, 'submit a report')) {
-            return 'Choose a category, describe what happened, provide the location, and optionally attach a photo. I can guide you through those details one at a time.';
+            return $tagalog
+                ? 'Pumili ng kategorya, ilarawan ang nangyari, ibigay ang lokasyon, at maglakip ng larawan kung nais. Gagabayan kita sa mga detalyeng ito nang paisa-isa.'
+                : 'Choose a category, describe what happened, provide the location, and optionally attach a photo. I can guide you through those details one at a time.';
         }
 
-        return 'I can help you file an incident report. Tell me the category, what happened, and where it occurred.';
+        return $tagalog
+            ? 'Matutulungan kitang mag-ulat ng insidente. Sabihin ang kategorya, kung ano ang nangyari, at kung saan ito naganap.'
+            : 'I can help you file an incident report. Tell me the category, what happened, and where it occurred.';
+    }
+
+    private function isTagalog(string $text): bool
+    {
+        $text = mb_strtolower($text);
+        $distinctiveWords = preg_match_all('/\b(?:opo|hindi|wala|saan|bakit|paano|kailan|nangyari|puwede|pwede|salamat|kumusta|tulong|kailangan|nasaan|ano)\b/u', $text);
+        $commonWords = preg_match_all('/\b(?:ako|ko|mo|siya|kami|tayo|kayo|sila|ang|ng|mga|sa|po|may|dito|doon|ito|iyan|namin|natin|gusto|paki)\b/u', $text);
+
+        return $distinctiveWords > 0 || $commonWords >= 2;
     }
 }
