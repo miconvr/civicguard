@@ -2,7 +2,7 @@
     <x-slot name="headerWidth">max-w-4xl</x-slot>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
-            {{ __('Report Details') }} <span class="font-normal cg-muted">#{{ $report->id }}</span>
+            {{ __('Report Details') }} <span class="font-normal cg-muted">#{{ $report->resident_number }}</span>
         </h2>
     </x-slot>
 
