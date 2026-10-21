@@ -165,7 +165,7 @@ class ReportController extends Controller
     public function myReports()
     {
         $reports = Report::where('user_id', Auth::id())
-            ->with('category')
+            ->with(['category', 'assignedTo'])
             ->latest()
             ->get();
 

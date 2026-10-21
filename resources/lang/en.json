@@ -119,5 +119,8 @@
     "Your verification could not be approved. You may submit another proof image.": "Your verification could not be approved. You may submit another proof image.",
     "Resident verified.": "Resident verified.",
     "Verification request declined.": "Verification request declined.",
-    "The proof image is no longer available.": "The proof image is no longer available."
+    "The proof image is no longer available.": "The proof image is no longer available.",
+    "Assigned to": "Assigned to",
+    "Barangay Tanod": "Barangay Tanod",
+    "A tanod has been assigned to your report: :name.": "A tanod has been assigned to your report: :name."
 }
