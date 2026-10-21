@@ -26,13 +26,21 @@
             </div>
         @endif
 
-        <form method="post" action="{{ route('profile.verification.store') }}" enctype="multipart/form-data" class="mt-5 space-y-4">
+        <form method="post" action="{{ route('profile.verification.store') }}" enctype="multipart/form-data" class="mt-5 space-y-4"
+              x-data="{ previewUrl: null, previewError: false, select(event) { if (this.previewUrl) URL.revokeObjectURL(this.previewUrl); const file = event.target.files?.[0]; this.previewUrl = file ? URL.createObjectURL(file) : null; this.previewError = false; }, destroy() { if (this.previewUrl) URL.revokeObjectURL(this.previewUrl); } }">
             @csrf
             <div>
                 <x-input-label for="verification_proof" :value="__('Proof image')" />
-                <input id="verification_proof" name="proof" type="file" accept="image/jpeg,image/png,image/webp" required class="mt-1 block min-h-11 w-full text-sm text-gray-700 file:mr-3 file:min-h-11 file:rounded-lg file:border-0 file:bg-maroon-50 file:px-3 file:font-semibold file:text-maroon-800 file:transition-all file:duration-300 file:ease-out hover:file:-translate-y-0.5 hover:file:bg-maroon-100 hover:file:shadow-sm dark:text-gray-300 dark:file:bg-white/10 dark:file:text-gray-100 dark:hover:file:bg-white/20">
+                <input id="verification_proof" name="proof" type="file" accept="image/jpeg,image/png,image/webp" required @change="select($event)" class="mt-1 block min-h-11 w-full text-sm text-gray-700 file:mr-3 file:min-h-11 file:rounded-lg file:border-0 file:bg-maroon-50 file:px-3 file:font-semibold file:text-maroon-800 file:transition-all file:duration-300 file:ease-out hover:file:-translate-y-0.5 hover:file:bg-maroon-100 hover:file:shadow-sm dark:text-gray-300 dark:file:bg-white/10 dark:file:text-gray-100 dark:hover:file:bg-white/20">
                 <p class="mt-1 text-xs text-gray-600 dark:text-gray-400">{{ __('JPG, PNG, or WebP. Maximum 5 MB.') }}</p>
                 <x-input-error class="mt-2" :messages="$errors->get('proof')" />
+            </div>
+
+            <div x-show="previewUrl" x-cloak class="rounded-xl border border-stone-200 bg-stone-50 p-3 dark:border-gray-700 dark:bg-white/5">
+                <p class="mb-2 text-sm font-medium text-gray-800 dark:text-gray-100">{{ __('Proof image preview') }}</p>
+                <img x-show="!previewError" :src="previewUrl" @error="previewError = true" alt="{{ __('Preview of your proof image') }}" class="max-h-72 w-full rounded-lg object-contain">
+                <p x-show="previewError" role="alert" class="text-sm text-red-700 dark:text-red-300">{{ __('This image could not be previewed. Please choose another one.') }}</p>
+                <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{{ __('This is the image that will be sent for review.') }}</p>
             </div>
 
             <p class="rounded-lg bg-stone-50 p-3 text-xs leading-5 text-stone-700 dark:bg-white/5 dark:text-gray-300">{{ __('Only admins and barangay officials can view this image for residency review. We delete it as soon as a decision is made. We keep the result, consent time, and review record while your account exists. Cover ID numbers, QR codes, birth dates, and details not needed to show your name and Maimpis residence.') }}</p>
