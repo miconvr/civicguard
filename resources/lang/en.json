@@ -135,5 +135,6 @@
     "Verify residency!": "Verify residency!",
     "Pending review": "Pending review",
     "Residence verification approved for :name (:email).": "Residence verification approved for :name (:email).",
-    "Residence verification declined for :name (:email).": "Residence verification declined for :name (:email)."
+    "Residence verification declined for :name (:email).": "Residence verification declined for :name (:email).",
+    "Reported by": "Reported by"
 }
