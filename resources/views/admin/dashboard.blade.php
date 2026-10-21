@@ -74,7 +74,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php(\App\Support\ResidentNumbers::assign($reports))
                             @forelse ($reports as $report)
                                 @php
                                     $stale = $report->status === 'pending' && $report->created_at->lt(now()->subHours(48));
@@ -109,7 +108,7 @@
                                     @keydown.enter="r = {{ Js::from($payload) }}; open = true">
                                     <td data-label="Severity"><span class="cg-sev cg-sev-{{ $report->severity }}">{{ ucfirst($report->severity) }}</span></td>
                                     <td data-label="Report">
-                                        <div class="font-medium">{{ $report->category->name }} <span class="font-normal cg-muted">#{{ $report->resident_number }}</span></div>
+                                        <div class="font-medium">{{ $report->category->name }}</div>
                                         <div class="text-xs text-gray-500 dark:text-gray-400">{{ Str::title($report->location_text) }}</div>
                                         <div class="mt-1 flex min-w-0 items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
                                             <span class="min-w-0 truncate" title="{{ __('Reported by') }} {{ $report->user->name }}">{{ __('Reported by') }} {{ $report->user->name }}</span>
