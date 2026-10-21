@@ -15,6 +15,10 @@ class HomeController extends Controller
 
         if ($user->role === 'resident') {
             $data['recent'] = Report::where('user_id', $user->id)->with('category')->latest()->limit(3)->get();
+            $numbers = Report::where('user_id', $user->id)->orderBy('created_at')->orderBy('id')->pluck('id')->flip();
+            foreach ($data['recent'] as $recentReport) {
+                $recentReport->resident_number = $numbers[$recentReport->id] + 1;
+            }
             $data['needsFeedback'] = Report::where('user_id', $user->id)
                 ->where('status', 'resolved')
                 ->whereNull('confirmed_at')

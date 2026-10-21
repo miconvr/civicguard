@@ -51,7 +51,7 @@
                             <li>
                                 <a href="{{ route('reports.index') }}#report-{{ $report->id }}" class="flex min-h-[56px] items-center justify-between gap-3 py-3">
                                     <span class="min-w-0">
-                                        <span class="block truncate font-medium text-gray-900 dark:text-gray-100">{{ $report->category->name }} <span class="font-normal cg-muted">#{{ $report->id }}</span></span>
+                                        <span class="block truncate font-medium text-gray-900 dark:text-gray-100">{{ $report->category->name }} <span class="font-normal cg-muted">#{{ $report->resident_number ?? $report->id }}</span></span>
                                         <span class="block truncate text-sm cg-muted">{{ $report->location_text }}</span>
                                     </span>
                                     <span class="cg-pill cg-pill-{{ $report->status }}">{{ __(ucwords(str_replace('_', ' ', $report->status))) }}</span>
