@@ -169,6 +169,51 @@
     }
 
     @media (max-width: 639px) {
+        html.cg-chat-keyboard-open,
+        html.cg-chat-keyboard-open body {
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
+
+        #chat-widget.cg-chat-keyboard-mode {
+            position: fixed;
+            z-index: 80;
+            inset-inline: 0;
+            top: var(--cg-chat-viewport-top, 0px);
+            height: var(--cg-chat-viewport-height, 100dvh);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            border-radius: 0;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        #chat-widget.cg-chat-keyboard-mode #report-ai-chat {
+            display: flex;
+            min-height: 0;
+            flex: 1;
+            flex-direction: column;
+        }
+
+        #chat-widget.cg-chat-keyboard-mode #chat-log {
+            height: auto;
+            min-height: 0;
+            max-height: none;
+            flex: 1;
+        }
+
+        #chat-widget.cg-chat-keyboard-mode #chat-form,
+        #chat-widget.cg-chat-keyboard-mode #chat-form + p {
+            flex: 0 0 auto;
+        }
+
+        #chat-widget.cg-chat-keyboard-mode #chat-keyboard-dismiss {
+            display: inline-flex;
+        }
+    }
+
+    @media (max-width: 639px) {
         .cg-chat-log {
             height: clamp(15rem, 42vh, 25rem);
             height: clamp(15rem, 42dvh, 25rem);
