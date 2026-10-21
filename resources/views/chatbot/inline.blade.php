@@ -212,27 +212,27 @@
             row.className = 'text-left chat-review-enter';
 
             const card = document.createElement('div');
-            card.className = 'space-y-4 rounded-2xl border border-[#e3d8cc] bg-[#fffdf9] p-4 text-gray-900 shadow-sm dark:border-[#433a37] dark:bg-[#262120] dark:text-gray-100 sm:p-5';
+            card.className = 'space-y-4 rounded-2xl border border-[#8d4355] bg-maroon-800 p-4 text-white shadow-md dark:border-[#9b5966] dark:bg-[#6f1b34] dark:text-white sm:p-5';
 
             const heading = document.createElement('div');
             heading.className = 'flex flex-wrap items-center justify-between gap-3';
             const title = document.createElement('p');
-            title.className = 'text-base font-semibold tracking-tight text-gray-900 dark:text-gray-100';
+            title.className = 'text-base font-semibold tracking-tight text-white';
             title.textContent = reviewText.title;
             heading.appendChild(title);
 
             const detailsView = document.createElement('div');
             detailsView.className = 'grid gap-4 sm:grid-cols-[minmax(0,2fr)_minmax(10rem,1fr)]';
             const categoryLine = document.createElement('div');
-            categoryLine.className = 'inline-flex items-center rounded-full bg-maroon-100 px-3 py-1 dark:bg-[#493236]';
+            categoryLine.className = 'inline-flex items-center rounded-full bg-white/95 px-3 py-1';
             const categoryHeader = document.createElement('div');
             categoryHeader.className = 'flex items-center justify-between gap-3';
             const categoryText = document.createElement('div');
             const categoryValue = document.createElement('span');
-            categoryValue.className = 'text-sm font-semibold text-maroon-900 dark:text-[#f1dce0]';
+            categoryValue.className = 'text-sm font-semibold text-maroon-900';
             categoryValue.textContent = data.category_name;
             const categoryLabel = document.createElement('span');
-            categoryLabel.className = 'mr-2 text-xs font-medium text-maroon-800 dark:text-[#e6cbd0]';
+            categoryLabel.className = 'mr-2 text-xs font-medium text-maroon-700';
             categoryLabel.textContent = reviewText.category;
             categoryText.append(categoryLabel, categoryValue);
             categoryHeader.appendChild(categoryText);
@@ -249,10 +249,10 @@
                 const field = document.createElement('div');
                 field.className = 'min-w-0 space-y-1';
                 const fieldLabel = document.createElement('p');
-                fieldLabel.className = 'text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400';
+                fieldLabel.className = 'text-xs font-semibold uppercase tracking-wide text-white/70';
                 fieldLabel.textContent = label;
                 const fieldValue = document.createElement('p');
-                fieldValue.className = 'break-words text-sm leading-6 text-gray-900 dark:text-gray-100';
+                fieldValue.className = 'break-words text-sm leading-6 text-white';
                 fieldValue.textContent = value;
                 detailValues[label] = fieldValue;
                 field.append(fieldLabel, fieldValue);
@@ -260,9 +260,9 @@
             });
 
             const photoSection = document.createElement('div');
-            photoSection.className = 'flex flex-wrap items-center justify-between gap-3 border-t border-gray-200 pt-3 dark:border-gray-700';
+            photoSection.className = 'flex flex-wrap items-center justify-between gap-3 border-t border-white/20 pt-3';
             const photoQuestion = document.createElement('p');
-            photoQuestion.className = 'text-sm text-gray-600 dark:text-gray-300';
+            photoQuestion.className = 'text-sm text-white/85';
             photoQuestion.textContent = reviewText.photoQuestion;
             const photoInput = document.createElement('input');
             photoInput.type = 'file';
@@ -273,20 +273,20 @@
             photoActions.className = 'flex flex-wrap items-center gap-3';
             const pickPhotoBtn = document.createElement('button');
             pickPhotoBtn.type = 'button';
-            pickPhotoBtn.className = 'min-h-10 rounded-lg border border-maroon-700 bg-transparent px-3 text-sm font-semibold text-maroon-800 transition-colors hover:bg-maroon-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-[#b56764] dark:text-[#f1dce0] dark:hover:bg-white/5';
+            pickPhotoBtn.className = 'min-h-10 rounded-lg border border-white/70 bg-white px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-[#f4e9e8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
             pickPhotoBtn.textContent = reviewText.addPhoto;
             pickPhotoBtn.setAttribute('aria-label', reviewText.addPhoto);
             pickPhotoBtn.onclick = () => photoInput.click();
 
             const photoError = document.createElement('p');
-            photoError.className = 'text-[13px] font-medium text-red-700 dark:text-red-300';
+            photoError.className = 'text-[13px] font-medium text-rose-100';
             photoError.setAttribute('role', 'alert');
             photoError.hidden = true;
 
             const photoPreview = document.createElement('div');
             photoPreview.className = 'hidden w-full space-y-2';
             const photoStage = document.createElement('div');
-            photoStage.className = 'relative h-32 overflow-hidden rounded-xl border border-gray-200 bg-gray-100 dark:border-gray-700 dark:bg-gray-900 sm:h-40';
+            photoStage.className = 'relative h-32 overflow-hidden rounded-xl border border-white/30 bg-[#4e1427] sm:h-40';
             const previewImage = document.createElement('img');
             previewImage.className = 'h-full w-full scale-110 object-contain blur-md transition-all duration-200';
             previewImage.alt = '';
@@ -311,10 +311,10 @@
             const photoMeta = document.createElement('div');
             photoMeta.className = 'flex flex-wrap items-center justify-between gap-2';
             const photoFileLabel = document.createElement('p');
-            photoFileLabel.className = 'min-w-0 truncate text-[13px] text-gray-600 dark:text-gray-300';
+            photoFileLabel.className = 'min-w-0 truncate text-[13px] text-white/80';
             const removePhotoBtn = document.createElement('button');
             removePhotoBtn.type = 'button';
-            removePhotoBtn.className = 'min-h-9 text-[13px] font-medium text-gray-600 underline underline-offset-2 hover:text-maroon-800 dark:text-gray-300 dark:hover:text-white';
+            removePhotoBtn.className = 'min-h-9 text-[13px] font-medium text-white/80 underline underline-offset-2 hover:text-white';
             removePhotoBtn.textContent = reviewText.removePhoto;
             removePhotoBtn.onclick = () => {
                 if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
@@ -366,23 +366,23 @@
 
             const editDetailsBtn = document.createElement('button');
             editDetailsBtn.type = 'button';
-            editDetailsBtn.className = 'ml-auto min-h-10 rounded-lg border border-gray-300 px-3 text-[13px] font-semibold text-gray-700 transition-colors hover:border-maroon-700 hover:bg-maroon-50 hover:text-maroon-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-gray-600 dark:text-gray-200 dark:hover:border-[#b56764] dark:hover:bg-white/5 dark:hover:text-white';
+            editDetailsBtn.className = 'ml-auto min-h-10 rounded-lg border border-white/50 px-3 text-[13px] font-semibold text-white transition-colors hover:border-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
             editDetailsBtn.textContent = reviewText.editDetails;
             editDetailsBtn.setAttribute('aria-expanded', 'false');
             card.appendChild(detailsView);
 
             const editPanel = document.createElement('div');
-            editPanel.className = 'space-y-3 rounded-xl border border-gray-200 bg-[#f8f3ed] p-4 dark:border-gray-700 dark:bg-[#302929]';
+            editPanel.className = 'space-y-3 rounded-xl border border-white/20 bg-[#5c172d] p-4';
             editPanel.hidden = true;
 
             const editorFields = document.createElement('div');
             editorFields.className = 'space-y-3';
 
             const categoryEditorLabel = document.createElement('label');
-            categoryEditorLabel.className = 'block text-[13px] font-semibold text-gray-700 dark:text-gray-300';
+            categoryEditorLabel.className = 'block text-[13px] font-semibold text-white/90';
             categoryEditorLabel.textContent = reviewText.category;
             const categorySelect = document.createElement('select');
-            categorySelect.className = 'cg-input mt-1 min-h-10 w-full py-1.5 text-sm';
+            categorySelect.className = 'cg-input mt-1 min-h-10 w-full bg-[#fffdf9] py-1.5 text-sm text-gray-900';
             categorySelect.setAttribute('aria-label', reviewText.category);
             reviewText.categories.forEach((category) => {
                 const option = document.createElement('option');
@@ -394,21 +394,21 @@
             categoryEditorLabel.appendChild(categorySelect);
 
             const descriptionEditorLabel = document.createElement('label');
-            descriptionEditorLabel.className = 'block text-[13px] font-semibold text-gray-700 dark:text-gray-300';
+            descriptionEditorLabel.className = 'block text-[13px] font-semibold text-white/90';
             descriptionEditorLabel.textContent = reviewText.description;
             const descriptionEditor = document.createElement('textarea');
-            descriptionEditor.className = 'cg-input mt-1 min-h-20 w-full py-2 text-sm';
+            descriptionEditor.className = 'cg-input mt-1 min-h-20 w-full bg-[#fffdf9] py-2 text-sm text-gray-900';
             descriptionEditor.rows = 3;
             descriptionEditor.maxLength = 2000;
             descriptionEditor.value = data.description;
             descriptionEditorLabel.appendChild(descriptionEditor);
 
             const locationEditorLabel = document.createElement('label');
-            locationEditorLabel.className = 'block text-[13px] font-semibold text-gray-700 dark:text-gray-300';
+            locationEditorLabel.className = 'block text-[13px] font-semibold text-white/90';
             locationEditorLabel.textContent = reviewText.location;
             const locationEditor = document.createElement('input');
             locationEditor.type = 'text';
-            locationEditor.className = 'cg-input mt-1 min-h-10 w-full text-sm';
+            locationEditor.className = 'cg-input mt-1 min-h-10 w-full bg-[#fffdf9] text-sm text-gray-900';
             locationEditor.maxLength = 255;
             locationEditor.value = data.location;
             locationEditorLabel.appendChild(locationEditor);
@@ -417,7 +417,7 @@
             editPanel.appendChild(editorFields);
 
             const editError = document.createElement('p');
-            editError.className = 'text-[13px] font-medium text-red-700 dark:text-red-300';
+            editError.className = 'text-[13px] font-medium text-rose-100';
             editError.setAttribute('role', 'alert');
             editError.textContent = reviewText.editRequired;
             editError.hidden = true;
@@ -427,18 +427,18 @@
             editorActions.className = 'flex justify-end gap-2';
             const cancelEditBtn = document.createElement('button');
             cancelEditBtn.type = 'button';
-            cancelEditBtn.className = 'min-h-10 rounded-lg px-3 text-sm font-medium text-gray-600 transition-colors hover:bg-black/5 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white';
+            cancelEditBtn.className = 'min-h-10 rounded-lg px-3 text-sm font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white';
             cancelEditBtn.textContent = reviewText.cancel;
             const saveEditBtn = document.createElement('button');
             saveEditBtn.type = 'button';
-            saveEditBtn.className = 'min-h-10 rounded-lg bg-maroon-700 px-3 text-sm font-semibold text-white transition-colors hover:bg-maroon-800';
+            saveEditBtn.className = 'min-h-10 rounded-lg bg-white px-3 text-sm font-semibold text-maroon-900 transition-colors hover:bg-[#f4e9e8]';
             saveEditBtn.textContent = reviewText.saveChanges;
             editorActions.append(cancelEditBtn, saveEditBtn);
             editPanel.appendChild(editorActions);
             card.appendChild(editPanel);
 
             const btnRow = document.createElement('div');
-            btnRow.className = 'space-y-3 border-t border-gray-200 pt-3 dark:border-gray-700';
+            btnRow.className = 'space-y-3 border-t border-white/20 pt-3';
 
             editDetailsBtn.onclick = () => {
                 categorySelect.value = String(data.category_id);
@@ -486,12 +486,12 @@
 
             const submitBtn = document.createElement('button');
             submitBtn.type = 'button';
-            submitBtn.className = 'min-h-[44px] rounded-lg bg-maroon-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-maroon-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 disabled:cursor-wait disabled:opacity-60';
+            submitBtn.className = 'min-h-[44px] rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-[#f4e9e8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-wait disabled:opacity-60';
             submitBtn.textContent = reviewText.submitReport;
             submitBtn.onclick = () => submitReport(data, submitBtn);
 
             const cancelBtn = document.createElement('button');
-            cancelBtn.className = 'min-h-[44px] text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 hover:underline dark:text-gray-300 dark:hover:text-white';
+            cancelBtn.className = 'min-h-[44px] text-sm font-medium text-white/80 transition-colors hover:text-white hover:underline';
             cancelBtn.textContent = reviewText.keepChatting;
             cancelBtn.onclick = () => card.closest('div.text-left').remove();
 
