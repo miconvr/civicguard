@@ -49,7 +49,7 @@
                     </div>
                 </div>
 
-                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="min-h-36 space-y-3 overflow-y-auto border-y border-gray-100 px-4 py-4 dark:border-gray-700 sm:px-6" style="height:min(38dvh,22rem)">
+                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="h-[min(48dvh,30rem)] min-h-56 space-y-3 overflow-y-auto border-y border-gray-100 px-3 py-4 dark:border-gray-700 sm:px-6 md:h-[min(60dvh,42rem)] md:min-h-[24rem]">
                     <div class="text-sm text-left">
                         <span class="px-4 py-3 rounded-2xl rounded-tl-sm inline-block max-w-[90%] text-left bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
                             {{ __('Hi! Tell me what happened and I can help you put together a clear incident report.') }}
