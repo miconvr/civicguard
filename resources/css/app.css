@@ -14,8 +14,9 @@
         --cg-accent: #951f3d;
         --cg-focus: #8f1d39;
         --cg-radius: 0.75rem;
-        --cg-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        --cg-ease-out: cubic-bezier(0.2, 0.75, 0.25, 1);
         --cg-motion-fast: 150ms;
+        --cg-motion-interaction: 180ms;
         --cg-motion-page: 260ms;
         --dropdown-open-dur: 180ms;
         --dropdown-close-dur: 120ms;
@@ -49,7 +50,7 @@
         --cg-accent: #dfc2c7;
         --cg-focus: #f0c7d0;
         --cg-radius: 0.75rem;
-        --cg-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        --cg-ease-out: cubic-bezier(0.2, 0.75, 0.25, 1);
     }
 
     html {
@@ -76,12 +77,16 @@
     }
 
     :focus-visible {
-        outline: 3px solid #bd2f52;
-        outline-offset: 3px;
+        outline: none;
+        box-shadow: 0 0 0 2px var(--cg-canvas), 0 0 0 4px color-mix(in srgb, var(--cg-focus) 62%, transparent);
     }
 
     .dark :focus-visible {
-        outline-color: #d6d2c8;
+        box-shadow: 0 0 0 2px var(--cg-surface), 0 0 0 4px color-mix(in srgb, var(--cg-focus) 72%, transparent);
+    }
+
+    :focus:not(:focus-visible) {
+        outline: none;
     }
 }
 
@@ -232,16 +237,16 @@
     @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
         a.cg-card:hover,
         .cg-card-hover:hover {
-            border-color: rgb(149 31 61 / 32%);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgb(36 25 29 / 10%), 0 8px 10px -6px rgb(36 25 29 / 6%);
+            border-color: rgb(149 31 61 / 26%);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px -8px rgb(36 25 29 / 18%);
         }
 
         .dark a.cg-card:hover,
         .dark .cg-card-hover:hover {
-            border-color: rgb(214 210 200 / 35%);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 50%), 0 8px 10px -6px rgb(0 0 0 / 40%);
+            border-color: rgb(214 210 200 / 28%);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px -8px rgb(0 0 0 / 48%);
         }
 
         a.cg-card:active,
@@ -281,6 +286,24 @@
     .cg-select:focus {
         border-color: var(--cg-focus);
         --tw-ring-color: color-mix(in srgb, var(--cg-focus) 20%, transparent);
+    }
+
+    .cg-input:focus:not(:focus-visible),
+    .cg-select:focus:not(:focus-visible) {
+        border-color: var(--cg-border);
+        box-shadow: none;
+        --tw-ring-shadow: 0 0 #0000;
+    }
+
+    button,
+    [role="button"] {
+        transition-property: color, background-color, border-color, box-shadow, transform;
+        transition-duration: var(--cg-motion-interaction);
+        transition-timing-function: var(--cg-ease-out);
+    }
+
+    a {
+        transition-timing-function: var(--cg-ease-out);
     }
 
     .dark .cg-input,
@@ -631,7 +654,8 @@
     }
 
     .cg-app-sidebar :focus-visible {
-        outline-color: #ffffff;
+        outline: none;
+        box-shadow: 0 0 0 2px #6d1c32, 0 0 0 4px rgb(255 250 245 / 88%);
     }
 
     .cg-sidebar-mobilebar {
@@ -983,13 +1007,23 @@
 }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    button:not(:disabled):not([aria-disabled="true"]):hover,
+    [role="button"]:not([aria-disabled="true"]):hover {
+        transform: translateY(-1px);
+    }
+
+    button:not(:disabled):not([aria-disabled="true"]):active,
+    [role="button"]:not([aria-disabled="true"]):active {
+        transform: translateY(0) scale(0.99);
+    }
+
     .cg-btn-secondary:not(:disabled):not([aria-disabled="true"]):hover {
         transform: translateY(-1px);
     }
 
 
     .cg-sidebar-link:hover {
-        transform: translateX(2px);
+        transform: translateX(1px);
     }
 
     .cg-start-primary:hover .cg-arrow,
