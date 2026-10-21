@@ -20,6 +20,14 @@ class ChatbotController extends Controller
 
         $sessionId = $validated['session_id'] ?? (string) Str::uuid();
         $emergencyAcknowledged = $request->boolean('emergency_ack');
+        $conversationHistory = mb_substr($validated['history'] ?? '', -6000);
+        $residentMessages = preg_match_all('/(?:^|\n)Resident:\s*(.*)/u', $conversationHistory, $residentTurns)
+            ? implode("\n", $residentTurns[1])."\n"
+            : '';
+        $latestMessage = trim($validated['message']);
+        $languageHint = $this->isTagalog($latestMessage)
+            ? 'Tagalog or Taglish'
+            : ($this->isShortReply($latestMessage) && ! $this->isEnglish($latestMessage) && $this->isTagalog($residentMessages) ? 'Tagalog or Taglish' : 'English');
 
         // Fixed emergency guidance, shown instantly (no AI call) the first time a message sounds urgent.
         if (! $emergencyAcknowledged && $this->looksLikeEmergency($validated['message'])) {
@@ -41,14 +49,14 @@ class ChatbotController extends Controller
             ."- How are curfew violations recorded? Authorized tanods log the minor's details, guardian information, apprehension location, prior violations, and notes.";
 
         $systemPrompt = "You are CivicGuard's AI chatbot, helping residents file incident reports through conversation. "
-            .'Reply in the same language as the resident. Detect the language from their latest message and recent resident messages, and use Tagalog when they write in Tagalog or Taglish. Keep doing so when they give short answers such as a category or location; switch only if they switch languages. Translate your conversational replies and FAQ answers, but keep report category names exactly as listed and keep the hidden report JSON category value in its exact listed form. '
+            .'The resident\'s latest message is classified as '.$languageHint.'. Reply in that language for this turn. If it is English, answer in English even when the incident category is Dispute or the conversation history contains Tagalog examples. If the latest message is a short answer with no clear language clues, continue in the language used in the resident\'s previous messages. Switch languages only when the resident does. Translate conversational replies and FAQ answers, but keep report category names exactly as listed and keep the hidden report JSON category value in its exact listed form. '
             .'Use a calm, natural, respectful, concise tone in both English and Tagalog. Avoid dramatic reactions, canned empathy, filler, and overly formal or flowery phrasing; use "po" naturally without repeating it in every sentence. When mentioning a category to the resident, write its exact name in bold with quotation marks, for example **"Dispute"**. Do not escape the asterisks or leave bold markers unmatched. '
             .'Your job is to gather exactly three pieces of information by asking ONE clear question at a time if missing: '
             ."1) the category (must be one of exactly: {$categoryNames}), "
             .'2) a description of what happened, '
             .'3) the location. '
             .'Infer the category from the meaning of the resident\'s description in English, Tagalog, or Taglish; do not ask the resident to name a category when the incident clearly identifies one. For example, a fight or argument between people, including "may nag-away dito", "nag-aaway sila", or "may nag-away sa amin", is Dispute. Loud neighbors, "maingay dito", "may nagingay dito", "may nag-iingay dito", loud music, or repeated noise is Noise Complaint. Loud public commotion or people causing a broader public disturbance is Public Disturbance; a roaming/stray dog or cat is Stray Animal; a curfew violation is Curfew Violation; damaging property or graffiti is Vandalism. Use only categories that exist in the list above, keep the exact English category name in the hidden JSON, and ask one short clarifying question if the meaning is genuinely unclear. Treat the category as a suggestion for the resident to review. '
-            .'Keep every message short and friendly. For example, after a resident describes a fight, say "Salamat po sa detalye. Iuuri ko ito bilang **"Dispute"**. Saan eksaktong nangyari ang insidente?" in Tagalog, or "Thanks for the details. I’ll classify this as **"Dispute"**. Where exactly did it happen?" in English. If it sounds like an active emergency, tell them to contact barangay officials or authorities immediately instead of continuing the form. '
+            .'Keep every message short and friendly. For example, after a resident describes a fight in English, say "Thanks for the details. I’ll classify this as **"Dispute"**. Where exactly did it happen?". If they describe it in Tagalog, reply naturally in Tagalog, such as "Salamat po sa detalye. Iuuri ko ito bilang **"Dispute"**. Saan eksaktong nangyari ang insidente?" If it sounds like an active emergency, tell them to contact barangay officials or authorities immediately instead of continuing the form. '
             .'Once you have all three required pieces of information clearly, tell the resident in their language that the report details are ready and ask whether they would like to attach an optional photo. Tell them they can add it with the upload button in the review card. Do not wait for their answer about the photo; immediately after that short message, on a new line append exactly this hidden marker with the collected data as JSON (the resident will not see this marker, only your normal message): '
             .'###REPORT_DATA###{"category":"exact category name from the list","description":"what happened","location":"the location"}###END### '
             ."Do not include the marker until you truly have all three pieces of information. Never make up information the resident hasn't given you. "
@@ -59,11 +67,7 @@ class ChatbotController extends Controller
                 .'Do not repeat the emergency warning. Continue gathering the three pieces of information.';
         }
 
-        $conversationHistory = mb_substr($validated['history'] ?? '', -6000);
-        $residentMessages = preg_match_all('/(?:^|\n)Resident:\s*(.*)/u', $conversationHistory, $residentTurns)
-            ? implode("\n", $residentTurns[1])."\n"
-            : '';
-        $tagalogResponse = $this->isTagalog($residentMessages.$validated['message']);
+        $tagalogResponse = $languageHint !== 'English';
 
         $rawReply = $ai->generateText(
             $systemPrompt."\n\nConversation so far:\n".$conversationHistory."\n\nResident's latest message: ".$validated['message'],
@@ -170,5 +174,15 @@ class ChatbotController extends Controller
         $commonWords = preg_match_all('/\b(?:ako|ko|mo|siya|kami|tayo|kayo|sila|ang|ng|mga|sa|po|may|dito|doon|ito|iyan|namin|natin|gusto|paki)\b/u', $text);
 
         return $distinctiveWords > 0 || $commonWords >= 2;
+    }
+
+    private function isShortReply(string $text): bool
+    {
+        return str_word_count($text) <= 3;
+    }
+
+    private function isEnglish(string $text): bool
+    {
+        return (bool) preg_match('/\b(?:the|a|an|is|are|was|were|have|has|do|does|did|what|where|when|why|how|who|which|and|or|but|with|from|for|to|in|on|at|of|my|me|you|your|we|they|he|she|it|there|here|yes|no|okay|ok|please|kids?|fought|fight|fighting|loud|noise|neighbors?|someone|happened|report|incident)\b/iu', $text);
     }
 }
