@@ -103,6 +103,7 @@
                             </div>
                         </template>
 
+                        <template x-teleport="body">
                         <div x-show="viewerOpen" x-cloak x-transition.opacity @click.self="viewerOpen = false" role="dialog" aria-modal="true" aria-label="{{ __('Residency proof submitted by :name', ['name' => $verification->user->name]) }}" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 sm:p-8">
                             <div class="relative flex max-h-full max-w-full items-center justify-center">
                                 <button type="button" @click="viewerOpen = false" aria-label="{{ __('Close larger image') }}" class="absolute -right-2 -top-2 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-stone-700 text-white shadow-lg transition hover:bg-stone-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:right-2 sm:top-2">
@@ -113,6 +114,7 @@
                                 </template>
                             </div>
                         </div>
+                        </template>
                     </div>
                     @else
                         <div class="flex min-h-32 flex-col justify-center rounded-xl border border-stone-200 bg-stone-50 p-4 dark:border-gray-700 dark:bg-white/5">
