@@ -21,6 +21,18 @@
         .chat-photo-preview-enter { transform-origin: top left; animation: cg-chat-photo-in 220ms cubic-bezier(.16,1,.3,1) both; }
         .chat-photo-preview-leave { pointer-events: none; animation: cg-chat-photo-out 160ms ease-in both; }
         .chat-photo-button-updated { animation: cg-chat-photo-button 260ms cubic-bezier(.16,1,.3,1) both; }
+        .chat-edit-panel-enter { transform-origin: top center; animation: cg-chat-edit-in 240ms cubic-bezier(.16,1,.3,1) both; }
+        .chat-edit-panel-leave { pointer-events: none; animation: cg-chat-edit-out 140ms ease-in both; }
+        .chat-edit-panel-enter .chat-edit-field { animation: cg-chat-edit-field-in 220ms cubic-bezier(.16,1,.3,1) both; }
+        .chat-edit-panel-enter .chat-edit-field:nth-child(2) { animation-delay: 35ms; }
+        .chat-edit-panel-enter .chat-edit-field:nth-child(3) { animation-delay: 70ms; }
+        .chat-review-details-enter { transform-origin: top center; animation: cg-chat-details-in 200ms cubic-bezier(.16,1,.3,1) both; }
+        .chat-detail-updated { transform-origin: left center; animation: cg-chat-detail-updated 280ms cubic-bezier(.16,1,.3,1) both; }
+        .chat-success-enter { transform-origin: left bottom; animation: cg-chat-success-in 360ms cubic-bezier(.16,1,.3,1) both; }
+        .chat-success-icon { animation: cg-chat-success-pop 360ms cubic-bezier(.16,1,.3,1) both; }
+        .chat-success-check { stroke-dasharray: 24; stroke-dashoffset: 24; animation: cg-chat-check-draw 240ms ease-out 120ms forwards; }
+        .chat-submit-loading { animation: cg-chat-submit-pulse 1.1s ease-in-out infinite; }
+        .chat-submit-complete { background-color: #dcfce7 !important; color: #166534 !important; transition: background-color 220ms ease, color 220ms ease; }
         @keyframes cg-chat-message-user {
             from { opacity: 0; transform: translate(10px, 8px) scale(.96); }
             to { opacity: 1; transform: translate(0) scale(1); }
@@ -51,6 +63,41 @@
             45% { transform: scale(.96); }
             100% { transform: scale(1); }
         }
+        @keyframes cg-chat-edit-in {
+            from { opacity: 0; transform: translateY(-7px) scale(.99); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes cg-chat-edit-out {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-4px) scale(.99); }
+        }
+        @keyframes cg-chat-edit-field-in {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes cg-chat-details-in {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes cg-chat-detail-updated {
+            from { opacity: .6; transform: translateY(3px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes cg-chat-success-in {
+            from { opacity: 0; transform: translateY(8px) scale(.985); }
+            70% { opacity: 1; transform: translateY(-1px) scale(1.003); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes cg-chat-success-pop {
+            0% { opacity: 0; transform: scale(.55) rotate(-12deg); }
+            70% { opacity: 1; transform: scale(1.12) rotate(2deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0); }
+        }
+        @keyframes cg-chat-check-draw { to { stroke-dashoffset: 0; } }
+        @keyframes cg-chat-submit-pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgb(149 31 61 / 0%); }
+            50% { transform: scale(.985); box-shadow: 0 0 0 4px rgb(149 31 61 / 18%); }
+        }
         @keyframes typing-bounce {
             0%, 80%, 100% { transform: translateY(0); opacity: 0.35; }
             40% { transform: translateY(-5px); opacity: 1; }
@@ -61,7 +108,7 @@
         }
         @media (prefers-reduced-motion: reduce) {
             .typing-dot { animation: typing-fade 1.6s infinite ease-in-out both; }
-            .chat-message-enter-user, .chat-message-enter-bot, .chat-typing-bubble, .chat-review-enter, .chat-photo-preview-enter, .chat-photo-preview-leave, .chat-photo-button-updated, .send-loading-dot { animation: none; }
+            .chat-message-enter-user, .chat-message-enter-bot, .chat-typing-bubble, .chat-review-enter, .chat-photo-preview-enter, .chat-photo-preview-leave, .chat-photo-button-updated, .chat-edit-panel-enter, .chat-edit-panel-leave, .chat-edit-panel-enter .chat-edit-field, .chat-review-details-enter, .chat-detail-updated, .chat-success-enter, .chat-success-icon, .chat-success-check, .chat-submit-loading, .send-loading-dot { animation: none; }
         }
     </style>
 
@@ -406,7 +453,7 @@
             editorFields.className = 'space-y-3';
 
             const categoryEditorLabel = document.createElement('label');
-            categoryEditorLabel.className = 'block text-[13px] font-normal text-white/90';
+            categoryEditorLabel.className = 'chat-edit-field block text-[13px] font-normal text-white/90';
             categoryEditorLabel.textContent = reviewText.category;
             const categorySelect = document.createElement('select');
             categorySelect.className = 'cg-input mt-1 min-h-10 w-full bg-[#fffdf9] py-1.5 font-sans text-sm font-normal text-gray-900';
@@ -421,7 +468,7 @@
             categoryEditorLabel.appendChild(categorySelect);
 
             const descriptionEditorLabel = document.createElement('label');
-            descriptionEditorLabel.className = 'block text-[13px] font-normal text-white/90';
+            descriptionEditorLabel.className = 'chat-edit-field block text-[13px] font-normal text-white/90';
             descriptionEditorLabel.textContent = reviewText.description;
             const descriptionEditor = document.createElement('textarea');
             descriptionEditor.className = 'cg-input mt-1 min-h-20 w-full bg-[#fffdf9] py-2 font-sans text-sm font-normal text-gray-900';
@@ -431,7 +478,7 @@
             descriptionEditorLabel.appendChild(descriptionEditor);
 
             const locationEditorLabel = document.createElement('label');
-            locationEditorLabel.className = 'block text-[13px] font-normal text-white/90';
+            locationEditorLabel.className = 'chat-edit-field block text-[13px] font-normal text-white/90';
             locationEditorLabel.textContent = reviewText.location;
             const locationEditor = document.createElement('input');
             locationEditor.type = 'text';
@@ -467,23 +514,48 @@
             const btnRow = document.createElement('div');
             btnRow.className = 'space-y-3 border-t border-white/20 pt-3';
 
+            let editPanelClosing = false;
+            const finishEditing = () => {
+                if (editPanelClosing) return;
+                editPanelClosing = true;
+                editPanel.classList.remove('chat-edit-panel-enter');
+                editPanel.classList.add('chat-edit-panel-leave');
+                cancelEditBtn.disabled = true;
+                saveEditBtn.disabled = true;
+                const closeDelay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 150;
+                window.setTimeout(() => {
+                    editPanel.hidden = true;
+                    editPanel.classList.remove('chat-edit-panel-leave');
+                    detailsView.hidden = false;
+                    detailsView.classList.remove('chat-review-details-enter');
+                    void detailsView.offsetWidth;
+                    detailsView.classList.add('chat-review-details-enter');
+                    editDetailsBtn.setAttribute('aria-expanded', 'false');
+                    btnRow.hidden = false;
+                    cancelEditBtn.disabled = false;
+                    saveEditBtn.disabled = false;
+                    editPanelClosing = false;
+                    editDetailsBtn.focus();
+                    window.setTimeout(() => detailsView.classList.remove('chat-review-details-enter'), 220);
+                }, closeDelay);
+            };
+
             editDetailsBtn.onclick = () => {
                 categorySelect.value = String(data.category_id);
                 descriptionEditor.value = data.description;
                 locationEditor.value = data.location;
                 editError.hidden = true;
                 detailsView.hidden = true;
+                editPanel.classList.remove('chat-edit-panel-leave', 'chat-edit-panel-enter');
+                void editPanel.offsetWidth;
                 editPanel.hidden = false;
+                editPanel.classList.add('chat-edit-panel-enter');
                 editDetailsBtn.setAttribute('aria-expanded', 'true');
                 btnRow.hidden = true;
                 categorySelect.focus();
             };
             cancelEditBtn.onclick = () => {
-                editPanel.hidden = true;
-                detailsView.hidden = false;
-                editDetailsBtn.setAttribute('aria-expanded', 'false');
-                btnRow.hidden = false;
-                editDetailsBtn.focus();
+                finishEditing();
             };
             saveEditBtn.onclick = () => {
                 const selectedCategory = reviewText.categories.find((category) => Number(category.id) === Number(categorySelect.value));
@@ -501,11 +573,13 @@
                 categoryValue.textContent = data.category_name;
                 detailValues[reviewText.description].textContent = data.description;
                 detailValues[reviewText.location].textContent = data.location;
-                editPanel.hidden = true;
-                detailsView.hidden = false;
-                editDetailsBtn.setAttribute('aria-expanded', 'false');
-                btnRow.hidden = false;
-                editDetailsBtn.focus();
+                [categoryValue, detailValues[reviewText.description], detailValues[reviewText.location]].forEach((value) => {
+                    value.classList.remove('chat-detail-updated');
+                    void value.offsetWidth;
+                    value.classList.add('chat-detail-updated');
+                    window.setTimeout(() => value.classList.remove('chat-detail-updated'), 300);
+                });
+                finishEditing();
             };
 
             const actions = document.createElement('div');
@@ -532,15 +606,17 @@
         }
         function showSuccessCard() {
             const row = document.createElement('div');
-            row.className = 'text-left';
+            row.className = 'text-left chat-success-enter';
 
             const card = document.createElement('div');
             card.className = 'border-2 border-green-600 rounded-lg p-4 bg-green-50 dark:bg-gray-900 flex items-start gap-3';
+            card.setAttribute('role', 'status');
+            card.setAttribute('aria-live', 'polite');
 
             const icon = document.createElement('span');
-            icon.className = 'text-green-700 dark:text-green-300';
+            icon.className = 'chat-success-icon text-green-700 dark:text-green-300';
             icon.setAttribute('aria-hidden', 'true');
-            icon.innerHTML = '<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
+            icon.innerHTML = '<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path class="chat-success-check" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
 
             const content = document.createElement('div');
             const title = document.createElement('p');
@@ -566,6 +642,7 @@
         async function submitReport(data, btn) {
             const originalLabel = btn.textContent;
             btn.disabled = true;
+            btn.classList.add('chat-submit-loading');
             btn.textContent = reviewText.submitting;
 
             const formData = new FormData();
@@ -591,10 +668,13 @@
                     throw new Error(response.status === 419 ? 'expired' : 'submit');
                 }
 
+                btn.classList.remove('chat-submit-loading');
+                btn.classList.add('chat-submit-complete');
                 btn.textContent = reviewText.submitted;
                 showSuccessCard();
             } catch (error) {
                 btn.disabled = false;
+                btn.classList.remove('chat-submit-loading', 'chat-submit-complete');
                 btn.textContent = originalLabel;
                 addMessage(error.message === 'expired' ? t.expired : !navigator.onLine ? t.offline : reviewText.submitError, 'bot');
             }
