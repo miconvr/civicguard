@@ -1,5 +1,5 @@
-const CACHE = 'cg-offline-v4';
-const NAVIGATION_TIMEOUT_MS = 10_000;
+const CACHE = 'cg-offline-v5';
+const NAVIGATION_TIMEOUT_MS = 30_000;
 const IMMUTABLE_ASSET = /^\/build\/assets\/[A-Za-z0-9_-]+-[A-Za-z0-9_-]+\.(css|js|woff2)$/;
 
 self.addEventListener('install', (event) => {
