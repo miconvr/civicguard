@@ -20,6 +20,9 @@
 <body>
     <h1>{{ __('CivicGuard Consolidated Report') }}</h1>
     <div class="generated">{{ __('Generated') }} {{ \App\Support\LocalizedDate::format(now(), 'M d, Y g:i A') }}</div>
+    @if ($isTanod)
+        <p>{{ __('Your report summary includes reports assigned to you or filed under your account. Curfew Monitoring includes only records you logged.') }}</p>
+    @endif
 
     <table class="summary">
         <tr>
