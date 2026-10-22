@@ -31,21 +31,100 @@
                     </a>
                 @endforeach
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="cg-card">
-                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Reports by Category</h3>
-                    <canvas id="categoryChart"></canvas>
-                </div>
-                <div class="cg-card">
-                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Reports by Severity</h3>
-                    <canvas id="severityChart"></canvas>
-                </div>
+            @php
+                $categoryMax = max(1, (int) $byCategory->max('total'));
+                $severityTotal = (int) $bySeverity->sum('total');
+                $severityCircumference = 251.327;
+                $severityOffset = 0;
+                $severityColors = ['low' => '#9ca3af', 'moderate' => '#eab308', 'high' => '#f97316', 'critical' => '#dc2626'];
+                $dailyMax = max(1, (int) $last14Days->max('total'));
+                $trendPointList = $last14Days->values()->map(function ($day, $index) use ($last14Days, $dailyMax) {
+                    $x = 40 + ($index / max(1, $last14Days->count() - 1)) * 920;
+                    $y = 160 - ($day->total / $dailyMax) * 120;
+                    return round($x, 1) . ',' . round($y, 1);
+                })->implode(' ');
+                $trendAreaPoints = "40,160 {$trendPointList} 960,160";
+            @endphp
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <section class="cg-card" aria-labelledby="analytics-category-title">
+                    <h3 id="analytics-category-title" class="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Reports by Category</h3>
+                    @if ($byCategory->isEmpty())
+                        <p class="text-sm text-gray-500 dark:text-gray-400">No reports available.</p>
+                    @else
+                        <ul class="space-y-4">
+                            @foreach ($byCategory as $category)
+                                <li>
+                                    <div class="mb-1 flex items-center justify-between gap-3 text-sm">
+                                        <span class="truncate text-gray-700 dark:text-gray-300">{{ $category->name }}</span>
+                                        <span class="shrink-0 font-semibold text-gray-700 dark:text-gray-200">{{ $category->total }}</span>
+                                    </div>
+                                    <div class="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-white/10" role="meter" aria-label="{{ $category->name }} reports" aria-valuemin="0" aria-valuemax="{{ $categoryMax }}" aria-valuenow="{{ $category->total }}">
+                                        <div class="h-full rounded-full bg-maroon-700 dark:bg-[#b56764]" style="width: {{ round($category->total / $categoryMax * 100) }}%"></div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </section>
+                <section class="cg-card" aria-labelledby="analytics-severity-title">
+                    <h3 id="analytics-severity-title" class="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Reports by Severity</h3>
+                    <div class="flex flex-col items-center gap-5 sm:flex-row">
+                        <svg class="h-32 w-32 shrink-0" viewBox="0 0 100 100" role="img" aria-label="{{ $severityTotal }} reports by severity">
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#e7e5e4" stroke-width="14" class="dark:stroke-gray-700" transform="rotate(-90 50 50)" />
+                            @foreach ($bySeverity as $severity => $summary)
+                                @php
+                                    $segmentLength = $severityTotal > 0 ? $summary->total / $severityTotal * $severityCircumference : 0;
+                                    $segmentGap = $severityCircumference - $segmentLength;
+                                    $segmentStart = $severityOffset;
+                                    $severityOffset += $segmentLength;
+                                @endphp
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="{{ $severityColors[$severity] ?? '#951f3d' }}" stroke-width="14" stroke-dasharray="{{ number_format($segmentLength, 3, '.', '') }} {{ number_format($segmentGap, 3, '.', '') }}" stroke-dashoffset="{{ number_format(-$segmentStart, 3, '.', '') }}" transform="rotate(-90 50 50)" />
+                            @endforeach
+                            <text x="50" y="50" text-anchor="middle" dominant-baseline="middle" fill="currentColor" class="text-gray-900 dark:text-white" font-size="16" font-weight="700">{{ $severityTotal }}</text>
+                        </svg>
+                        <ul class="w-full space-y-2 text-sm">
+                            @foreach (['low' => 'Low', 'moderate' => 'Moderate', 'high' => 'High', 'critical' => 'Critical'] as $severity => $label)
+                                <li class="flex items-center justify-between gap-3">
+                                    <span class="inline-flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                                        <span class="h-2.5 w-2.5 rounded-full" style="background-color: {{ $severityColors[$severity] }}" aria-hidden="true"></span>
+                                        {{ $label }}
+                                    </span>
+                                    <span class="font-semibold text-gray-700 dark:text-gray-200">{{ $bySeverity->get($severity)->total ?? 0 }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </section>
             </div>
 
-            <div class="cg-card">
-                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Reports Over Last 14 Days</h3>
-                <canvas id="trendChart"></canvas>
-            </div>
+            <section class="cg-card" aria-labelledby="analytics-trend-title">
+                <h3 id="analytics-trend-title" class="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Reports Over Last 14 Days</h3>
+                <svg class="h-48 w-full overflow-visible" viewBox="0 0 1000 200" preserveAspectRatio="none" role="img" aria-label="Daily report totals over the last 14 days">
+                    <title>Daily reports from {{ $last14Days->first()->day }} through {{ $last14Days->last()->day }}</title>
+                    <line x1="40" y1="40" x2="960" y2="40" stroke="currentColor" stroke-opacity=".12" />
+                    <line x1="40" y1="100" x2="960" y2="100" stroke="currentColor" stroke-opacity=".12" />
+                    <line x1="40" y1="160" x2="960" y2="160" stroke="currentColor" stroke-opacity=".2" />
+                    <text x="2" y="44" class="fill-gray-500 dark:fill-gray-400" font-size="14">{{ $dailyMax }}</text>
+                    <text x="2" y="104" class="fill-gray-500 dark:fill-gray-400" font-size="14">{{ round($dailyMax / 2) }}</text>
+                    <text x="2" y="164" class="fill-gray-500 dark:fill-gray-400" font-size="14">0</text>
+                    <polygon points="{{ $trendAreaPoints }}" fill="#951f3d" fill-opacity=".1" />
+                    <polyline points="{{ $trendPointList }}" fill="none" stroke="#951f3d" stroke-width="4" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" />
+                    @foreach ($last14Days as $day)
+                        @php
+                            $pointX = 40 + ($loop->index / max(1, $last14Days->count() - 1)) * 920;
+                            $pointY = 160 - ($day->total / $dailyMax) * 120;
+                        @endphp
+                        <circle cx="{{ round($pointX, 1) }}" cy="{{ round($pointY, 1) }}" r="4" fill="#951f3d">
+                            <title>{{ \Illuminate\Support\Carbon::parse($day->day)->format('M j') }}: {{ $day->total }} reports</title>
+                        </circle>
+                    @endforeach
+                </svg>
+                <div class="mt-2 flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                    <span>{{ \Illuminate\Support\Carbon::parse($last14Days->first()->day)->format('M j') }}</span>
+                    <span>{{ \Illuminate\Support\Carbon::parse($last14Days->get(6)->day)->format('M j') }}</span>
+                    <span>{{ \Illuminate\Support\Carbon::parse($last14Days->last()->day)->format('M j') }}</span>
+                </div>
+            </section>
 
             <div class="cg-card">
                 <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Severity Rated By</h3>
@@ -134,66 +213,9 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <script>
-        const isDark = () => document.documentElement.classList.contains('dark');
-        const accent = () => isDark() ? '#b56764' : '#7f1d1d';
-        const accentFill = () => isDark() ? 'rgba(181,103,100,0.18)' : 'rgba(127,29,29,0.1)';
-        function setChartDefaults() {
-            Chart.defaults.color = isDark() ? '#d1d5db' : '#4b5563';
-            Chart.defaults.borderColor = isDark() ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)';
-            Chart.defaults.font.size = 12;
-        }
-        setChartDefaults();
-
-        const categoryLabels = @json($byCategory->pluck('name'));
-        const categoryData = @json($byCategory->pluck('total'));
-        const severityMap = @json($bySeverity);
-        const severityLabels = ['low', 'moderate', 'high', 'critical'];
-        const severityData = severityLabels.map(s => severityMap[s]?.total ?? 0);
-        const trendLabels = @json($last14Days->pluck('day')->values()).map(d => new Date(d + 'T00:00:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric' }));
-        const trendData = @json($last14Days->pluck('total')->values());
-
-        const categoryChart = new Chart(document.getElementById('categoryChart'), {
-            type: 'bar',
-            data: {
-                labels: categoryLabels,
-                datasets: [{ label: 'Reports', data: categoryData, backgroundColor: accent() }]
-            },
-            options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
-        });
-
-        const severityChart = new Chart(document.getElementById('severityChart'), {
-            type: 'doughnut',
-            data: {
-                labels: severityLabels.map((s, i) => s.charAt(0).toUpperCase() + s.slice(1) + ' (' + severityData[i] + ')'),
-                datasets: [{ data: severityData, backgroundColor: ['#9ca3af', '#eab308', '#f97316', '#dc2626'], borderWidth: 0 }]
-            },
-            options: { plugins: { legend: { position: 'bottom' } } }
-        });
-
-        const trendChart = new Chart(document.getElementById('trendChart'), {
-            type: 'line',
-            data: {
-                labels: trendLabels,
-                datasets: [{ label: 'Reports Filed', data: trendData, borderColor: accent(), backgroundColor: accentFill(), fill: true, tension: 0, pointRadius: 3 }]
-            },
-            options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
-        });
-
-        function applyTheme() {
-            Chart.defaults.color = isDark() ? '#d1d5db' : '#4b5563';
-            Chart.defaults.borderColor = isDark() ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-            categoryChart.data.datasets[0].backgroundColor = accent();
-            trendChart.data.datasets[0].borderColor = accent();
-            trendChart.data.datasets[0].backgroundColor = accentFill();
-            [categoryChart, severityChart, trendChart].forEach(c => c.update());
-        }
-
-        applyTheme();
-        new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-
         function fillList(id, items, bulletColor) {
+
             const list = document.getElementById(id);
             list.innerHTML = '';
             if (!items || items.length === 0) {

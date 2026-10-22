@@ -1,5 +1,6 @@
-const CACHE = 'cg-offline-v3';
+const CACHE = 'cg-offline-v4';
 const NAVIGATION_TIMEOUT_MS = 10_000;
+const IMMUTABLE_ASSET = /^\/build\/assets\/[A-Za-z0-9_-]+-[A-Za-z0-9_-]+\.(css|js|woff2)$/;
 
 self.addEventListener('install', (event) => {
     event.waitUntil(caches.open(CACHE).then((c) => c.add('/offline.html')));
@@ -14,9 +15,25 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Only page loads (GET navigations) get the offline fallback. Nothing personal is cached.
+// Fingerprinted build files are immutable, so keep them locally for repeat visits.
+// HTML, API responses, and user data are never cached by this rule.
 self.addEventListener('fetch', (event) => {
     const req = event.request;
+    const url = new URL(req.url);
+
+    if (req.method === 'GET' && url.origin === self.location.origin && IMMUTABLE_ASSET.test(url.pathname)) {
+        event.respondWith((async () => {
+            const cache = await caches.open(CACHE);
+            const cached = await cache.match(req);
+            if (cached) return cached;
+
+            const response = await fetch(req);
+            if (response.ok && response.type === 'basic') await cache.put(req, response.clone());
+            return response;
+        })());
+        return;
+    }
+
     if (req.mode !== 'navigate' || req.method !== 'GET') return;
     event.respondWith((async () => {
         const controller = new AbortController();
