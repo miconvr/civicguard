@@ -5,9 +5,32 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-BmRDqAkO.js",
+    "file": "assets/app-C-M_T3hQ.js",
     "name": "app",
     "src": "resources/js/app.js",
-    "isEntry": true
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/pages/landing.js",
+      "resources/js/pages/verification-tabs.js",
+      "resources/js/pages/profile-photo.js"
+    ]
+  },
+  "resources/js/pages/landing.js": {
+    "file": "assets/landing-CeRW4liU.js",
+    "name": "landing",
+    "src": "resources/js/pages/landing.js",
+    "isDynamicEntry": true
+  },
+  "resources/js/pages/profile-photo.js": {
+    "file": "assets/profile-photo-BivVbWgY.js",
+    "name": "profile-photo",
+    "src": "resources/js/pages/profile-photo.js",
+    "isDynamicEntry": true
+  },
+  "resources/js/pages/verification-tabs.js": {
+    "file": "assets/verification-tabs-C16NIziI.js",
+    "name": "verification-tabs",
+    "src": "resources/js/pages/verification-tabs.js",
+    "isDynamicEntry": true
   }
 }
