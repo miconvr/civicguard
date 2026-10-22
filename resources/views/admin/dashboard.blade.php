@@ -21,7 +21,7 @@
                     ['Resolved this week', $stats['resolved'], ['tab' => 'resolved'], 'cg-kpi'],
                 ] as [$label, $count, $params, $color])
                     <a href="{{ route('admin.dashboard', $params) }}" class="cg-card p-4 focus:outline-none focus:ring-2 focus:ring-maroon-600" data-reveal>
-                        <div class="text-sm text-gray-600 dark:text-gray-400">{{ $label }}</div>
+                        <div class="text-sm text-gray-700 dark:text-gray-300">{{ $label }}</div>
                         <div class="text-3xl font-semibold {{ $color }}">{{ $count }}</div>
                     </a>
                 @endforeach
