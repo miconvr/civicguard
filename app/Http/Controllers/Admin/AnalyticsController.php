@@ -33,7 +33,7 @@ class AnalyticsController extends Controller
     {
         [$byCategory, $bySeverity, $byStatus, $last14Days, , , , $curfewCount] = $this->gatherMetrics();
 
-        $insights = Cache::remember('analytics-insights', now()->addMinutes(30), fn () => $this->buildInsights(
+        $insights = Cache::remember('analytics-insights-'.app()->getLocale(), now()->addMinutes(30), fn () => $this->buildInsights(
             $byCategory, $bySeverity, $byStatus, $last14Days, $curfewCount, $ai
         ));
 
@@ -44,7 +44,7 @@ class AnalyticsController extends Controller
     {
         [$byCategory, $bySeverity, $byStatus, $last14Days, $totalReports, $pendingCount, $resolvedCount, $curfewCount] = $this->gatherMetrics();
 
-        $insights = Cache::remember('analytics-insights', now()->addMinutes(30), fn () => $this->buildInsights(
+        $insights = Cache::remember('analytics-insights-'.app()->getLocale(), now()->addMinutes(30), fn () => $this->buildInsights(
             $byCategory, $bySeverity, $byStatus, $last14Days, $curfewCount, $ai
         ));
 
@@ -155,7 +155,10 @@ class AnalyticsController extends Controller
             'curfew_logs' => $curfewCount,
         ];
 
-        $prompt = 'You are analyzing CivicGuard data for barangay officials. Based only on these metrics, return valid JSON with exactly these keys: summary (one concise sentence), patterns (an array of up to three observed patterns), risk_flags (an array of up to three risks), and recommendations (an array of exactly three concise practical follow-up actions). Do not include markdown or extra text. Metrics: '.json_encode($metrics);
+        $languageInstruction = app()->getLocale() === 'tl'
+            ? 'Write all JSON string values in natural Filipino/Tagalog. Keep the required JSON keys in English.'
+            : 'Write all JSON string values in English.';
+        $prompt = 'You are analyzing CivicGuard data for barangay officials. Based only on these metrics, return valid JSON with exactly these keys: summary (one concise sentence), patterns (an array of up to three observed patterns), risk_flags (an array of up to three risks), and recommendations (an array of exactly three concise practical follow-up actions). Do not include markdown or extra text. '.$languageInstruction.' Metrics: '.json_encode($metrics);
 
         $text = $ai->generateText($prompt, 10, true);
 
@@ -193,46 +196,46 @@ class AnalyticsController extends Controller
         $topCategory = $byCategory->first();
 
         if ($topCategory) {
-            $patterns[] = "{$topCategory->name} is the most frequently reported category with {$topCategory->total} report(s).";
+            $patterns[] = __(':category is the most frequently reported category with :count report(s).', ['category' => __($topCategory->name), 'count' => $topCategory->total]);
         }
 
-        $patterns[] = "{$recentCount} report(s) were filed during the last 14 days.";
+        $patterns[] = __(':count report(s) were filed during the last 14 days.', ['count' => $recentCount]);
 
         if ($curfewCount > 0) {
-            $patterns[] = "Curfew monitoring contains {$curfewCount} logged violation(s).";
+            $patterns[] = __('Curfew monitoring contains :count logged violation(s).', ['count' => $curfewCount]);
         }
 
         if ($pendingCount > 0) {
-            $riskFlags[] = "{$pendingCount} report(s) remain pending.";
+            $riskFlags[] = __(':count report(s) remain pending.', ['count' => $pendingCount]);
         }
 
         if ($criticalCount > 0) {
-            $riskFlags[] = "{$criticalCount} report(s) are high or critical severity.";
+            $riskFlags[] = __(':count report(s) are high or critical severity.', ['count' => $criticalCount]);
         }
 
         if ($curfewCount > 0) {
-            $riskFlags[] = 'Curfew records should be reviewed for repeat violations and safeguarding needs.';
+            $riskFlags[] = __('Curfew records should be reviewed for repeat violations and safeguarding needs.');
         }
 
         if ($pendingCount > 0) {
-            $recommendations[] = "Review {$pendingCount} pending report(s) and assign urgent cases first.";
+            $recommendations[] = __('Review :count pending report(s) and assign urgent cases first.', ['count' => $pendingCount]);
         }
 
         if ($criticalCount > 0) {
-            $recommendations[] = "Prioritize {$criticalCount} high or critical report(s) for follow-up.";
+            $recommendations[] = __('Prioritize :count high or critical report(s) for follow-up.', ['count' => $criticalCount]);
         }
 
         if ($curfewCount > 0) {
-            $recommendations[] = "Review {$curfewCount} curfew log(s) for repeat violations and appropriate support.";
+            $recommendations[] = __('Review :count curfew log(s) for repeat violations and appropriate support.', ['count' => $curfewCount]);
         }
 
         if (count($recommendations) < 3) {
-            $recommendations[] = "Continue monitoring the {$recentCount} report(s) recorded in the last 14 days for emerging patterns.";
+            $recommendations[] = __('Continue monitoring the :count report(s) recorded in the last 14 days for emerging patterns.', ['count' => $recentCount]);
         }
 
         return [
             'recommendations' => array_slice($recommendations, 0, 3),
-            'analysisSummary' => "CivicGuard recorded {$recentCount} report(s) in the last 14 days with {$pendingCount} still pending.",
+            'analysisSummary' => __('CivicGuard recorded :recent report(s) in the last 14 days with :pending still pending.', ['recent' => $recentCount, 'pending' => $pendingCount]),
             'patterns' => array_slice($patterns, 0, 3),
             'riskFlags' => array_slice($riskFlags, 0, 3),
         ];

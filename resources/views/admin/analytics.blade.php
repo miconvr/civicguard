@@ -1,8 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
-            Reports
-        </h2>
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">{{ __('Reports') }}</h2>
     </x-slot>
 
     <div class="py-12">
@@ -17,16 +15,16 @@
                 @php
                     $avg = $avgResolve;
                     $kpis = [
-                        ['Total Reports', $totalReports, 'all', 'cg-kpi', null],
-                        ['Pending', $pendingCount, 'pending', 'cg-kpi', null],
-                        ['In Progress', $inProgressCount, 'in_progress', 'cg-kpi', null],
-                        ['Resolved', $resolvedCount, 'resolved', 'cg-kpi', 'Avg. ' . $avg . ' to resolve'],
+                        [__('Total Reports'), $totalReports, 'all', 'cg-kpi', null],
+                        [__('Pending'), $pendingCount, 'pending', 'cg-kpi', null],
+                        [__('In Progress'), $inProgressCount, 'in_progress', 'cg-kpi', null],
+                        [__('Resolved'), $resolvedCount, 'resolved', 'cg-kpi', __('Avg. :duration to resolve', ['duration' => $avg])],
                     ];
                 @endphp
                 @foreach ($kpis as [$label, $value, $tab, $color, $note])
                     <a href="{{ route('admin.dashboard', ['tab' => $tab]) }}" class="cg-card block text-center focus:outline-none focus:ring-2 focus:ring-maroon-600">
                         <p class="text-3xl font-bold {{ $color }}">{{ $value }}</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">{{ $label }}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">{{ __(ucfirst($label)) }}</p>
                         @if ($note)<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ $note }}</p>@endif
                     </a>
                 @endforeach
@@ -47,18 +45,18 @@
             @endphp
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <section class="cg-card" aria-labelledby="analytics-category-title">
-                    <h3 id="analytics-category-title" class="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Reports by Category</h3>
+                    <h3 id="analytics-category-title" class="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __("Reports by Category") }}</h3>
                     @if ($byCategory->isEmpty())
-                        <p class="text-sm text-gray-500 dark:text-gray-400">No reports available.</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ __("No reports available.") }}</p>
                     @else
                         <ul class="space-y-4">
                             @foreach ($byCategory as $category)
                                 <li>
                                     <div class="mb-1 flex items-center justify-between gap-3 text-sm">
-                                        <span class="truncate text-gray-700 dark:text-gray-300">{{ $category->name }}</span>
+                                        <span class="truncate text-gray-700 dark:text-gray-300">{{ __($category->name) }}</span>
                                         <span class="shrink-0 font-semibold text-gray-700 dark:text-gray-200">{{ $category->total }}</span>
                                     </div>
-                                    <div class="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-white/10" role="meter" aria-label="{{ $category->name }} reports" aria-valuemin="0" aria-valuemax="{{ $categoryMax }}" aria-valuenow="{{ $category->total }}">
+                                    <div class="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-white/10" role="meter" aria-label="{{ __(':name reports', ['name' => __($category->name)]) }}" aria-valuemin="0" aria-valuemax="{{ $categoryMax }}" aria-valuenow="{{ $category->total }}">
                                         <div class="h-full rounded-full bg-maroon-700 dark:bg-[#b56764]" style="width: {{ round($category->total / $categoryMax * 100) }}%"></div>
                                     </div>
                                 </li>
@@ -67,9 +65,9 @@
                     @endif
                 </section>
                 <section class="cg-card" aria-labelledby="analytics-severity-title">
-                    <h3 id="analytics-severity-title" class="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Reports by Severity</h3>
+                    <h3 id="analytics-severity-title" class="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __("Reports by Severity") }}</h3>
                     <div class="flex flex-col items-center gap-5 sm:flex-row">
-                        <svg class="h-32 w-32 shrink-0" viewBox="0 0 100 100" role="img" aria-label="{{ $severityTotal }} reports by severity">
+                        <svg class="h-32 w-32 shrink-0" viewBox="0 0 100 100" role="img" aria-label="{{ __(':count reports by severity', ['count' => $severityTotal]) }}">
                             <circle cx="50" cy="50" r="40" fill="none" stroke="#e7e5e4" stroke-width="14" class="dark:stroke-gray-700" transform="rotate(-90 50 50)" />
                             @foreach ($bySeverity as $severity => $summary)
                                 @php
@@ -87,7 +85,7 @@
                                 <li class="flex items-center justify-between gap-3">
                                     <span class="inline-flex items-center gap-2 text-gray-700 dark:text-gray-300">
                                         <span class="h-2.5 w-2.5 rounded-full" style="background-color: {{ $severityColors[$severity] }}" aria-hidden="true"></span>
-                                        {{ $label }}
+                                        {{ __(ucfirst($label)) }}
                                     </span>
                                     <span class="font-semibold text-gray-700 dark:text-gray-200">{{ $bySeverity->get($severity)->total ?? 0 }}</span>
                                 </li>
@@ -98,9 +96,9 @@
             </div>
 
             <section class="cg-card" aria-labelledby="analytics-trend-title">
-                <h3 id="analytics-trend-title" class="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Reports Over Last 14 Days</h3>
-                <svg class="h-48 w-full overflow-visible" viewBox="0 0 1000 200" preserveAspectRatio="none" role="img" aria-label="Daily report totals over the last 14 days">
-                    <title>Daily reports from {{ $last14Days->first()->day }} through {{ $last14Days->last()->day }}</title>
+                <h3 id="analytics-trend-title" class="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __("Reports Over Last 14 Days") }}</h3>
+                <svg class="h-48 w-full overflow-visible" viewBox="0 0 1000 200" preserveAspectRatio="none" role="img" aria-label="{{ __('Daily report totals over the last 14 days') }}">
+                    <title>{{ __('Daily reports from :start through :end', ['start' => $last14Days->first()->day, 'end' => $last14Days->last()->day]) }}</title>
                     <line x1="40" y1="40" x2="960" y2="40" stroke="currentColor" stroke-opacity=".12" />
                     <line x1="40" y1="100" x2="960" y2="100" stroke="currentColor" stroke-opacity=".12" />
                     <line x1="40" y1="160" x2="960" y2="160" stroke="currentColor" stroke-opacity=".2" />
@@ -115,7 +113,7 @@
                             $pointY = 160 - ($day->total / $dailyMax) * 120;
                         @endphp
                         <circle cx="{{ round($pointX, 1) }}" cy="{{ round($pointY, 1) }}" r="4" fill="#951f3d">
-                            <title>{{ \Illuminate\Support\Carbon::parse($day->day)->format('M j') }}: {{ $day->total }} reports</title>
+                            <title>{{ \Illuminate\Support\Carbon::parse($day->day)->format('M j') }}: {{ __(':count reports', ['count' => $day->total]) }}</title>
                         </circle>
                     @endforeach
                 </svg>
@@ -127,8 +125,8 @@
             </section>
 
             <div class="cg-card">
-                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Severity Rated By</h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">A report counts under each model that rated it, so a multi-model report can appear more than once.</p>
+                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">{{ __("Severity Rated By") }}</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ __("A report counts under each model that rated it, so a multi-model report can appear more than once.") }}</p>
                 @php $usageMax = max(1, max(collect($modelUsage)->except('Before tracking')->all() ?: [0])); @endphp
                 <ul class="space-y-3">
                     @foreach ($modelUsage as $label => $count)
@@ -160,7 +158,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h11m0 0-3-3m3 3-3 3M16 17H5m0 0 3 3m-3-3 3-3"/>
                                         </svg>
                                     @endif
-                                    <span>{{ $label }}</span>
+                                    <span>{{ __(ucfirst($label)) }}</span>
                                 </span>
                                 <span class="font-semibold">{{ $count }}</span>
                             </div>
@@ -177,9 +175,9 @@
                     <svg class="h-8 w-8 text-maroon-700 dark:text-[#c27872] mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Get AI-generated patterns, risks, and recommendations based on this data.</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{ __("Get AI-generated patterns, risks, and recommendations based on this data.") }}</p>
                     <button id="load-insights-btn" class="cg-btn">
-                        <span id="load-insights-label">Load AI Insights</span>
+                        <span id="load-insights-label">{{ __("Load AI Insights") }}</span>
                         <svg id="load-insights-spinner" class="hidden animate-spin h-4 w-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -189,20 +187,20 @@
 
                 <div id="ai-insights-results" class="hidden space-y-6">
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">AI Summary</h3>
+                        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{{ __("AI Summary") }}</h3>
                         <p id="ai-summary-text" class="text-sm text-gray-700 dark:text-gray-300"></p>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Recommended Actions</h3>
+                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{{ __("Recommended Actions") }}</h3>
                             <ul id="ai-recommendations-list" class="space-y-2 text-sm text-gray-700 dark:text-gray-300"></ul>
                         </div>
                         <div>
-                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Observed Patterns</h3>
+                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{{ __("Observed Patterns") }}</h3>
                             <ul id="ai-patterns-list" class="space-y-2 text-sm text-gray-700 dark:text-gray-300"></ul>
                         </div>
                         <div>
-                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Risk Flags</h3>
+                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{{ __("Risk Flags") }}</h3>
                             <ul id="ai-risks-list" class="space-y-2 text-sm text-gray-700 dark:text-gray-300"></ul>
                         </div>
                     </div>
@@ -234,7 +232,7 @@
         document.getElementById('load-insights-btn')?.addEventListener('click', async () => {
             const btn = document.getElementById('load-insights-btn');
             btn.disabled = true;
-            document.getElementById('load-insights-label').textContent = 'Analyzing Data...';
+            document.getElementById('load-insights-label').textContent = @js(__('Analyzing Data...'));
             document.getElementById('load-insights-spinner').classList.remove('hidden');
 
             try {
@@ -256,14 +254,18 @@
 
                 const modelNoteEl = document.getElementById('ai-model-note');
                 const modelText = data.model
-                    ? 'Insights written by ' + data.model + '.'
-                    : 'Insights built from the data with built-in rules (AI unavailable).';
-                modelNoteEl.innerHTML = (modelIcon ? modelIcon : '') + '<span>' + modelText + '</span>';
+                    ? @js(__('Insights written by :model.', ['model' => '__MODEL__'])).replace('__MODEL__', data.model)
+                    : @js(__('Insights built from the data with built-in rules (AI unavailable).'));
+                modelNoteEl.replaceChildren();
+                if (modelIcon) modelNoteEl.insertAdjacentHTML('beforeend', modelIcon);
+                const noteText = document.createElement('span');
+                noteText.textContent = modelText;
+                modelNoteEl.append(noteText);
 
                 document.getElementById('ai-insights-prompt').classList.add('hidden');
                 document.getElementById('ai-insights-results').classList.remove('hidden');
             } catch (err) {
-                document.getElementById('load-insights-label').textContent = 'Failed \u2014 Try Again';
+                document.getElementById('load-insights-label').textContent = @js(__('Failed — Try Again'));
                 document.getElementById('load-insights-spinner').classList.add('hidden');
                 btn.disabled = false;
             }
