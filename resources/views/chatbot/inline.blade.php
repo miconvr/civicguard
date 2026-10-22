@@ -109,7 +109,7 @@
         }
     </style>
 
-    <div id="chat-widget" @keydown.escape.window="if (chatOpen) { document.getElementById('chat-input')?.blur(); leaveMobileChatMode(); chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="cg-chat-shell my-6 overflow-hidden rounded-2xl border border-maroon-900/10 cg-surface-raised shadow-lg shadow-maroon-950/5 dark:border-white/10 dark:shadow-black/20">
+    <div id="chat-widget" @keydown.escape.window="if (chatOpen) { document.getElementById('chat-input')?.blur(); chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="cg-chat-shell my-6 overflow-hidden rounded-2xl border border-maroon-900/10 cg-surface-raised shadow-lg shadow-maroon-950/5 dark:border-white/10 dark:shadow-black/20">
         <div x-show="!chatOpen" x-cloak class="flex flex-col gap-4 bg-gradient-to-br from-maroon-800 via-maroon-700 to-[#9a3450] px-5 py-5 text-white sm:flex-row sm:items-center sm:px-7">
             <div class="flex min-w-0 flex-1 items-center gap-3">
                 <span class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/25 bg-white/95 shadow-sm" aria-hidden="true">
@@ -135,7 +135,7 @@
                         <p class="text-sm font-semibold tracking-wide">{{ __('CivicGuard AI') }}</p>
                         <p class="mt-0.5 flex items-center gap-1.5 text-xs text-white/75"><span class="h-1.5 w-1.5 rounded-full bg-emerald-300" aria-hidden="true"></span>{{ __('Your report-writing assistant') }}</p>
                     </div>
-                    <button id="chat-keyboard-dismiss" type="button" @click="document.getElementById('chat-input')?.blur(); leaveMobileChatMode(); chatOpen = false; $nextTick(() => $refs.chatToggle.focus())" aria-label="{{ __('Close chat') }}" title="{{ __('Close chat') }}" class="cg-motion-lift inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 text-white/90 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+                    <button id="chat-close" type="button" @click="document.getElementById('chat-input')?.blur(); chatOpen = false; $nextTick(() => $refs.chatToggle.focus())" aria-label="{{ __('Close chat') }}" title="{{ __('Close chat') }}" class="cg-motion-lift inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 text-white/90 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
                         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="m6 6 12 12M18 6 6 18"/></svg>
                     </button>
                 </div>
@@ -171,7 +171,6 @@
         const sendBtn = document.getElementById('chat-send');
         const sendButtonLabels = {{ Js::from(['send' => __('Send'), 'sending' => __('Sending...')]) }};
         const log = document.getElementById('chat-log');
-        const chatWidget = document.getElementById('chat-widget');
         let chatScrollFrame = null;
         const providerAttributions = {{ Js::from([
             'gemini' => __('Gemini is a trademark of Google LLC. CivicGuard is not affiliated with or endorsed by Google.'),
@@ -209,52 +208,11 @@
                 chatScrollFrame = null;
             });
         }
-        function keepInitialGreetingVisible() {
-            if (log.childElementCount !== 1) return;
-
-            // iOS Safari can scroll the conversation while resizing around the keyboard.
-            log.scrollTop = 0;
-            window.requestAnimationFrame(() => {
-                if (log.childElementCount === 1) log.scrollTop = 0;
-            });
-        }
-
-        function syncMobileChatViewport() {
-            if (!chatWidget.classList.contains('cg-chat-keyboard-mode')) return;
-            const viewport = window.visualViewport;
-            const viewportHeight = viewport?.height ?? window.innerHeight;
-            chatWidget.style.setProperty('--cg-chat-widget-height', `${viewportHeight}px`);
-            keepInitialGreetingVisible();
-        }
-
-        function enterMobileChatMode() {
-            if (!window.matchMedia('(max-width: 639px)').matches) return;
-            chatWidget.classList.add('cg-chat-keyboard-mode');
-            document.documentElement.classList.add('cg-chat-keyboard-open');
-            syncMobileChatViewport();
-        }
-
-        function leaveMobileChatMode() {
-            chatWidget.classList.remove('cg-chat-keyboard-mode');
-            document.documentElement.classList.remove('cg-chat-keyboard-open');
-            chatWidget.style.removeProperty('--cg-chat-widget-height');
-        }
-
-        input.addEventListener('focus', enterMobileChatMode);
         sendBtn.addEventListener('pointerdown', (event) => {
             if (window.matchMedia('(max-width: 639px)').matches && document.activeElement === input) {
-                // Keep the textarea focused so tapping Send does not collapse the mobile chat.
+                // Keep the textarea focused so tapping Send doesn't dismiss the keyboard.
                 event.preventDefault();
             }
-        });
-        input.addEventListener('blur', () => window.setTimeout(() => {
-            if (!chatWidget.contains(document.activeElement)) leaveMobileChatMode();
-        }, 0));
-        window.visualViewport?.addEventListener('resize', syncMobileChatViewport);
-        window.visualViewport?.addEventListener('scroll', syncMobileChatViewport);
-        window.addEventListener('resize', () => {
-            if (!window.matchMedia('(max-width: 639px)').matches) leaveMobileChatMode();
-            else syncMobileChatViewport();
         });
         const reviewText = {{ Js::from([
             'title' => __('Review Before Submitting'),
@@ -793,9 +751,7 @@
         }
 
         function setBusy(busy) {
-            // Keep mobile focus while waiting so the keyboard-sized chat layout stays put.
-            input.readOnly = busy;
-            input.setAttribute('aria-busy', busy ? 'true' : 'false');
+            // Keep the composer usable while the reply loads; the send guard prevents duplicates.
             sendBtn.disabled = busy;
             sendBtn.setAttribute('aria-busy', busy ? 'true' : 'false');
             sendBtn.setAttribute('aria-label', busy ? sendButtonLabels.sending : sendButtonLabels.send);
