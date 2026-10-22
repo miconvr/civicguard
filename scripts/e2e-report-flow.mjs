@@ -220,7 +220,9 @@ try {
     );
 
     await officialPage.goto(`${baseUrl}/`);
-    await officialPage.locator('header button[aria-pressed]').click();
+    // The public header is intentionally hidden while the landing hero is in view.
+    // Use the visible language toggle in the hero strip instead.
+    await officialPage.locator('.cg-hero-strip button[aria-pressed]').click();
     await officialPage.waitForFunction(() => document.documentElement.lang === 'tl');
     const publicTagalogFailures = await auditTagalogLayouts(officialPage, ['/'], 'public');
 
