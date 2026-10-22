@@ -33,6 +33,7 @@ class ConsolidatedReportController extends Controller
             ->latest('apprehension_datetime')
             ->get();
         $canViewAudit = in_array(auth()->user()?->role, ['admin', 'official'], true);
+        $isTanod = auth()->user()?->role === 'tanod';
         $auditLogs = $canViewAudit
             ? AuditLog::with('user')->latest()->limit(100)->get()
             : collect();
@@ -47,6 +48,7 @@ class ConsolidatedReportController extends Controller
             'curfewLogs' => $curfewLogs,
             'auditLogs' => $auditLogs,
             'canViewAudit' => $canViewAudit,
+            'isTanod' => $isTanod,
             'totalReports' => $reports->count(),
             'resolvedCount' => $resolvedReports->count(),
             'assignedCount' => $reports->whereNotNull('assigned_to')->count(),
