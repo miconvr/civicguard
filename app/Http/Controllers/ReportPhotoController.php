@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ReportPhotoController extends Controller
@@ -21,7 +22,7 @@ class ReportPhotoController extends Controller
         ]);
     }
 
-    public function assignedTanodAvatar(\Illuminate\Http\Request $request, Report $report)
+    public function assignedTanodAvatar(Request $request, Report $report)
     {
         $viewer = auth()->user();
         abort_unless($viewer->role !== 'resident' || (int) $report->user_id === (int) $viewer->id, 403);
