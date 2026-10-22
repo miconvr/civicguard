@@ -46,6 +46,23 @@ test('a tanod queue lists only their assigned reports', function () {
         ->assertDontSee('Other Street Bravo');
 });
 
+test('tanod queue summary counts exclude reports they cannot see', function () {
+    $tanod = User::factory()->create(['role' => 'tanod']);
+    $unrelatedReport = tanodTestReport([
+        'severity' => 'critical',
+        'status' => 'pending',
+    ]);
+    $unrelatedReport->created_at = now()->subDays(3);
+    $unrelatedReport->save();
+
+    $this->actingAs($tanod)
+        ->get(route('admin.dashboard'))
+        ->assertOk()
+        ->assertSee('data-testid="queue-stat-value-critical">0</div>', false)
+        ->assertSee('data-testid="queue-stat-value-unassigned">0</div>', false)
+        ->assertSee('data-testid="queue-stat-value-overdue">0</div>', false);
+});
+
 test('an official can open details of any report', function () {
     $official = User::factory()->create(['role' => 'official']);
     $report = tanodTestReport();
