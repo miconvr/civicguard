@@ -36,7 +36,7 @@
 <p>Reports and audit log entries are kept for as long as the barangay needs them for its records and to handle incidents. If you want to know how long a particular record is kept, ask the barangay using the contact details below.</p>
 
 <h2 class="mt-8 text-xl font-semibold">Your rights</h2>
-<p>You may ask to see the data we hold about you, correct it, object to its processing, or have it deleted, and you may complain to the National Privacy Commission. Residents can delete their own account from Profile, then Delete Account. Deleting your account also deletes the reports you filed and their photos. Entries in the audit log are kept, without your name attached. Staff accounts are removed by the barangay administrator on request.</p>
+<p>You may ask to see the data we hold about you, correct it, object to its processing, or have it deleted, and you may complain to the National Privacy Commission. Residents can delete their own account from Profile, then Delete Account. Deleting your account also deletes the reports you filed, their photos, and any stored chatbot messages linked to your account. Entries in the audit log are kept without your name attached. Staff accounts are removed by the barangay administrator on request.</p>
 
 <h2 class="mt-8 text-xl font-semibold">Security</h2>
 <p>Passwords are stored hashed, access is limited by role, and the site uses HTTPS. No system is perfectly secure, so please use a strong password.</p>
