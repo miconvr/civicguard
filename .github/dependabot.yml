@@ -4,11 +4,34 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-type: all
+        update-types: [version-update:semver-patch, version-update:semver-minor]
+    groups:
+      composer-updates:
+        patterns: ['*']
+
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-type: all
+        update-types: [version-update:semver-patch, version-update:semver-minor]
+    groups:
+      npm-updates:
+        patterns: ['*']
+
   - package-ecosystem: github-actions
-    directory: /.github/workflows
+    directory: /
     schedule:
       interval: weekly
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-type: all
+        update-types: [version-update:semver-patch, version-update:semver-minor]
+    groups:
+      actions-updates:
+        patterns: ['*']
