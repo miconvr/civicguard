@@ -2224,3 +2224,53 @@ html.cg-theme-switching *::before,
 html.cg-theme-switching *::after {
     transition: none !important;
 }
+
+
+@layer components {
+    .cg-verification-tab {
+        border-color: #cfc7bd;
+        background-color: #fffdfa;
+        color: #3f3935;
+    }
+
+    .cg-verification-tab:hover {
+        background-color: #f3eee8;
+    }
+
+    .cg-verification-tab[aria-current="page"] {
+        border-color: #6b1d35;
+        background-color: #6b1d35;
+        color: #fff;
+    }
+
+    .cg-verification-tab-count {
+        background-color: #eee9e3;
+        color: #4b443f;
+    }
+
+    .cg-verification-tab[aria-current="page"] .cg-verification-tab-count {
+        background-color: rgb(255 255 255 / 15%);
+        color: #fff;
+    }
+
+    .dark .cg-verification-tab {
+        border-color: #57534e;
+        background-color: #292524;
+        color: #e7e5e4;
+    }
+
+    .dark .cg-verification-tab:hover {
+        background-color: #3a3330;
+    }
+
+    .dark .cg-verification-tab[aria-current="page"] {
+        border-color: #8f1d39;
+        background-color: #8f1d39;
+        color: #fff;
+    }
+
+    .dark .cg-verification-tab-count {
+        background-color: rgb(255 255 255 / 10%);
+        color: #e7e5e4;
+    }
+}
