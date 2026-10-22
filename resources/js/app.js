@@ -341,18 +341,39 @@ if ('serviceWorker' in navigator) {
     const root = document.documentElement;
     root.classList.add('cg-nav-js');
     let ticking = false;
+    let suppressRestoredTransition = false;
     const update = () => {
         ticking = false;
-        root.classList.toggle('cg-nav-on', hero.getBoundingClientRect().bottom < window.innerHeight * 0.6);
+        const shouldShow = hero.getBoundingClientRect().bottom < window.innerHeight * 0.6;
+        const wasShown = root.classList.contains('cg-nav-on');
+        root.classList.toggle('cg-nav-on', shouldShow);
+
+        // A page restored from iOS Safari's back-forward cache can retain a
+        // stale composited frame for this fixed, transformed header. Suppress
+        // only the first state change after restoration, then keep normal
+        // navbar motion for subsequent scrolling.
+        if (suppressRestoredTransition && wasShown !== shouldShow) {
+            suppressRestoredTransition = false;
+            requestAnimationFrame(() => root.classList.remove('cg-nav-restoring'));
+        }
     };
     const request = () => {
         if (!ticking) { ticking = true; requestAnimationFrame(update); }
     };
     window.addEventListener('scroll', request, { passive: true });
     window.addEventListener('resize', request);
-    // iOS can restore this page from the back-forward cache without rerunning
-    // initialization or firing a scroll event. Recompute the navbar state
-    // after the restored scroll position is applied.
-    window.addEventListener('pageshow', update);
+    // iOS can restore this page from the back-forward cache with a stale
+    // composited header frame. Let restored scroll position settle, then
+    // suppress the transition for the first navbar state change only.
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            suppressRestoredTransition = true;
+            root.classList.add('cg-nav-restoring');
+            requestAnimationFrame(() => requestAnimationFrame(update));
+            return;
+        }
+
+        update();
+    });
     update();
 })();
