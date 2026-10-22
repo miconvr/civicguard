@@ -62,9 +62,18 @@
                                     <td data-label="Action">
                                         <span class="inline-flex max-w-full whitespace-normal break-words rounded-full px-2.5 py-1 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
                                             {{ match ($auditLog->action) {
+                                                'report_resolved' => __('Report resolved'),
                                                 'report_status_changed' => __('Status changed'),
                                                 'report_confirmed_fixed' => __('Confirmed fixed'),
-                                                default => ucwords(str_replace('_', ' ', $auditLog->action)),
+                                                'report_assigned' => __('Report assigned'),
+                                                'resident_verified' => __('Resident verified'),
+                                                'residence_verification_rejected' => __('Residence verification rejected'),
+                                                'report_severity_changed' => __('Severity changed'),
+                                                'report_submitted' => __('Report submitted'),
+                                                'report_reopened' => __('Report reopened'),
+                                                'staff_created' => __('Staff account created'),
+                                                'curfew_logged' => __('Curfew violation logged.'),
+                                                default => __(ucwords(str_replace('_', ' ', $auditLog->action))),
                                             } }}
                                         </span>
                                     </td>
