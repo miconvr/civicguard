@@ -34,6 +34,17 @@ env:
   PHPIX_PHP_THREADS: '4'
 
 jobs:
+  # Wasmer retained the original hook when the migration job was renamed.
+  # Keep this legacy entry as a noninteractive no-op so it cannot block deploys.
+  - name: after_deploy
+    trigger: post-deployment
+    action:
+      execute:
+        command: php
+        cli_args:
+          - -r
+          - exit(0);
+        timeout: 30s
   - name: run-laravel-migrations
     trigger: post-deployment
     action:
