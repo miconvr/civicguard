@@ -37,7 +37,7 @@
                         </div>
                         <div class="py-3 flex justify-between">
                             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __("Apprehension Date/Time") }}</dt>
-                            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ \Carbon\Carbon::parse($report->curfewLog->apprehension_datetime)->format('M d, Y g:i A') }}</dd>
+                            <dd class="text-sm text-gray-900 dark:text-gray-100">{{ \App\Support\LocalizedDate::format(\Carbon\Carbon::parse($report->curfewLog->apprehension_datetime), 'M d, Y g:i A') }}</dd>
                         </div>
                         <div class="py-3 flex justify-between">
                             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __("Location") }}</dt>

@@ -40,7 +40,7 @@
                                             @unless ($notification->is_read)<span class="sr-only">{{ __('Unread') }}: </span>@endunless
                                             {{ $notification->message }}
                                         </span>
-                                        <span class="mt-0.5 block text-sm text-gray-600 dark:text-gray-400">{{ $notification->created_at->diffForHumans() }}</span>
+                                        <span class="mt-0.5 block text-sm text-gray-600 dark:text-gray-400">{{ \App\Support\LocalizedDate::relative($notification->created_at) }}</span>
                                     </span>
                                     <span class="mt-1 text-gray-400" aria-hidden="true">&rsaquo;</span>
                                 </button>

@@ -96,7 +96,7 @@
                                         'sevClass' => 'cg-sev-' . $report->severity,
                                         'status' => __(ucwords(str_replace('_', ' ', $report->status))),
                                         'assigned_to' => (string) $report->assigned_to,
-                                        'filed' => $report->created_at->format('M d, Y g:i A'),
+                                        'filed' => \App\Support\LocalizedDate::format($report->created_at, 'M d, Y g:i A'),
                                         'photo' => $report->photo_path ? route('admin.reports.photo', $report) : null,
                                         'lat' => $report->latitude,
                                         'lng' => $report->longitude,
@@ -121,7 +121,7 @@
                                         </div>
                                     </td>
                                     <td data-label="Age" class="whitespace-nowrap {{ $stale ? 'font-semibold text-red-700 dark:text-red-400' : '' }}">
-                                        {{ $report->created_at->diffForHumans() }}
+                                        {{ \App\Support\LocalizedDate::relative($report->created_at) }}
                                     </td>
                                     <td data-label="Status">
                                         <span class="rounded-full px-2.5 py-1 text-xs font-medium {{ $statusPill }}">

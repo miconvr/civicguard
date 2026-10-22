@@ -78,7 +78,7 @@
                                 <a href="{{ route('admin.reports.details', $report) }}" class="flex min-h-[64px] items-center justify-between gap-3 py-3">
                                     <span class="min-w-0">
                                         <span class="block truncate font-medium text-gray-900 dark:text-gray-100">{{ $report->category->name }}</span>
-                                        <span class="block truncate text-sm cg-muted">{{ \Illuminate\Support\Str::title($report->location_text) }} &middot; {{ $report->created_at->diffForHumans() }}</span>
+                                        <span class="block truncate text-sm cg-muted">{{ \Illuminate\Support\Str::title($report->location_text) }} &middot; {{ \App\Support\LocalizedDate::relative($report->created_at) }}</span>
                                     </span>
                                     <span class="cg-sev cg-sev-{{ $report->severity }}">{{ __(ucfirst($report->severity)) }}</span>
                                 </a>
@@ -115,7 +115,7 @@
                                 <a href="{{ route('admin.reports.details', $report) }}" class="flex min-h-[56px] items-center justify-between gap-3 px-3 py-2.5 -mx-3 rounded-lg transition-colors duration-[var(--cg-motion-interaction)] hover:bg-stone-100/70 dark:hover:bg-white/5">
                                     <span class="min-w-0">
                                         <span class="block truncate font-medium text-gray-900 dark:text-gray-100">{{ $report->category->name }}</span>
-                                        <span class="block truncate text-sm cg-muted">{{ \Illuminate\Support\Str::title($report->location_text) }} &middot; {{ $report->created_at->diffForHumans() }}</span>
+                                        <span class="block truncate text-sm cg-muted">{{ \Illuminate\Support\Str::title($report->location_text) }} &middot; {{ \App\Support\LocalizedDate::relative($report->created_at) }}</span>
                                     </span>
                                     <span class="flex items-center gap-3">
                                         <span class="cg-sev cg-sev-{{ $report->severity }}">{{ __(ucfirst($report->severity)) }}</span>

@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1>CivicGuard {{ __($title) }}</h1>
-    <div class="generated">{{ __('Generated') }} {{ now()->format('M d, Y g:i A') }}</div>
+    <div class="generated">{{ __('Generated') }} {{ \App\Support\LocalizedDate::format(now(), 'M d, Y g:i A') }}</div>
 
     <table>
         <thead>
@@ -52,7 +52,7 @@
                             -
                         @endif
                     </td>
-                    <td>{{ $isResolved ? ($report->resolved_at?->format('M d, Y g:i A') ?? '-') : $report->created_at->format('M d, Y g:i A') }}</td>
+                    <td>{{ $isResolved ? ($report->resolved_at ? \App\Support\LocalizedDate::format($report->resolved_at, 'M d, Y g:i A') : '-') : \App\Support\LocalizedDate::format($report->created_at, 'M d, Y g:i A') }}</td>
                 </tr>
             @empty
                 <tr>

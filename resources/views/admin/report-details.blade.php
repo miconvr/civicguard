@@ -42,7 +42,7 @@
                         <li>
                             <div class="h-1.5 rounded-full {{ $done ? 'cg-bar-fill bg-maroon-700 dark:bg-[#b56764]' : 'bg-gray-200 dark:bg-gray-700' }}" @if ($done) style="--cg-bar-delay: {{ $loop->index * 140 + 250 }}ms" @endif></div>
                             <p class="mt-1.5 text-xs {{ $done ? 'font-semibold text-gray-900 dark:text-gray-100' : 'cg-muted' }}">{{ __($label) }}</p>
-                            @if ($at)<p class="text-[11px] leading-tight cg-muted">{{ $at->format('M d') }}<br>{{ $at->format('g:i A') }}</p>@endif
+                            @if ($at)<p class="text-[11px] leading-tight cg-muted">{{ \App\Support\LocalizedDate::format($at, 'M d') }}<br>{{ \App\Support\LocalizedDate::format($at, 'g:i A') }}</p>@endif
                         </li>
                     @endforeach
                 </ol>
@@ -54,7 +54,7 @@
                             <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-amber-500" aria-hidden="true"></span>
                             <div>
                                 <p class="font-medium text-gray-800 dark:text-gray-200">{{ __('Report submitted') }} · {{ __('Pending') }}</p>
-                                <p class="text-xs cg-muted">{{ $report->created_at->format('M d, Y g:i A') }}</p>
+                                <p class="text-xs cg-muted">{{ \App\Support\LocalizedDate::format($report->created_at, 'M d, Y g:i A') }}</p>
                             </div>
                         </li>
                         @foreach ($statusUpdates as $update)
@@ -75,7 +75,7 @@
                                         @endif
                                         {{ __(ucwords(str_replace('_', ' ', $status ?? 'Status changed'))) }}
                                     </p>
-                                    <p class="text-xs cg-muted">{{ $update->user->name ?? __('System') }} · {{ $update->created_at->format('M d, Y g:i A') }}</p>
+                                    <p class="text-xs cg-muted">{{ $update->user->name ?? __('System') }} · {{ \App\Support\LocalizedDate::format($update->created_at, 'M d, Y g:i A') }}</p>
                                 </div>
                             </li>
                         @endforeach
@@ -160,12 +160,12 @@
                         <dl class="space-y-3 text-sm">
                             <div><dt class="cg-muted">{{ __('Reported by') }}</dt><dd class="font-medium text-gray-900 dark:text-gray-100">{{ $report->user->name }}</dd></div>
                             <div><dt class="cg-muted">{{ __('Assigned to') }}</dt><dd class="font-medium text-gray-900 dark:text-gray-100">{{ $report->assignedTo->name ?? __('Not yet assigned') }}</dd></div>
-                            <div><dt class="cg-muted">{{ __('Filed') }}</dt><dd class="font-medium text-gray-900 dark:text-gray-100">{{ $report->created_at->format('M d, Y g:i A') }}</dd></div>
+                            <div><dt class="cg-muted">{{ __('Filed') }}</dt><dd class="font-medium text-gray-900 dark:text-gray-100">{{ \App\Support\LocalizedDate::format($report->created_at, 'M d, Y g:i A') }}</dd></div>
                             @if ($report->resolved_at)
-                                <div><dt class="cg-muted">{{ __('Resolved') }}</dt><dd class="font-medium text-gray-900 dark:text-gray-100">{{ $report->resolved_at->format('M d, Y g:i A') }}</dd></div>
+                                <div><dt class="cg-muted">{{ __('Resolved') }}</dt><dd class="font-medium text-gray-900 dark:text-gray-100">{{ \App\Support\LocalizedDate::format($report->resolved_at, 'M d, Y g:i A') }}</dd></div>
                             @endif
                             @if ($report->confirmed_at)
-                                <div><dt class="cg-muted">{{ __('Confirmed fixed') }}</dt><dd class="font-medium text-green-700 dark:text-green-400">{{ $report->confirmed_at->format('M d, Y') }}</dd></div>
+                                <div><dt class="cg-muted">{{ __('Confirmed fixed') }}</dt><dd class="font-medium text-green-700 dark:text-green-400">{{ \App\Support\LocalizedDate::format($report->confirmed_at, 'M d, Y') }}</dd></div>
                             @endif
                             @if ($report->reopen_count > 0)
                                 <div><dt class="cg-muted">{{ __('Reopened') }}</dt><dd class="font-medium text-amber-700 dark:text-amber-400">{{ $report->reopen_count }}x</dd></div>
@@ -181,8 +181,8 @@
                         <ul class="space-y-3 text-sm">
                             @forelse ($history->reverse() as $log)
                                 <li>
-                                    <p class="text-gray-800 dark:text-gray-200">{{ $log->description }}</p>
-                                    <p class="text-xs cg-muted">{{ $log->user->name ?? __('System') }} &middot; {{ $log->created_at->format('M d, g:i A') }}</p>
+                                    <p class="text-gray-800 dark:text-gray-200">{{ $log->localized_description ?? '-' }}</p>
+                                    <p class="text-xs cg-muted">{{ $log->user->name ?? __('System') }} &middot; {{ \App\Support\LocalizedDate::format($log->created_at, 'M d, g:i A') }}</p>
                                 </li>
                             @empty
                                 <li class="cg-muted">{{ __('No activity yet.') }}</li>

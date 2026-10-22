@@ -53,7 +53,7 @@
                         </div>
 
                         <p class="mt-2 line-clamp-2 text-sm text-gray-700 dark:text-gray-300">{{ $report->description }}</p>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('Filed') }} {{ $report->created_at->format('M d, Y g:i A') }}</p>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('Filed') }} {{ \App\Support\LocalizedDate::format($report->created_at, 'M d, Y g:i A') }}</p>
 
                         <button type="button" @click="detailsOpen = !detailsOpen" :aria-expanded="detailsOpen.toString()"
                                 class="mt-3 inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-medium text-maroon-700 transition hover:bg-maroon-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon-600 dark:text-[#d59690] dark:hover:bg-white/5">
@@ -116,18 +116,18 @@
                                         <span class="sr-only">{{ $step['done'] ? __('(done)') : __('(not yet)') }}</span>
                                     </p>
                                     @if ($step['at'])
-                                        <p class="text-[11px] leading-tight text-gray-500 dark:text-gray-400">{{ $step['at']->format('M d') }}<br>{{ $step['at']->format('g:i A') }}</p>
+                                        <p class="text-[11px] leading-tight text-gray-500 dark:text-gray-400">{{ \App\Support\LocalizedDate::format($step['at'], 'M d') }}<br>{{ \App\Support\LocalizedDate::format($step['at'], 'g:i A') }}</p>
                                     @endif
                                 </li>
                             @endforeach
                         </ol>
                         @if ($report->status === 'resolved' && $report->resolved_at)
                             @if ($report->confirmed_at)
-                                <p class="mt-4 rounded-lg bg-green-50 dark:bg-green-900/30 px-3 py-2 text-sm text-green-800 dark:text-green-300">{{ __('Confirmed fixed') }} &middot; {{ $report->confirmed_at->format('M d, Y') }}</p>
+                                <p class="mt-4 rounded-lg bg-green-50 dark:bg-green-900/30 px-3 py-2 text-sm text-green-800 dark:text-green-300">{{ __('Confirmed fixed') }} &middot; {{ \App\Support\LocalizedDate::format($report->confirmed_at, 'M d, Y') }}</p>
                             @elseif ($report->resolved_at->gt(now()->subDays(7)))
                                 <div class="mt-4 border-t border-gray-200 pt-4 dark:border-gray-700">
                                     <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('Was this fixed?') }}</p>
-                                    <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('You can respond until') }} {{ $report->resolved_at->copy()->addDays(7)->format('M d') }}.</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">{{ __('You can respond until') }} {{ \App\Support\LocalizedDate::format($report->resolved_at->copy()->addDays(7), 'M d') }}.</p>
                                     <div class="mt-2 flex flex-wrap gap-2">
                                         <form method="POST" action="{{ route('reports.confirm', $report) }}">
                                             @csrf
