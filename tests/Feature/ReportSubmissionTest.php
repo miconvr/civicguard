@@ -73,6 +73,114 @@ test('a resident can submit an incident report and is sent to my reports', funct
         ->assertSee('A karaoke gathering continued past midnight near the court.');
 });
 
+test('a resident can confirm a resolved report was fixed', function () {
+    $resident = User::factory()->create(['role' => 'resident']);
+    $category = ReportCategory::create([
+        'name' => 'Test Resolved Report',
+        'default_severity' => 'low',
+    ]);
+    $report = Report::create([
+        'user_id' => $resident->id,
+        'category_id' => $category->id,
+        'description' => 'A resolved issue that the resident can confirm.',
+        'location_text' => 'Purok E2E, beside the community hall',
+        'severity' => 'low',
+        'status' => 'resolved',
+        'resolved_at' => now()->subHour(),
+    ]);
+
+    $this->actingAs($resident)
+        ->post(route('reports.confirm', $report))
+        ->assertRedirect(route('reports.index'))
+        ->assertSessionHas('status', __('Thank you for confirming.'));
+
+    expect($report->fresh()->confirmed_at)->not->toBeNull();
+    expect(AuditLog::query()
+        ->where('user_id', $resident->id)
+        ->where('action', 'report_confirmed_fixed')
+        ->where('auditable_id', $report->id)
+        ->exists())->toBeTrue();
+
+    $this->get(route('reports.index'))
+        ->assertOk()
+        ->assertSee('Purok E2E, beside the community hall')
+        ->assertSee(__('Confirmed fixed'));
+});
+
+test('a resident can remove an untouched pending report and the deletion is audited', function () {
+    $resident = User::factory()->create(['role' => 'resident']);
+    $category = ReportCategory::create([
+        'name' => 'Test Pending Report',
+        'default_severity' => 'low',
+    ]);
+    $report = Report::create([
+        'user_id' => $resident->id,
+        'category_id' => $category->id,
+        'description' => 'A report submitted by mistake.',
+        'location_text' => 'Purok 4',
+        'severity' => 'low',
+        'status' => 'pending',
+    ]);
+
+    $this->actingAs($resident)
+        ->get(route('reports.index'))
+        ->assertOk()
+        ->assertSee(__('Remove report'));
+
+    $this->actingAs($resident)
+        ->delete(route('reports.destroyPending', $report))
+        ->assertRedirect(route('reports.index'))
+        ->assertSessionHas('status', __('Your pending report was removed.'));
+
+    expect(Report::query()->find($report->id))->toBeNull()
+        ->and(AuditLog::query()
+            ->where('action', 'report_deleted')
+            ->where('auditable_id', $report->id)
+            ->exists())->toBeTrue();
+});
+
+test('a resident cannot remove another resident report or one staff has started handling', function () {
+    $resident = User::factory()->create(['role' => 'resident']);
+    $otherResident = User::factory()->create(['role' => 'resident']);
+    $category = ReportCategory::create([
+        'name' => 'Test Protected Report',
+        'default_severity' => 'low',
+    ]);
+    $otherReport = Report::create([
+        'user_id' => $otherResident->id,
+        'category_id' => $category->id,
+        'description' => 'A report owned by another resident.',
+        'location_text' => 'Purok 5',
+        'severity' => 'low',
+        'status' => 'pending',
+    ]);
+    $handledReport = Report::create([
+        'user_id' => $resident->id,
+        'category_id' => $category->id,
+        'description' => 'A report staff have started handling.',
+        'location_text' => 'Purok 6',
+        'severity' => 'low',
+        'status' => 'pending',
+    ]);
+    AuditLog::create([
+        'user_id' => User::factory()->create(['role' => 'official'])->id,
+        'action' => 'report_status_changed',
+        'auditable_type' => Report::class,
+        'auditable_id' => $handledReport->id,
+        'description' => 'Report status changed to pending.',
+    ]);
+
+    $this->actingAs($resident)
+        ->delete(route('reports.destroyPending', $otherReport))
+        ->assertNotFound();
+
+    $this->delete(route('reports.destroyPending', $handledReport))
+        ->assertUnprocessable();
+
+    expect(Report::query()->find($otherReport->id))->not->toBeNull()
+        ->and(Report::query()->find($handledReport->id))->not->toBeNull();
+});
+
 test('urgency keywords raise severity when gemini is unavailable', function () {
     $this->mock(AiRouter::class)
         ->shouldReceive('generateText')
