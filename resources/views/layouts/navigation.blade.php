@@ -144,16 +144,18 @@
                      id="account-menu" aria-label="{{ __('Account menu') }}" role="group"
                      :class="collapsed ? 'lg:w-64' : ''"
                      class="absolute bottom-full left-0 right-0 mb-2 rounded-xl border border-stone-200 cg-surface-raised py-1 shadow-lg dark:border-gray-700">
-                    <div class="px-4 pt-1 pb-1">
-                        <span class="text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400">{{ __('Language') }}</span>
-                    </div>
-                    @foreach (['en' => __('English'), 'tl' => __('Tagalog')] as $code => $name)
-                        <a href="{{ route('locale.switch', $code) }}" class="flex items-center justify-between px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5" @if (app()->getLocale() === $code) aria-current="true" @endif>
-                            <span>{{ $name }}</span>
-                            @if (app()->getLocale() === $code) <span aria-hidden="true">&#10003;</span> @endif
-                        </a>
-                    @endforeach
-                    <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
+                    @if ($role === 'resident')
+                        <div class="px-4 pt-1 pb-1">
+                            <span class="text-[11px] font-semibold uppercase tracking-wider text-stone-500 dark:text-gray-400">{{ __('Language') }}</span>
+                        </div>
+                        @foreach (['en' => __('English'), 'tl' => __('Tagalog')] as $code => $name)
+                            <a href="{{ route('locale.switch', $code) }}" class="flex items-center justify-between px-4 py-3 lg:py-2 text-sm text-stone-700 hover:bg-stone-100 dark:text-gray-200 dark:hover:bg-white/5" @if (app()->getLocale() === $code) aria-current="true" @endif>
+                                <span>{{ $name }}</span>
+                                @if (app()->getLocale() === $code) <span aria-hidden="true">&#10003;</span> @endif
+                            </a>
+                        @endforeach
+                        <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
+                    @endif
                     <button type="button" role="switch" aria-label="{{ __('Toggle dark mode') }}" :aria-checked="darkMode.toString()" @click="document.documentElement.classList.add('cg-theme-switching'); darkMode = !darkMode; requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.remove('cg-theme-switching')))"
                             class="flex min-h-11 w-full items-center justify-between px-4 py-2 text-left text-sm text-stone-700 transition-colors hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-maroon-700 dark:text-gray-200 dark:hover:bg-white/5">
                         <span class="flex items-center gap-2">
