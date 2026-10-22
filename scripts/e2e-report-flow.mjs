@@ -205,7 +205,7 @@ try {
     await drawer.locator('select[name="assigned_to"]').selectOption({ label: 'E2E Tanod' });
     await drawer.locator('select[name="status"]').selectOption('in_progress');
     const officialSaveResponse = officialPage.waitForResponse(response =>
-        response.request().method() === 'PATCH'
+        response.request().method() === 'POST'
             && /^\/admin\/reports\/[^/]+$/.test(new URL(response.url()).pathname),
     );
     const officialSaveNavigation = officialPage.waitForNavigation({ waitUntil: 'domcontentloaded' });
@@ -227,7 +227,7 @@ try {
     await tanodDrawer.waitFor({ state: 'visible' });
     await tanodDrawer.locator('select[name="status"]').selectOption('resolved');
     const tanodSaveResponse = tanodPage.waitForResponse(response =>
-        response.request().method() === 'PATCH'
+        response.request().method() === 'POST'
             && /^\/admin\/reports\/[^/]+$/.test(new URL(response.url()).pathname),
     );
     const tanodSaveNavigation = tanodPage.waitForNavigation({ waitUntil: 'domcontentloaded' });
