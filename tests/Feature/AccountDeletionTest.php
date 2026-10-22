@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\AuditLog;
 use App\Models\Report;
 use App\Models\ReportCategory;
+use App\Models\ResidentVerification;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
@@ -35,4 +37,27 @@ test('staff cannot delete their own account', function () {
 
         $this->assertDatabaseHas('users', ['id' => $user->id]);
     }
+});
+
+test('resident account deletion removes their name from retained verification audit history', function () {
+    $resident = User::factory()->create(['role' => 'resident']);
+    $verification = ResidentVerification::create([
+        'user_id' => $resident->id,
+        'status' => ResidentVerification::VERIFIED,
+        'consented_at' => now(),
+        'submitted_at' => now(),
+        'reviewed_at' => now(),
+    ]);
+    $audit = AuditLog::create([
+        'user_id' => null,
+        'action' => 'resident_verified',
+        'auditable_type' => ResidentVerification::class,
+        'auditable_id' => $verification->id,
+        'description' => "Residence verification approved for {$resident->name} ({$resident->email}).",
+    ]);
+
+    $this->actingAs($resident)->delete('/profile', ['password' => 'password'])->assertRedirect('/');
+
+    expect($audit->fresh()->description)->toBe('Residence verification decision recorded.')
+        ->and($audit->fresh()->description)->not->toContain($resident->email);
 });
