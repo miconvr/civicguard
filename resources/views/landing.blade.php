@@ -9,11 +9,10 @@
         <meta name="description" content="CivicGuard helps Barangay Maimpis residents report incidents and follow updates from barangay staff.">
         <title>{{ config('app.name', 'CivicGuard') }}</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+        <link rel="preload" href="{{ Vite::asset('resources/fonts/Figtree-400.woff2') }}" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="{{ Vite::asset('resources/fonts/Bitter-600.woff2') }}" as="font" type="font/woff2" crossorigin>
         <style>[x-cloak] { display: none !important; }</style>
         <script>document.documentElement.classList.add('cg-nav-js');</script>
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700|bitter:600,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-        <noscript><link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700|bitter:600,700&display=swap" rel="stylesheet"></noscript>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="min-h-[100dvh] bg-paper font-sans antialiased text-ink">

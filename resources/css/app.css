@@ -2,6 +2,46 @@
 @config "../../tailwind.config.js";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@font-face {
+    font-family: "Figtree";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("../fonts/Figtree-400.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Figtree";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("../fonts/Figtree-500.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Figtree";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("../fonts/Figtree-600.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Figtree";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("../fonts/Figtree-700.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Bitter";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("../fonts/Bitter-600.woff2") format("woff2");
+}
+
 @theme {
     --default-transition-duration: var(--cg-motion-interaction);
     --default-transition-timing-function: var(--cg-ease-out);

@@ -6,6 +6,8 @@
     @include('partials.pwa-head')
     <title>@yield('title') - {{ config('app.name', 'CivicGuard') }}</title>
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="preload" href="{{ Vite::asset('resources/fonts/Figtree-400.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ Vite::asset('resources/fonts/Bitter-600.woff2') }}" as="font" type="font/woff2" crossorigin>
     @vite(['resources/css/app.css'])
 </head>
 <body class="bg-white text-gray-900 antialiased">
