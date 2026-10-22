@@ -63,10 +63,19 @@ try {
     const officialPage = await officialContext.newPage();
     captureBrowserErrors(officialPage);
     await signIn(officialPage, 'official.e2e@civicguard.test');
-    await officialPage.goto(`${baseUrl}/admin/dashboard`);
+    // Use the all-reports tab so this flow doesn't depend on the dashboard's
+    // default active filter when checking the freshly submitted report.
+    await officialPage.goto(`${baseUrl}/admin/dashboard?tab=all`);
     const staffAccessibility = await auditAccessibility(officialPage, 'official dashboard');
     assert.equal(staffAccessibility.blockingCount, 0, 'staff dashboard should have no serious/critical accessibility violations');
-    const reportRow = officialPage.getByRole('row').filter({ hasText: location });
+    const reportRows = officialPage.locator('table.cg-queue tbody tr');
+    const reportRow = reportRows.filter({ hasText: location });
+    try {
+        await reportRow.waitFor({ state: 'visible', timeout: 10000 });
+    } catch (error) {
+        console.error('Report was not listed in the staff queue. Current queue rows:', await reportRows.allInnerTexts());
+        throw error;
+    }
     await reportRow.click();
     const drawer = officialPage.getByRole('dialog', { name: 'Report details' });
     await drawer.waitFor({ state: 'visible' });
