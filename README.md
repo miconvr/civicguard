@@ -111,7 +111,7 @@ vendor/bin/pint --test
 
 GitHub Actions runs the test suite, formatter check, and asset build on pushes to `main` and pull requests. A separate workflow checks the production `/up` health endpoint every 15 minutes. Enable workflow failure notifications in GitHub settings if you want alerts.
 
-The production build also checks compressed JavaScript, CSS, landing-page, and font budgets. A weekly GitHub Actions workflow audits the live landing page on a throttled mobile connection and checks page load, layout shift, failed requests, and JavaScript errors. You can run these checks locally with `npm run check:performance` after `npm run build`, or install Chromium with `npx playwright install chromium` and run the live audit with `npm run audit:production`.
+The production build also checks compressed JavaScript, CSS, landing-page, and font budgets. A weekly GitHub Actions workflow audits the live landing page on a throttled mobile connection and checks page load, layout shift, failed requests, JavaScript errors, and cache headers for fingerprinted assets. You can run these checks locally with `npm run check:performance` after `npm run build`, or install Chromium with `npx playwright install chromium` and run the live audit with `npm run audit:production`.
 
 ## Production notes
 
