@@ -25,7 +25,7 @@
             <div class="cg-card">
                 <div class="flex flex-wrap items-start justify-between gap-3">
                     <div class="min-w-0">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ $report->category->name }}</h3>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ __($report->category->name) }}</h3>
                         <p class="cg-muted text-sm">{{ $report->location_text }}</p>
                         @if ($hasCoords)
                             <a href="https://www.google.com/maps?q={{ (float) $report->latitude }},{{ (float) $report->longitude }}" target="_blank" rel="noopener" class="mt-1 inline-block text-sm font-semibold text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('Open in Maps') }} &rarr;</a>

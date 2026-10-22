@@ -70,7 +70,7 @@ class CurfewLogController extends Controller
                 'action' => 'curfew_logged',
                 'auditable_type' => Report::class,
                 'auditable_id' => $report->id,
-                'description' => 'Curfew violation logged.',
+                'description' => __('Curfew violation logged.'),
                 'metadata' => [
                     'minor_age' => $validated['minor_age'] ?? null,
                     'prior_violations_count' => $validated['prior_violations_count'],
@@ -81,6 +81,6 @@ class CurfewLogController extends Controller
             ]);
         });
 
-        return redirect()->route('curfew.create')->with('status', 'Curfew violation logged successfully.');
+        return redirect()->route('curfew.create')->with('status', __('Curfew violation logged successfully.'));
     }
 }
