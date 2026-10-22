@@ -54,6 +54,9 @@ Route::middleware(['auth', 'role:admin,official'])->prefix('admin')->name('admin
     Route::patch('/verifications/{verification}', [AdminResidentVerificationController::class, 'decide'])->name('verifications.decide');
     Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create');
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
+    Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+    Route::get('/analytics/insights', [AnalyticsController::class, 'insights'])->name('analytics.insights');
+    Route::get('/analytics/export/pdf', [AnalyticsController::class, 'exportPdf'])->name('analytics.exportPdf');
 });
 
 Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name('admin.')->group(function () {
@@ -63,9 +66,6 @@ Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name(
     Route::patch('/reports/{report}', [DashboardController::class, 'updateQueueReport'])->name('reports.update');
     Route::patch('/reports/{report}/assign', [DashboardController::class, 'assign'])->name('reports.assign')->middleware('role:admin,official');
     Route::patch('/reports/{report}/severity', [DashboardController::class, 'updateSeverity'])->name('reports.updateSeverity')->middleware('role:admin,official');
-    Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
-    Route::get('/analytics/insights', [AnalyticsController::class, 'insights'])->name('analytics.insights');
-    Route::get('/analytics/export/pdf', [AnalyticsController::class, 'exportPdf'])->name('analytics.exportPdf');
     Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('auditLogs')->middleware('role:admin,official');
     Route::get('/audit-logs/export/pdf', [AuditLogController::class, 'exportPdf'])->name('auditLogs.exportPdf')->middleware('role:admin,official');
     Route::delete('/data/reset', DataResetController::class)->name('data.reset')->middleware('role:admin');
