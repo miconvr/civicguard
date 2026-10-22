@@ -31,8 +31,8 @@
                 <tr>
                     <td>{{ $auditLog->created_at->format('M d, Y g:i A') }}</td>
                     <td>{{ $auditLog->user->name ?? 'System' }}</td>
-                    <td>{{ ucwords(str_replace('_', ' ', $auditLog->action)) }}</td>
-                    <td>{{ $auditLog->description ?? '-' }}</td>
+                    <td>{{ $auditLog->localized_action }}</td>
+                    <td>{{ $auditLog->localized_description ?? '-' }}</td>
                 </tr>
             @empty
                 <tr>

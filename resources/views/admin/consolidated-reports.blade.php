@@ -91,8 +91,8 @@
                                 <tr>
                                     <td data-label="Date" class="whitespace-nowrap">{{ $auditLog->created_at->format('M d, Y g:i A') }}</td>
                                     <td data-label="Actor">{{ $auditLog->user->name ?? 'System' }}</td>
-                                    <td data-label="Action">{{ __(ucwords(str_replace('_', ' ', $auditLog->action))) }}</td>
-                                    <td data-label="Description">{{ $auditLog->description ?? '-' }}</td>
+                                    <td data-label="Action">{{ $auditLog->localized_action }}</td>
+                                    <td data-label="Description">{{ $auditLog->localized_description ?? '-' }}</td>
                                 </tr>
                             @empty
                                 <tr><td colspan="4" class="py-8 text-center text-gray-500">{{ __("No system activity yet.") }}</td></tr>
