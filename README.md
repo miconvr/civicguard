@@ -104,7 +104,7 @@ Before starting Docker, edit `.env` and set a non-empty, unique `DB_PASSWORD`. A
 ./vendor/bin/sail up -d --build
 ./vendor/bin/sail artisan key:generate
 ./vendor/bin/sail artisan migrate --seed
-npm install
+npm ci
 npm run dev
 ```
 
@@ -130,7 +130,9 @@ Check local migration state with `./vendor/bin/sail artisan migrate:status`. Avo
 
 ### Uploaded image storage
 
-Report photos, profile pictures, and pending residence proof images use the private `report_photos` disk. It defaults to `storage/app/public`; for local development, ensure the app can write to that directory. You can set `PHOTO_DISK_ROOT` in `.env` to use a different local directory. The database stores image paths, while image files live on this disk. Verification proof images are deleted after an admin or official records a decision.
+Report photos, profile pictures, and pending residence proof images use the private `report_photos` disk. Locally, files are stored under `storage/app/private`, outside Laravel's public storage link. Ensure the app can write to that directory. In production, set `PHOTO_DISK_ROOT` to a persistent directory that is not served directly by the web server; the Wasmer configuration uses `/data`. The database stores image paths, while image files live on this disk. Verification proof images are deleted after an admin or official records a decision.
+
+If you previously saved uploads under `storage/app/public`, move the `report-photos`, `profile-photos`, and `verification-documents` directories into `storage/app/private`, preserving their names, to keep those files available after updating.
 
 ---
 
