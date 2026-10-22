@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="headerWidth">max-w-3xl</x-slot>
+    <x-slot name="headerWidth">max-w-5xl</x-slot>
     <x-slot name="header">
         <div>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
@@ -10,7 +10,7 @@
     </x-slot>
 
     <div class="py-8">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
             @if (session('status'))
                 <div class="mb-4 flex items-center gap-2 font-medium text-sm text-green-700 bg-green-50 dark:bg-green-900/30 dark:text-green-300 px-4 py-3 rounded-lg" role="status">
                     <span class="t-success-check shrink-0" data-state="in" aria-hidden="true">
@@ -24,7 +24,7 @@
 
             <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <p class="text-sm text-gray-700 dark:text-gray-300">{{ __('Your reports are private to you and barangay staff.') }}</p>
-                <a href="{{ route('reports.create') }}" class="cg-btn self-start sm:self-auto">
+                <a href="{{ route('reports.create') }}" class="cg-btn self-start whitespace-nowrap px-4 text-sm sm:self-auto">
                     {{ __('+ Report New Incident') }}
                 </a>
             </div>

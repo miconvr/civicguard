@@ -26,6 +26,90 @@ async function signIn(page, email) {
     await page.waitForURL('**/dashboard');
 }
 
+async function switchToTagalog(page) {
+    await page.locator('button[aria-controls="account-menu"]').click();
+    await page.locator('#account-menu').getByRole('link', { name: 'Tagalog' }).click();
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForFunction(() => document.documentElement.lang === 'tl');
+}
+
+async function inspectTagalogLayout(page) {
+    return page.evaluate(() => {
+        const visible = element => {
+            const style = getComputedStyle(element);
+            const rect = element.getBoundingClientRect();
+            return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+        };
+        const clippedLabels = [...document.querySelectorAll('button, a[href], [role="button"]')]
+            .filter(element => visible(element) && !element.matches('button[aria-controls="account-menu"]'))
+            .flatMap(element => [element, ...element.querySelectorAll('*')])
+            .filter(element => visible(element) && element.textContent?.trim())
+            .filter(element => {
+                const style = getComputedStyle(element);
+                const isClipped = ['hidden', 'clip'].includes(style.overflowX)
+                    || style.textOverflow === 'ellipsis'
+                    || (style.webkitLineClamp && style.webkitLineClamp !== 'none')
+                    || style.whiteSpace === 'nowrap';
+                return isClipped && element.scrollWidth > element.clientWidth + 2;
+            })
+            .map(element => element.textContent.trim().replace(/\s+/g, ' ').slice(0, 100));
+
+        return {
+            language: document.documentElement.lang,
+            contentWidth: document.documentElement.scrollWidth,
+            viewportWidth: window.innerWidth,
+            clippedLabels: [...new Set(clippedLabels)],
+        };
+    });
+}
+
+async function auditTagalogLayouts(page, paths, role) {
+    const failures = [];
+    const widths = [
+        { name: 'mobile', width: 390 },
+        { name: 'desktop', width: 1280 },
+    ];
+
+    for (const { name, width } of widths) {
+        await page.setViewportSize({ width, height: 900 });
+
+        for (const path of paths) {
+            const response = await page.goto(`${baseUrl}${path}`, { waitUntil: 'domcontentloaded' });
+            if (!response || response.status() >= 400) {
+                failures.push(`${role} ${name} ${path}: returned HTTP ${response?.status() ?? 0}`);
+                continue;
+            }
+
+            await page.evaluate(() => Promise.allSettled(
+                [...document.querySelectorAll('[data-reveal]')]
+                    .flatMap(element => element.getAnimations())
+                    .map(animation => animation.finished),
+            ));
+
+            const recordLayout = async state => {
+                const layout = await inspectTagalogLayout(page);
+                if (layout.language !== 'tl') failures.push(`${role} ${name} ${path} ${state}: locale is ${layout.language || 'unset'}, expected tl`);
+                if (layout.contentWidth > layout.viewportWidth + 1) {
+                    failures.push(`${role} ${name} ${path} ${state}: horizontal overflow (${layout.contentWidth}px content in ${layout.viewportWidth}px viewport)`);
+                }
+                for (const label of layout.clippedLabels) failures.push(`${role} ${name} ${path} ${state}: clipped interactive label “${label}”`);
+            };
+
+            await recordLayout('page');
+
+            if (path === paths[0] && await page.locator('button[aria-controls="account-menu"]').count()) {
+                const accountMenu = page.locator('button[aria-controls="account-menu"]').first();
+                await accountMenu.click();
+                await page.locator('#account-menu').waitFor({ state: 'visible' });
+                await recordLayout('account menu');
+                await accountMenu.click();
+            }
+        }
+    }
+
+    return failures;
+}
+
 try {
     const residentContext = await browser.newContext({
         viewport: { width: 390, height: 844 },
@@ -108,7 +192,40 @@ try {
     await residentPage.getByRole('button', { name: /yes, it's fixed/i }).click();
     await residentPage.getByText('Thank you for confirming.').waitFor({ state: 'visible' });
 
+    await switchToTagalog(residentPage);
+    const residentTagalogFailures = await auditTagalogLayouts(
+        residentPage,
+        ['/dashboard', '/reports', '/reports/create', '/profile', '/notifications'],
+        'resident',
+    );
+
+    await switchToTagalog(officialPage);
+    const staffTagalogFailures = await auditTagalogLayouts(
+        officialPage,
+        ['/dashboard', '/admin/dashboard', '/admin/audit-logs', '/admin/verifications', '/admin/analytics', '/admin/reports/consolidated', '/admin/staff/create', '/notifications', '/profile'],
+        'staff',
+    );
+
+    await officialPage.goto(`${baseUrl}/`);
+    await officialPage.locator('header button[aria-pressed]').click();
+    await officialPage.waitForFunction(() => document.documentElement.lang === 'tl');
+    const publicTagalogFailures = await auditTagalogLayouts(officialPage, ['/'], 'public');
+
+    await switchToTagalog(tanodPage);
+    const tanodTagalogFailures = await auditTagalogLayouts(
+        tanodPage,
+        ['/dashboard', '/admin/dashboard', '/curfew/create', '/notifications', '/profile'],
+        'tanod',
+    );
+
+    const tagalogLayoutFailures = [...residentTagalogFailures, ...staffTagalogFailures, ...publicTagalogFailures, ...tanodTagalogFailures];
+    if (tagalogLayoutFailures.length) {
+        console.error('\nTagalog layout audit failures:');
+        tagalogLayoutFailures.forEach(failure => console.error(`- ${failure}`));
+    }
+
     assert.deepEqual([...errors], [], 'browser pages should not report JavaScript errors');
+    assert.deepEqual(tagalogLayoutFailures, [], 'Tagalog layouts should not overflow or clip interactive labels');
     console.log('Resident report with photo and pin → official assignment → tanod resolution → resident confirmation: passed.');
 
     await residentContext.close();
