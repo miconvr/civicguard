@@ -301,7 +301,7 @@
 
         function showReviewCard(data) {
             const row = document.createElement('div');
-            row.className = 'text-left chat-review-enter';
+            row.className = 'text-left chat-review-enter chat-report-review';
 
             const card = document.createElement('div');
             card.className = 'space-y-4 rounded-2xl border border-[#8d4355] bg-maroon-800 p-4 text-white shadow-md dark:border-[#9b5966] dark:bg-[#6f1b34] dark:text-white sm:p-5';
@@ -395,6 +395,10 @@
             previewImage.className = 'h-full w-full object-contain';
             previewImage.alt = '';
             let photoPreviewUrl = null;
+            data.releasePhotoPreview = () => {
+                if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
+                photoPreviewUrl = null;
+            };
             photoStage.appendChild(previewImage);
             const photoMeta = document.createElement('div');
             photoMeta.className = 'min-w-0 flex-1 space-y-1';
@@ -625,7 +629,10 @@
             const cancelBtn = document.createElement('button');
             cancelBtn.className = 'min-h-[44px] text-sm font-medium text-white/80 transition-colors hover:text-white hover:underline';
             cancelBtn.textContent = reviewText.keepChatting;
-            cancelBtn.onclick = () => card.closest('div.text-left').remove();
+            cancelBtn.onclick = () => {
+                data.releasePhotoPreview();
+                card.closest('div.text-left').remove();
+            };
 
             actions.append(submitBtn, cancelBtn, editDetailsBtn);
             btnRow.appendChild(actions);
@@ -692,16 +699,16 @@
                     },
                     body: formData,
                 });
-                const landedOnReports = response.redirected
-                    && new URL(response.url).pathname === new URL(reviewText.reportsUrl, window.location.origin).pathname;
+                const result = response.headers.get('content-type')?.includes('application/json')
+                    ? await response.json()
+                    : null;
 
-                if (!response.ok || !landedOnReports) {
+                if (!response.ok || result?.success !== true || !result?.report_id) {
                     throw new Error(response.status === 419 ? 'expired' : 'submit');
                 }
 
-                btn.classList.remove('chat-submit-loading');
-                btn.classList.add('chat-submit-complete');
-                btn.textContent = reviewText.submitted;
+                data.releasePhotoPreview?.();
+                btn.closest('.chat-report-review')?.remove();
                 showSuccessCard();
             } catch (error) {
                 btn.disabled = false;

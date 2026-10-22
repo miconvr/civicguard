@@ -73,6 +73,32 @@ test('a resident can submit an incident report and is sent to my reports', funct
         ->assertSee('A karaoke gathering continued past midnight near the court.');
 });
 
+test('chatbot report submissions receive a success response without a redirect', function () {
+    $this->mock(AiRouter::class)
+        ->shouldReceive('generateText')
+        ->once()
+        ->andReturn(null);
+
+    $resident = User::factory()->create(['role' => 'resident']);
+    $category = ReportCategory::create([
+        'name' => 'Test Chatbot Report',
+        'default_severity' => 'low',
+    ]);
+
+    $this->actingAs($resident)
+        ->postJson(route('reports.store'), [
+            'category_id' => $category->id,
+            'description' => 'A resident submitted this from the chatbot review card.',
+            'location_text' => 'Purok 8',
+        ])
+        ->assertCreated()
+        ->assertJsonPath('success', true)
+        ->assertJsonPath('report_id', Report::query()->value('id'))
+        ->assertJsonPath('redirect_url', route('reports.index'));
+
+    expect(Report::query()->where('user_id', $resident->id)->count())->toBe(1);
+});
+
 test('a resident can confirm a resolved report was fixed', function () {
     $resident = User::factory()->create(['role' => 'resident']);
     $category = ReportCategory::create([
