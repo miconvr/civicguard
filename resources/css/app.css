@@ -1562,6 +1562,7 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
 }
 
 /* cg-nav-reveal: header hidden over the hero, slides in after it; bare white shield, Figtree name */
+html.cg-landing-root { background-color: #6d1c32; }
 html.cg-nav-js { scroll-padding-top: 5rem; }
 .cg-public-header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding-top: env(safe-area-inset-top, 0px); background: #f6f2eb; border-bottom: 1px solid #e7e0d6; transition: transform var(--cg-motion-page) var(--cg-ease-out), opacity var(--cg-motion-interaction) var(--cg-ease-out); }
 html.cg-nav-js:not(.cg-nav-on) .cg-public-header { transform: translateY(-100%); opacity: 0; pointer-events: none; }
