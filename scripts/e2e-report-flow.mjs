@@ -211,7 +211,9 @@ try {
     await tanodDrawer.waitFor({ state: 'visible' });
     await tanodDrawer.locator('select[name="status"]').selectOption('resolved');
     await tanodDrawer.getByRole('button', { name: 'Save changes' }).click();
-    await tanodPage.getByText('Report changes saved.', { exact: true }).waitFor({ state: 'visible' });
+    await tanodPage.goto(`${baseUrl}/admin/dashboard?tab=resolved`);
+    const resolvedReportRow = tanodPage.locator('table.cg-queue tbody tr').filter({ hasText: location });
+    await resolvedReportRow.getByText('Resolved', { exact: true }).waitFor({ state: 'visible' });
 
     await residentPage.goto(`${baseUrl}/reports`);
     await residentPage.getByRole('button', { name: /yes, it's fixed/i }).click();
