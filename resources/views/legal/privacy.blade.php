@@ -1,6 +1,6 @@
 @extends('legal.layout')
 @section('title', 'Privacy Policy')
-@section('updated', 'October 21, 2026')
+@section('updated', 'October 22, 2026')
 @section('content')
 <p>CivicGuard is an incident reporting system for Barangay Maimpis, City of San Fernando, Pampanga. This policy explains what personal data we collect and how we handle it, in line with the Data Privacy Act of 2012 (Republic Act 10173).</p>
 
@@ -28,6 +28,7 @@
 <ul class="list-disc space-y-1 pl-6">
     <li>AI providers (Google Gemini and Groq): the AI Chatbot, category suggestions, and severity ratings send the text you write (chat messages and report descriptions) to one or both of these providers for processing. If one is unavailable, the other is used. Do not include information you do not want shared this way.</li>
     <li>Wasmer: hosts the website and its database.</li>
+    <li><a class="underline" href="https://fonts.bunny.net">Bunny Fonts</a>: serves the Figtree and Bitter typefaces used on CivicGuard. Bunny says its Fonts service does not log or track user data from font requests.</li>
 </ul>
 <p>We do not sell your data or use it for advertising.</p>
 

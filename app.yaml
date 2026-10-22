@@ -2,6 +2,8 @@ kind: wasmer.io/App.v0
 owner: miconvr
 name: civicguard
 env:
+  APP_ENV: "production"
+  APP_DEBUG: "false"
   PHOTO_DISK_ROOT: "/data"
   APP_URL: "https://civicguard.wasmer.app"
 volumes:
