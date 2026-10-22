@@ -14,6 +14,13 @@
                 <x-export-button :href="route('admin.consolidatedReports.exportPdf')" />
             </div>
 
+            @if ($isTanod)
+                <aside class="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900 dark:border-blue-900/60 dark:bg-blue-950/30 dark:text-blue-100" role="note">
+                    <p class="font-semibold">{{ __('What you can see') }}</p>
+                    <p class="mt-1">{{ __('Your report summary includes reports assigned to you or filed under your account. Curfew Monitoring includes only records you logged.') }}</p>
+                </aside>
+            @endif
+
             @php
                 $summaryKpis = [
                     [__('Total Reports'), $totalReports, 'cg-kpi'],
