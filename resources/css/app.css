@@ -1565,6 +1565,7 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
 html.cg-landing-root { background-color: #6d1c32; }
 html.cg-nav-js { scroll-padding-top: 5rem; }
 .cg-public-header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding-top: env(safe-area-inset-top, 0px); background: linear-gradient(to bottom, #6d1c32 0, #6d1c32 env(safe-area-inset-top, 0px), #f6f2eb env(safe-area-inset-top, 0px), #f6f2eb 100%); border-bottom: 1px solid #e7e0d6; transition: transform var(--cg-motion-page) var(--cg-ease-out); }
+html.cg-nav-restoring .cg-public-header { transition: none !important; }
 html.cg-nav-js:not(.cg-nav-on) .cg-public-header { transform: translateY(-100%); pointer-events: none; }
 html.cg-nav-js:not(.cg-nav-on) .cg-public-header:focus-within { transform: none; pointer-events: auto; }
 .cg-landing-hero { position: relative; padding-top: calc(3.25rem + env(safe-area-inset-top, 0px)); }
