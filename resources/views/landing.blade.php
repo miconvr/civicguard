@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" x-data="landingPage" :lang="language">
+<html lang="en" x-data="landingPage" :lang="language" class="cg-landing-root">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
         @include('partials.pwa-head')
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#6d1c32">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="description" content="CivicGuard helps Barangay Maimpis residents report incidents and follow updates from barangay staff.">
         <title>{{ config('app.name', 'CivicGuard') }}</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
