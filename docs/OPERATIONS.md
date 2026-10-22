@@ -10,6 +10,8 @@ This checklist is for the barangay administrator and whoever maintains the Wasme
 - Record the date, operator, covered database/volume, and result for every backup and restore check. Test restoring to a private staging environment before relying on a backup.
 - Before a deployment that changes the schema or stored files, take a fresh backup and verify that rollback/restore steps are available.
 
+Use a short written runbook for each provider: who starts the backup, where the encrypted copy is stored, how maintainers confirm completion, and how to restore both the database and `/data` together. Record a restore rehearsal at least quarterly or after a provider/storage change. These steps are operational guidance; no Wasmer backup API credentials or provider-specific automation are configured in this repository.
+
 ## Approve a retention schedule before enabling deletion
 
 The app currently does not automatically delete reports, curfew records, or audit history. The barangay should approve and document the periods below with its records/privacy adviser before a purge job is added.
@@ -26,4 +28,4 @@ Verification proof images are removed after a decision by the application. Avoid
 
 ## Live service monitoring
 
-The app exposes `/up` for availability checks. It also returns a `Server-Timing` header and logs slow requests with route name, HTTP method, status, and duration only. A random 10% sample of main-interface visits sends browser timing measurements to the app logs using a broad page group, without account IDs, URLs, or form contents. Set `SLOW_REQUEST_THRESHOLD_MS` to tune the warning threshold (default 1500 ms). Enable GitHub Actions failure notifications so maintainers see uptime and mobile audit failures.
+The app exposes `/up` for availability checks. It also returns a `Server-Timing` header and logs slow requests with route name, HTTP method, status, and duration only. A random 10% sample of main-interface visits sends browser timing measurements to the app logs using a broad page group, without account IDs, URLs, or form contents. Set `SLOW_REQUEST_THRESHOLD_MS` to tune the warning threshold (default 1500 ms). GitHub sends workflow failure notifications according to each maintainer's notification settings. To send uptime failures to Slack, add a Slack incoming webhook URL as the repository Actions secret `UPTIME_ALERT_WEBHOOK`.

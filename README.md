@@ -111,7 +111,9 @@ vendor/bin/pint --test
 
 GitHub Actions runs the test suite, formatter check, asset build, and mobile browser smoke checks on pushes to `main` and pull requests. A separate workflow checks the production `/up` health endpoint every 15 minutes. Enable workflow failure notifications in GitHub settings if you want alerts.
 
-The production build also checks compressed JavaScript, CSS, landing-page, and font budgets. Weekly GitHub Actions checks audit the live landing page on a throttled mobile connection and check mobile layouts, basic accessibility, page errors, and cache headers for fingerprinted assets. Run `npm run audit:mobile` or `npm run audit:production` after installing Chromium with `npx playwright install chromium`. Set `PERF_URL` to use another deployment.
+The production build also checks compressed JavaScript, CSS, landing-page, and font budgets. GitHub Actions run mobile and desktop layout checks, axe WCAG A/AA scans, and an isolated resident-to-staff report journey including an uploaded photo and resident confirmation. Weekly checks audit the live landing page on a throttled mobile connection, page errors, and cache headers. Run `npm run audit:mobile` or `npm run audit:production` after installing Chromium with `npx playwright install chromium`. Set `PERF_URL` to use another deployment. The end-to-end journey is intended for the isolated GitHub Actions database and uses test-only accounts created by a guarded seeder.
+
+A weekly MySQL workflow seeds disposable synthetic records and prints query plans for the main resident and staff queues. It does not connect to or alter production data. See [operations and data stewardship](docs/OPERATIONS.md) for backup, restore, retention, and alert setup.
 
 ## Production notes
 
