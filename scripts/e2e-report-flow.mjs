@@ -149,6 +149,9 @@ try {
 
     await residentPage.goto(`${baseUrl}/reports/create`);
     await residentPage.getByRole('button', { name: /fill out the form myself/i }).click();
+    await residentPage.locator('section[aria-label="Incident report form"]').evaluate(element =>
+        Promise.allSettled(element.getAnimations().map(animation => animation.finished)),
+    );
     const formAccessibility = await auditAccessibility(residentPage, 'resident report form');
     assert.equal(formAccessibility.blockingCount, 0, 'report form should have no serious/critical accessibility violations');
     await residentPage.locator('#description').fill(description);
