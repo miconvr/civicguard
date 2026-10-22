@@ -141,6 +141,16 @@
                                 </div>
                             @endif
                         @endif
+
+                        @if ($report->status === 'pending' && ! $report->assigned_to && ! $report->has_staff_activity)
+                            <form method="POST" action="{{ route('reports.destroyPending', $report) }}" class="mt-4 flex justify-end border-t border-gray-200 pt-3 dark:border-gray-700" onsubmit="return confirm(@js(__('Remove this pending report? This cannot be undone.')))">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="inline-flex min-h-10 items-center rounded-lg border border-red-200 px-3 text-sm font-medium text-red-700 transition hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 dark:border-red-900/60 dark:text-red-300 dark:hover:bg-red-950/30">
+                                    {{ __('Remove report') }}
+                                </button>
+                            </form>
+                        @endif
                     </article>
                 @empty
                     <div class="cg-card border border-gray-200 py-10 text-center shadow-sm dark:border-gray-700">

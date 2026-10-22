@@ -81,6 +81,11 @@ class Report extends Model
         return $this->belongsTo(User::class, 'assigned_to');
     }
 
+    public function auditLogs()
+    {
+        return $this->morphMany(AuditLog::class, 'auditable');
+    }
+
     public static function averageResolutionMinutes(): ?float
     {
         $driver = DB::getDriverName();
