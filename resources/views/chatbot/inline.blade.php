@@ -34,6 +34,9 @@
         .chat-submit-loading { animation: cg-chat-submit-pulse 1.1s ease-in-out infinite; }
         .chat-submit-complete { background-color: #dcfce7 !important; color: #166534 !important; transition: background-color var(--cg-motion-enter) var(--cg-ease-out), color var(--cg-motion-enter) var(--cg-ease-out); }
         .cg-chat-panel-enter { animation: cg-chat-panel-enter var(--cg-motion-page) var(--cg-ease-out) both; }
+        .chat-provider-badge:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+        .chat-provider-badge:hover .chat-provider-tooltip,
+        .chat-provider-badge:focus .chat-provider-tooltip { visibility: visible; opacity: 1; transform: translateY(0); }
         @keyframes cg-chat-message-user {
             from { opacity: 0; transform: translate(10px, 8px) scale(.96); }
             to { opacity: 1; transform: translate(0) scale(1); }
@@ -135,6 +138,10 @@
                         <p class="text-sm font-semibold tracking-wide">{{ __('CivicGuard AI') }}</p>
                         <p class="mt-0.5 flex items-center gap-1.5 text-xs text-white/75"><span class="h-1.5 w-1.5 rounded-full bg-emerald-300" aria-hidden="true"></span>{{ __('Your report-writing assistant') }}</p>
                     </div>
+                    <span id="chat-provider-badge" tabindex="0" aria-describedby="chat-provider-tooltip" class="chat-provider-badge group relative hidden shrink-0 cursor-help rounded-full border border-white/30 px-2.5 py-1 text-[11px] font-semibold text-white/95">
+                        <span id="chat-provider-name"></span>
+                        <span id="chat-provider-tooltip" role="tooltip" class="chat-provider-tooltip invisible absolute right-0 top-full z-50 mt-2 w-64 translate-y-1 rounded-lg border border-stone-200 bg-white px-3 py-2 text-left text-[11px] font-normal leading-4 text-gray-800 opacity-0 shadow-lg transition duration-150 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"></span>
+                    </span>
                     <button id="chat-keyboard-dismiss" type="button" @click="document.getElementById('chat-input')?.blur(); leaveMobileChatMode(); chatOpen = false; $nextTick(() => $refs.chatToggle.focus())" aria-label="{{ __('Close chat') }}" title="{{ __('Close chat') }}" class="cg-motion-lift inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 text-white/90 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
                         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="m6 6 12 12M18 6 6 18"/></svg>
                     </button>
@@ -172,6 +179,29 @@
         const sendButtonLabels = {{ Js::from(['send' => __('Send'), 'sending' => __('Sending...')]) }};
         const log = document.getElementById('chat-log');
         const chatWidget = document.getElementById('chat-widget');
+        const providerBadge = document.getElementById('chat-provider-badge');
+        const providerName = document.getElementById('chat-provider-name');
+        const providerTooltip = document.getElementById('chat-provider-tooltip');
+        const providerDetails = {{ Js::from([
+            'gemini' => [
+                'name' => 'Gemini',
+                'tooltip' => __('Gemini API. Gemini is a trademark of Google LLC. CivicGuard is not affiliated with or endorsed by Google.'),
+            ],
+            'groq' => [
+                'name' => 'Groq',
+                'tooltip' => __('Groq API. Groq is a trademark of Groq LLC and/or its affiliates. CivicGuard is not affiliated with or endorsed by Groq.'),
+            ],
+        ]) }};
+
+        function setProviderBadge(provider) {
+            const details = providerDetails[provider];
+            providerBadge.classList.toggle('hidden', !details);
+            if (!details) return;
+
+            providerName.textContent = details.name;
+            providerTooltip.textContent = details.tooltip;
+            providerBadge.setAttribute('aria-label', details.name);
+        }
 
         function keepInitialGreetingVisible() {
             if (log.childElementCount !== 1) return;
@@ -281,29 +311,6 @@
                 row.appendChild(bubble);
             }
             log.appendChild(row);
-            log.scrollTop = log.scrollHeight;
-        }
-
-        function addModelNote(text) {
-            const note = document.createElement('p');
-            note.className = 'text-[13px] text-gray-500 dark:text-gray-400 pl-1 flex items-center gap-1.5';
-
-            let icon = '';
-            if (/gemini/i.test(text)) {
-                icon = '<svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs><linearGradient id="chat-gemini-logo" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4E87F8"/><stop offset="100%" stop-color="#9B51E0"/></linearGradient></defs><path d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12Z" fill="url(#chat-gemini-logo)"/></svg>';
-            } else if (/groq/i.test(text)) {
-                icon = '<svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#F55036"/><path d="M15.5 12a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm0 0v4a2 2 0 0 1-2 2h-1" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/></svg>';
-            }
-
-            const span = document.createElement('span');
-            span.textContent = text;
-            if (icon) {
-                note.innerHTML = icon;
-                note.appendChild(span);
-            } else {
-                note.appendChild(span);
-            }
-            log.appendChild(note);
             log.scrollTop = log.scrollHeight;
         }
 
@@ -839,10 +846,10 @@
 
                 const data = await response.json();
                 sessionId = data.session_id;
+                setProviderBadge(data.provider);
                 conversationHistory += 'Chatbot: ' + data.reply + '\n';
                 hideTyping();
                 addMessage(data.reply, 'bot');
-                if (data.model_note) addModelNote(data.model_note);
 
                 if (data.emergency) {
                     showEmergencyActions();
