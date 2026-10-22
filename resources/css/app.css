@@ -182,7 +182,7 @@
             position: fixed;
             z-index: 80;
             inset-inline: 0;
-            top: var(--cg-chat-widget-top, 0px);
+            top: 0;
             height: var(--cg-chat-widget-height, 100dvh);
             box-sizing: border-box;
             margin: 0;
@@ -195,7 +195,7 @@
         }
 
         #chat-widget.cg-chat-keyboard-mode #report-ai-chat {
-            display: flex !important;
+            display: flex;
             min-height: 0;
             flex: 1;
             flex-direction: column;
