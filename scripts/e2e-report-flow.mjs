@@ -219,7 +219,13 @@ try {
     await resolvedReportRow.getByText('Resolved', { exact: true }).waitFor({ state: 'visible' });
 
     await residentPage.goto(`${baseUrl}/reports`);
+    const confirmationResponse = residentPage.waitForResponse(response =>
+        response.request().method() === 'POST' && new URL(response.url()).pathname.endsWith('/confirm'),
+    );
     await residentPage.getByRole('button', { name: /yes, it's fixed/i }).click();
+    const response = await confirmationResponse;
+    assert.equal(response.status(), 302, `resident confirmation should redirect successfully, received HTTP ${response.status()}`);
+    await response.finished();
     await residentPage.goto(`${baseUrl}/reports`);
     const confirmedReport = residentPage.locator('article').filter({ hasText: location });
     await confirmedReport.getByText('Confirmed fixed', { exact: false }).waitFor({ state: 'visible' });
