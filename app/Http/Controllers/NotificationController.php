@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AppNotification;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
@@ -45,7 +46,7 @@ class NotificationController extends Controller
         return redirect()->route('notifications.index');
     }
 
-    public function readAll(\Illuminate\Http\Request $request)
+    public function readAll(Request $request)
     {
         AppNotification::where('user_id', Auth::id())
             ->where('is_read', false)

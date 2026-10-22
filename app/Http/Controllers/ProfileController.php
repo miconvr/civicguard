@@ -10,6 +10,7 @@ use App\Models\ResidentVerification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -123,15 +124,19 @@ class ProfileController extends Controller
         $verificationDocument = $user->residentVerification?->document_path;
         $verificationId = $user->residentVerification?->id;
 
-        if ($verificationId) {
-            AuditLog::where('auditable_type', ResidentVerification::class)
-                ->where('auditable_id', $verificationId)
-                ->update(['description' => __('Residence verification decision recorded.')]);
-        }
-
         Auth::logout();
 
-        $user->delete();
+        DB::transaction(function () use ($user, $verificationId) {
+            if ($verificationId) {
+                AuditLog::where('auditable_type', ResidentVerification::class)
+                    ->where('auditable_id', $verificationId)
+                    ->update(['description' => __('Residence verification decision recorded.')]);
+            }
+
+            // Remove any legacy persisted chat messages before the user foreign key is nulled.
+            DB::table('chatbot_conversations')->where('user_id', $user->id)->delete();
+            $user->delete();
+        });
 
         $photoPaths->each(fn ($path) => Storage::disk('report_photos')->delete($path));
 

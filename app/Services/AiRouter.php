@@ -12,9 +12,7 @@ class AiRouter
 
     protected array $votes = [];
 
-    public function __construct(protected GeminiClient $gemini)
-    {
-    }
+    public function __construct(protected GeminiClient $gemini) {}
 
     /**
      * Providers that have a key set, in the order given by AI_PROVIDERS.
