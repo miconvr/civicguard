@@ -34,7 +34,7 @@ env:
   PHPIX_PHP_THREADS: '4'
 
 jobs:
-  - name: after_deploy
+  - name: run-laravel-migrations
     trigger: post-deployment
     action:
       execute:
@@ -44,6 +44,7 @@ jobs:
           - migrate
           - --force
           - --no-interaction
+        timeout: 5m
 
 volumes:
   - name: data
