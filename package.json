@@ -5,7 +5,8 @@
         "build": "vite build",
         "dev": "vite",
         "check:performance": "node scripts/check-performance.mjs",
-        "audit:production": "node scripts/audit-production-performance.mjs"
+        "audit:production": "node scripts/audit-production-performance.mjs",
+        "audit:mobile": "node scripts/audit-mobile.mjs"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",

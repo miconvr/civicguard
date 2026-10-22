@@ -17,7 +17,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="cg-auth-shell font-sans text-ink antialiased">
+    <body data-cg-route="auth" class="cg-auth-shell font-sans text-ink antialiased">
         <main class="cg-auth-layout mx-auto flex min-h-[100svh] w-full max-w-lg flex-col items-center justify-center gap-6 px-4 py-10 sm:px-6">
             <section class="w-full" aria-label="{{ __('Account access') }}">
                 <div class="cg-auth-card cg-page-enter cg-page-enter-late mx-auto w-full overflow-hidden border px-6 pb-8 pt-9 sm:px-8">

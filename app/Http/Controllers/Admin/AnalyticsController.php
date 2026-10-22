@@ -70,7 +70,7 @@ class AnalyticsController extends Controller
     {
         $usage = ['Gemini' => 0, 'Groq' => 0, 'Keyword rules' => 0, 'Before tracking' => 0];
 
-        AuditLog::where('action', 'report_submitted')->get(['metadata'])->each(function ($log) use (&$usage) {
+        AuditLog::where('action', 'report_submitted')->cursor(['metadata'])->each(function ($log) use (&$usage) {
             $source = is_array($log->metadata) ? ($log->metadata['severity_source'] ?? null) : null;
 
             if (! is_string($source)) {

@@ -24,7 +24,7 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body :class="{ 'dark': darkMode }" class="font-sans antialiased text-ink dark:text-gray-100">
+    <body data-cg-route="app" :class="{ 'dark': darkMode }" class="font-sans antialiased text-ink dark:text-gray-100">
         <a href="#main-content" class="sr-only fixed left-4 top-4 z-[100] rounded-lg bg-maroon-700 px-4 py-3 font-semibold text-white focus:not-sr-only">
             {{ __('Skip to content') }}
         </a>
