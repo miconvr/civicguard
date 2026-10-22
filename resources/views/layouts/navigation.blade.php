@@ -46,6 +46,7 @@
                 </span>
             </a>
             <button type="button" @click="toggleSidebar()" :aria-expanded="(!collapsed).toString()" aria-controls="primary-navigation"
+                    aria-label="{{ __('Collapse sidebar') }}"
                     :aria-label='collapsed ? @js(__('Expand sidebar')) : @js(__('Collapse sidebar'))'
                     :title='collapsed ? @js(__('Expand sidebar')) : @js(__('Collapse sidebar'))'
                     class="hidden lg:inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white/70 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
@@ -194,7 +195,7 @@
                     </form>
                 </div>
 
-                <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu" aria-label="{{ $accountUser->name }} {{ __('Account menu') }}" :title='collapsed ? @js($accountUser->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/10 transition">
+                <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu" aria-label="{{ $accountUser->name }} {{ $roleLabel }} {{ __('Account menu') }}" :title='collapsed ? @js($accountUser->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/10 transition">
                     @if ($accountUser->avatarPath())
                         <img src="{{ route('profile.photo', ['v' => basename($accountUser->avatarPath())]) }}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-white/30">
                     @else
