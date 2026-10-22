@@ -23,3 +23,12 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Vite filenames include a content hash, so they can be cached immutably.
+# Wasmer's PHP static server may ignore .htaccess; the service worker also
+# caches these fingerprinted assets for repeat visits on that host.
+<IfModule mod_headers.c>
+    <FilesMatch "^[A-Za-z0-9_-]+-[A-Za-z0-9_-]+\.(css|js|woff2)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>
