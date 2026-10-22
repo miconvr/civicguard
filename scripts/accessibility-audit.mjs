@@ -1,11 +1,20 @@
 import axe from 'axe-core';
 
 export async function auditAccessibility(page, label) {
-    await page.evaluate(() => Promise.allSettled(
-        [...document.querySelectorAll('[data-reveal]')]
-            .flatMap(element => element.getAnimations())
-            .map(animation => animation.finished),
-    ));
+    await page.evaluate(async () => {
+        // Let DOMContentLoaded and IntersectionObserver initialize reveals
+        // before collecting transitions; otherwise the audit can sample
+        // text while its parent is still fading in.
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+        const reveals = [...document.querySelectorAll('[data-reveal]')];
+        reveals.forEach(element => element.classList.add('is-visible'));
+        await Promise.allSettled(reveals.flatMap(element =>
+            element.getAnimations().map(animation => animation.finished),
+        ));
+
+        await new Promise(resolve => requestAnimationFrame(resolve));
+    });
 
     if (! await page.evaluate(() => Boolean(window.axe))) {
         await page.addScriptTag({ content: axe.source });
