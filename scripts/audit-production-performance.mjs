@@ -12,8 +12,21 @@ const context = await browser.newContext({
 const page = await context.newPage();
 const failedRequests = [];
 const pageErrors = [];
+const assetHeaderChecks = [];
 page.on('requestfailed', request => failedRequests.push({ url: request.url(), error: request.failure()?.errorText }));
 page.on('pageerror', error => pageErrors.push(error.message));
+page.on('response', response => {
+    const pathname = new URL(response.url()).pathname;
+    if (!/^\/build\/assets\/[A-Za-z0-9_-]+-[A-Za-z0-9_-]+\.(css|js|woff2)$/.test(pathname)) return;
+
+    assetHeaderChecks.push(response.allHeaders().then(headers => {
+        const cacheControl = headers['cache-control'] ?? '';
+        if (!cacheControl.includes('max-age=31536000') || !cacheControl.includes('immutable')) {
+            return `${pathname}: expected one-year immutable caching, received "${cacheControl || 'no Cache-Control header'}"`;
+        }
+        return null;
+    }).catch(error => `${pathname}: unable to read response headers (${error.message})`));
+});
 
 const client = await context.newCDPSession(page);
 await client.send('Network.enable');
@@ -43,6 +56,7 @@ await page.addInitScript(() => {
 
 let response;
 let result;
+let cacheHeaderIssues = [];
 try {
     response = await page.goto(url, { waitUntil: 'load', timeout: 60_000 });
     await page.waitForTimeout(1_000);
@@ -58,18 +72,20 @@ try {
             cls: Number(window.__cgPerf.cls.toFixed(4)),
         };
     });
+    cacheHeaderIssues = (await Promise.all(assetHeaderChecks)).filter(Boolean);
 } finally {
     await context.close();
     await browser.close();
 }
 
-console.log(JSON.stringify({ url, status: response?.status(), throttling: '180 ms RTT, 1.6 Mbps down, 4× CPU', ...result, failedRequests, pageErrors }, null, 2));
+console.log(JSON.stringify({ url, status: response?.status(), throttling: '180 ms RTT, 1.6 Mbps down, 4× CPU', ...result, failedRequests, pageErrors, cacheHeaderIssues }, null, 2));
 
 const failed = response?.status() !== 200
     || !result?.lcpMs
     || result.lcpMs > 7_000
     || result.cls > 0.1
     || failedRequests.length > 0
-    || pageErrors.length > 0;
+    || pageErrors.length > 0
+    || cacheHeaderIssues.length > 0;
 
 if (failed) process.exitCode = 1;
