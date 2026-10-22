@@ -172,6 +172,27 @@
         const sendButtonLabels = {{ Js::from(['send' => __('Send'), 'sending' => __('Sending...')]) }};
         const log = document.getElementById('chat-log');
         const chatWidget = document.getElementById('chat-widget');
+        const providerAttributions = {{ Js::from([
+            'gemini' => __('Gemini is a trademark of Google LLC. CivicGuard is not affiliated with or endorsed by Google.'),
+            'groq' => __('Groq is a trademark of Groq LLC and/or its affiliates. CivicGuard is not affiliated with or endorsed by Groq.'),
+        ]) }};
+
+        function addModelNote(text) {
+            const note = document.createElement('p');
+            note.className = 'pl-1 text-[11px] text-gray-500 dark:text-gray-400';
+            note.textContent = text;
+
+            const attribution = /groq/i.test(text)
+                ? providerAttributions.groq
+                : (/gemini/i.test(text) ? providerAttributions.gemini : null);
+            if (attribution) {
+                note.title = attribution;
+                note.setAttribute('aria-label', `${text}. ${attribution}`);
+            }
+
+            log.appendChild(note);
+            log.scrollTop = log.scrollHeight;
+        }
         function keepInitialGreetingVisible() {
             if (log.childElementCount !== 1) return;
 
@@ -818,6 +839,7 @@
                 conversationHistory += 'Chatbot: ' + data.reply + '\n';
                 hideTyping();
                 addMessage(data.reply, 'bot');
+                if (data.model_note) addModelNote(data.model_note);
 
                 if (data.emergency) {
                     showEmergencyActions();
