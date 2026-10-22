@@ -69,6 +69,8 @@ try {
     await drawer.locator('select[name="status"]').selectOption('in_progress');
     await drawer.getByRole('button', { name: 'Save changes' }).click();
     await officialPage.waitForURL('**/admin/dashboard**');
+    await officialPage.getByText('Report changes saved.').waitFor({ state: 'visible' });
+    await officialPage.locator('table.cg-queue tbody tr').filter({ hasText: location }).getByText('E2E Tanod').waitFor({ state: 'visible' });
 
     const tanodContext = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
     const tanodPage = await tanodContext.newPage();
@@ -77,7 +79,7 @@ try {
     await tanodPage.goto(`${baseUrl}/admin/dashboard`);
     const tanodAccessibility = await auditAccessibility(tanodPage, 'tanod dashboard');
     assert.equal(tanodAccessibility.blockingCount, 0, 'tanod dashboard should have no serious/critical accessibility violations');
-    await tanodPage.getByRole('row').filter({ hasText: location }).click();
+    await tanodPage.locator('table.cg-queue tbody tr').filter({ hasText: location }).click();
     const tanodDrawer = tanodPage.getByRole('dialog', { name: 'Report details' });
     await tanodDrawer.waitFor({ state: 'visible' });
     await tanodDrawer.locator('select[name="status"]').selectOption('resolved');
