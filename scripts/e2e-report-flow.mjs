@@ -140,6 +140,9 @@ try {
         viewport: { width: 390, height: 844 },
         isMobile: true,
         hasTouch: true,
+        // This flow checks authenticated server responses, not offline-shell behavior.
+        // Prevent the service worker from masking a slow or failed route with offline.html.
+        serviceWorkers: 'block',
         permissions: ['geolocation'],
         geolocation: { latitude: 15.0612, longitude: 120.657 },
     });
@@ -178,7 +181,10 @@ try {
     const residentReport = residentPage.locator('article').filter({ hasText: location });
     await residentReport.locator('p.line-clamp-2').filter({ hasText: description }).waitFor({ state: 'visible' });
 
-    const officialContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const officialContext = await browser.newContext({
+        viewport: { width: 1280, height: 900 },
+        serviceWorkers: 'block',
+    });
     const officialPage = await officialContext.newPage();
     captureBrowserErrors(officialPage);
     await signIn(officialPage, 'official.e2e@civicguard.test');
@@ -221,7 +227,12 @@ try {
     await officialPage.getByRole('status').getByText(/Report changes saved\.|Na-save ang mga pagbabago sa ulat\./i).waitFor({ state: 'visible' });
     await officialPage.locator('table.cg-queue tbody tr').filter({ hasText: location }).getByText('E2E Tanod').waitFor({ state: 'visible' });
 
-    const tanodContext = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const tanodContext = await browser.newContext({
+        viewport: { width: 390, height: 844 },
+        isMobile: true,
+        hasTouch: true,
+        serviceWorkers: 'block',
+    });
     const tanodPage = await tanodContext.newPage();
     captureBrowserErrors(tanodPage);
     await signIn(tanodPage, 'tanod.e2e@civicguard.test');
