@@ -30,8 +30,8 @@
                 {{-- Filter bar --}}
                 <form method="GET" class="mb-4 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                     <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Search by actor, action, or description…') }}"
-                           class="cg-select w-full sm:w-80 lg:w-96" aria-label="{{ __('Search audit logs') }}">
-                    <select name="action" onchange="this.form.submit()" class="cg-select w-full sm:w-auto" aria-label="{{ __("Filter by action") }}">
+                           class="cg-select w-full min-w-0 sm:min-w-[18rem] sm:flex-1" aria-label="{{ __('Search audit logs') }}">
+                    <select name="action" onchange="this.form.submit()" class="cg-select w-full min-w-0 sm:w-auto sm:max-w-[22rem]" aria-label="{{ __("Filter by action") }}">
                         <option value="">{{ __("All actions") }}</option>
                         @foreach ($actions as $action)
                             <option value="{{ $action }}" @selected(request('action') === $action)>{{ __(ucwords(str_replace('_', ' ', $action))) }}</option>
@@ -60,7 +60,7 @@
                                     <td data-label="Date" class="whitespace-nowrap">{{ $auditLog->created_at->format('M d, Y g:i A') }}</td>
                                     <td data-label="Actor" class="font-medium">{{ $auditLog->user->name ?? 'System' }}</td>
                                     <td data-label="Action">
-                                        <span class="inline-flex whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                        <span class="inline-flex max-w-full whitespace-normal break-words rounded-full px-2.5 py-1 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
                                             {{ match ($auditLog->action) {
                                                 'report_status_changed' => __('Status changed'),
                                                 'report_confirmed_fixed' => __('Confirmed fixed'),
