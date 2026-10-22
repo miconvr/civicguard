@@ -176,12 +176,23 @@
         const log = document.getElementById('chat-log');
         const chatWidget = document.getElementById('chat-widget');
 
+        function keepInitialGreetingVisible() {
+            if (log.childElementCount !== 1) return;
+
+            // iOS Safari can scroll the conversation while resizing around the keyboard.
+            log.scrollTop = 0;
+            window.requestAnimationFrame(() => {
+                if (log.childElementCount === 1) log.scrollTop = 0;
+            });
+        }
+
         function syncMobileChatViewport() {
             if (!chatWidget.classList.contains('cg-chat-keyboard-mode')) return;
             const viewport = window.visualViewport;
             const viewportHeight = viewport?.height ?? window.innerHeight;
             const viewportTop = Math.max(0, viewport?.offsetTop ?? 0);
             chatWidget.style.setProperty('--cg-chat-widget-height', `${viewportHeight + viewportTop}px`);
+            keepInitialGreetingVisible();
         }
 
         function enterMobileChatMode() {
