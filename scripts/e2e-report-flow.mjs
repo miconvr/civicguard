@@ -152,6 +152,13 @@ try {
     await residentPage.locator('section[aria-label="Incident report form"]').evaluate(element =>
         Promise.allSettled(element.getAnimations().map(animation => animation.finished)),
     );
+    await residentPage.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await residentPage.waitForFunction(() => {
+        const panel = document.querySelector('section[aria-label="Incident report form"]');
+        return panel
+            && Number(getComputedStyle(panel).opacity) >= 0.999
+            && panel.getAnimations().every(animation => animation.playState === 'finished');
+    });
     const formAccessibility = await auditAccessibility(residentPage, 'resident report form');
     assert.equal(formAccessibility.blockingCount, 0, 'report form should have no serious/critical accessibility violations');
     await residentPage.locator('#description').fill(description);
