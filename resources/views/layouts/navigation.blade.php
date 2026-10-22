@@ -38,7 +38,7 @@
     >
         <!-- Brand -->
         <div class="h-16 flex items-center justify-between border-b border-white/15 px-5 shrink-0 cg-sidebar-brand">
-            <a href="{{ route('dashboard') }}" aria-label="CivicGuard" class="flex items-center gap-2.5 min-w-0">
+            <a href="{{ route('dashboard') }}" aria-label="CivicGuard Brgy. Maimpis home" class="flex items-center gap-2.5 min-w-0">
                 <x-application-logo inverse class="h-8 w-auto" />
                 <span class="cg-sidebar-label leading-tight">
                     <span class="block font-sans font-bold text-sm text-white">CivicGuard</span>
@@ -195,7 +195,7 @@
                     </form>
                 </div>
 
-                <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu" aria-label="{{ $accountUser->name }} {{ $roleLabel }} {{ __('Account menu') }}" :title='collapsed ? @js($accountUser->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/10 transition">
+                <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu" :aria-label='collapsed ? @js($accountUser->name . " " . $roleLabel . " " . __("Account menu")) : null' :title='collapsed ? @js($accountUser->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/10 transition">
                     @if ($accountUser->avatarPath())
                         <img src="{{ route('profile.photo', ['v' => basename($accountUser->avatarPath())]) }}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-white/30">
                     @else
@@ -215,6 +215,7 @@
                             @endif
                         </span>
                     </span>
+                    <span class="sr-only">{{ __('Account menu') }}</span>
                     <svg class="cg-sidebar-label h-4 w-4 shrink-0 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                     </svg>
