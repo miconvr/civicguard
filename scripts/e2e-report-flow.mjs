@@ -204,8 +204,14 @@ try {
     assert.equal(drawerAccessibility.blockingCount, 0, 'report drawer should have no serious/critical accessibility violations');
     await drawer.locator('select[name="assigned_to"]').selectOption({ label: 'E2E Tanod' });
     await drawer.locator('select[name="status"]').selectOption('in_progress');
+    const officialSaveResponse = officialPage.waitForResponse(response =>
+        response.request().method() === 'PATCH'
+            && /^\/admin\/reports\/[^/]+$/.test(new URL(response.url()).pathname),
+    );
+    const officialSaveNavigation = officialPage.waitForNavigation({ waitUntil: 'domcontentloaded' });
     await drawer.getByRole('button', { name: 'Save changes' }).click();
-    await officialPage.waitForURL('**/admin/dashboard**');
+    const [officialResponse] = await Promise.all([officialSaveResponse, officialSaveNavigation]);
+    assert.equal(officialResponse.status(), 302, `official report update should redirect successfully, received HTTP ${officialResponse.status()}`);
     await officialPage.getByText('Report changes saved.').waitFor({ state: 'visible' });
     await officialPage.locator('table.cg-queue tbody tr').filter({ hasText: location }).getByText('E2E Tanod').waitFor({ state: 'visible' });
 
@@ -220,7 +226,15 @@ try {
     const tanodDrawer = tanodPage.getByRole('dialog', { name: 'Report details' });
     await tanodDrawer.waitFor({ state: 'visible' });
     await tanodDrawer.locator('select[name="status"]').selectOption('resolved');
+    const tanodSaveResponse = tanodPage.waitForResponse(response =>
+        response.request().method() === 'PATCH'
+            && /^\/admin\/reports\/[^/]+$/.test(new URL(response.url()).pathname),
+    );
+    const tanodSaveNavigation = tanodPage.waitForNavigation({ waitUntil: 'domcontentloaded' });
     await tanodDrawer.getByRole('button', { name: 'Save changes' }).click();
+    const [tanodResponse] = await Promise.all([tanodSaveResponse, tanodSaveNavigation]);
+    assert.equal(tanodResponse.status(), 302, `tanod report update should redirect successfully, received HTTP ${tanodResponse.status()}`);
+    await tanodPage.getByRole('status').getByText('Report changes saved.').waitFor({ state: 'visible' });
     await tanodPage.goto(`${baseUrl}/admin/dashboard?tab=resolved`);
     const resolvedReportRow = tanodPage.locator('table.cg-queue tbody tr').filter({ hasText: location });
     await resolvedReportRow.getByText('Resolved', { exact: true }).waitFor({ state: 'visible' });
@@ -229,8 +243,9 @@ try {
     const confirmationResponse = residentPage.waitForResponse(response =>
         response.request().method() === 'POST' && new URL(response.url()).pathname.endsWith('/confirm'),
     );
+    const confirmationNavigation = residentPage.waitForNavigation({ waitUntil: 'domcontentloaded' });
     await residentPage.getByRole('button', { name: /yes, it's fixed/i }).click();
-    const response = await confirmationResponse;
+    const [response] = await Promise.all([confirmationResponse, confirmationNavigation]);
     assert.equal(response.status(), 302, `resident confirmation should redirect successfully, received HTTP ${response.status()}`);
     assert.equal(
         new URL(response.headers().location, baseUrl).pathname,
