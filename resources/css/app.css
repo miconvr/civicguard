@@ -222,7 +222,7 @@
             position: fixed;
             z-index: 80;
             inset-inline: 0;
-            top: 0;
+            top: var(--cg-chat-widget-top, 0px);
             height: var(--cg-chat-widget-height, 100dvh);
             box-sizing: border-box;
             margin: 0;
@@ -230,8 +230,7 @@
             flex-direction: column;
             border-radius: 0;
             padding-top: env(safe-area-inset-top, 0px);
-            /* Keep the composer clear of Safari's keyboard accessory controls. */
-            padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 4rem);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
         }
 
         #chat-widget.cg-chat-keyboard-mode #report-ai-chat {

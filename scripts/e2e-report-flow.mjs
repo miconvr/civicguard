@@ -26,8 +26,23 @@ async function signIn(page, email) {
     await page.waitForURL('**/dashboard');
 }
 
+async function openAccountMenu(page) {
+    const accountTrigger = page.locator('button[aria-controls="account-menu"]');
+
+    // The account control lives at the bottom of the sidebar, which is closed on mobile.
+    if (!(await accountTrigger.isVisible())) {
+        await page.locator('.cg-sidebar-mobilebar button[aria-controls="primary-navigation"]').click();
+        await accountTrigger.waitFor({ state: 'visible' });
+    }
+
+    await accountTrigger.click();
+    await page.locator('#account-menu').waitFor({ state: 'visible' });
+
+    return accountTrigger;
+}
+
 async function switchToTagalog(page) {
-    await page.locator('button[aria-controls="account-menu"]').click();
+    await openAccountMenu(page);
     await page.locator('#account-menu').getByRole('link', { name: 'Tagalog' }).click();
     await page.waitForLoadState('domcontentloaded');
     await page.waitForFunction(() => document.documentElement.lang === 'tl');
@@ -98,9 +113,7 @@ async function auditTagalogLayouts(page, paths, role) {
             await recordLayout('page');
 
             if (path === paths[0] && await page.locator('button[aria-controls="account-menu"]').count()) {
-                const accountMenu = page.locator('button[aria-controls="account-menu"]').first();
-                await accountMenu.click();
-                await page.locator('#account-menu').waitFor({ state: 'visible' });
+                const accountMenu = await openAccountMenu(page);
                 await recordLayout('account menu');
                 await accountMenu.click();
             }
