@@ -166,7 +166,10 @@
     .cg-chat-log {
         overscroll-behavior-y: contain;
         scrollbar-gutter: stable;
+        background-color: #faf7f4;
     }
+
+    .dark .cg-chat-log { background-color: #211c1e; }
 
     @media (max-width: 639px) {
         html.cg-chat-keyboard-open,
@@ -181,6 +184,7 @@
             inset-inline: 0;
             top: var(--cg-chat-viewport-top, 0px);
             height: var(--cg-chat-viewport-height, 100dvh);
+            box-sizing: border-box;
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -202,10 +206,10 @@
             min-height: 0;
             max-height: none;
             flex: 1;
+            overscroll-behavior: contain;
         }
 
-        #chat-widget.cg-chat-keyboard-mode #chat-form,
-        #chat-widget.cg-chat-keyboard-mode #chat-form + p {
+        #chat-widget.cg-chat-keyboard-mode .cg-chat-composer {
             flex: 0 0 auto;
         }
 
@@ -216,18 +220,18 @@
 
     @media (max-width: 639px) {
         .cg-chat-log {
-            height: clamp(15rem, 42vh, 25rem);
-            height: clamp(15rem, 42dvh, 25rem);
-            min-height: 15rem;
+            height: clamp(12rem, 32vh, 18rem);
+            height: clamp(12rem, 32dvh, 18rem);
+            min-height: 12rem;
             overflow-y: auto;
         }
     }
 
     @media (max-width: 639px) and (max-height: 680px) {
         .cg-chat-log {
-            height: clamp(11rem, 38vh, 15rem);
-            height: clamp(11rem, 38dvh, 15rem);
-            min-height: 11rem;
+            height: clamp(9rem, 32vh, 13rem);
+            height: clamp(9rem, 32dvh, 13rem);
+            min-height: 9rem;
         }
     }
 
