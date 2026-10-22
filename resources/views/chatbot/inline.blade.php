@@ -188,7 +188,6 @@
         input.addEventListener('blur', () => window.setTimeout(() => {
             if (document.activeElement !== input) leaveMobileChatMode();
         }, 0));
-        sendBtn.addEventListener('pointerdown', (event) => event.preventDefault());
         window.visualViewport?.addEventListener('resize', syncMobileChatViewport);
         window.visualViewport?.addEventListener('scroll', syncMobileChatViewport);
         window.addEventListener('resize', () => {
