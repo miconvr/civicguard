@@ -14,10 +14,16 @@ class HomeController extends Controller
         $data = ['user' => $user];
 
         if ($user->role === 'resident') {
-            $data['recent'] = Report::where('user_id', $user->id)->with('category')->latest()->limit(3)->get();
-            $numbers = Report::where('user_id', $user->id)->orderBy('created_at')->orderBy('id')->pluck('id')->flip();
-            foreach ($data['recent'] as $recentReport) {
-                $recentReport->resident_number = $numbers[$recentReport->id] + 1;
+            $residentReportCount = Report::where('user_id', $user->id)->count();
+            $data['recent'] = Report::where('user_id', $user->id)
+                ->with('category')
+                ->latest('created_at')
+                ->latest('id')
+                ->limit(3)
+                ->get();
+
+            foreach ($data['recent'] as $index => $recentReport) {
+                $recentReport->resident_number = $residentReportCount - $index;
             }
             $data['needsFeedback'] = Report::where('user_id', $user->id)
                 ->where('status', 'resolved')

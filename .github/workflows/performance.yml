@@ -32,3 +32,8 @@ jobs:
         env:
           PERF_URL: https://civicguard.wasmer.app/
         run: npm run audit:production
+
+      - name: Check mobile layout and basic accessibility
+        env:
+          PERF_URL: https://civicguard.wasmer.app
+        run: npm run audit:mobile

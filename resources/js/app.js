@@ -2,6 +2,61 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
+// Sample page timings without collecting URLs, account identifiers, or form data.
+(function initializeSampledWebVitals() {
+    if (Math.random() >= 0.1 || !('PerformanceObserver' in window)) return;
+
+    const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
+    const route = document.body.dataset.cgRoute;
+    if (!csrf || !route) return;
+
+    const metrics = {};
+    let sent = false;
+    let cls = 0;
+    let inp = 0;
+    const navigation = performance.getEntriesByType('navigation')[0];
+    if (navigation) metrics.ttfb_ms = Math.max(0, navigation.responseStart - navigation.requestStart);
+
+    const observe = (type, callback) => {
+        try {
+            new PerformanceObserver(list => callback(list.getEntries())).observe({ type, buffered: true });
+        } catch {}
+    };
+
+    observe('largest-contentful-paint', entries => {
+        const entry = entries.at(-1);
+        if (entry) metrics.lcp_ms = entry.startTime;
+    });
+    observe('layout-shift', entries => {
+        entries.forEach(entry => {
+            if (!entry.hadRecentInput) cls += entry.value;
+        });
+        metrics.cls = cls;
+    });
+    observe('event', entries => {
+        entries.forEach(entry => {
+            if (entry.interactionId) inp = Math.max(inp, entry.duration);
+        });
+        if (inp) metrics.inp_ms = inp;
+    });
+
+    const send = () => {
+        if (sent || Object.keys(metrics).length === 0) return;
+        sent = true;
+        fetch('/performance-metrics', {
+            method: 'POST',
+            keepalive: true,
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrf },
+            body: JSON.stringify({ route, metrics }),
+        }).catch(() => {});
+    };
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') send();
+    }, { once: true });
+    window.addEventListener('pagehide', send, { once: true });
+})();
+
 // Keep the browser's install prompt so the landing page can offer it later.
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();

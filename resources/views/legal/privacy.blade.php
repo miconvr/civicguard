@@ -1,6 +1,6 @@
 @extends('legal.layout')
 @section('title', 'Privacy Policy')
-@section('updated', 'October 22, 2026')
+@section('updated', 'October 23, 2026')
 @section('content')
 <p>CivicGuard is an incident reporting system for Barangay Maimpis, City of San Fernando, Pampanga. This policy explains what personal data we collect and how we handle it, in line with the Data Privacy Act of 2012 (Republic Act 10173).</p>
 
@@ -13,6 +13,7 @@
     <li>Reports you file: description, category, location text, an optional GPS pin, and an optional photo. Photos may contain embedded location or device metadata; avoid attaching images with details you do not want barangay staff to receive.</li>
     <li>Chat messages you send to the AI Chatbot.</li>
     <li>Activity records: actions such as filing, assigning, or resolving a report, kept in an audit log.</li>
+    <li>For a random 10% sample of visits to the main CivicGuard interface, basic browser timing measurements (time to first byte, largest contentful paint, interaction delay, and layout shift) and a broad page group. These measurements do not include your account, the page URL, report contents, or form entries.</li>
     <li>For barangay tanods only: curfew records about minors, which staff enter themselves.</li>
     <li>If you request resident verification: an image showing your name and Maimpis residence, plus the time you agreed to its review. Please cover ID numbers, QR codes, birth dates, and unrelated details.</li>
 </ul>
