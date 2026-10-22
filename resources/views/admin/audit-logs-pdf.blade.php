@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() === 'tl' ? 'tl' : 'en' }}">
 <head>
     <meta charset="UTF-8">
-    <title>CivicGuard Audit Logs</title>
+    <title>{{ __('CivicGuard Audit Logs') }}</title>
     <style>
         body { font-family: DejaVu Sans, sans-serif; color: #1f2937; font-size: 9px; }
         h1 { color: #7f1d1d; font-size: 16px; margin-bottom: 2px; }
@@ -14,16 +14,16 @@
     </style>
 </head>
 <body>
-    <h1>CivicGuard Audit Logs</h1>
-    <div class="generated">Generated {{ now()->format('M d, Y g:i A') }}</div>
+    <h1>{{ __('CivicGuard Audit Logs') }}</h1>
+    <div class="generated">{{ __('Generated') }} {{ now()->format('M d, Y g:i A') }}</div>
 
     <table>
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Actor</th>
-                <th>Action</th>
-                <th>Description</th>
+                <th>{{ __("Date") }}</th>
+                <th>{{ __("Actor") }}</th>
+                <th>{{ __("Action") }}</th>
+                <th>{{ __("Description") }}</th>
             </tr>
         </thead>
         <tbody>
@@ -36,7 +36,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4">No audit activity yet.</td>
+                    <td colspan="4">{{ __("No audit activity yet.") }}</td>
                 </tr>
             @endforelse
         </tbody>

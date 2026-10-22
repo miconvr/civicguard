@@ -35,7 +35,7 @@ Route::get('/locale/{locale}', function (string $locale) {
     session(['locale' => $locale]);
 
     return redirect()->back();
-})->middleware(['auth', 'role:resident'])->name('locale.switch');
+})->middleware(['auth', 'role:resident,tanod,admin,official'])->name('locale.switch');
 
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 

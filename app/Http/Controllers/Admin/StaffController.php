@@ -38,12 +38,12 @@ class StaffController extends Controller
             'action' => 'staff_created',
             'auditable_type' => User::class,
             'auditable_id' => $staff->id,
-            'description' => 'Staff account created.',
+            'description' => __('Staff account created.'),
             'metadata' => [
                 'role' => $staff->role,
             ],
         ]);
 
-        return redirect()->route('admin.staff.create')->with('status', 'Staff account created successfully.');
+        return redirect()->route('admin.staff.create')->with('status', __('Staff account created successfully.'));
     }
 }

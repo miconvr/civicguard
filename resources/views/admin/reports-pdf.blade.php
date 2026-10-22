@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() === 'tl' ? 'tl' : 'en' }}">
 <head>
     <meta charset="UTF-8">
     <title>{{ $title }}</title>
@@ -14,40 +14,40 @@
     </style>
 </head>
 <body>
-    <h1>CivicGuard {{ $title }}</h1>
-    <div class="generated">Generated {{ now()->format('M d, Y g:i A') }}</div>
+    <h1>CivicGuard {{ __($title) }}</h1>
+    <div class="generated">{{ __('Generated') }} {{ now()->format('M d, Y g:i A') }}</div>
 
     <table>
         <thead>
             <tr>
-                <th>Category</th>
-                <th>Reported By</th>
-                <th>Location</th>
-                <th>Severity</th>
+                <th>{{ __('Category') }}</th>
+                <th>{{ __('Reported By') }}</th>
+                <th>{{ __("Location") }}</th>
+                <th>{{ __("Severity") }}</th>
                 @if (!$isResolved)
-                    <th>Status</th>
+                    <th>{{ __("Status") }}</th>
                 @endif
-                <th>Assigned To</th>
-                <th>Coordinates</th>
-                <th>Photo</th>
-                <th>{{ $isResolved ? 'Resolved On' : 'Date Filed' }}</th>
+                <th>{{ __("Assigned To") }}</th>
+                <th>{{ __('Coordinates') }}</th>
+                <th>{{ __('Photo') }}</th>
+                <th>{{ $isResolved ? __('Resolved On') : __('Date Filed') }}</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($reports as $report)
                 <tr>
-                    <td>{{ $report->category->name }}</td>
+                    <td>{{ __($report->category->name) }}</td>
                     <td>{{ $report->user->name }}</td>
                     <td>{{ $report->location_text }}</td>
-                    <td>{{ ucfirst($report->severity) }}</td>
+                    <td>{{ __(ucfirst($report->severity)) }}</td>
                     @if (!$isResolved)
-                        <td>{{ ucwords(str_replace('_', ' ', $report->status)) }}</td>
+                        <td>{{ __(ucwords(str_replace('_', ' ', $report->status))) }}</td>
                     @endif
                     <td>{{ $report->assignedTo->name ?? '-' }}</td>
                     <td>{{ $report->latitude !== null && $report->longitude !== null ? $report->latitude . ', ' . $report->longitude : '-' }}</td>
                     <td>
                         @if ($report->photo_path && \Illuminate\Support\Facades\Storage::disk('report_photos')->exists($report->photo_path))
-                            <img src="data:{{ \Illuminate\Support\Facades\Storage::disk('report_photos')->mimeType($report->photo_path) }};base64,{{ base64_encode(\Illuminate\Support\Facades\Storage::disk('report_photos')->get($report->photo_path)) }}" alt="Incident photo" style="width: 48px; height: 36px; object-fit: cover;">
+                            <img src="data:{{ \Illuminate\Support\Facades\Storage::disk('report_photos')->mimeType($report->photo_path) }};base64,{{ base64_encode(\Illuminate\Support\Facades\Storage::disk('report_photos')->get($report->photo_path)) }}" alt="{{ __('Incident photo') }}" style="width: 48px; height: 36px; object-fit: cover;">
                         @else
                             -
                         @endif
@@ -56,7 +56,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="8">No reports found.</td>
+                    <td colspan="8">{{ __('No reports found.') }}</td>
                 </tr>
             @endforelse
         </tbody>

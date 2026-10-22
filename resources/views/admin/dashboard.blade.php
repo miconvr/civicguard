@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Incident Queue</h2>
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">{{ __("Incident Queue") }}</h2>
     </x-slot>
 
     <div class="py-12" x-data="{ open: false, r: null }" @keydown.escape.window="open = false">
@@ -15,13 +15,13 @@
             {{-- Summary cards (each one is a filter) --}}
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach ([
-                    ['critical', 'Critical open', $stats['critical'], ['tab' => 'active', 'severity' => 'critical'], 'cg-kpi'],
-                    ['unassigned', 'Unassigned', $stats['unassigned'], ['tab' => 'active', 'assignee' => 'none'], 'cg-kpi'],
-                    ['overdue', 'Pending 48h+', $stats['overdue'], ['tab' => 'pending'], 'cg-kpi'],
-                    ['resolved', 'Resolved this week', $stats['resolved'], ['tab' => 'resolved'], 'cg-kpi'],
+                    ['critical', __('Critical open'), $stats['critical'], ['tab' => 'active', 'severity' => 'critical'], 'cg-kpi'],
+                    ['unassigned', __('Unassigned'), $stats['unassigned'], ['tab' => 'active', 'assignee' => 'none'], 'cg-kpi'],
+                    ['overdue', __('Pending 48h+'), $stats['overdue'], ['tab' => 'pending'], 'cg-kpi'],
+                    ['resolved', __('Resolved this week'), $stats['resolved'], ['tab' => 'resolved'], 'cg-kpi'],
                 ] as [$key, $label, $count, $params, $color])
                     <a href="{{ route('admin.dashboard', $params) }}" class="cg-card p-4 focus:outline-none focus:ring-2 focus:ring-maroon-600" data-reveal>
-                        <div class="text-sm text-gray-700 dark:text-gray-300">{{ $label }}</div>
+                        <div class="text-sm text-gray-700 dark:text-gray-300">{{ __($label) }}</div>
                         <div class="text-3xl font-semibold {{ $color }}" data-testid="queue-stat-value-{{ $key }}">{{ $count }}</div>
                     </a>
                 @endforeach
@@ -36,26 +36,26 @@
                     @endif
                     <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Search by category, location, or report details…') }}"
                            class="cg-select w-full sm:w-80 lg:w-96" aria-label="{{ __('Search reports') }}">
-                    <select name="severity" onchange="this.form.submit()" class="cg-select w-full sm:w-auto" aria-label="Filter by severity">
-                        <option value="">All severities</option>
+                    <select name="severity" onchange="this.form.submit()" class="cg-select w-full sm:w-auto" aria-label="{{ __("Filter by severity") }}">
+                        <option value="">{{ __("All severities") }}</option>
                         @foreach (['critical', 'high', 'moderate', 'low'] as $s)
-                            <option value="{{ $s }}" @selected(request('severity') === $s)>{{ ucfirst($s) }}</option>
+                            <option value="{{ $s }}" @selected(request('severity') === $s)>{{ __(ucfirst($s)) }}</option>
                         @endforeach
                     </select>
                     @if (request('assignee') === 'none')
                         <a href="{{ route('admin.dashboard', request()->except('assignee', 'page')) }}"
-                           class="text-xs rounded-full bg-amber-100 text-amber-800 px-3 py-1 dark:bg-amber-900/40 dark:text-amber-300">Unassigned only ✕</a>
+                           class="text-xs rounded-full bg-amber-100 text-amber-800 px-3 py-1 dark:bg-amber-900/40 dark:text-amber-300">{{ __("Unassigned only ✕") }}</a>
                     @endif
                     <x-export-button class="ml-auto" :href="route('admin.reports.exportPdf', array_filter(['group' => $tab === 'resolved' ? 'resolved' : 'active', 'severity' => request('severity')]))" />
                 </form>
 
                 {{-- Status tabs --}}
-                <nav class="flex flex-wrap gap-1 border-b border-gray-200 dark:border-gray-700 text-sm mb-4" aria-label="Status">
+                <nav class="flex flex-wrap gap-1 border-b border-gray-200 dark:border-gray-700 text-sm mb-4" aria-label="{{ __('Status') }}">
                     @foreach (['active' => 'Active', 'pending' => 'Pending', 'in_progress' => 'In progress', 'resolved' => 'Resolved', 'all' => 'All'] as $key => $label)
                         <a href="{{ route('admin.dashboard', array_merge(request()->except('page'), ['tab' => $key])) }}"
                            @if ($tab === $key) aria-current="page" @endif
                            class="inline-flex min-h-11 items-center px-3 sm:px-4 -mb-px {{ $tab === $key ? 'border-b-2 border-maroon-700 font-semibold text-maroon-700 dark:text-white dark:border-white' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
-                            {{ $label }}
+                            {{ __($label) }}
                         </a>
                     @endforeach
                 </nav>
@@ -65,12 +65,12 @@
                     <table class="cg-table cg-queue">
                         <thead>
                             <tr>
-                                <th>Severity</th>
-                                <th>Report</th>
-                                <th>Age</th>
-                                <th>Status</th>
-                                <th>Assigned</th>
-                                <th><span class="sr-only">Open</span></th>
+                                <th>{{ __("Severity") }}</th>
+                                <th>{{ __("Report") }}</th>
+                                <th>{{ __("Age") }}</th>
+                                <th>{{ __("Status") }}</th>
+                                <th>{{ __("Assigned") }}</th>
+                                <th><span class="sr-only">{{ __("Open") }}</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -85,16 +85,16 @@
                                     $reporterVerified = $report->user->hasVerifiedResidence();
                                     $payload = [
                                         'id' => $report->id,
-                                        'category' => $report->category->name,
+                                        'category' => __($report->category->name),
                                         'user' => $report->user->name,
                                         'reporterVerified' => $reporterVerified,
                                         'location' => $report->location_text,
                                         'description' => $report->description,
-                                        'severity' => ucfirst($report->severity),
+                                        'severity' => __(ucfirst($report->severity)),
                                         'sev' => $report->severity,
                                         'canStatus' => auth()->user()->role !== 'tanod' || (int) $report->assigned_to === (int) auth()->id(),
                                         'sevClass' => 'cg-sev-' . $report->severity,
-                                        'status' => $report->status,
+                                        'status' => __(ucwords(str_replace('_', ' ', $report->status))),
                                         'assigned_to' => (string) $report->assigned_to,
                                         'filed' => $report->created_at->format('M d, Y g:i A'),
                                         'photo' => $report->photo_path ? route('admin.reports.photo', $report) : null,
@@ -106,9 +106,9 @@
                                 <tr class="cursor-pointer hover:bg-black/5 dark:hover:bg-white/5" tabindex="0"
                                     @click="r = {{ Js::from($payload) }}; open = true"
                                     @keydown.enter="r = {{ Js::from($payload) }}; open = true">
-                                    <td data-label="Severity"><span class="cg-sev cg-sev-{{ $report->severity }}">{{ ucfirst($report->severity) }}</span></td>
+                                    <td data-label="Severity"><span class="cg-sev cg-sev-{{ $report->severity }}">{{ __(ucfirst($report->severity)) }}</span></td>
                                     <td data-label="Report">
-                                        <div class="font-medium">{{ $report->category->name }}</div>
+                                        <div class="font-medium">{{ __($report->category->name) }}</div>
                                         <div class="text-xs text-gray-600 dark:text-gray-400">{{ Str::title($report->location_text) }}</div>
                                         <div class="mt-1 flex min-w-0 items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
                                             <span class="min-w-0 truncate" title="{{ __('Reported by') }} {{ $report->user->name }}">{{ __('Reported by') }} {{ $report->user->name }}</span>
@@ -125,14 +125,14 @@
                                     </td>
                                     <td data-label="Status">
                                         <span class="rounded-full px-2.5 py-1 text-xs font-medium {{ $statusPill }}">
-                                            {{ ucwords(str_replace('_', ' ', $report->status)) }}
+                                            {{ __(ucwords(str_replace('_', ' ', $report->status))) }}
                                         </span>
                                     </td>
                                     <td data-label="Assigned">
                                         @if ($report->assignedTo)
                                             {{ $report->assignedTo->name }}
                                         @elseif ($report->status !== 'resolved')
-                                            <span class="rounded bg-amber-50 text-amber-800 px-2 py-0.5 text-xs dark:bg-amber-900/40 dark:text-amber-300">Unassigned</span>
+                                            <span class="rounded bg-amber-50 text-amber-800 px-2 py-0.5 text-xs dark:bg-amber-900/40 dark:text-amber-300">{{ __("Unassigned") }}</span>
                                         @else
                                             -
                                         @endif
@@ -141,7 +141,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="py-10 text-center text-gray-500 dark:text-gray-400">No reports match these filters.</td>
+                                    <td colspan="6" class="py-10 text-center text-gray-500 dark:text-gray-400">{{ __("No reports match these filters.") }}</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -160,7 +160,7 @@
         <aside x-show="open" x-cloak
                x-transition:enter="transform transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100"
                x-transition:leave="transform transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="translate-x-0 opacity-100" x-transition:leave-end="translate-x-full opacity-0"
-               role="dialog" aria-modal="true" aria-label="Report details"
+               role="dialog" aria-modal="true" aria-label="{{ __("Report details") }}"
                class="fixed inset-y-0 right-0 z-50 w-full max-w-md overflow-y-auto cg-surface-raised p-4 sm:p-6 shadow-xl">
             <template x-if="r">
                 <div class="space-y-5">
@@ -192,7 +192,7 @@
 
                     <template x-if="r.lat && r.lng">
                         <a :href="`https://www.google.com/maps?q=${r.lat},${r.lng}`" target="_blank" rel="noopener"
-                           class="text-sm text-maroon-700 dark:text-[#c27872] font-semibold hover:underline">Open in Maps →</a>
+                           class="text-sm text-maroon-700 dark:text-[#c27872] font-semibold hover:underline">{{ __("Open in Maps →") }}</a>
                     </template>
 
                     <hr class="border-gray-200 dark:border-gray-700">
@@ -203,32 +203,32 @@
                         {{-- Severity --}}
                         @if (in_array(auth()->user()->role, ['admin', 'official']))
                             <div class="space-y-2">
-                                <label for="report-severity" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Severity</label>
+                                <label for="report-severity" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __("Severity") }}</label>
                                 <select id="report-severity" name="severity" x-model="r.sev" class="cg-select w-full">
-                                    <option value="low">Low</option>
-                                    <option value="moderate">Moderate</option>
-                                    <option value="high">High</option>
-                                    <option value="critical">Critical</option>
+                                    <option value="low">{{ __("Low") }}</option>
+                                    <option value="moderate">{{ __("Moderate") }}</option>
+                                    <option value="high">{{ __("High") }}</option>
+                                    <option value="critical">{{ __("Critical") }}</option>
                                 </select>
                             </div>
                         @endif
 
                         {{-- Status --}}
                         <div class="space-y-2">
-                            <label for="report-status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+                            <label for="report-status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __("Status") }}</label>
                             <select id="report-status" name="status" x-model="r.status" :disabled="!r.canStatus" class="cg-select w-full">
-                                <option value="pending">Pending</option>
-                                <option value="in_progress">In progress</option>
-                                <option value="resolved">Resolved</option>
+                                <option value="pending">{{ __("Pending") }}</option>
+                                <option value="in_progress">{{ __("In progress") }}</option>
+                                <option value="resolved">{{ __("Resolved") }}</option>
                             </select>
                         </div>
 
                         {{-- Assignment --}}
                         @if (in_array(auth()->user()->role, ['admin', 'official']))
                             <div class="space-y-2">
-                                <label for="report-assigned-to" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Assigned tanod</label>
+                                <label for="report-assigned-to" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __("Assigned tanod") }}</label>
                                 <select id="report-assigned-to" name="assigned_to" x-model="r.assigned_to" class="cg-select w-full">
-                                    <option value="" disabled :hidden="r.assigned_to !== ''">Select a tanod</option>
+                                    <option value="" disabled :hidden="r.assigned_to !== ''">{{ __("Select a tanod") }}</option>
                                     @foreach ($tanods as $tanod)
                                         <option value="{{ $tanod->id }}">{{ $tanod->name }}</option>
                                     @endforeach
@@ -241,9 +241,9 @@
                         </button>
                     </form>
 
-                    <p x-show="!r.canStatus" x-cloak class="text-sm text-gray-500 dark:text-gray-400">Only the assigned tanod or an admin can update this report.</p>
+                    <p x-show="!r.canStatus" x-cloak class="text-sm text-gray-500 dark:text-gray-400">{{ __("Only the assigned tanod or an admin can update this report.") }}</p>
 
-                    <a :href="r.details" class="block text-sm text-gray-700 dark:text-gray-300 hover:underline">Open full details page</a>
+                    <a :href="r.details" class="block text-sm text-gray-700 dark:text-gray-300 hover:underline">{{ __("Open full details page") }}</a>
                 </div>
             </template>
         </aside>
