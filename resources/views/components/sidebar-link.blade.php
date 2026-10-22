@@ -32,5 +32,5 @@ $label = trim(strip_tags((string) $slot));
             <path stroke-linecap="round" stroke-linejoin="round" d="{{ $icons[$icon] }}" />
         </svg>
     @endif
-    <span class="cg-sidebar-label flex-1 min-w-0 truncate">{{ $slot }}</span>
+    <span class="cg-sidebar-label min-w-0 flex-1 whitespace-normal break-words leading-snug">{{ $slot }}</span>
 </a>
