@@ -17,6 +17,7 @@ test('tanods see the scoped summary tab without a link to full analytics', funct
     $this->actingAs($tanod)
         ->get(route('admin.consolidatedReports'))
         ->assertOk()
+        ->assertSee('class="cg-note rounded-lg px-4 py-3 text-sm"', false)
         ->assertSee(route('admin.consolidatedReports'), false)
         ->assertDontSee(route('admin.analytics'), false);
 });

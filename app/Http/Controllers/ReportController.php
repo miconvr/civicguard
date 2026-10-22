@@ -74,6 +74,14 @@ class ReportController extends Controller
             ],
         ]);
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'report_id' => $report->id,
+                'redirect_url' => route('reports.index'),
+            ], 201);
+        }
+
         return redirect()->route('reports.index')->with(
             'status',
             __('Report received. Your reference number is #:id. You will be notified when staff update it.', ['id' => $report->id])
