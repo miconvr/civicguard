@@ -1,106 +1,69 @@
 <div align="center">
-  <img src="./public/favicon.svg" alt="CivicGuard Logo" width="100"/>
+  <img src="public/favicon.svg" alt="CivicGuard shield logo" width="84" height="84">
   <h1>CivicGuard</h1>
-  <p>Incident reporting, monitoring, and curfew tracking for Barangay Maimpis</p>
-  <p><strong>Live site:</strong> <a href="https://civicguard.wasmer.app">https://civicguard.wasmer.app</a></p>
+  <p>Incident reporting and follow-up for Barangay Maimpis, City of San Fernando, Pampanga.</p>
+  <p>
+    <a href="https://civicguard.wasmer.app">Open the live site</a> ·
+    <a href="https://civicguard.wasmer.app/privacy">Privacy policy</a> ·
+    <a href="https://civicguard.wasmer.app/terms">Terms of use</a>
+  </p>
+  <p>
+    <a href="https://github.com/miconvr/civicguard/actions/workflows/ci.yml"><img src="https://github.com/miconvr/civicguard/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI status"></a>
+    <a href="https://github.com/miconvr/civicguard/actions/workflows/uptime.yml"><img src="https://github.com/miconvr/civicguard/actions/workflows/uptime.yml/badge.svg?branch=main" alt="Website uptime check status"></a>
+  </p>
 </div>
 
----
+Residents can submit an incident report, optionally attach a photo or location pin, and follow staff updates. Barangay staff can review, assign, and resolve reports. The report-writing assistant helps residents describe an incident; staff make decisions and review every report.
 
-CivicGuard is a web-based system that lets residents of Barangay Maimpis, City of San Fernando, Pampanga report incidents and follow their progress. Barangay staff get one place to review, assign, and resolve reports and to log curfew violations. An AI chatbot helps residents describe what happened, and urgent messages get immediate emergency guidance.
+> **Emergencies:** CivicGuard is not monitored in real time. Call 911 or contact the barangay directly if someone is in immediate danger.
 
----
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/home-desktop.png" alt="CivicGuard landing page on a desktop screen" width="760">
+</p>
+<p align="center">
+  <img src="docs/screenshots/home-mobile.png" alt="CivicGuard landing page on a mobile screen" width="300">
+</p>
 
 ## Features
 
-**For residents**
-
-- Submit reports with a form or AI chat, plus an optional photo and map pin.
-- Follow report status and assigned tanods; confirm a fix or reopen it within 7 days.
-- Submit residency proof and receive a verified badge after approval.
-
-**For barangay staff**
-
-- Review and search reports by severity; officials and admins can assign tanods and update reports.
-- Record curfew incidents and follow-up details.
-- Use analytics, audit logs, PDF exports, staff management, and the admin test-data reset.
-
-**App features**
-
-- Install CivicGuard on an iPhone or Android home screen. Offline, the app shows a fallback page; reporting requires an internet connection.
-- Use the interface in English or Tagalog, with light or dark appearance.
-- Manage profile photos and accounts, and read the privacy policy and terms of use.
-
----
-
-## How it works
-
-1. **Create an account.** Sign up as a resident.
-2. **Tell us what happened.** Pick a category, describe the problem, and add where it happened.
-3. **Follow it.** Barangay staff review your report and post updates you can follow.
-
----
-
-## Who uses it
-
-| Who | What they do |
+| Residents | Barangay staff |
 | --- | --- |
-| **Residents** | File reports, follow progress and assigned tanods, manage their profile, and request residence verification |
-| **Tanods** | Handle reports assigned to them and record curfew violations |
-| **Officials** | Review and assign reports, and review residence verification requests |
-| **Admin** | Manage staff accounts, reports, audit logs, residence verification, and the test-data reset |
+| File reports with a form or guided chat | Review reports sorted by urgency |
+| Add a photo, location details, or a map pin | Assign reports and update their status |
+| Follow progress and respond when an issue is marked resolved | Review residence verification requests |
+| Request optional residence verification | Record curfew incidents and view analytics |
 
-New sign-ups are always residents.
+The interface supports English and Tagalog, light and dark appearance, mobile layouts, and an offline notice. Reporting and account features require an internet connection.
 
-## Install on a phone
+## Technology
 
-CivicGuard is a Progressive Web App (PWA); there is no app-store download. Open the site over HTTPS, then:
-
-- **iPhone:** Open CivicGuard in Safari, tap **Share**, choose **Add to Home Screen**, leave **Open as Web App** enabled, then tap **Add**.
-- **Android:** Open CivicGuard in Chrome, open the three-dot menu, choose **Install app** (or **Add to Home screen**), then tap **Install**.
-
-The home-screen icon opens CivicGuard in its own window. Offline support is limited to an offline notice; signing in, filing reports, and viewing updates still require an internet connection. The landing page also has an illustrated installation guide.
-
----
-
-## Built with
-
-**Backend**
-
-- Laravel 12
-- PHP 8.2+
-- MySQL 8.4
-
-**Frontend**
-
-- Blade
-- Alpine.js 3
-- Tailwind CSS 4
-- Vite 6
-- Chart.js
-
-**Services & tools**
-
-- Google Gemini and Groq (automatic failover)
-- DomPDF
-- Laravel Sail (Docker)
-
----
+- **Application:** Laravel 12, PHP 8.2+, Blade, Alpine.js, Tailwind CSS, and Vite
+- **Database:** MySQL 8.4
+- **AI services:** Google Gemini and Groq, with provider fallback
+- **Other packages:** Laravel Breeze and DomPDF
+- **Local environment:** Laravel Sail and Docker
+- **Hosting:** Wasmer
 
 ## Run locally
 
-You need Git, Docker Desktop (with WSL2 on Windows), PHP 8.2+, Composer, and Node.js with npm. Docker runs the Laravel app and MySQL database through Sail.
+### Requirements
+
+Git, Docker, PHP 8.2 or newer, Composer, and Node.js with npm. Docker runs the Laravel and MySQL containers through Sail.
+
+### Setup
 
 ```bash
 git clone https://github.com/miconvr/civicguard.git
 cd civicguard
 cp .env.example .env
-composer install
 ```
 
-Before starting Docker, edit `.env` and set a non-empty, unique `DB_PASSWORD`. Add `GEMINI_API_KEY` and/or `GROQ_API_KEY` if you want the external AI providers; the rest of the app can run without them.
+Set a unique, non-empty `DB_PASSWORD` in `.env`, then install and initialize the app:
 
 ```bash
+composer install
 ./vendor/bin/sail up -d --build
 ./vendor/bin/sail artisan key:generate
 ./vendor/bin/sail artisan migrate --seed
@@ -108,48 +71,61 @@ npm ci
 npm run dev
 ```
 
-Open [http://localhost](http://localhost). Keep `npm run dev` running while using the local site. If port 80 is already in use, set `APP_PORT=8000` in `.env`, restart Sail, and use [http://localhost:8000](http://localhost:8000) instead.
+Open [http://localhost](http://localhost). If port 80 is already in use, set `APP_PORT=8000` in `.env` and open [http://localhost:8000](http://localhost:8000).
 
-The seed command creates the standard report categories; it does not create admin or staff accounts. New sign-ups are residents. Local email is logged instead of sent, so verification and password-reset links can be found in `storage/logs/laravel.log`.
-
-To stop the local services, run `./vendor/bin/sail down`. Your MySQL data remains in the Docker volume.
-
-For local development tests, run `./vendor/bin/sail artisan test`.
-
-### Database migrations
-
-The `database/migrations` directory is the source of truth for the schema. It includes the `resident_verifications` table and the report, audit log, notification, and staff-assignment fields used by the app. For a new clone, `migrate --seed` creates the schema and default report categories. Do not create these tables manually with SQL.
-
-When you pull an update that adds a migration, apply pending migrations to your local database:
+The seeder creates report categories, not user accounts. New registrations are residents. Create the first administrator from a terminal; the command only works while no administrator exists and prompts for the account details without putting the password in shell history:
 
 ```bash
-./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan civicguard:create-admin
 ```
 
-Check local migration state with `./vendor/bin/sail artisan migrate:status`. Avoid `migrate:fresh` if you need to keep your local database data, because it drops and recreates application tables.
+An administrator can create official and tanod accounts from the staff management page.
 
-### Uploaded image storage
+### AI configuration (optional)
 
-Report photos, profile pictures, and pending residence proof images use the private `report_photos` disk. Locally, files are stored under `storage/app/private`, outside Laravel's public storage link. Ensure the app can write to that directory. In production, set `PHOTO_DISK_ROOT` to a persistent directory that is not served directly by the web server; the Wasmer configuration uses `/data`. The database stores image paths, while image files live on this disk. Verification proof images are deleted after an admin or official records a decision.
+The rest of the app works without AI keys. To enable the assistant and AI suggestions, set one or both of these in `.env`:
 
-If you previously saved uploads under `storage/app/public`, move the `report-photos`, `profile-photos`, and `verification-documents` directories into `storage/app/private`, preserving their names, to keep those files available after updating.
+```dotenv
+GEMINI_API_KEY=
+GROQ_API_KEY=
+```
 
-### Production checks
+The request order is controlled by `AI_PROVIDERS` (default: `gemini,groq`). Chat messages and report descriptions may be sent to the configured AI provider. Review the [privacy policy](https://civicguard.wasmer.app/privacy) before enabling AI for real users.
 
-The Laravel health endpoint is available at `/up`. The GitHub Actions workflow checks it every 15 minutes and can be run manually from the Actions tab. Enable GitHub Actions failure notifications in your GitHub account settings if you want email alerts. Production application warnings are sent to Wasmer's `stderr` logs (`wasmer app logs miconvr/civicguard`). Review recurring errors there after a deployment.
+## Development checks
 
-The barangay should set and periodically review retention periods for incident reports, audit history, and backups according to its records requirements. The privacy policy currently explains that reports and audit entries are kept as long as the barangay needs them; the website does not automatically purge those records.
+Run the feature and unit tests inside Sail, and build the production assets with npm:
 
----
+```bash
+./vendor/bin/sail artisan test
+npm run build
+```
 
-## Good to know
+If PHP and Composer are installed on the host, run the formatter check with:
 
-- **Not for emergencies.** Reports are reviewed by staff and are not monitored in real time. In an emergency, call 911 or go to the barangay hall.
-- **AI is only a helper.** It can suggest a category or an urgency level, but barangay staff always make the final decision.
-- **Your privacy.** Read how your data is handled in the [Privacy Policy](https://civicguard.wasmer.app/privacy).
+```bash
+vendor/bin/pint --test
+```
 
----
+GitHub Actions runs the test suite, formatter check, and asset build on pushes to `main` and pull requests. A separate workflow checks the production `/up` health endpoint every 15 minutes. Enable workflow failure notifications in GitHub settings if you want alerts.
 
-## Developed by
+## Production notes
 
-Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, Adriann Enriquez
+- Keep `APP_DEBUG=false` and store `APP_KEY`, database credentials, and AI keys in the hosting provider’s secret settings. Do not commit secrets.
+- The app’s `/up` route is its health endpoint. Wasmer application warnings are written to `stderr`; view them with `wasmer app logs miconvr/civicguard`.
+- User uploads use the private `report_photos` disk. Production sets `PHOTO_DISK_ROOT=/data`; keep that volume persistent and outside the public web root. Verification proof images are deleted after staff make a decision.
+- If upgrading a deployment that used the old public upload disk, move its `report-photos`, `profile-photos`, and `verification-documents` directories to the configured private disk before removing the old files.
+- Run pending Laravel migrations through the deployment process before serving code that depends on the new schema. Back up the database and upload volume before production maintenance.
+- The barangay should define retention periods for reports, audit records, and backups according to its records requirements. The application does not automatically purge those records.
+
+## Privacy and safety
+
+Report descriptions, location information, and optional photos can contain personal data. Photo files may include embedded location or device metadata. Chat text and report descriptions may be sent to Gemini or Groq when those services are configured. Do not use CivicGuard to report an emergency.
+
+## Help and project status
+
+For privacy requests, use the contact details in the [privacy policy](https://civicguard.wasmer.app/privacy). For a software issue, open a GitHub issue with steps to reproduce; do not include passwords, API keys, identity documents, or private report details.
+
+CivicGuard was developed as a capstone project by Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, and Adriann Enriquez.
+
+**License:** The repository does not currently include an open-source license.
