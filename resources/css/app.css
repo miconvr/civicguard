@@ -182,7 +182,7 @@
             position: fixed;
             z-index: 80;
             inset-inline: 0;
-            top: 0;
+            top: var(--cg-chat-widget-top, 0px);
             height: var(--cg-chat-widget-height, 100dvh);
             box-sizing: border-box;
             margin: 0;
