@@ -7,6 +7,10 @@ test('analytics shows which model rated the reports', function () {
 
     $this->actingAs($official)->get(route('admin.analytics'))
         ->assertOk()
+        ->assertSee('analytics-category-title')
+        ->assertSee('analytics-severity-title')
+        ->assertSee('analytics-trend-title')
+        ->assertDontSee('cdnjs.cloudflare.com')
         ->assertSee('Severity Rated By')
         ->assertSee('Gemini');
 });

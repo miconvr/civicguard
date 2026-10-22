@@ -1,8 +1,28 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-T-aG_q7J.css",
+    "file": "assets/app-CD32VMsN.css",
     "src": "resources/css/app.css",
     "isEntry": true
+  },
+  "resources/fonts/Bitter-600.woff2": {
+    "file": "assets/Bitter-600-B6efaj8C.woff2",
+    "src": "resources/fonts/Bitter-600.woff2"
+  },
+  "resources/fonts/Figtree-400.woff2": {
+    "file": "assets/Figtree-400-g7Dtegnw.woff2",
+    "src": "resources/fonts/Figtree-400.woff2"
+  },
+  "resources/fonts/Figtree-500.woff2": {
+    "file": "assets/Figtree-500-BWnGEVsr.woff2",
+    "src": "resources/fonts/Figtree-500.woff2"
+  },
+  "resources/fonts/Figtree-600.woff2": {
+    "file": "assets/Figtree-600-Cv_xCTDl.woff2",
+    "src": "resources/fonts/Figtree-600.woff2"
+  },
+  "resources/fonts/Figtree-700.woff2": {
+    "file": "assets/Figtree-700-th6qEP7c.woff2",
+    "src": "resources/fonts/Figtree-700.woff2"
   },
   "resources/js/app.js": {
     "file": "assets/app-C-M_T3hQ.js",
