@@ -2,6 +2,7 @@
   <img src="public/favicon.svg" alt="CivicGuard shield logo" width="84" height="84">
   <h1>CivicGuard</h1>
   <p>Incident reporting and follow-up for Barangay Maimpis, City of San Fernando, Pampanga.</p>
+  <p><strong>Academic capstone title</strong><br><em>CivicGuard: An AI-Integrated Web-Based Incident and Curfew Monitoring System for Barangay Maimpis, City of San Fernando, Pampanga</em></p>
   <p>
     <a href="https://civicguard.wasmer.app">Open the live site</a> ·
     <a href="https://civicguard.wasmer.app/privacy">Privacy policy</a> ·
