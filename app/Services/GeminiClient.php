@@ -41,9 +41,11 @@ class GeminiClient
                         }
                     }
 
-                    if ($fast) {
-                        Log::warning("Gemini fast {$model}: HTTP ".$response->status().' '.substr($response->body(), 0, 200));
-                    }
+                    Log::warning('Gemini request failed.', [
+                        'model' => $model,
+                        'status' => $response->status(),
+                        'fast_request' => $fast,
+                    ]);
                     if ($response->status() === 503 && $attempt === 1) {
                         sleep(1);
 
@@ -52,6 +54,11 @@ class GeminiClient
 
                     break;
                 } catch (\Throwable $exception) {
+                    Log::warning('Gemini request failed before receiving a response.', [
+                        'model' => $model,
+                        'exception' => $exception::class,
+                    ]);
+
                     if ($attempt === 1) {
                         sleep(1);
 
