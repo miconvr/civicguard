@@ -1,6 +1,12 @@
 import axe from 'axe-core';
 
 export async function auditAccessibility(page, label) {
+    await page.evaluate(() => Promise.allSettled(
+        [...document.querySelectorAll('[data-reveal]')]
+            .flatMap(element => element.getAnimations())
+            .map(animation => animation.finished),
+    ));
+
     if (! await page.evaluate(() => Boolean(window.axe))) {
         await page.addScriptTag({ content: axe.source });
     }
