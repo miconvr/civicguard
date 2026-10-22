@@ -109,9 +109,9 @@ If PHP and Composer are installed on the host, run the formatter check with:
 vendor/bin/pint --test
 ```
 
-GitHub Actions runs the test suite, formatter check, and asset build on pushes to `main` and pull requests. A separate workflow checks the production `/up` health endpoint every 15 minutes. Enable workflow failure notifications in GitHub settings if you want alerts.
+GitHub Actions runs the test suite, formatter check, asset build, and mobile browser smoke checks on pushes to `main` and pull requests. A separate workflow checks the production `/up` health endpoint every 15 minutes. Enable workflow failure notifications in GitHub settings if you want alerts.
 
-The production build also checks compressed JavaScript, CSS, landing-page, and font budgets. A weekly GitHub Actions workflow audits the live landing page on a throttled mobile connection and checks page load, layout shift, failed requests, JavaScript errors, and cache headers for fingerprinted assets. You can run these checks locally with `npm run check:performance` after `npm run build`, or install Chromium with `npx playwright install chromium` and run the live audit with `npm run audit:production`.
+The production build also checks compressed JavaScript, CSS, landing-page, and font budgets. Weekly GitHub Actions checks audit the live landing page on a throttled mobile connection and check mobile layouts, basic accessibility, page errors, and cache headers for fingerprinted assets. Run `npm run audit:mobile` or `npm run audit:production` after installing Chromium with `npx playwright install chromium`. Set `PERF_URL` to use another deployment.
 
 ## Production notes
 
@@ -121,6 +121,7 @@ The production build also checks compressed JavaScript, CSS, landing-page, and f
 - If upgrading a deployment that used the old public upload disk, move its `report-photos`, `profile-photos`, and `verification-documents` directories to the configured private disk before removing the old files.
 - Run pending Laravel migrations through the deployment process before serving code that depends on the new schema. Back up the database and upload volume before production maintenance.
 - The barangay should define retention periods for reports, audit records, and backups according to its records requirements. The application does not automatically purge those records.
+- See [operations and data stewardship](docs/OPERATIONS.md) for backup, restore, and retention planning. No deletion schedule is enabled until the barangay approves one.
 
 ## Privacy and safety
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Report extends Model
 {
@@ -82,12 +83,20 @@ class Report extends Model
 
     public static function averageResolutionMinutes(): ?float
     {
-        $times = static::where('status', 'resolved')
-            ->whereNotNull('resolved_at')
-            ->get(['created_at', 'resolved_at'])
-            ->map(fn ($r) => $r->created_at->diffInMinutes($r->resolved_at));
+        $driver = DB::getDriverName();
+        $averageDuration = match ($driver) {
+            'mysql' => 'TIMESTAMPDIFF(SECOND, created_at, resolved_at) / 60',
+            'pgsql' => 'EXTRACT(EPOCH FROM (resolved_at - created_at)) / 60',
+            'sqlite' => '(julianday(resolved_at) - julianday(created_at)) * 1440',
+            default => throw new \RuntimeException('Unsupported database driver for resolution metrics.'),
+        };
 
-        return $times->isNotEmpty() ? (float) $times->average() : null;
+        $average = static::where('status', 'resolved')
+            ->whereNotNull('resolved_at')
+            ->selectRaw("AVG({$averageDuration}) as average_minutes")
+            ->value('average_minutes');
+
+        return $average === null ? null : (float) $average;
     }
 
     public function curfewLog()

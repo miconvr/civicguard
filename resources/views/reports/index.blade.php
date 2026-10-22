@@ -149,6 +149,9 @@
                     </div>
                 @endforelse
             </div>
+            @if ($reports->hasPages())
+                <div class="mt-5">{{ $reports->links() }}</div>
+            @endif
         </div>
     </div>
 </x-app-layout>
