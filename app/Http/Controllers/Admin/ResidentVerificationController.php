@@ -68,15 +68,20 @@ class ResidentVerificationController extends Controller
         ]);
     }
 
-    public function avatar(ResidentVerification $verification): StreamedResponse
+    public function avatar(Request $request, ResidentVerification $verification): StreamedResponse
     {
         $path = $verification->user->avatarPath();
-        abort_unless($path && Storage::disk('report_photos')->exists($path), 404);
+        $version = $request->query('v');
+        abort_unless(
+            $path
+            && $version !== null
+            && hash_equals(basename($path), (string) $version)
+            && Storage::disk('report_photos')->exists($path),
+            404
+        );
 
         return Storage::disk('report_photos')->response($path, headers: [
-            // Avatars are private, but short browser caching avoids re-reading
-            // the same file when staff switch between verification tabs.
-            'Cache-Control' => 'private, max-age=300',
+            'Cache-Control' => 'private, max-age=31536000, immutable',
             'X-Content-Type-Options' => 'nosniff',
         ]);
     }
