@@ -212,10 +212,6 @@
     .dark .cg-chat-log { background-color: #211c1e; }
 
     @media (max-width: 639px) {
-        #chat-widget.cg-chat-shell {
-            margin-top: 0.75rem;
-        }
-
         .cg-chat-log {
             height: clamp(12rem, 32vh, 18rem);
             height: clamp(12rem, 32dvh, 18rem);
