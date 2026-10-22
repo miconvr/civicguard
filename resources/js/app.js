@@ -350,5 +350,9 @@ if ('serviceWorker' in navigator) {
     };
     window.addEventListener('scroll', request, { passive: true });
     window.addEventListener('resize', request);
+    // iOS can restore this page from the back-forward cache without rerunning
+    // initialization or firing a scroll event. Recompute the navbar state
+    // after the restored scroll position is applied.
+    window.addEventListener('pageshow', update);
     update();
 })();
