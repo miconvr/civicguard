@@ -21,7 +21,7 @@ class ReportPhotoController extends Controller
         ]);
     }
 
-    public function assignedTanodAvatar(Report $report)
+    public function assignedTanodAvatar(\Illuminate\Http\Request $request, Report $report)
     {
         $viewer = auth()->user();
         abort_unless($viewer->role !== 'resident' || (int) $report->user_id === (int) $viewer->id, 403);
@@ -31,10 +31,18 @@ class ReportPhotoController extends Controller
 
         $path = $tanod->avatarPath();
         $disk = Storage::disk('report_photos');
-        abort_unless($path && $disk->exists($path), 404);
+        $version = $request->query('v');
+        abort_unless(
+            $path
+            && ($version === null || hash_equals(basename($path), (string) $version))
+            && $disk->exists($path),
+            404
+        );
 
         return $disk->response($path, null, [
-            'Cache-Control' => 'private, max-age=3600',
+            'Cache-Control' => $version === null
+                ? 'private, max-age=300'
+                : 'private, max-age=31536000, immutable',
             'X-Content-Type-Options' => 'nosniff',
         ]);
     }
