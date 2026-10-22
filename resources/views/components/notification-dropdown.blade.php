@@ -39,6 +39,7 @@ class="relative inline-flex items-center">
             :aria-expanded="open.toString()"
             aria-haspopup="true"
             aria-label="{{ __('Notifications') }}"
+            :aria-label='unread > 0 ? @js(__('Notifications')) + ", " + (unread > 99 ? "99+" : unread) + " " + @js(__('unread')) : @js(__('Notifications'))'
             title="{{ __('Notifications') }}"
             class="cg-notification-trigger relative inline-flex h-10 w-10 items-center justify-center rounded-xl transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-maroon-700 {{ $mobile ? 'text-stone-700 hover:bg-black/5 dark:text-gray-200 dark:hover:bg-white/5 focus-visible:outline-offset-0' : 'border border-stone-200 bg-white text-stone-700 shadow-sm hover:border-maroon-700 hover:text-maroon-700 dark:border-white/10 dark:bg-white/5 dark:text-gray-200 dark:hover:bg-white/10 dark:hover:text-white' }} {{ request()->routeIs('notifications.index') ? ($mobile ? '!text-maroon-700 dark:!text-white' : '!border-maroon-700 !text-maroon-700 dark:!border-maroon-500 dark:!text-white') : '' }}">
         <svg class="{{ $mobile ? 'h-6 w-6' : 'h-5 w-5' }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
