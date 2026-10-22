@@ -134,6 +134,12 @@ Report photos, profile pictures, and pending residence proof images use the priv
 
 If you previously saved uploads under `storage/app/public`, move the `report-photos`, `profile-photos`, and `verification-documents` directories into `storage/app/private`, preserving their names, to keep those files available after updating.
 
+### Production checks
+
+The Laravel health endpoint is available at `/up`. The GitHub Actions workflow checks it every 15 minutes and can be run manually from the Actions tab. Enable GitHub Actions failure notifications in your GitHub account settings if you want email alerts. Production application warnings are sent to Wasmer's `stderr` logs (`wasmer app logs miconvr/civicguard`). Review recurring errors there after a deployment.
+
+The barangay should set and periodically review retention periods for incident reports, audit history, and backups according to its records requirements. The privacy policy currently explains that reports and audit entries are kept as long as the barangay needs them; the website does not automatically purge those records.
+
 ---
 
 ## Good to know

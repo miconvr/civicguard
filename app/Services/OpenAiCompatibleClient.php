@@ -13,8 +13,7 @@ class OpenAiCompatibleClient
         protected string $key,
         protected string $model,
         protected string $fastModel,
-    ) {
-    }
+    ) {}
 
     public function generateText(string $prompt, int $timeout = 15, bool $fast = false): ?string
     {
@@ -37,9 +36,15 @@ class OpenAiCompatibleClient
                 }
             }
 
-            Log::warning("AI {$this->name}: HTTP ".$response->status().' '.substr($response->body(), 0, 200));
+            Log::warning('AI provider request failed.', [
+                'provider' => $this->name,
+                'status' => $response->status(),
+            ]);
         } catch (\Throwable $exception) {
-            Log::warning("AI {$this->name}: ".$exception->getMessage());
+            Log::warning('AI provider request failed before receiving a response.', [
+                'provider' => $this->name,
+                'exception' => $exception::class,
+            ]);
         }
 
         return null;
