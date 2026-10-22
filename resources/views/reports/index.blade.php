@@ -95,7 +95,7 @@
                             @php($tanodAvatar = $report->assignedTo->avatarPath())
                             <div class="mt-4 flex items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 dark:border-gray-700 dark:bg-white/5">
                                 @if ($tanodAvatar)
-                                    <img src="{{ route('reports.assignedTanod.photo', $report) }}" alt="{{ __('Profile picture of :name', ['name' => $report->assignedTo->name]) }}" class="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-stone-200 dark:ring-gray-700">
+                                    <img src="{{ route('reports.assignedTanod.photo', ['report' => $report, 'v' => basename($tanodAvatar)]) }}" alt="{{ __('Profile picture of :name', ['name' => $report->assignedTo->name]) }}" width="40" height="40" loading="lazy" decoding="async" class="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-stone-200 dark:ring-gray-700">
                                 @else
                                     <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#fffaf5] text-sm font-semibold text-maroon-800 ring-1 ring-stone-200" aria-hidden="true">{{ strtoupper(mb_substr($report->assignedTo->name, 0, 1)) }}</span>
                                 @endif
