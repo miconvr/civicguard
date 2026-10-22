@@ -33,6 +33,9 @@
         .chat-success-check { stroke-dasharray: 24; stroke-dashoffset: 24; animation: cg-chat-check-draw var(--cg-motion-interaction) var(--cg-ease-out) 40ms forwards; }
         .chat-submit-loading { animation: cg-chat-submit-pulse 1.1s ease-in-out infinite; }
         .chat-submit-complete { background-color: #dcfce7 !important; color: #166534 !important; transition: background-color var(--cg-motion-enter) var(--cg-ease-out), color var(--cg-motion-enter) var(--cg-ease-out); }
+        .cg-chat-panel-enter { animation: cg-chat-panel-enter var(--cg-motion-page) var(--cg-ease-out) both; }
+        .cg-chat-bot-mark { background: rgb(149 31 61 / 10%); color: #7a1f1f; }
+        .dark .cg-chat-bot-mark { background: rgb(236 185 196 / 12%); color: #f2b5c2; }
         @keyframes cg-chat-message-user {
             from { opacity: 0; transform: translate(10px, 8px) scale(.96); }
             to { opacity: 1; transform: translate(0) scale(1); }
@@ -95,61 +98,71 @@
             0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgb(149 31 61 / 0%); }
             50% { transform: scale(.985); box-shadow: 0 0 0 4px rgb(149 31 61 / 18%); }
         }
+        @keyframes cg-chat-panel-enter {
+            from { opacity: 0; transform: translateY(10px) scale(.99); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
         @keyframes typing-bounce {
             0%, 80%, 100% { transform: translateY(0); opacity: 0.35; }
             40% { transform: translateY(-5px); opacity: 1; }
         }
         @media (prefers-reduced-motion: reduce) {
-            .chat-message-enter-user, .chat-message-enter-bot, .chat-typing-bubble, .chat-review-enter, .chat-photo-preview-enter, .chat-photo-preview-leave, .chat-photo-button-updated, .chat-edit-panel-enter, .chat-edit-panel-leave, .chat-edit-panel-enter .chat-edit-field, .chat-review-details-enter, .chat-detail-updated, .chat-success-enter, .chat-success-icon, .chat-success-check, .chat-submit-loading, .send-loading-dot { animation: none; }
+            .chat-message-enter-user, .chat-message-enter-bot, .chat-typing-bubble, .chat-review-enter, .chat-photo-preview-enter, .chat-photo-preview-leave, .chat-photo-button-updated, .chat-edit-panel-enter, .chat-edit-panel-leave, .chat-edit-panel-enter .chat-edit-field, .chat-review-details-enter, .chat-detail-updated, .chat-success-enter, .chat-success-icon, .chat-success-check, .chat-submit-loading, .send-loading-dot, .cg-chat-panel-enter { animation: none; }
         }
     </style>
 
-    <div id="chat-widget" @keydown.escape.window="if (chatOpen) { chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="my-6 overflow-hidden rounded-xl border border-stone-200 cg-surface-raised dark:border-gray-700">
-        <div x-show="!chatOpen" x-cloak class="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:px-8">
+    <div id="chat-widget" @keydown.escape.window="if (chatOpen) { document.getElementById('chat-input')?.blur(); leaveMobileChatMode(); chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="cg-chat-shell my-6 overflow-hidden rounded-2xl border border-maroon-900/10 cg-surface-raised shadow-lg shadow-maroon-950/5 dark:border-white/10 dark:shadow-black/20">
+        <div x-show="!chatOpen" x-cloak class="flex flex-col gap-4 bg-gradient-to-br from-maroon-800 via-maroon-700 to-[#9a3450] px-5 py-5 text-white sm:flex-row sm:items-center sm:px-7">
             <div class="flex min-w-0 flex-1 items-center gap-3">
-                <span class="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-[#ddc9b7] bg-[#f7eee5]" aria-hidden="true">
+                <span class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/25 bg-white/95 shadow-sm" aria-hidden="true">
                     @include('chatbot.mascot')
                 </span>
                 <span class="min-w-0">
-                    <span class="block text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('Need a hand with your report?') }}</span>
-                    <span class="mt-0.5 block text-sm leading-5 text-gray-600 dark:text-gray-400">{{ __('CivicGuard AI can help you organize the details.') }}</span>
+                    <span class="block text-base font-semibold tracking-tight">{{ __('Need a hand with your report?') }}</span>
+                    <span class="mt-1 block text-sm leading-5 text-white/80">{{ __('CivicGuard AI can help you organize the details.') }}</span>
                 </span>
             </div>
-            <button type="button" x-ref="chatToggle" @click="chatOpen = !chatOpen" :aria-expanded="chatOpen.toString()" aria-controls="report-ai-chat" class="inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 rounded-lg border border-maroon-700 px-4 py-2 text-sm font-semibold text-maroon-800 transition-colors hover:bg-maroon-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-[#b98286] dark:text-gray-100 dark:hover:bg-white/5 sm:w-auto">
+            <button type="button" x-ref="chatToggle" @click="chatOpen = !chatOpen" :aria-expanded="chatOpen.toString()" aria-controls="report-ai-chat" class="cg-motion-lift inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-maroon-800 shadow-sm transition hover:bg-rose-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:w-auto">
                 <span x-text="chatOpen ? @js(__('Close chat')) : @js(__('Open chat'))">{{ __('Open chat') }}</span>
                 <svg class="h-4 w-4 transition-transform" :class="chatOpen ? 'rotate-180' : ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
             </button>
         </div>
 
-        <div x-show="chatOpen" x-cloak id="report-ai-chat" role="region" aria-label="{{ __('CivicGuard AI') }}" class="border-t border-stone-200 cg-surface dark:border-gray-700">
-                <div class="flex items-center gap-3 px-4 py-3 sm:px-6">
+        <div x-show="chatOpen" x-cloak id="report-ai-chat" role="region" aria-label="{{ __('CivicGuard AI') }}" class="cg-chat-panel-enter cg-chat-panel border-t border-maroon-950/10 bg-white dark:border-white/10 dark:bg-gray-900">
+                <div class="cg-chat-header flex items-center gap-3 bg-gradient-to-r from-maroon-900 to-maroon-700 px-4 py-3.5 text-white sm:px-6">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/25 bg-white/95 shadow-sm" aria-hidden="true">
+                        @include('chatbot.mascot')
+                    </span>
                     <div class="min-w-0 flex-1">
-                        <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('CivicGuard AI') }}</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('Your report-writing assistant') }}</p>
+                        <p class="text-sm font-semibold tracking-wide">{{ __('CivicGuard AI') }}</p>
+                        <p class="mt-0.5 flex items-center gap-1.5 text-xs text-white/75"><span class="h-1.5 w-1.5 rounded-full bg-emerald-300" aria-hidden="true"></span>{{ __('Your report-writing assistant') }}</p>
                     </div>
-                    <button id="chat-keyboard-dismiss" type="button" @click="chatOpen = false" aria-label="{{ __('Close chat') }}" class="hidden h-11 w-11 shrink-0 items-center justify-center rounded-lg text-gray-600 hover:bg-black/5 dark:text-gray-300 dark:hover:bg-white/10">
-                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M6 9l6 6 6-6"/></svg>
+                    <button id="chat-keyboard-dismiss" type="button" @click="document.getElementById('chat-input')?.blur(); leaveMobileChatMode(); chatOpen = false; $nextTick(() => $refs.chatToggle.focus())" aria-label="{{ __('Close chat') }}" title="{{ __('Close chat') }}" class="cg-motion-lift inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 text-white/90 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="m6 6 12 12M18 6 6 18"/></svg>
                     </button>
                 </div>
 
-                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="cg-chat-log min-h-36 space-y-3 border-y border-gray-100 px-3 py-4 dark:border-gray-700 sm:px-6">
-                    <div class="text-sm text-left">
-                        <span class="px-4 py-3 rounded-2xl rounded-tl-sm inline-block max-w-[90%] text-left bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
+                <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="cg-chat-log min-h-56 space-y-4 px-3 py-5 sm:px-6">
+                    <div class="flex items-end gap-2 text-sm chat-message-enter-bot">
+                        <span class="cg-chat-bot-mark mb-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold" aria-hidden="true">AI</span>
+                        <span class="inline-block max-w-[88%] rounded-2xl rounded-bl-md border border-stone-200/80 bg-white px-4 py-3 text-left leading-6 text-gray-800 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
                             {{ __('Hi! Tell me what happened and I can help you put together a clear incident report.') }}
                         </span>
                     </div>
                 </div>
 
-                <form id="chat-form" class="flex items-end gap-2 border-t border-gray-100 p-3 dark:border-gray-700 sm:px-6">
-                    <textarea id="chat-input" rows="1" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Type your message...') }}" class="cg-input min-h-[44px] max-h-32 min-w-0 flex-1 resize-none overflow-y-hidden py-2.5 leading-5" style="height:44px" autocomplete="off"></textarea>
-                    <button type="submit" id="chat-send" class="inline-flex h-11 w-11 min-h-[44px] shrink-0 items-center justify-center rounded-lg bg-maroon-700 p-0 text-white shadow-sm transition duration-[var(--cg-motion-interaction)] hover:bg-maroon-800 active:scale-[.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 disabled:cursor-wait disabled:opacity-65" aria-label="{{ __('Send') }}" aria-busy="false">
+                <div class="cg-chat-composer border-t border-stone-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900 sm:px-5 sm:py-4">
+                    <form id="chat-form" class="flex items-end gap-2 rounded-2xl border border-stone-300 bg-stone-50 p-1.5 shadow-inner transition focus-within:border-maroon-700 focus-within:ring-2 focus-within:ring-maroon-700/15 dark:border-gray-600 dark:bg-gray-800 dark:focus-within:border-[#d28b9b]">
+                    <textarea id="chat-input" rows="1" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Type your message...') }}" class="min-h-[48px] max-h-32 min-w-0 flex-1 resize-none overflow-y-hidden border-0 bg-transparent px-3 py-3 leading-5 text-gray-900 outline-none ring-0 placeholder:text-gray-500 focus:border-0 focus:ring-0 dark:text-gray-100 dark:placeholder:text-gray-400" style="height:48px" autocomplete="off"></textarea>
+                    <button type="submit" id="chat-send" class="cg-motion-lift inline-flex h-11 w-11 min-h-[44px] shrink-0 items-center justify-center rounded-xl bg-maroon-800 p-0 text-white shadow-sm transition duration-[var(--cg-motion-interaction)] hover:bg-maroon-900 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 disabled:cursor-wait disabled:opacity-60" aria-label="{{ __('Send') }}" aria-busy="false">
                         <span id="chat-send-label" class="sr-only">{{ __('Send') }}</span>
                         <span id="chat-send-icon" aria-hidden="true"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m0 0-6 6m6-6 6 6"/></svg></span>
                         <span id="chat-send-spinner" class="hidden items-center justify-center gap-1" role="status"><span class="inline-flex items-center gap-1" aria-hidden="true"><span class="send-loading-dot"></span><span class="send-loading-dot"></span><span class="send-loading-dot"></span></span><span class="sr-only">{{ __('Sending...') }}</span></span>
                     </button>
-                </form>
-
-                <p class="px-3 pb-3 text-[13px] cg-muted sm:px-6">{{ __('Reports are reviewed by staff and are not answered instantly.') }}</p>
+                    </form>
+                    <p class="mt-2 flex items-center justify-between gap-2 px-1 text-[11px] text-stone-500 dark:text-gray-400"><span>{{ __('Enter to send') }} · {{ __('Shift+Enter for a new line') }}</span><span class="shrink-0">{{ __('1000 character limit') }}</span></p>
+                    <p class="mt-1 px-1 text-xs cg-muted">{{ __('Reports are reviewed by staff and are not answered instantly.') }}</p>
+                </div>
         </div>
     </div>
 
@@ -186,7 +199,7 @@
 
         input.addEventListener('focus', enterMobileChatMode);
         input.addEventListener('blur', () => window.setTimeout(() => {
-            if (document.activeElement !== input) leaveMobileChatMode();
+            if (!chatWidget.contains(document.activeElement)) leaveMobileChatMode();
         }, 0));
         window.visualViewport?.addEventListener('resize', syncMobileChatViewport);
         window.visualViewport?.addEventListener('scroll', syncMobileChatViewport);
@@ -223,7 +236,7 @@
 
         function resizeChatInput() {
             const maxHeight = 128;
-            input.style.height = '44px';
+            input.style.height = '48px';
             const height = Math.min(input.scrollHeight, maxHeight);
             input.style.height = height + 'px';
             input.style.overflowY = input.scrollHeight > maxHeight ? 'auto' : 'hidden';
@@ -231,12 +244,14 @@
 
         function addMessage(text, who) {
             const row = document.createElement('div');
-            row.className = 'text-sm chat-message-enter-' + (who === 'user' ? 'user text-right' : 'bot text-left');
+            row.className = who === 'user'
+                ? 'flex justify-end text-sm chat-message-enter-user'
+                : 'flex items-end gap-2 text-sm chat-message-enter-bot';
             const bubble = document.createElement('span');
-            bubble.className = 'px-4 py-3 rounded-2xl inline-block max-w-[90%] text-left whitespace-pre-wrap shadow-sm ' +
+            bubble.className = 'inline-block max-w-[88%] rounded-2xl px-4 py-3 text-left leading-6 whitespace-pre-wrap shadow-sm ' +
                 (who === 'user'
-                    ? 'bg-maroon-700 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100');
+                    ? 'rounded-br-md bg-maroon-800 text-white'
+                    : 'rounded-bl-md border border-stone-200/80 bg-white text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100');
             if (who === 'bot') {
                 const normalized = text.replace(/\\\*\\\*/g, '**');
                 const parts = normalized.split(/(\*\*[^*\n]+?\*\*)/g);
@@ -252,7 +267,15 @@
             } else {
                 bubble.textContent = text;
             }
-            row.appendChild(bubble);
+            if (who === 'bot') {
+                const mark = document.createElement('span');
+                mark.className = 'cg-chat-bot-mark mb-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold';
+                mark.setAttribute('aria-hidden', 'true');
+                mark.textContent = 'AI';
+                row.append(mark, bubble);
+            } else {
+                row.appendChild(bubble);
+            }
             log.appendChild(row);
             log.scrollTop = log.scrollHeight;
         }
@@ -283,9 +306,10 @@
         function showTyping() {
             const row = document.createElement('div');
             row.id = 'typing-row';
-            row.className = 'text-sm text-left';
+            row.className = 'flex items-end gap-2 text-sm';
             row.innerHTML =
-                '<span class="chat-typing-bubble px-3 py-3 rounded-2xl rounded-bl-sm inline-flex items-center gap-1 bg-gray-100 dark:bg-gray-700 text-gray-500 shadow-sm dark:text-gray-300">' +
+                '<span class="cg-chat-bot-mark mb-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold" aria-hidden="true">AI</span>' +
+                '<span class="chat-typing-bubble inline-flex items-center gap-1 rounded-2xl rounded-bl-md border border-stone-200/80 bg-white px-4 py-4 text-gray-500 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">' +
                 '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>' +
                 '</span>';
             log.appendChild(row);
@@ -760,9 +784,9 @@
 
         function showError(text) {
             const row = document.createElement('div');
-            row.className = 'text-sm text-left';
+            row.className = 'flex items-end gap-2 text-sm';
             const bubble = document.createElement('span');
-            bubble.className = 'px-3 py-2 rounded-lg inline-flex flex-wrap items-center gap-3 max-w-[85%] bg-red-50 dark:bg-red-900/30 text-red-800 dark:text-red-200';
+            bubble.className = 'inline-flex max-w-[88%] flex-wrap items-center gap-3 rounded-2xl rounded-bl-md border border-red-200 bg-red-50 px-4 py-3 text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200';
             const msg = document.createElement('span');
             msg.textContent = text;
             const retry = document.createElement('button');
@@ -771,7 +795,11 @@
             retry.textContent = t.retry;
             retry.onclick = () => { row.remove(); sendMessage(lastMessage, true); };
             bubble.append(msg, retry);
-            row.appendChild(bubble);
+            const mark = document.createElement('span');
+            mark.className = 'cg-chat-bot-mark mb-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold';
+            mark.setAttribute('aria-hidden', 'true');
+            mark.textContent = 'AI';
+            row.append(mark, bubble);
             log.appendChild(row);
             log.scrollTop = log.scrollHeight;
         }
