@@ -118,10 +118,12 @@ A weekly MySQL workflow seeds disposable synthetic records and prints query plan
 ## Production notes
 
 - Keep `APP_DEBUG=false` and store `APP_KEY`, database credentials, and AI keys in the hosting provider’s secret settings. Do not commit secrets.
+- `app.yaml` records the Wasmer build/runtime settings, production environment, persistent `/data` volume, and post-deployment migration job. That job runs `php artisan migrate --force --no-interaction` so Laravel does not wait for a terminal prompt during deployment. Wasmer-generated `app_id` and package digests are intentionally not committed because each app and release gets its own values.
+- To deploy a clone, create a separate Wasmer app connected to your fork, set `owner`, `name`, and `APP_URL` in `app.yaml` for that app, attach its own managed database and persistent volume, and configure its own `APP_KEY` and optional AI/email secrets. Do not point a clone at CivicGuard’s production app or data.
 - The app’s `/up` route is its health endpoint. Wasmer application warnings are written to `stderr`; view them with `wasmer app logs miconvr/civicguard`.
 - User uploads use the private `report_photos` disk. Production sets `PHOTO_DISK_ROOT=/data`; keep that volume persistent and outside the public web root. Verification proof images are deleted after staff make a decision.
 - If upgrading a deployment that used the old public upload disk, move its `report-photos`, `profile-photos`, and `verification-documents` directories to the configured private disk before removing the old files.
-- Run pending Laravel migrations through the deployment process before serving code that depends on the new schema. Back up the database and upload volume before production maintenance.
+- Back up the database and upload volume before production maintenance or schema changes.
 - The barangay should define retention periods for reports, audit records, and backups according to its records requirements. The application does not automatically purge those records.
 - See [operations and data stewardship](docs/OPERATIONS.md) for backup, restore, and retention planning. No deletion schedule is enabled until the barangay approves one.
 
