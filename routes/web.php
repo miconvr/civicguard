@@ -87,6 +87,10 @@ Route::middleware(['auth', 'role:resident,admin,official'])->group(function () {
     Route::post('/reports/{report}/reopen', [ReportController::class, 'reopen'])->name('reports.reopen')->middleware('throttle:10,1');
 });
 
+Route::delete('/reports/{report}', [ReportController::class, 'destroyPending'])
+    ->middleware(['auth', 'role:resident', 'throttle:10,1'])
+    ->name('reports.destroyPending');
+
 Route::middleware(['auth', 'role:resident,admin,official'])->group(function () {
     Route::post('/chatbot/send', [ChatbotController::class, 'send'])->name('chatbot.send')->middleware(['throttle:20,1', 'throttle:150,60,chatbot_hour']);
 });
