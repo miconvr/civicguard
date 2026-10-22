@@ -5,6 +5,7 @@ use App\Models\Report;
 use App\Models\ReportCategory;
 use App\Models\ResidentVerification;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 test('deleting a resident account removes their reports and photo files', function () {
@@ -27,6 +28,25 @@ test('deleting a resident account removes their reports and photo files', functi
     $this->assertDatabaseMissing('users', ['id' => $resident->id]);
     $this->assertDatabaseMissing('reports', ['id' => $report->id]);
     Storage::disk('report_photos')->assertMissing('report-photos/a.jpg');
+});
+
+test('deleting a resident account removes any stored chatbot messages', function () {
+    $resident = User::factory()->create(['role' => 'resident']);
+    DB::table('chatbot_conversations')->insert([
+        'user_id' => $resident->id,
+        'session_id' => 'legacy-chat-session',
+        'sender' => 'user',
+        'message' => 'A private incident description',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    $this->actingAs($resident)->delete('/profile', ['password' => 'password'])->assertRedirect('/');
+
+    $this->assertDatabaseMissing('chatbot_conversations', [
+        'session_id' => 'legacy-chat-session',
+        'message' => 'A private incident description',
+    ]);
 });
 
 test('staff cannot delete their own account', function () {

@@ -13,8 +13,8 @@ class ChatbotController extends Controller
     {
         $validated = $request->validate([
             'message' => ['required', 'string', 'max:1000'],
-            'session_id' => ['nullable', 'string'],
-            'history' => ['nullable', 'string'],
+            'session_id' => ['nullable', 'string', 'max:100'],
+            'history' => ['nullable', 'string', 'max:12000'],
             'emergency_ack' => ['nullable', 'boolean'],
         ]);
 

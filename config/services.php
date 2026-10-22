@@ -45,7 +45,6 @@ return [
         'fast_model' => env('GROQ_FAST_MODEL', 'openai/gpt-oss-20b'),
     ],
 
-
     'ai' => [
         'order' => array_filter(array_map('trim', explode(',', (string) env('AI_PROVIDERS', 'gemini,groq')))),
         'severity_vote' => (bool) env('AI_SEVERITY_VOTE', false),
