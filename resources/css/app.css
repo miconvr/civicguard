@@ -195,7 +195,7 @@
         }
 
         #chat-widget.cg-chat-keyboard-mode #report-ai-chat {
-            display: flex;
+            display: flex !important;
             min-height: 0;
             flex: 1;
             flex-direction: column;
