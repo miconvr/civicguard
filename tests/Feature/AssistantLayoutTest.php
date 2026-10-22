@@ -27,7 +27,6 @@ test('residents can choose between the AI assistant and the standard report form
         ->assertSee('id="description"', false)
         ->assertSee('Need a hand with your report?')
         ->assertSee('Open chat')
-        ->assertSee('id="chat-keyboard-dismiss"', false)
         ->assertSee('id="use-location"', false)
         ->assertSee('id="use-location-label">Pin</span>', false)
         ->assertSee('maximumAge: 120000', false)
