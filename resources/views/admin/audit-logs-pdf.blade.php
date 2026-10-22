@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1>{{ __('CivicGuard Audit Logs') }}</h1>
-    <div class="generated">{{ __('Generated') }} {{ now()->format('M d, Y g:i A') }}</div>
+    <div class="generated">{{ __('Generated') }} {{ \App\Support\LocalizedDate::format(now(), 'M d, Y g:i A') }}</div>
 
     <table>
         <thead>
@@ -29,7 +29,7 @@
         <tbody>
             @forelse ($auditLogs as $auditLog)
                 <tr>
-                    <td>{{ $auditLog->created_at->format('M d, Y g:i A') }}</td>
+                    <td>{{ \App\Support\LocalizedDate::format($auditLog->created_at, 'M d, Y g:i A') }}</td>
                     <td>{{ $auditLog->user->name ?? 'System' }}</td>
                     <td>{{ $auditLog->localized_action }}</td>
                     <td>{{ $auditLog->localized_description ?? '-' }}</td>

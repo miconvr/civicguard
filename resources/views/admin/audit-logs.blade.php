@@ -57,7 +57,7 @@
                         <tbody>
                             @forelse ($auditLogs as $auditLog)
                                 <tr>
-                                    <td data-label="Date" class="whitespace-nowrap">{{ $auditLog->created_at->format('M d, Y g:i A') }}</td>
+                                    <td data-label="Date" class="whitespace-nowrap">{{ \App\Support\LocalizedDate::format($auditLog->created_at, 'M d, Y g:i A') }}</td>
                                     <td data-label="Actor" class="font-medium">{{ $auditLog->user->name ?? 'System' }}</td>
                                     <td data-label="Action">
                                         <span class="inline-flex max-w-full whitespace-normal break-words rounded-full px-2.5 py-1 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
