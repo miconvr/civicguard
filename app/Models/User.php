@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
@@ -54,16 +55,31 @@ class User extends Authenticatable
 
     public function avatarPath(): ?string
     {
-        $disk = Storage::disk('report_photos');
-        $directory = 'profile-photos/'.$this->id;
+        $path = Cache::rememberForever($this->avatarPathCacheKey(), function () {
+            $directory = 'profile-photos/'.$this->id;
 
-        foreach ($disk->files($directory) as $path) {
-            if (preg_match('/\.(jpg|jpeg|png|webp)$/i', $path)) {
-                return $path;
+            foreach (Storage::disk('report_photos')->files($directory) as $path) {
+                if (preg_match('/\.(jpg|jpeg|png|webp)$/i', $path)) {
+                    return $path;
+                }
             }
-        }
 
-        return null;
+            // Cache missing avatars too, so pages with many users do not
+            // repeatedly list the storage directory for every render.
+            return '';
+        });
+
+        return $path !== '' ? $path : null;
+    }
+
+    public function forgetAvatarPathCache(): void
+    {
+        Cache::forget($this->avatarPathCacheKey());
+    }
+
+    private function avatarPathCacheKey(): string
+    {
+        return 'user-avatar-path:'.$this->getKey();
     }
 
     public function residentVerification(): HasOne

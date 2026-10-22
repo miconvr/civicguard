@@ -84,6 +84,10 @@ class ProfileController extends Controller
         $user->save();
 
         if ($avatarChange) {
+            $user->forgetAvatarPathCache();
+        }
+
+        if ($avatarChange) {
             $this->notifyProfileChange($user->id, $avatarChange);
         }
 
@@ -119,6 +123,7 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        $user->forgetAvatarPathCache();
 
         $photoPaths = Report::where('user_id', $user->id)->whereNotNull('photo_path')->pluck('photo_path');
         $verificationDocument = $user->residentVerification?->document_path;
