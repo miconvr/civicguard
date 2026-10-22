@@ -243,7 +243,7 @@
 
                     <p x-show="!r.canStatus" x-cloak class="text-sm text-gray-500 dark:text-gray-400">Only the assigned tanod or an admin can update this report.</p>
 
-                    <a :href="r.details" class="block text-sm text-gray-500 dark:text-gray-400 hover:underline">Open full details page</a>
+                    <a :href="r.details" class="block text-sm text-gray-700 dark:text-gray-300 hover:underline">Open full details page</a>
                 </div>
             </template>
         </aside>
