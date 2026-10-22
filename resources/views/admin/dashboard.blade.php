@@ -203,8 +203,8 @@
                         {{-- Severity --}}
                         @if (in_array(auth()->user()->role, ['admin', 'official']))
                             <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Severity</label>
-                                <select name="severity" x-model="r.sev" class="cg-select w-full">
+                                <label for="report-severity" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Severity</label>
+                                <select id="report-severity" name="severity" x-model="r.sev" class="cg-select w-full">
                                     <option value="low">Low</option>
                                     <option value="moderate">Moderate</option>
                                     <option value="high">High</option>
@@ -215,8 +215,8 @@
 
                         {{-- Status --}}
                         <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
-                            <select name="status" x-model="r.status" :disabled="!r.canStatus" class="cg-select w-full">
+                            <label for="report-status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+                            <select id="report-status" name="status" x-model="r.status" :disabled="!r.canStatus" class="cg-select w-full">
                                 <option value="pending">Pending</option>
                                 <option value="in_progress">In progress</option>
                                 <option value="resolved">Resolved</option>
@@ -226,8 +226,8 @@
                         {{-- Assignment --}}
                         @if (in_array(auth()->user()->role, ['admin', 'official']))
                             <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Assigned tanod</label>
-                                <select name="assigned_to" x-model="r.assigned_to" class="cg-select w-full">
+                                <label for="report-assigned-to" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Assigned tanod</label>
+                                <select id="report-assigned-to" name="assigned_to" x-model="r.assigned_to" class="cg-select w-full">
                                     <option value="" disabled :hidden="r.assigned_to !== ''">Select a tanod</option>
                                     @foreach ($tanods as $tanod)
                                         <option value="{{ $tanod->id }}">{{ $tanod->name }}</option>
