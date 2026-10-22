@@ -179,8 +179,9 @@
         function syncMobileChatViewport() {
             if (!chatWidget.classList.contains('cg-chat-keyboard-mode')) return;
             const viewport = window.visualViewport;
-            chatWidget.style.setProperty('--cg-chat-viewport-height', `${viewport?.height ?? window.innerHeight}px`);
-            chatWidget.style.setProperty('--cg-chat-viewport-top', `${viewport?.offsetTop ?? 0}px`);
+            const viewportHeight = viewport?.height ?? window.innerHeight;
+            const viewportTop = Math.max(0, viewport?.offsetTop ?? 0);
+            chatWidget.style.setProperty('--cg-chat-widget-height', `${viewportHeight + viewportTop}px`);
         }
 
         function enterMobileChatMode() {
@@ -193,8 +194,7 @@
         function leaveMobileChatMode() {
             chatWidget.classList.remove('cg-chat-keyboard-mode');
             document.documentElement.classList.remove('cg-chat-keyboard-open');
-            chatWidget.style.removeProperty('--cg-chat-viewport-height');
-            chatWidget.style.removeProperty('--cg-chat-viewport-top');
+            chatWidget.style.removeProperty('--cg-chat-widget-height');
         }
 
         input.addEventListener('focus', enterMobileChatMode);
