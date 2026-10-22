@@ -178,8 +178,11 @@
         ]) }};
 
         function addModelNote(text) {
+            const reply = log.lastElementChild;
+            if (!reply?.classList.contains('chat-message-enter-bot')) return;
+
             const note = document.createElement('p');
-            note.className = 'pl-1 text-[11px] text-gray-500 dark:text-gray-400';
+            note.className = 'mt-1 pl-1 text-[11px] text-gray-500 dark:text-gray-400';
             note.textContent = text;
 
             const attribution = /groq/i.test(text)
@@ -190,7 +193,7 @@
                 note.setAttribute('aria-label', `${text}. ${attribution}`);
             }
 
-            log.appendChild(note);
+            reply.appendChild(note);
             log.scrollTop = log.scrollHeight;
         }
         function keepInitialGreetingVisible() {
@@ -274,7 +277,7 @@
             const row = document.createElement('div');
             row.className = who === 'user'
                 ? 'flex justify-end text-sm chat-message-enter-user'
-                : 'flex justify-start text-sm chat-message-enter-bot';
+                : 'flex flex-col items-start text-sm chat-message-enter-bot';
             const bubble = document.createElement('span');
             bubble.className = 'inline-block max-w-[88%] rounded-2xl px-4 py-3 text-left leading-6 whitespace-pre-wrap shadow-sm ' +
                 (who === 'user'
