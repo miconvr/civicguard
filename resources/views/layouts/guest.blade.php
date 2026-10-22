@@ -21,11 +21,11 @@
         <main class="cg-auth-layout mx-auto flex min-h-[100svh] w-full max-w-lg flex-col items-center justify-center gap-6 px-4 py-10 sm:px-6">
             <section class="w-full" aria-label="{{ __('Account access') }}">
                 <div class="cg-auth-card cg-page-enter cg-page-enter-late mx-auto w-full overflow-hidden border px-6 pb-8 pt-9 sm:px-8">
-                    <a href="/" class="mb-7 flex items-center justify-center gap-3 border-b border-stone-200 pb-7" aria-label="CivicGuard, Barangay Maimpis home">
+                    <a href="/" class="mb-7 flex items-center justify-center gap-3 border-b border-stone-200 pb-7" aria-label="CivicGuard, Brgy. Maimpis home">
                         <x-application-logo class="h-11 w-auto shrink-0" />
                         <span class="leading-tight">
                             <span class="block font-sans text-xl font-bold text-maroon-800">CivicGuard</span>
-                            <span class="block text-[11px] uppercase tracking-wider text-stone-500">Brgy. Maimpis</span>
+                            <span class="block text-[11px] uppercase tracking-wider text-stone-600 dark:text-stone-300">Brgy. Maimpis</span>
                         </span>
                     </a>
                     {{ $slot }}
