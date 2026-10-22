@@ -11,6 +11,7 @@ use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CurfewLogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PerformanceMetricsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfilePhotoController;
 use App\Http\Controllers\ReportController;
@@ -24,6 +25,9 @@ Route::get('/', function () {
 
 Route::view('/privacy', 'legal.privacy')->name('privacy');
 Route::view('/terms', 'legal.terms')->name('terms');
+Route::post('/performance-metrics', [PerformanceMetricsController::class, 'store'])
+    ->middleware('throttle:60,1')
+    ->name('performance.metrics');
 
 Route::get('/locale/{locale}', function (string $locale) {
     abort_unless(in_array($locale, ['en', 'tl']), 404);
