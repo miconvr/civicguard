@@ -1,4 +1,5 @@
-const CACHE = 'cg-offline-v2';
+const CACHE = 'cg-offline-v3';
+const NAVIGATION_TIMEOUT_MS = 10_000;
 
 self.addEventListener('install', (event) => {
     event.waitUntil(caches.open(CACHE).then((c) => c.add('/offline.html')));
@@ -17,5 +18,16 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     const req = event.request;
     if (req.mode !== 'navigate' || req.method !== 'GET') return;
-    event.respondWith(fetch(req).catch(() => caches.match('/offline.html')));
+    event.respondWith((async () => {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), NAVIGATION_TIMEOUT_MS);
+
+        try {
+            return await fetch(req, { signal: controller.signal });
+        } catch {
+            return await caches.match('/offline.html');
+        } finally {
+            clearTimeout(timeout);
+        }
+    })());
 });
