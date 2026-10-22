@@ -93,7 +93,7 @@ class="relative inline-flex items-center">
                                     {{ $notification->message }}
                                 </span>
                                 <span class="mt-1 block text-[11px] text-stone-600 dark:text-stone-400">
-                                    {{ $notification->created_at->diffForHumans() }}
+                                    {{ \App\Support\LocalizedDate::relative($notification->created_at) }}
                                 </span>
                             </span>
                             <span class="mt-1 text-stone-400 text-xs" aria-hidden="true">&rsaquo;</span>

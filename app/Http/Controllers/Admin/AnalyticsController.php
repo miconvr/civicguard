@@ -33,7 +33,7 @@ class AnalyticsController extends Controller
     {
         [$byCategory, $bySeverity, $byStatus, $last14Days, , , , $curfewCount] = $this->gatherMetrics();
 
-        $insights = Cache::remember('analytics-insights-'.app()->getLocale(), now()->addMinutes(30), fn () => $this->buildInsights(
+        $insights = Cache::remember('analytics-insights-v2-'.app()->getLocale(), now()->addMinutes(30), fn () => $this->buildInsights(
             $byCategory, $bySeverity, $byStatus, $last14Days, $curfewCount, $ai
         ));
 
@@ -44,7 +44,7 @@ class AnalyticsController extends Controller
     {
         [$byCategory, $bySeverity, $byStatus, $last14Days, $totalReports, $pendingCount, $resolvedCount, $curfewCount] = $this->gatherMetrics();
 
-        $insights = Cache::remember('analytics-insights-'.app()->getLocale(), now()->addMinutes(30), fn () => $this->buildInsights(
+        $insights = Cache::remember('analytics-insights-v2-'.app()->getLocale(), now()->addMinutes(30), fn () => $this->buildInsights(
             $byCategory, $bySeverity, $byStatus, $last14Days, $curfewCount, $ai
         ));
 
@@ -148,7 +148,9 @@ class AnalyticsController extends Controller
     {
         $metrics = [
             'total_reports' => $byCategory->sum('total'),
-            'category_totals' => $byCategory->pluck('total', 'name'),
+            'category_totals' => $byCategory->mapWithKeys(fn ($category) => [
+                __($category->name) => $category->total,
+            ]),
             'severity_totals' => $bySeverity->map(fn ($item) => $item->total),
             'status_totals' => $byStatus->map(fn ($item) => $item->total),
             'reports_last_14_days' => $last14Days->sum('total'),
@@ -156,7 +158,7 @@ class AnalyticsController extends Controller
         ];
 
         $languageInstruction = app()->getLocale() === 'tl'
-            ? 'Write all JSON string values in natural Filipino/Tagalog. Keep the required JSON keys in English.'
+            ? 'Write every JSON string value in natural Filipino/Tagalog, including category names. The category names in the metrics are already localized. Keep the required JSON keys in English.'
             : 'Write all JSON string values in English.';
         $prompt = 'You are analyzing CivicGuard data for barangay officials. Based only on these metrics, return valid JSON with exactly these keys: summary (one concise sentence), patterns (an array of up to three observed patterns), risk_flags (an array of up to three risks), and recommendations (an array of exactly three concise practical follow-up actions). Do not include markdown or extra text. '.$languageInstruction.' Metrics: '.json_encode($metrics);
 

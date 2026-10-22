@@ -169,7 +169,8 @@
                         const formatDate = value => {
                             if (!value) return 'Choose date';
                             const d = new Date(value + 'T12:00:00');
-                            return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+                            const locale = document.documentElement.lang === 'tl' ? 'fil-PH' : 'en-US';
+                            return d.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
                         };
 
                         const sync = () => {
