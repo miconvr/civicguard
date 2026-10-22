@@ -1,0 +1,71 @@
+name: Database query plans
+
+on:
+  schedule:
+    - cron: '41 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  explain-common-queries:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: civicguard-test-only
+          MYSQL_DATABASE: civicguard
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -pcivicguard-test-only"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: curl, dom, mbstring, pdo_mysql
+          coverage: none
+
+      - name: Prepare application
+        run: |
+          cp .env.example .env
+          composer install --no-interaction --prefer-dist
+          php artisan key:generate --force
+
+      - name: Migrate and seed synthetic baseline data
+        env:
+          APP_ENV: testing
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: civicguard
+          DB_USERNAME: root
+          DB_PASSWORD: civicguard-test-only
+          CACHE_STORE: array
+          SESSION_DRIVER: array
+        run: php artisan migrate:fresh --seed
+
+      - name: Seed disposable workload and print query plans
+        env:
+          APP_ENV: testing
+          CIVICGUARD_DB_BENCHMARK: '1'
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: civicguard
+          DB_USERNAME: root
+          DB_PASSWORD: civicguard-test-only
+          CACHE_STORE: array
+          SESSION_DRIVER: array
+        run: php artisan civicguard:profile-db --rows=10000

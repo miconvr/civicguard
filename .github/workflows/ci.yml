@@ -54,13 +54,17 @@ jobs:
       - name: Check compressed asset budgets
         run: npm run check:performance
 
+      - name: Prepare isolated browser-test database
+        run: |
+          touch /tmp/civicguard-e2e.sqlite
+          APP_ENV=testing DB_CONNECTION=sqlite DB_DATABASE=/tmp/civicguard-e2e.sqlite SESSION_DRIVER=file CACHE_STORE=file PHOTO_DISK_ROOT=/tmp/civicguard-e2e-storage CIVICGUARD_E2E=1 php artisan migrate:fresh --seed --seeder=Database\\Seeders\\E2eTestSeeder
+
       - name: Install Chromium for mobile checks
         run: npx playwright install --with-deps chromium
 
       - name: Start the local app
         run: |
-          touch /tmp/civicguard-ci.sqlite
-          DB_CONNECTION=sqlite DB_DATABASE=/tmp/civicguard-ci.sqlite SESSION_DRIVER=file CACHE_STORE=file php artisan serve --host=127.0.0.1 --port=8000 > /tmp/civicguard-server.log 2>&1 &
+          APP_ENV=testing DB_CONNECTION=sqlite DB_DATABASE=/tmp/civicguard-e2e.sqlite SESSION_DRIVER=file CACHE_STORE=file PHOTO_DISK_ROOT=/tmp/civicguard-e2e-storage php artisan serve --host=127.0.0.1 --port=8000 > /tmp/civicguard-server.log 2>&1 &
           for attempt in $(seq 1 30); do
             if curl --silent --fail http://127.0.0.1:8000/ > /dev/null; then exit 0; fi
             sleep 1
@@ -72,3 +76,8 @@ jobs:
         env:
           PERF_URL: http://127.0.0.1:8000
         run: npm run audit:mobile
+
+      - name: Exercise resident and staff report flow
+        env:
+          E2E_URL: http://127.0.0.1:8000
+        run: npm run e2e:reports
