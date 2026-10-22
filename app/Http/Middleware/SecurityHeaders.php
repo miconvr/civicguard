@@ -18,6 +18,10 @@ class SecurityHeaders
         $response->headers->set('Permissions-Policy', 'camera=(), geolocation=(self), microphone=()');
         $response->headers->remove('X-Powered-By');
 
+        if ($request->user()) {
+            $response->headers->set('Cache-Control', 'private, no-store, max-age=0');
+        }
+
         if (function_exists('header_remove')) {
             header_remove('X-Powered-By');
         }

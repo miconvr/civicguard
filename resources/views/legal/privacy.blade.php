@@ -10,7 +10,7 @@
 <h2 class="mt-8 text-xl font-semibold">What we collect</h2>
 <ul class="list-disc space-y-1 pl-6">
     <li>Account details: your name, email address, and a hashed password. Phone number and address if you add them.</li>
-    <li>Reports you file: description, category, location text, an optional GPS pin, and an optional photo. Photos can carry location data in their file information.</li>
+    <li>Reports you file: description, category, location text, an optional GPS pin, and an optional photo. Photos may contain embedded location or device metadata; avoid attaching images with details you do not want barangay staff to receive.</li>
     <li>Chat messages you send to the AI Chatbot.</li>
     <li>Activity records: actions such as filing, assigning, or resolving a report, kept in an audit log.</li>
     <li>For barangay tanods only: curfew records about minors, which staff enter themselves.</li>

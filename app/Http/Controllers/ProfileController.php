@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\AppNotification;
+use App\Models\AuditLog;
 use App\Models\Report;
+use App\Models\ResidentVerification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -119,6 +121,13 @@ class ProfileController extends Controller
 
         $photoPaths = Report::where('user_id', $user->id)->whereNotNull('photo_path')->pluck('photo_path');
         $verificationDocument = $user->residentVerification?->document_path;
+        $verificationId = $user->residentVerification?->id;
+
+        if ($verificationId) {
+            AuditLog::where('auditable_type', ResidentVerification::class)
+                ->where('auditable_id', $verificationId)
+                ->update(['description' => __('Residence verification decision recorded.')]);
+        }
 
         Auth::logout();
 

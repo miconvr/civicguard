@@ -114,8 +114,8 @@ class ResidentVerificationController extends Controller
                 'auditable_type' => ResidentVerification::class,
                 'auditable_id' => $verification->id,
                 'description' => $decision === ResidentVerification::VERIFIED
-                    ? __('Residence verification approved for :name (:email).', ['name' => $user->name, 'email' => $user->email])
-                    : __('Residence verification declined for :name (:email).', ['name' => $user->name, 'email' => $user->email]),
+                    ? __('Residence verification approved.')
+                    : __('Residence verification declined.'),
             ]);
 
             AppNotification::create([
