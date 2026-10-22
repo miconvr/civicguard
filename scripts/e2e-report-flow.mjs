@@ -18,7 +18,13 @@ async function signIn(page, email) {
 }
 
 try {
-    const residentContext = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const residentContext = await browser.newContext({
+        viewport: { width: 390, height: 844 },
+        isMobile: true,
+        hasTouch: true,
+        permissions: ['geolocation'],
+        geolocation: { latitude: 15.0612, longitude: 120.657 },
+    });
     const residentPage = await residentContext.newPage();
     residentPage.on('pageerror', error => errors.push(error.message));
     await signIn(residentPage, 'resident.e2e@civicguard.test');
@@ -30,8 +36,10 @@ try {
     await residentPage.locator('#description').fill(description);
     await residentPage.locator('#category_id').selectOption({ label: 'Public Disturbance' });
     await residentPage.locator('#location_text').fill(location);
-    await residentPage.locator('input[name="latitude"]').fill('15.0612');
-    await residentPage.locator('input[name="longitude"]').fill('120.6570');
+    await residentPage.getByRole('button', { name: 'Pin' }).click();
+    await residentPage.waitForFunction(() => document.querySelector('#location-status')?.textContent?.startsWith('Location pinned.'));
+    assert.equal(await residentPage.locator('input[name="latitude"]').inputValue(), '15.0612000');
+    assert.equal(await residentPage.locator('input[name="longitude"]').inputValue(), '120.6570000');
     await residentPage.locator('#photo').setInputFiles({
         name: 'e2e-test.png',
         mimeType: 'image/png',
