@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Services\AiRouter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
@@ -166,6 +168,7 @@ class ReportController extends Controller
     {
         $reports = Report::where('user_id', Auth::id())
             ->with(['category', 'assignedTo'])
+            ->withExists(['auditLogs as has_staff_activity' => fn ($query) => $query->where('action', '!=', 'report_submitted')])
             ->orderByDesc('created_at')
             ->orderByDesc('id')
             ->paginate(15)
@@ -196,6 +199,43 @@ class ReportController extends Controller
         }
 
         return view('reports.index', compact('reports'));
+    }
+
+    public function destroyPending(Report $report)
+    {
+        abort_unless($report->user_id === Auth::id(), 404);
+
+        $photoPath = DB::transaction(function () use ($report) {
+            $report = Report::query()->lockForUpdate()->findOrFail($report->id);
+            abort_unless($report->user_id === Auth::id(), 404);
+            abort_unless(
+                $report->status === 'pending'
+                    && $report->assigned_to === null
+                    && ! $report->auditLogs()->where('action', '!=', 'report_submitted')->exists(),
+                422,
+                __('Only pending reports that staff have not started handling can be removed.')
+            );
+
+            $photoPath = $report->photo_path;
+            $reportId = $report->id;
+            $report->delete();
+
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'action' => 'report_deleted',
+                'auditable_type' => Report::class,
+                'auditable_id' => $reportId,
+                'description' => 'Resident removed pending incident report #'.$reportId.'.',
+            ]);
+
+            return $photoPath;
+        });
+
+        if ($photoPath) {
+            Storage::disk('report_photos')->delete($photoPath);
+        }
+
+        return redirect()->route('reports.index')->with('status', __('Your pending report was removed.'));
     }
 
     protected function classifySeverity(ReportCategory $category, string $description, AiRouter $ai): string
