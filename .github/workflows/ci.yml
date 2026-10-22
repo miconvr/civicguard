@@ -81,3 +81,7 @@ jobs:
         env:
           E2E_URL: http://127.0.0.1:8000
         run: npm run e2e:reports
+
+      - name: Show local app logs after a failed browser check
+        if: failure()
+        run: tail -n 80 /tmp/civicguard-server.log
