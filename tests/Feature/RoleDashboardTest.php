@@ -16,10 +16,9 @@ test('each user role can render its role-specific dashboard', function (string $
         ->assertSee('x-transition:enter="t-dropdown"', false)
         ->assertSee('aria-label="Toggle dark mode"', false)
         ->assertSeeInOrder([
-            'href="'.route('profile.edit').'"',
-            'aria-label="Toggle dark mode"',
-            'Appearance',
             'Language',
+            'Appearance',
+            'href="'.route('profile.edit').'"',
         ], false)
         ->assertSee('role="switch"', false);
 
