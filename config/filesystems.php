@@ -49,7 +49,7 @@ return [
 
         'report_photos' => [
             'driver' => 'local',
-            'root' => env('PHOTO_DISK_ROOT', storage_path('app/public')),
+            'root' => env('PHOTO_DISK_ROOT', storage_path('app/private')),
             'visibility' => 'private',
             'throw' => false,
             'report' => false,
