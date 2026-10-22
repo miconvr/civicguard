@@ -7,7 +7,16 @@ const password = 'CivicGuard-E2E-Only-2026!';
 const description = 'A neighbor played loud music after midnight near the community hall.';
 const location = 'Purok E2E, beside the community hall';
 const browser = await chromium.launch({ headless: true });
-const errors = [];
+const errors = new Set();
+
+function captureBrowserErrors(page) {
+    page.on('pageerror', error => errors.add(`${page.url()}\n${error.stack || error.message}`));
+    page.on('console', message => {
+        if (['error', 'warning'].includes(message.type()) && /Alpine Expression Error|Unexpected token/.test(message.text())) {
+            errors.add(`${page.url()}\n${message.text()}`);
+        }
+    });
+}
 
 async function signIn(page, email) {
     await page.goto(`${baseUrl}/login`);
@@ -26,7 +35,7 @@ try {
         geolocation: { latitude: 15.0612, longitude: 120.657 },
     });
     const residentPage = await residentContext.newPage();
-    residentPage.on('pageerror', error => errors.push(error.message));
+    captureBrowserErrors(residentPage);
     await signIn(residentPage, 'resident.e2e@civicguard.test');
 
     await residentPage.goto(`${baseUrl}/reports/create`);
@@ -52,7 +61,7 @@ try {
 
     const officialContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
     const officialPage = await officialContext.newPage();
-    officialPage.on('pageerror', error => errors.push(error.message));
+    captureBrowserErrors(officialPage);
     await signIn(officialPage, 'official.e2e@civicguard.test');
     await officialPage.goto(`${baseUrl}/admin/dashboard`);
     const staffAccessibility = await auditAccessibility(officialPage, 'official dashboard');
@@ -74,7 +83,7 @@ try {
 
     const tanodContext = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
     const tanodPage = await tanodContext.newPage();
-    tanodPage.on('pageerror', error => errors.push(error.message));
+    captureBrowserErrors(tanodPage);
     await signIn(tanodPage, 'tanod.e2e@civicguard.test');
     await tanodPage.goto(`${baseUrl}/admin/dashboard`);
     const tanodAccessibility = await auditAccessibility(tanodPage, 'tanod dashboard');
@@ -89,7 +98,7 @@ try {
     await residentPage.getByRole('button', { name: /yes, it's fixed/i }).click();
     await residentPage.getByText('Thank you for confirming.').waitFor({ state: 'visible' });
 
-    assert.deepEqual(errors, [], 'browser pages should not report JavaScript errors');
+    assert.deepEqual([...errors], [], 'browser pages should not report JavaScript errors');
     console.log('Resident report with photo and pin → official assignment → tanod resolution → resident confirmation: passed.');
 
     await residentContext.close();
