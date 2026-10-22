@@ -35,7 +35,7 @@
                         <button type="button" x-cloak x-show="!installed" @click="showGuide()" :aria-label="text('installNav')" class="cg-language-toggle inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-stone-300 px-2.5 text-xs font-semibold tracking-wide text-stone-700 transition-colors hover:bg-white/70"><svg class="h-4 w-4 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg><span class="hidden sm:inline" x-text="text('installNav')">Install app</span></button>
                         <button type="button"
                                 @click="toggleLanguage()"
-                                :aria-label="language === 'en' ? 'EN, switch language to Tagalog' : 'TL, switch language to English'"
+                                :aria-label="language === 'en' ? 'EN, Switch language to Tagalog' : 'TL, Switch language to English'"
                                 :aria-pressed="(language === 'tl').toString()"
                                 class="cg-language-toggle inline-flex min-h-10 min-w-10 items-center justify-center rounded-md border border-stone-300 px-2.5 text-xs font-semibold tracking-wide text-stone-700 transition-colors hover:bg-white/70">
                             <span x-text="language === 'en' ? 'EN' : 'TL'"></span>
@@ -60,7 +60,7 @@
             <main id="main-content" class="cg-page-enter">
                 <section class="cg-landing-hero lg:flex lg:min-h-[calc(100dvh_-_73px)] lg:items-center">
                     <div class="cg-hero-strip">
-                        <button type="button" @click="toggleLanguage()" :aria-label="language === 'en' ? 'EN, switch language to Tagalog' : 'TL, switch language to English'" :aria-pressed="(language === 'tl').toString()" class="cg-hero-strip-btn"><span x-text="language === 'en' ? 'EN' : 'TL'">EN</span></button>
+                        <button type="button" @click="toggleLanguage()" :aria-label="language === 'en' ? 'EN, Switch language to Tagalog' : 'TL, Switch language to English'" :aria-pressed="(language === 'tl').toString()" class="cg-hero-strip-btn"><span x-text="language === 'en' ? 'EN' : 'TL'">EN</span></button>
                         @guest
                             <a href="{{ route('login') }}" class="cg-hero-strip-link" x-text="text('navSignIn')">Sign in</a>
                         @endguest
