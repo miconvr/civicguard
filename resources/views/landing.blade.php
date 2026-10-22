@@ -6,7 +6,7 @@
         @include('partials.pwa-head')
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#6d1c32">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <meta name="description" content="CivicGuard helps Barangay Maimpis residents report incidents and follow updates from barangay staff.">
         <title>{{ config('app.name', 'CivicGuard') }}</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
