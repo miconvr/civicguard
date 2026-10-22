@@ -218,7 +218,7 @@ try {
     await drawer.getByRole('button', { name: 'Save changes' }).click();
     const [officialResponse] = await Promise.all([officialSaveResponse, officialSaveNavigation]);
     assert.equal(officialResponse.status(), 302, `official report update should redirect successfully, received HTTP ${officialResponse.status()}`);
-    await officialPage.getByText('Report changes saved.').waitFor({ state: 'visible' });
+    await officialPage.getByRole('status').getByText(/Report changes saved\.|Na-save ang mga pagbabago sa ulat\./i).waitFor({ state: 'visible' });
     await officialPage.locator('table.cg-queue tbody tr').filter({ hasText: location }).getByText('E2E Tanod').waitFor({ state: 'visible' });
 
     const tanodContext = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
@@ -240,7 +240,7 @@ try {
     await tanodDrawer.getByRole('button', { name: 'Save changes' }).click();
     const [tanodResponse] = await Promise.all([tanodSaveResponse, tanodSaveNavigation]);
     assert.equal(tanodResponse.status(), 302, `tanod report update should redirect successfully, received HTTP ${tanodResponse.status()}`);
-    await tanodPage.getByRole('status').getByText('Report changes saved.').waitFor({ state: 'visible' });
+    await tanodPage.getByRole('status').getByText(/Report changes saved\.|Na-save ang mga pagbabago sa ulat\./i).waitFor({ state: 'visible' });
     await tanodPage.goto(`${baseUrl}/admin/dashboard?tab=resolved`);
     const resolvedReportRow = tanodPage.locator('table.cg-queue tbody tr').filter({ hasText: location });
     await resolvedReportRow.getByText('Resolved', { exact: true }).waitFor({ state: 'visible' });
