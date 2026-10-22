@@ -1,4 +1,4 @@
-const CACHE = 'cg-offline-v1';
+const CACHE = 'cg-offline-v2';
 
 self.addEventListener('install', (event) => {
     event.waitUntil(caches.open(CACHE).then((c) => c.add('/offline.html')));
