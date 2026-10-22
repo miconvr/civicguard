@@ -61,7 +61,7 @@
         <thead><tr><th>{{ __("Date") }}</th><th>{{ __("Actor") }}</th><th>{{ __("Action") }}</th><th>{{ __("Description") }}</th></tr></thead>
         <tbody>
             @forelse ($auditLogs as $auditLog)
-                <tr><td>{{ $auditLog->created_at->format('M d, Y g:i A') }}</td><td>{{ $auditLog->user->name ?? 'System' }}</td><td>{{ ucwords(str_replace('_', ' ', $auditLog->action)) }}</td><td>{{ $auditLog->description ?? '-' }}</td></tr>
+                <tr><td>{{ $auditLog->created_at->format('M d, Y g:i A') }}</td><td>{{ $auditLog->user->name ?? 'System' }}</td><td>{{ $auditLog->localized_action }}</td><td>{{ $auditLog->localized_description ?? '-' }}</td></tr>
             @empty
                 <tr><td colspan="4">{{ __("No system activity yet.") }}</td></tr>
             @endforelse
