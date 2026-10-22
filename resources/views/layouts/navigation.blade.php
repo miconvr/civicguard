@@ -47,8 +47,9 @@
             </a>
             <button type="button" @click="toggleSidebar()" :aria-expanded="(!collapsed).toString()" aria-controls="primary-navigation"
                     aria-label="{{ __('Collapse sidebar') }}"
-                    :aria-label='collapsed ? @js(__('Expand sidebar')) : @js(__('Collapse sidebar'))'
-                    :title='collapsed ? @js(__('Expand sidebar')) : @js(__('Collapse sidebar'))'
+                    data-expand-label="{{ __('Expand sidebar') }}" data-collapse-label="{{ __('Collapse sidebar') }}"
+                    :aria-label="collapsed ? $el.dataset.expandLabel : $el.dataset.collapseLabel"
+                    :title="collapsed ? $el.dataset.expandLabel : $el.dataset.collapseLabel"
                     class="hidden lg:inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white/70 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                     data-testid="sidebar-toggle">
                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
@@ -164,7 +165,7 @@
                             </svg>
                             <span>{{ __('Appearance') }}</span>
                         </span>
-                        <span class="text-xs text-stone-600 dark:text-gray-400" x-text='darkMode ? @js(__('Dark')) : @js(__('Light'))'></span>
+                        <span class="text-xs text-stone-600 dark:text-gray-400" data-dark-label="{{ __('Dark') }}" data-light-label="{{ __('Light') }}" x-text="darkMode ? $el.dataset.darkLabel : $el.dataset.lightLabel"></span>
                     </button>
                     <div class="mx-4 my-1 border-t border-[#c9c1b6] dark:border-[#55534f]"></div>
                     <a href="{{ route('profile.edit') }}" class="flex min-h-11 items-center justify-between gap-3 px-4 py-2 text-sm text-stone-700 transition-colors hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-maroon-700 dark:text-gray-200 dark:hover:bg-white/5">
@@ -195,7 +196,10 @@
                     </form>
                 </div>
 
-                <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu" :aria-label='collapsed ? @js($accountUser->name . " " . $roleLabel . " " . __("Account menu")) : null' :title='collapsed ? @js($accountUser->name) : null' class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/10 transition">
+                <button type="button" x-ref="accountTrigger" @click="menu = !menu" :aria-expanded="menu.toString()" aria-controls="account-menu"
+                        data-account-label="{{ $accountUser->name . ' ' . $roleLabel . ' ' . __('Account menu') }}" data-account-name="{{ $accountUser->name }}"
+                        :aria-label="collapsed ? $el.dataset.accountLabel : null" :title="collapsed ? $el.dataset.accountName : null"
+                        class="cg-sidebar-account w-full flex items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/10 transition">
                     @if ($accountUser->avatarPath())
                         <img src="{{ route('profile.photo', ['v' => basename($accountUser->avatarPath())]) }}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-white/30">
                     @else
