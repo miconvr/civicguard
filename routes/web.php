@@ -3,8 +3,8 @@
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\ConsolidatedReportController;
-use App\Http\Controllers\Admin\DataResetController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DataResetController;
 use App\Http\Controllers\Admin\ResidentVerificationController as AdminResidentVerificationController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\ChatbotController;

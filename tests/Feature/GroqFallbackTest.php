@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Services\AiRouter;
 use Illuminate\Support\Facades\Http;
 
 test('groq answers the chatbot when gemini fails', function () {
@@ -30,5 +31,5 @@ test('a missing groq key means groq is never used', function () {
         'services.ai.order' => ['groq', 'gemini'],
     ]);
 
-    expect(array_keys(app(App\Services\AiRouter::class)->providers()))->toBe(['gemini']);
+    expect(array_keys(app(AiRouter::class)->providers()))->toBe(['gemini']);
 });
