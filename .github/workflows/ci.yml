@@ -50,3 +50,6 @@ jobs:
 
       - name: Build production assets
         run: npm run build
+
+      - name: Check compressed asset budgets
+        run: npm run check:performance
