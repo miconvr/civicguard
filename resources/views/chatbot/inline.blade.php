@@ -34,8 +34,6 @@
         .chat-submit-loading { animation: cg-chat-submit-pulse 1.1s ease-in-out infinite; }
         .chat-submit-complete { background-color: #dcfce7 !important; color: #166534 !important; transition: background-color var(--cg-motion-enter) var(--cg-ease-out), color var(--cg-motion-enter) var(--cg-ease-out); }
         .cg-chat-panel-enter { animation: cg-chat-panel-enter var(--cg-motion-page) var(--cg-ease-out) both; }
-        .cg-chat-bot-mark { background: rgb(149 31 61 / 10%); color: #7a1f1f; }
-        .dark .cg-chat-bot-mark { background: rgb(236 185 196 / 12%); color: #f2b5c2; }
         @keyframes cg-chat-message-user {
             from { opacity: 0; transform: translate(10px, 8px) scale(.96); }
             to { opacity: 1; transform: translate(0) scale(1); }
@@ -143,8 +141,7 @@
                 </div>
 
                 <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="cg-chat-log min-h-56 space-y-4 px-3 py-5 sm:px-6">
-                    <div class="flex items-end gap-2 text-sm chat-message-enter-bot">
-                        <span class="cg-chat-bot-mark mb-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold" aria-hidden="true">AI</span>
+                    <div class="flex justify-start text-sm chat-message-enter-bot">
                         <span class="inline-block max-w-[88%] rounded-2xl rounded-bl-md border border-stone-200/80 bg-white px-4 py-3 text-left leading-6 text-gray-800 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
                             {{ __('Hi! Tell me what happened and I can help you put together a clear incident report.') }}
                         </span>
@@ -257,7 +254,7 @@
             const row = document.createElement('div');
             row.className = who === 'user'
                 ? 'flex justify-end text-sm chat-message-enter-user'
-                : 'flex items-end gap-2 text-sm chat-message-enter-bot';
+                : 'flex justify-start text-sm chat-message-enter-bot';
             const bubble = document.createElement('span');
             bubble.className = 'inline-block max-w-[88%] rounded-2xl px-4 py-3 text-left leading-6 whitespace-pre-wrap shadow-sm ' +
                 (who === 'user'
@@ -279,11 +276,7 @@
                 bubble.textContent = text;
             }
             if (who === 'bot') {
-                const mark = document.createElement('span');
-                mark.className = 'cg-chat-bot-mark mb-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold';
-                mark.setAttribute('aria-hidden', 'true');
-                mark.textContent = 'AI';
-                row.append(mark, bubble);
+                row.appendChild(bubble);
             } else {
                 row.appendChild(bubble);
             }
@@ -317,9 +310,8 @@
         function showTyping() {
             const row = document.createElement('div');
             row.id = 'typing-row';
-            row.className = 'flex items-end gap-2 text-sm';
+            row.className = 'flex justify-start text-sm';
             row.innerHTML =
-                '<span class="cg-chat-bot-mark mb-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold" aria-hidden="true">AI</span>' +
                 '<span class="chat-typing-bubble inline-flex items-center gap-1 rounded-2xl rounded-bl-md border border-stone-200/80 bg-white px-4 py-4 text-gray-500 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">' +
                 '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>' +
                 '</span>';
@@ -795,7 +787,7 @@
 
         function showError(text) {
             const row = document.createElement('div');
-            row.className = 'flex items-end gap-2 text-sm';
+            row.className = 'flex justify-start text-sm';
             const bubble = document.createElement('span');
             bubble.className = 'inline-flex max-w-[88%] flex-wrap items-center gap-3 rounded-2xl rounded-bl-md border border-red-200 bg-red-50 px-4 py-3 text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200';
             const msg = document.createElement('span');
@@ -806,11 +798,7 @@
             retry.textContent = t.retry;
             retry.onclick = () => { row.remove(); sendMessage(lastMessage, true); };
             bubble.append(msg, retry);
-            const mark = document.createElement('span');
-            mark.className = 'cg-chat-bot-mark mb-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold';
-            mark.setAttribute('aria-hidden', 'true');
-            mark.textContent = 'AI';
-            row.append(mark, bubble);
+            row.appendChild(bubble);
             log.appendChild(row);
             log.scrollTop = log.scrollHeight;
         }
