@@ -21,7 +21,7 @@
 </head>
 <body>
     <h1>{{ __("CivicGuard Analytics Report") }}</h1>
-    <div class="generated">{{ __('Generated') }} {{ now()->format('M d, Y g:i A') }}</div>
+    <div class="generated">{{ __('Generated') }} {{ \App\Support\LocalizedDate::format(now(), 'M d, Y g:i A') }}</div>
 
     <div class="stats">
         <div class="stat">

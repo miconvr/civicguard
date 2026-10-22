@@ -113,14 +113,14 @@
                             $pointY = 160 - ($day->total / $dailyMax) * 120;
                         @endphp
                         <circle cx="{{ round($pointX, 1) }}" cy="{{ round($pointY, 1) }}" r="4" fill="#951f3d">
-                            <title>{{ \Illuminate\Support\Carbon::parse($day->day)->format('M j') }}: {{ __(':count reports', ['count' => $day->total]) }}</title>
+                            <title>{{ \App\Support\LocalizedDate::format(\Illuminate\Support\Carbon::parse($day->day), 'M j') }}: {{ __(':count reports', ['count' => $day->total]) }}</title>
                         </circle>
                     @endforeach
                 </svg>
                 <div class="mt-2 flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                    <span>{{ \Illuminate\Support\Carbon::parse($last14Days->first()->day)->format('M j') }}</span>
-                    <span>{{ \Illuminate\Support\Carbon::parse($last14Days->get(6)->day)->format('M j') }}</span>
-                    <span>{{ \Illuminate\Support\Carbon::parse($last14Days->last()->day)->format('M j') }}</span>
+                    <span>{{ \App\Support\LocalizedDate::format(\Illuminate\Support\Carbon::parse($last14Days->first()->day), 'M j') }}</span>
+                    <span>{{ \App\Support\LocalizedDate::format(\Illuminate\Support\Carbon::parse($last14Days->get(6)->day), 'M j') }}</span>
+                    <span>{{ \App\Support\LocalizedDate::format(\Illuminate\Support\Carbon::parse($last14Days->last()->day), 'M j') }}</span>
                 </div>
             </section>
 

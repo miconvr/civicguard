@@ -19,7 +19,7 @@
 </head>
 <body>
     <h1>{{ __('CivicGuard Consolidated Report') }}</h1>
-    <div class="generated">{{ __('Generated') }} {{ now()->format('M d, Y g:i A') }}</div>
+    <div class="generated">{{ __('Generated') }} {{ \App\Support\LocalizedDate::format(now(), 'M d, Y g:i A') }}</div>
 
     <table class="summary">
         <tr>
@@ -36,7 +36,7 @@
         <thead><tr><th>{{ __("Date") }}</th><th>{{ __('Category') }}</th><th>{{ __('Reported By') }}</th><th>{{ __("Severity") }}</th><th>{{ __("Status") }}</th><th>{{ __("Assigned To") }}</th><th>{{ __('Coordinates') }}</th><th>{{ __('Photo') }}</th></tr></thead>
         <tbody>
             @forelse ($reports as $report)
-                <tr><td>{{ $report->created_at->format('M d, Y g:i A') }}</td><td>{{ __($report->category->name) }}</td><td>{{ $report->user->name }}</td><td>{{ __(ucfirst($report->severity)) }}</td><td>{{ __(ucwords(str_replace('_', ' ', $report->status))) }}</td><td>{{ $report->assignedTo->name ?? '-' }}</td><td>{{ $report->latitude !== null && $report->longitude !== null ? $report->latitude . ', ' . $report->longitude : '-' }}</td><td>@if ($report->photo_path && \Illuminate\Support\Facades\Storage::disk('report_photos')->exists($report->photo_path))<img src="data:{{ \Illuminate\Support\Facades\Storage::disk('report_photos')->mimeType($report->photo_path) }};base64,{{ base64_encode(\Illuminate\Support\Facades\Storage::disk('report_photos')->get($report->photo_path)) }}" alt="{{ __('Incident photo') }}" style="width: 42px; height: 32px; object-fit: cover;">@else - @endif</td></tr>
+                <tr><td>{{ \App\Support\LocalizedDate::format($report->created_at, 'M d, Y g:i A') }}</td><td>{{ __($report->category->name) }}</td><td>{{ $report->user->name }}</td><td>{{ __(ucfirst($report->severity)) }}</td><td>{{ __(ucwords(str_replace('_', ' ', $report->status))) }}</td><td>{{ $report->assignedTo->name ?? '-' }}</td><td>{{ $report->latitude !== null && $report->longitude !== null ? $report->latitude . ', ' . $report->longitude : '-' }}</td><td>@if ($report->photo_path && \Illuminate\Support\Facades\Storage::disk('report_photos')->exists($report->photo_path))<img src="data:{{ \Illuminate\Support\Facades\Storage::disk('report_photos')->mimeType($report->photo_path) }};base64,{{ base64_encode(\Illuminate\Support\Facades\Storage::disk('report_photos')->get($report->photo_path)) }}" alt="{{ __('Incident photo') }}" style="width: 42px; height: 32px; object-fit: cover;">@else - @endif</td></tr>
             @empty
                 <tr><td colspan="8">{{ __("No incident reports yet.") }}</td></tr>
             @endforelse
@@ -48,7 +48,7 @@
         <thead><tr><th>{{ __("Date") }}</th><th>{{ __("Minor") }}</th><th>{{ __("Age") }}</th><th>{{ __("Location") }}</th><th>{{ __("Prior Violations") }}</th><th>{{ __("Guardian Notified") }}</th><th>{{ __("Follow-up") }}</th><th>{{ __("Logged By") }}</th></tr></thead>
         <tbody>
             @forelse ($curfewLogs as $log)
-                <tr><td>{{ $log->apprehension_datetime->format('M d, Y g:i A') }}</td><td>{{ $log->minor_name }}</td><td>{{ $log->minor_age ?? '-' }}</td><td>{{ $log->apprehension_location }}</td><td>{{ $log->prior_violations_count }}</td><td>{{ $log->guardian_notified ? __('Yes') : __('No') }}</td><td>{{ $log->referral_action ? __($log->referral_action) : '-' }}</td><td>{{ $log->tanod->name ?? '-' }}</td></tr>
+                <tr><td>{{ \App\Support\LocalizedDate::format($log->apprehension_datetime, 'M d, Y g:i A') }}</td><td>{{ $log->minor_name }}</td><td>{{ $log->minor_age ?? '-' }}</td><td>{{ $log->apprehension_location }}</td><td>{{ $log->prior_violations_count }}</td><td>{{ $log->guardian_notified ? __('Yes') : __('No') }}</td><td>{{ $log->referral_action ? __($log->referral_action) : '-' }}</td><td>{{ $log->tanod->name ?? '-' }}</td></tr>
             @empty
                 <tr><td colspan="8">{{ __("No curfew logs yet.") }}</td></tr>
             @endforelse
@@ -61,7 +61,7 @@
         <thead><tr><th>{{ __("Date") }}</th><th>{{ __("Actor") }}</th><th>{{ __("Action") }}</th><th>{{ __("Description") }}</th></tr></thead>
         <tbody>
             @forelse ($auditLogs as $auditLog)
-                <tr><td>{{ $auditLog->created_at->format('M d, Y g:i A') }}</td><td>{{ $auditLog->user->name ?? 'System' }}</td><td>{{ $auditLog->localized_action }}</td><td>{{ $auditLog->localized_description ?? '-' }}</td></tr>
+                <tr><td>{{ \App\Support\LocalizedDate::format($auditLog->created_at, 'M d, Y g:i A') }}</td><td>{{ $auditLog->user->name ?? 'System' }}</td><td>{{ $auditLog->localized_action }}</td><td>{{ $auditLog->localized_description ?? '-' }}</td></tr>
             @empty
                 <tr><td colspan="4">{{ __("No system activity yet.") }}</td></tr>
             @endforelse
