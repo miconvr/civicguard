@@ -78,9 +78,9 @@
                                 @php
                                     $stale = $report->status === 'pending' && $report->created_at->lt(now()->subHours(48));
                                     $statusPill = [
-                                        'pending' => 'tone-amber',
-                                        'in_progress' => 'tone-blue',
-                                        'resolved' => 'tone-green',
+                                        'pending' => 'bg-amber-100 text-amber-950 dark:bg-amber-900/40 dark:text-amber-200',
+                                        'in_progress' => 'bg-blue-100 text-blue-950 dark:bg-blue-900/40 dark:text-blue-200',
+                                        'resolved' => 'bg-green-100 text-green-950 dark:bg-green-900/40 dark:text-green-200',
                                     ][$report->status];
                                     $reporterVerified = $report->user->hasVerifiedResidence();
                                     $payload = [
