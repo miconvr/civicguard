@@ -48,6 +48,8 @@ Alpine.data('verificationTabs', (initial) => ({
             }
 
             const payload = await response.json();
+            if (controller.signal.aborted || version !== this.requestVersion) return;
+
             const results = this.$root.querySelector('#verification-results');
             if (!results) {
                 window.location.assign(url);

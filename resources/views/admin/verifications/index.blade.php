@@ -13,9 +13,9 @@
 
             <nav aria-label="{{ __('Verification status') }}" class="flex flex-wrap gap-2">
                 @foreach (['pending' => __('Pending'), 'verified' => __('Verified'), 'rejected' => __('Declined')] as $tabStatus => $tabLabel)
-                    <a data-verification-tab href="{{ route('admin.verifications.index', ['status' => $tabStatus, 'search' => $search !== '' ? $search : null]) }}" @if ($status === $tabStatus) aria-current="page" @endif x-bind:aria-current="status === '{{ $tabStatus }}' ? 'page' : null" x-bind:class="status === '{{ $tabStatus }}' ? 'border-maroon-800 bg-maroon-800 text-white dark:border-[#8f1d39] dark:bg-[#8f1d39]' : 'border-stone-300 bg-white text-stone-700 hover:bg-stone-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-white/5'" class="inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold transition duration-[var(--cg-motion-interaction)] ease-in-out hover:-translate-y-px hover:shadow-sm motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 {{ $status === $tabStatus ? 'border-maroon-800 bg-maroon-800 text-white dark:border-[#8f1d39] dark:bg-[#8f1d39]' : 'border-stone-300 bg-white text-stone-700 hover:bg-stone-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-white/5' }}">
+                    <a data-verification-tab href="{{ route('admin.verifications.index', ['status' => $tabStatus, 'search' => $search !== '' ? $search : null]) }}" @if ($status === $tabStatus) aria-current="page" @endif x-bind:aria-current="status === '{{ $tabStatus }}' ? 'page' : null" class="cg-verification-tab inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold transition duration-[var(--cg-motion-interaction)] ease-in-out hover:-translate-y-px hover:shadow-sm motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700">
                         <span>{{ $tabLabel }}</span>
-                        <span x-bind:class="status === '{{ $tabStatus }}' ? 'bg-white/15 text-white' : 'bg-stone-100 text-stone-600 dark:bg-white/10 dark:text-gray-300'" class="rounded-full px-2 py-0.5 text-xs {{ $status === $tabStatus ? 'bg-white/15 text-white' : 'bg-stone-100 text-stone-600 dark:bg-white/10 dark:text-gray-300' }}">{{ $counts->get($tabStatus, 0) }}</span>
+                        <span class="cg-verification-tab-count rounded-full px-2 py-0.5 text-xs">{{ $counts->get($tabStatus, 0) }}</span>
                     </a>
                 @endforeach
                 <span x-show="loading" x-cloak role="status" class="inline-flex min-h-10 items-center gap-2 px-2 text-sm text-gray-500 dark:text-gray-400">
@@ -42,7 +42,7 @@
                 </div>
             </form>
 
-            <div id="verification-results" aria-live="polite" x-bind:aria-busy="loading" x-bind:class="{ 'opacity-60': loading }" class="space-y-4 transition-opacity duration-[var(--cg-motion-fast)]">
+            <div id="verification-results" aria-live="polite" x-bind:aria-busy="loading" class="space-y-4">
                 @include('admin.verifications.partials.results')
             </div>
         </div>
