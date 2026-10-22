@@ -38,6 +38,7 @@ class ChatbotController extends Controller
                 'session_id' => $sessionId,
                 'report_data' => null,
                 'emergency' => true,
+                'provider' => null,
             ]);
         }
         $categoryNames = ReportCategory::pluck('name')->implode(', ');
@@ -104,6 +105,7 @@ class ChatbotController extends Controller
             'session_id' => $sessionId,
             'report_data' => $reportData,
             'model_note' => $modelNote,
+            'provider' => $ai->lastProvider(),
         ]);
     }
 
