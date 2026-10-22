@@ -172,6 +172,7 @@
         const sendButtonLabels = {{ Js::from(['send' => __('Send'), 'sending' => __('Sending...')]) }};
         const log = document.getElementById('chat-log');
         const chatWidget = document.getElementById('chat-widget');
+        let chatScrollFrame = null;
         const providerAttributions = {{ Js::from([
             'gemini' => __('Gemini is a trademark of Google LLC. CivicGuard is not affiliated with or endorsed by Google.'),
             'groq' => __('Groq is a trademark of Groq LLC and/or its affiliates. CivicGuard is not affiliated with or endorsed by Groq.'),
@@ -194,7 +195,19 @@
             }
 
             reply.appendChild(note);
-            log.scrollTop = log.scrollHeight;
+            scrollChatToLatest();
+        }
+
+        function scrollChatToLatest() {
+            if (chatScrollFrame !== null) window.cancelAnimationFrame(chatScrollFrame);
+            chatScrollFrame = window.requestAnimationFrame(() => {
+                const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                log.scrollTo({
+                    top: log.scrollHeight,
+                    behavior: reducedMotion ? 'auto' : 'smooth',
+                });
+                chatScrollFrame = null;
+            });
         }
         function keepInitialGreetingVisible() {
             if (log.childElementCount !== 1) return;
@@ -211,7 +224,8 @@
             const viewport = window.visualViewport;
             const viewportHeight = viewport?.height ?? window.innerHeight;
             const viewportTop = Math.max(0, viewport?.offsetTop ?? 0);
-            chatWidget.style.setProperty('--cg-chat-widget-height', `${viewportHeight + viewportTop}px`);
+            chatWidget.style.setProperty('--cg-chat-widget-top', `${viewportTop}px`);
+            chatWidget.style.setProperty('--cg-chat-widget-height', `${viewportHeight}px`);
             keepInitialGreetingVisible();
         }
 
@@ -225,10 +239,17 @@
         function leaveMobileChatMode() {
             chatWidget.classList.remove('cg-chat-keyboard-mode');
             document.documentElement.classList.remove('cg-chat-keyboard-open');
+            chatWidget.style.removeProperty('--cg-chat-widget-top');
             chatWidget.style.removeProperty('--cg-chat-widget-height');
         }
 
         input.addEventListener('focus', enterMobileChatMode);
+        sendBtn.addEventListener('pointerdown', (event) => {
+            if (window.matchMedia('(max-width: 639px)').matches && document.activeElement === input) {
+                // Keep the textarea focused so tapping Send does not collapse the mobile chat.
+                event.preventDefault();
+            }
+        });
         input.addEventListener('blur', () => window.setTimeout(() => {
             if (!chatWidget.contains(document.activeElement)) leaveMobileChatMode();
         }, 0));
@@ -304,7 +325,7 @@
                 row.appendChild(bubble);
             }
             log.appendChild(row);
-            log.scrollTop = log.scrollHeight;
+            scrollChatToLatest();
         }
 
         function showTyping() {
@@ -316,7 +337,7 @@
                 '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>' +
                 '</span>';
             log.appendChild(row);
-            log.scrollTop = log.scrollHeight;
+            scrollChatToLatest();
         }
 
         function hideTyping() {
@@ -657,7 +678,7 @@
 
             row.appendChild(card);
             log.appendChild(row);
-            log.scrollTop = log.scrollHeight;
+            scrollChatToLatest();
         }
         function showSuccessCard() {
             const row = document.createElement('div');
@@ -691,7 +712,7 @@
             card.append(icon, content);
             row.appendChild(card);
             log.appendChild(row);
-            log.scrollTop = log.scrollHeight;
+            scrollChatToLatest();
         }
 
         async function submitReport(data, btn) {
@@ -771,11 +792,13 @@
 
             row.append(call, proceed);
             log.appendChild(row);
-            log.scrollTop = log.scrollHeight;
+            scrollChatToLatest();
         }
 
         function setBusy(busy) {
-            input.disabled = busy;
+            // Keep mobile focus while waiting so the keyboard-sized chat layout stays put.
+            input.readOnly = busy;
+            input.setAttribute('aria-busy', busy ? 'true' : 'false');
             sendBtn.disabled = busy;
             sendBtn.setAttribute('aria-busy', busy ? 'true' : 'false');
             sendBtn.setAttribute('aria-label', busy ? sendButtonLabels.sending : sendButtonLabels.send);
@@ -800,12 +823,14 @@
             bubble.append(msg, retry);
             row.appendChild(bubble);
             log.appendChild(row);
-            log.scrollTop = log.scrollHeight;
+            scrollChatToLatest();
         }
 
+        let isSending = false;
         async function sendMessage(message, isRetry = false) {
             message = message.trim();
-            if (!message || input.disabled) return;
+            if (!message || isSending) return;
+            isSending = true;
             lastMessage = message;
             document.querySelectorAll('[data-emergency-actions]').forEach(el => el.remove());
 
@@ -857,7 +882,7 @@
             } finally {
                 clearTimeout(timer);
                 setBusy(false);
-                input.focus();
+                isSending = false;
             }
         }
 
