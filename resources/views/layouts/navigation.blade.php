@@ -89,7 +89,7 @@
                 <x-sidebar-link icon="list" :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard', 'admin.reports.details', 'admin.reports.curfewDetails')">
                     {{ __('Incident Queue') }}
                 </x-sidebar-link>
-                <x-sidebar-link icon="chart" :href="route('admin.analytics')" :active="request()->routeIs('admin.analytics', 'admin.consolidatedReports')">
+                <x-sidebar-link icon="chart" :href="route(in_array($role, ['admin', 'official']) ? 'admin.analytics' : 'admin.consolidatedReports')" :active="request()->routeIs('admin.analytics', 'admin.consolidatedReports')">
                     {{ __('Reports') }}
                 </x-sidebar-link>
                 @if (in_array($role, ['tanod', 'admin']))

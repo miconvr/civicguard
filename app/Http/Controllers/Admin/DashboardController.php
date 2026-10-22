@@ -39,11 +39,12 @@ class DashboardController extends Controller
             $query->orderByUrgency()->oldest();
         }
 
+        $visibleReports = Report::visibleTo($request->user());
         $stats = [
-            'critical' => Report::whereIn('status', $open)->where('severity', 'critical')->count(),
-            'unassigned' => Report::whereIn('status', $open)->whereNull('assigned_to')->count(),
-            'overdue' => Report::where('status', 'pending')->where('created_at', '<', now()->subHours(48))->count(),
-            'resolved' => Report::where('status', 'resolved')->where('resolved_at', '>=', now()->startOfWeek())->count(),
+            'critical' => (clone $visibleReports)->whereIn('status', $open)->where('severity', 'critical')->count(),
+            'unassigned' => (clone $visibleReports)->whereIn('status', $open)->whereNull('assigned_to')->count(),
+            'overdue' => (clone $visibleReports)->where('status', 'pending')->where('created_at', '<', now()->subHours(48))->count(),
+            'resolved' => (clone $visibleReports)->where('status', 'resolved')->where('resolved_at', '>=', now()->startOfWeek())->count(),
         ];
 
         return view('admin.dashboard', [
