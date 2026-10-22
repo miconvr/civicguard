@@ -40,7 +40,7 @@
                         <tbody>
                             @forelse ($reports as $report)
                                 <tr>
-                                    <td data-label="Date" class="whitespace-nowrap">{{ $report->created_at->format('M d, Y g:i A') }}</td>
+                                    <td data-label="Date" class="whitespace-nowrap">{{ \App\Support\LocalizedDate::format($report->created_at, 'M d, Y g:i A') }}</td>
                                     <td data-label="Category">{{ __($report->category->name) }}</td>
                                     <td data-label="Reported by">{{ $report->user->name }}</td>
                                     <td data-label="Severity">{{ __(ucfirst($report->severity)) }}</td>
@@ -63,7 +63,7 @@
                         <tbody>
                             @forelse ($curfewLogs as $log)
                                 <tr>
-                                    <td data-label="Date" class="whitespace-nowrap">{{ $log->apprehension_datetime->format('M d, Y g:i A') }}</td>
+                                    <td data-label="Date" class="whitespace-nowrap">{{ \App\Support\LocalizedDate::format($log->apprehension_datetime, 'M d, Y g:i A') }}</td>
                                     <td data-label="Minor">{{ $log->minor_name }}</td>
                                     <td data-label="Age">{{ $log->minor_age ?? '-' }}</td>
                                     <td data-label="Location">{{ $log->apprehension_location }}</td>
@@ -89,7 +89,7 @@
                         <tbody>
                             @forelse ($auditLogs as $auditLog)
                                 <tr>
-                                    <td data-label="Date" class="whitespace-nowrap">{{ $auditLog->created_at->format('M d, Y g:i A') }}</td>
+                                    <td data-label="Date" class="whitespace-nowrap">{{ \App\Support\LocalizedDate::format($auditLog->created_at, 'M d, Y g:i A') }}</td>
                                     <td data-label="Actor">{{ $auditLog->user->name ?? 'System' }}</td>
                                     <td data-label="Action">{{ $auditLog->localized_action }}</td>
                                     <td data-label="Description">{{ $auditLog->localized_description ?? '-' }}</td>

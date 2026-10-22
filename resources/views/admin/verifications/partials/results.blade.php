@@ -14,7 +14,7 @@
                     <p class="break-all text-sm text-gray-600 dark:text-gray-400">{{ $verification->user->email }}</p>
                 </div>
             </div>
-            <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{{ __('Submitted') }} {{ $verification->submitted_at->diffForHumans() }}</p>
+            <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{{ __('Submitted') }} {{ \App\Support\LocalizedDate::relative($verification->submitted_at) }}</p>
 
             @if ($status === 'pending')
                 <div class="mt-5 flex flex-wrap gap-3">
@@ -77,7 +77,7 @@
                     @endif
                     {{ $status === 'verified' ? __('Verified') : __('Declined') }}
                 </span>
-                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">{{ __('Reviewed') }} {{ $verification->reviewed_at?->diffForHumans() ?? '—' }}</p>
+                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">{{ __('Reviewed') }} {{ \App\Support\LocalizedDate::relative($verification->reviewed_at) ?? '—' }}</p>
                 @if ($verification->reviewer)
                     <p class="mt-1 text-xs text-gray-600 dark:text-gray-400">{{ __('Reviewed by :name', ['name' => $verification->reviewer->name]) }}</p>
                 @endif
