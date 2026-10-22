@@ -217,7 +217,9 @@ try {
 
     await residentPage.goto(`${baseUrl}/reports`);
     await residentPage.getByRole('button', { name: /yes, it's fixed/i }).click();
-    await residentPage.getByText('Thank you for confirming.').waitFor({ state: 'visible' });
+    await residentPage.goto(`${baseUrl}/reports`);
+    const confirmedReport = residentPage.locator('article').filter({ hasText: location });
+    await confirmedReport.getByText('Confirmed fixed', { exact: false }).waitFor({ state: 'visible' });
 
     await switchToTagalog(residentPage);
     const residentTagalogFailures = await auditTagalogLayouts(
