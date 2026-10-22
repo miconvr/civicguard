@@ -260,7 +260,16 @@ try {
     );
     await response.finished();
     const confirmedReport = residentPage.locator('article').filter({ hasText: location });
-    await confirmedReport.getByText(/Confirmed fixed|Kinumpirmang naayos na/i).waitFor({ state: 'visible' });
+    try {
+        await confirmedReport.getByText(/Confirmed fixed|Kinumpirmang naayos na/i).waitFor({ state: 'visible', timeout: 10000 });
+    } catch (error) {
+        console.error('Resident confirmation did not appear after the redirect:', {
+            url: residentPage.url(),
+            language: await residentPage.locator('html').getAttribute('lang'),
+            reportCard: (await confirmedReport.innerText().catch(() => 'Report card was not rendered')).slice(0, 2000),
+        });
+        throw error;
+    }
 
     await switchToTagalog(residentPage);
     const residentTagalogFailures = await auditTagalogLayouts(
