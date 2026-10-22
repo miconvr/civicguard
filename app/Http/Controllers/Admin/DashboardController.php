@@ -116,7 +116,7 @@ class DashboardController extends Controller
             'message' => "Your report (\"{$report->category->name}\") status changed to ".ucfirst(str_replace('_', ' ', $validated['status'])).'.',
         ]);
 
-        return redirect()->back()->with('status', 'Report status updated.');
+        return redirect()->back()->with('status', __('Report status updated.'));
     }
 
     public function updateQueueReport(Request $request, Report $report)
@@ -217,7 +217,7 @@ class DashboardController extends Controller
             $report->save();
         });
 
-        return redirect()->back()->with('status', 'Report changes saved.');
+        return redirect()->back()->with('status', __('Report changes saved.'));
     }
 
     public function updateSeverity(Request $request, Report $report)
@@ -244,7 +244,7 @@ class DashboardController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('status', 'Severity updated.');
+        return redirect()->back()->with('status', __('Severity updated.'));
     }
 
     public function assign(Request $request, Report $report)
@@ -292,7 +292,7 @@ class DashboardController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('status', 'Tanod assigned successfully.');
+        return redirect()->back()->with('status', __('Tanod assigned successfully.'));
     }
 
     public function showDetails(Report $report)
