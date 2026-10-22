@@ -167,12 +167,12 @@
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100" x-text="r.category"></h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400" x-text="r.location"></p>
+                            <p class="text-sm text-gray-700 dark:text-gray-300" x-text="r.location"></p>
                         </div>
                         <button type="button" @click="open = false" aria-label="Close" class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-gray-400 hover:bg-black/5 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-white text-xl leading-none">✕</button>
                     </div>
 
-                    <div class="flex min-w-0 items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
+                    <div class="flex min-w-0 items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
                         <span class="cg-sev shrink-0" :class="r.sevClass" x-text="r.severity"></span>
                         <span class="flex min-w-0 flex-1 flex-wrap items-center gap-2">
                             <span class="min-w-0 truncate">{{ __('Reported by') }} <strong x-text="r.user"></strong></span>
@@ -182,7 +182,7 @@
                             </span>
                         </span>
                     </div>
-                    <p class="text-xs text-gray-500 dark:text-gray-400" x-text="'Filed ' + r.filed"></p>
+                    <p class="text-xs text-gray-700 dark:text-gray-300" x-text="'Filed ' + r.filed"></p>
 
                     <p class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line" x-text="r.description"></p>
 
