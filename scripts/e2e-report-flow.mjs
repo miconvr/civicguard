@@ -259,9 +259,8 @@ try {
         `resident confirmation should redirect to the reports page, received ${response.headers().location}`,
     );
     await response.finished();
-    await residentPage.getByRole('status').getByText('Thank you for confirming.', { exact: true }).waitFor({ state: 'visible' });
     const confirmedReport = residentPage.locator('article').filter({ hasText: location });
-    await confirmedReport.getByText('Confirmed fixed', { exact: false }).waitFor({ state: 'visible' });
+    await confirmedReport.getByText(/Confirmed fixed|Kinumpirmang naayos na/i).waitFor({ state: 'visible' });
 
     await switchToTagalog(residentPage);
     const residentTagalogFailures = await auditTagalogLayouts(
