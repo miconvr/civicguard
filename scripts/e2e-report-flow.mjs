@@ -47,7 +47,8 @@ try {
     });
     await residentPage.locator('#submit-report-btn').click();
     await residentPage.waitForURL('**/reports');
-    await residentPage.getByText(description, { exact: true }).waitFor({ state: 'visible' });
+    const residentReport = residentPage.locator('article').filter({ hasText: location });
+    await residentReport.locator('p.line-clamp-2').filter({ hasText: description }).waitFor({ state: 'visible' });
 
     const officialContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
     const officialPage = await officialContext.newPage();
