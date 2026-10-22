@@ -251,7 +251,7 @@ try {
     );
     const confirmationNavigation = residentPage.waitForNavigation({ waitUntil: 'domcontentloaded' });
     await residentPage.getByRole('button', { name: /yes, it's fixed/i }).click();
-    const [response] = await Promise.all([confirmationResponse, confirmationNavigation]);
+    const [response, confirmationPageResponse] = await Promise.all([confirmationResponse, confirmationNavigation]);
     assert.equal(response.status(), 302, `resident confirmation should redirect successfully, received HTTP ${response.status()}`);
     assert.equal(
         new URL(response.headers().location, baseUrl).pathname,
@@ -266,6 +266,8 @@ try {
         console.error('Resident confirmation did not appear after the redirect:', {
             url: residentPage.url(),
             language: await residentPage.locator('html').getAttribute('lang'),
+            pageStatus: confirmationPageResponse?.status() ?? null,
+            pageText: (await residentPage.locator('body').innerText()).slice(0, 2000),
             reportCard: (await confirmedReport.innerText().catch(() => 'Report card was not rendered')).slice(0, 2000),
         });
         throw error;
