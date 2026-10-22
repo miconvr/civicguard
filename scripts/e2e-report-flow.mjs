@@ -55,10 +55,17 @@ async function inspectTagalogLayout(page) {
             const rect = element.getBoundingClientRect();
             return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
         };
+        const hasVisibleText = element => [...element.childNodes].some(node =>
+            node.nodeType === Node.TEXT_NODE
+                && node.textContent.trim()
+                && !node.parentElement?.closest('.sr-only, [aria-hidden="true"]'),
+        );
         const clippedLabels = [...document.querySelectorAll('button, a[href], [role="button"]')]
             .filter(element => visible(element) && !element.matches('button[aria-controls="account-menu"]'))
             .flatMap(element => [element, ...element.querySelectorAll('*')])
-            .filter(element => visible(element) && element.textContent?.trim())
+            .filter(element => visible(element)
+                && !element.closest('.sr-only, [aria-hidden="true"]')
+                && hasVisibleText(element))
             .filter(element => {
                 const style = getComputedStyle(element);
                 const isClipped = ['hidden', 'clip'].includes(style.overflowX)
@@ -67,7 +74,12 @@ async function inspectTagalogLayout(page) {
                     || style.whiteSpace === 'nowrap';
                 return isClipped && element.scrollWidth > element.clientWidth + 2;
             })
-            .map(element => element.textContent.trim().replace(/\s+/g, ' ').slice(0, 100));
+            .map(element => [...element.childNodes]
+                .filter(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim())
+                .map(node => node.textContent.trim())
+                .join(' ')
+                .replace(/\s+/g, ' ')
+                .slice(0, 100));
 
         return {
             language: document.documentElement.lang,
