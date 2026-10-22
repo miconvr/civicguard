@@ -34,6 +34,11 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
+    // Locale changes set a session value and redirect back to the current page.
+    // Let the browser handle this navigation directly so the offline fallback
+    // and navigation timeout cannot interrupt the language switch.
+    if (url.origin === self.location.origin && url.pathname.startsWith('/locale/')) return;
+
     if (req.mode !== 'navigate' || req.method !== 'GET') return;
     event.respondWith((async () => {
         const controller = new AbortController();
