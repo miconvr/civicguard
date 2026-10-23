@@ -62,7 +62,7 @@ class="relative inline-flex items-center">
 
         <ul class="max-h-80 overflow-y-auto divide-y divide-stone-100 dark:divide-white/5 overscroll-contain">
             @forelse ($notifications as $notification)
-                <li class="flex items-center gap-1 pr-2 {{ $notification->is_read ? '' : 'bg-maroon-50/40 dark:bg-maroon-900/10' }}">
+                <li class="{{ $notification->is_read ? '' : 'bg-maroon-50/40 dark:bg-maroon-900/10' }}">
                     <form method="POST" action="{{ route('notifications.open', $notification) }}" class="min-w-0 flex-1">
                         @csrf
                         <button type="submit" class="flex w-full min-h-[52px] items-start gap-3 p-3.5 text-left transition hover:bg-stone-50 dark:hover:bg-white/5 focus:outline-none focus:bg-stone-50 dark:focus:bg-white/5">
@@ -86,12 +86,6 @@ class="relative inline-flex items-center">
                             <span class="mt-1 text-stone-400 text-xs" aria-hidden="true">&rsaquo;</span>
                         </button>
                     </form>
-                    @unless ($notification->is_read)
-                        <form method="POST" action="{{ route('notifications.read', $notification) }}">
-                            @csrf
-                            <button type="submit" class="min-h-10 rounded-md px-2 text-[11px] font-semibold text-maroon-800 hover:bg-maroon-100 dark:text-[#e3aaa4] dark:hover:bg-white/10">{{ __('Mark read') }}</button>
-                        </form>
-                    @endunless
                 </li>
             @empty
                 <li class="px-4 py-8 text-center">
@@ -107,8 +101,21 @@ class="relative inline-flex items-center">
         </ul>
 
         @if ($notifications->isNotEmpty())
-            <div class="border-t border-stone-100 bg-stone-50/50 p-2 text-center dark:border-white/10 dark:bg-white/[0.02]">
-                <a href="{{ route('notifications.index') }}" class="block w-full py-1.5 text-center text-xs font-semibold text-stone-600 hover:text-maroon-700 dark:text-stone-400 dark:hover:text-white transition">
+            <div class="space-y-2 border-t border-stone-100 bg-stone-50/50 p-3 dark:border-white/10 dark:bg-white/[0.02]">
+                <div class="flex gap-2">
+                    @if ($unreadCount > 0)
+                        <form method="POST" action="{{ route('notifications.readAll') }}" class="flex-1">
+                            @csrf
+                            <button type="submit" class="min-h-10 w-full rounded-lg bg-maroon-700 px-3 text-xs font-semibold text-white transition hover:bg-maroon-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700">{{ __('Mark all as read') }}</button>
+                        </form>
+                    @endif
+                    <form method="POST" action="{{ route('notifications.clear') }}" class="{{ $unreadCount > 0 ? 'flex-1' : 'w-full' }}" onsubmit="return confirm(@js(__('Clear all notifications?')))">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="min-h-10 w-full rounded-lg border border-stone-300 px-3 text-xs font-semibold text-stone-700 transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-white/15 dark:text-stone-200 dark:hover:bg-white/10">{{ __('Clear all') }}</button>
+                    </form>
+                </div>
+                <a href="{{ route('notifications.index') }}" class="block w-full py-1 text-center text-xs font-semibold text-stone-600 hover:text-maroon-700 dark:text-stone-400 dark:hover:text-white transition">
                     {{ __('See all notification history') }} &rarr;
                 </a>
             </div>
