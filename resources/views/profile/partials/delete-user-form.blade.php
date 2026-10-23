@@ -11,7 +11,7 @@
 
     @if (auth()->user()->role === 'resident')
     <x-danger-button
-        x-data=""
+        type="button"
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
     >{{ __('Delete Account') }}</x-danger-button>
 
@@ -29,13 +29,15 @@
             </p>
 
             <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+                <x-input-label for="delete-account-password" value="{{ __('Password') }}" class="sr-only" />
 
                 <x-text-input
-                    id="password"
+                    id="delete-account-password"
                     name="password"
                     type="password"
-                    class="mt-1 block w-3/4"
+                    class="mt-1 block w-full sm:w-3/4"
+                    required
+                    autocomplete="current-password"
                     placeholder="{{ __('Password') }}"
                 />
 
@@ -43,11 +45,11 @@
             </div>
 
             <div class="mt-6 flex justify-end">
-                <x-secondary-button x-on:click="$dispatch('close')">
+                <x-secondary-button type="button" x-on:click="$dispatch('close-modal', 'confirm-user-deletion')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button class="ms-3">
+                <x-danger-button type="submit" class="ms-3">
                     {{ __('Delete Account') }}
                 </x-danger-button>
             </div>
