@@ -1,7 +1,13 @@
 <x-app-layout>
     <x-slot name="headerWidth">max-w-5xl</x-slot>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">{{ __('Dashboard') }}</h2>
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight"
+            x-data="{ scrolled: false }"
+            x-init="scrolled = window.scrollY > 40; window.addEventListener('scroll', () => { scrolled = window.scrollY > 40 }, { passive: true })"
+        >
+            <span x-show="!scrolled" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">{{ __('Go to your dashboard') }}</span>
+            <span x-show="scrolled" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">{{ __('Dashboard') }}</span>
+        </h2>
     </x-slot>
 
     @php $first = \Illuminate\Support\Str::before($user->name, ' '); @endphp
