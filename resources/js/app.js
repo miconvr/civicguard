@@ -362,9 +362,9 @@ if ('serviceWorker' in navigator) {
     let ticking = false;
     const update = () => {
         ticking = false;
-        // Start the navbar transition as the Call 911 section reaches the viewport.
+        // Start the navbar transition after the Call 911 section has moved into view.
         // Keep it visible after that point, and hide it again when scrolling above it.
-        root.classList.toggle('cg-nav-on', emergency.getBoundingClientRect().top <= window.innerHeight);
+        root.classList.toggle('cg-nav-on', emergency.getBoundingClientRect().top <= window.innerHeight * 0.7);
     };
     const request = () => {
         if (!ticking) { ticking = true; requestAnimationFrame(update); }
