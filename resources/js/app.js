@@ -228,6 +228,25 @@ Promise.all(pageModules)
 
 // ---- Loading state for forms: buttons marked data-loading-btn ----
 const CG_SPINNER = '<svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+
+// Keep form confirmations and filter submits compatible with the production CSP.
+document.addEventListener('submit', (event) => {
+    const form = event.target;
+    const confirmation = form instanceof HTMLFormElement ? form.dataset.confirm : null;
+
+    if (confirmation && !window.confirm(confirmation)) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+    }
+}, true);
+
+document.addEventListener('change', (event) => {
+    const control = event.target.closest('[data-submit-on-change]');
+    const form = control?.form;
+
+    if (form) form.requestSubmit();
+});
+
 function cgSetBusy(btn) {
     btn.dataset.originalHtml = btn.innerHTML;
     btn.disabled = true;
