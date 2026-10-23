@@ -62,19 +62,13 @@ class NotificationController extends Controller
             return response()->json(['success' => true]);
         }
 
-        return redirect()->back();
+        return redirect()->route('notifications.index');
     }
 
-    public function read(Request $request, AppNotification $notification)
+    public function clear()
     {
-        abort_unless((int) $notification->user_id === (int) Auth::id(), 403);
+        AppNotification::where('user_id', Auth::id())->delete();
 
-        $notification->update(['is_read' => true]);
-
-        if ($request->wantsJson()) {
-            return response()->json(['success' => true]);
-        }
-
-        return redirect()->back();
+        return redirect()->route('notifications.index')->with('status', __('Notifications cleared.'));
     }
 }

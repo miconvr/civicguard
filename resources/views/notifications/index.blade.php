@@ -9,20 +9,32 @@
     <div class="py-8">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="cg-card p-0 overflow-hidden">
+                @if (session('status'))
+                    <p role="status" class="border-b border-gray-200 px-4 py-3 text-sm text-green-800 dark:border-gray-700 dark:text-green-300">{{ session('status') }}</p>
+                @endif
 
-                @if ($unread > 0)
-                    <div class="flex items-center justify-between gap-3 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+                @if ($notifications->total() > 0)
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
                         <p class="text-sm text-gray-700 dark:text-gray-300">{{ $unread }} {{ __('unread') }}</p>
-                        <form method="POST" action="{{ route('notifications.readAll') }}">
-                            @csrf
-                            <button class="min-h-[44px] px-2 text-sm font-medium text-maroon-700 dark:text-[#c27872] hover:underline">{{ __('Mark all as read') }}</button>
-                        </form>
+                        <div class="flex flex-wrap items-center gap-2">
+                            @if ($unread > 0)
+                                <form method="POST" action="{{ route('notifications.readAll') }}">
+                                    @csrf
+                                    <button class="min-h-10 rounded-lg px-3 text-sm font-semibold text-maroon-700 hover:bg-maroon-50 dark:text-[#e3aaa4] dark:hover:bg-white/5">{{ __('Mark all as read') }}</button>
+                                </form>
+                            @endif
+                            <form method="POST" action="{{ route('notifications.clear') }}" onsubmit="return confirm(@js(__('Clear all notifications?')))">
+                                @csrf
+                                @method('delete')
+                                <button class="min-h-10 rounded-lg border border-stone-300 px-3 text-sm font-semibold text-stone-700 hover:bg-stone-100 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-white/10">{{ __('Clear all') }}</button>
+                            </form>
+                        </div>
                     </div>
                 @endif
 
                 <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                     @forelse ($notifications as $notification)
-                        <li class="flex items-center gap-2 pr-3 {{ $notification->is_read ? '' : 'bg-maroon-50/40 dark:bg-white/[0.03]' }}">
+                        <li class="{{ $notification->is_read ? '' : 'bg-maroon-50/40 dark:bg-white/[0.03]' }}">
                             <form method="POST" action="{{ route('notifications.open', $notification) }}" class="min-w-0 flex-1">
                                 @csrf
                                 <button type="submit" class="flex w-full min-h-[56px] items-start gap-3 px-4 py-3 text-left transition hover:bg-black/5 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-maroon-600">
@@ -45,12 +57,6 @@
                                     <span class="mt-1 text-gray-400" aria-hidden="true">&rsaquo;</span>
                                 </button>
                             </form>
-                            @unless ($notification->is_read)
-                                <form method="POST" action="{{ route('notifications.read', $notification) }}">
-                                    @csrf
-                                    <button type="submit" class="min-h-10 rounded-lg px-2 text-xs font-semibold text-maroon-800 hover:bg-maroon-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-maroon-700 dark:text-[#e3aaa4] dark:hover:bg-white/10">{{ __('Mark as read') }}</button>
-                                </form>
-                            @endunless
                         </li>
                     @empty
                         <li class="px-4 py-12 text-center">

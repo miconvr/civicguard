@@ -11,13 +11,13 @@
             </span>
             <div>
                 <p class="font-semibold text-green-900 dark:text-green-200">{{ __('Your Maimpis residency is verified.') }}</p>
-                <p class="mt-1 text-sm text-green-800 dark:text-green-300">{{ __('Your verified badge will stay on your account. Your submitted proof remains private and is available on your verification result page.') }}</p>
+                <p class="mt-1 text-sm text-green-800 dark:text-green-300">{{ __('Your verified badge will stay on your account. The submitted proof image was deleted after review.') }}</p>
             </div>
         </div>
     @elseif ($verification?->status === \App\Models\ResidentVerification::PENDING)
         <div class="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-200">
             <p class="font-semibold">{{ __('Your proof is waiting for review.') }}</p>
-            <p class="mt-1">{{ __('Barangay officials or administrators will review it. The image stays private and can be viewed by you and authorized reviewers.') }}</p>
+            <p class="mt-1">{{ __('Barangay officials or administrators will review it. The image is private and will be deleted after a decision.') }}</p>
         </div>
     @else
         @if ($verification?->status === \App\Models\ResidentVerification::REJECTED)
@@ -46,11 +46,11 @@
                 <p class="mt-1 text-xs text-stone-600 dark:text-gray-400">{{ __('Your proof image is ready. Submit it for review.') }}</p>
             </div>
 
-            <p class="rounded-lg bg-stone-50 p-3 text-xs leading-5 text-stone-700 dark:bg-white/5 dark:text-gray-300">{{ __('You and authorized admins and barangay officials can view this private image for residency review. We retain it with the decision until you replace it or delete your account. Cover ID numbers, QR codes, birth dates, and details not needed to show your name and Maimpis residence.') }}</p>
+            <p class="rounded-lg bg-stone-50 p-3 text-xs leading-5 text-stone-700 dark:bg-white/5 dark:text-gray-300">{{ __('Only admins and barangay officials can view this private image for residency review. We delete it as soon as a decision is made. Cover ID numbers, QR codes, birth dates, and details not needed to show your name and Maimpis residence.') }}</p>
 
             <label for="verification_consent" class="flex min-h-11 items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                 <input id="verification_consent" name="consent" type="checkbox" value="1" required @checked(old('consent')) class="mt-1 rounded border-gray-300 text-maroon-700 shadow-sm focus:ring-maroon-500 dark:border-gray-600">
-                <span>{{ __('I agree that admins and barangay officials may review this image only to verify my Maimpis residency, and that it will be retained with the decision until I replace it or delete my account.') }}</span>
+                <span>{{ __('I agree to let admins and barangay officials review this image only to verify my Maimpis residency. The image will be deleted after a decision.') }}</span>
             </label>
             <x-input-error :messages="$errors->get('consent')" />
 
