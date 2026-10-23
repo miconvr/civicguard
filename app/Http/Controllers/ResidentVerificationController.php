@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ResidentVerificationController extends Controller
 {
@@ -21,19 +20,6 @@ class ResidentVerificationController extends Controller
         $verification = $request->user()->residentVerification;
 
         return view('profile.verification', compact('verification'));
-    }
-
-    public function document(Request $request): StreamedResponse
-    {
-        abort_unless($request->user()->role === 'resident', 403);
-
-        $verification = $request->user()->residentVerification;
-        abort_unless($verification?->document_path && Storage::disk('report_photos')->exists($verification->document_path), 404);
-
-        return Storage::disk('report_photos')->response($verification->document_path, headers: [
-            'Cache-Control' => 'private, no-store',
-            'X-Content-Type-Options' => 'nosniff',
-        ]);
     }
 
     public function store(Request $request): RedirectResponse
