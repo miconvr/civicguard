@@ -36,8 +36,49 @@ async function signIn(page, email) {
     await gotoWithRetry(page, `${baseUrl}/login`);
     await page.locator('#email').fill(email);
     await page.locator('#password').fill(password);
-    await page.getByRole('button', { name: /log in/i }).click();
-    await page.waitForURL('**/dashboard');
+
+    // Capture both sides of Laravel's POST -> redirect -> dashboard flow.
+    // Waiting only for the URL can hang until Playwright's default timeout if
+    // the browser loses the navigation after the server has already handled
+    // the login (as happens intermittently in the multi-worker CI server).
+    const loginResponsePromise = page.waitForResponse(response => {
+        const request = response.request();
+
+        return request.method() === 'POST'
+            && new URL(response.url()).pathname === '/login';
+    }, { timeout: 15000 });
+    const navigationPromise = page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 8000 })
+        .then(response => ({ response }))
+        .catch(error => ({ error }));
+    const dashboardResponsePromise = page.waitForResponse(response => {
+        const request = response.request();
+
+        return request.isNavigationRequest()
+            && request.method() === 'GET'
+            && new URL(response.url()).pathname === '/dashboard';
+    }, { timeout: 5000 }).catch(() => null);
+
+    const clickError = await page.getByRole('button', { name: /log in/i }).click()
+        .then(() => null)
+        .catch(error => error);
+    const loginResponse = await loginResponsePromise;
+    assert.equal(loginResponse.status(), 302, `Login for ${email} should redirect successfully, received HTTP ${loginResponse.status()}`);
+
+    const navigation = await navigationPromise;
+    let dashboardResponse = navigation.response;
+
+    if (!dashboardResponse && (navigation.error || clickError)) {
+        dashboardResponse = await dashboardResponsePromise;
+    }
+
+    if (!dashboardResponse && (navigation.error || clickError)) {
+        const destination = loginResponse.headers().location;
+        assert.ok(destination, `Login for ${email} did not include a redirect location`);
+        dashboardResponse = await gotoWithRetry(page, new URL(destination, baseUrl).href);
+    }
+
+    assert.equal(dashboardResponse?.status(), 200, `Dashboard after login for ${email} should return HTTP 200`);
+    assert.equal(new URL(page.url()).pathname, '/dashboard', `Login for ${email} should finish at /dashboard, received ${page.url()}`);
 }
 
 async function submitAndFollowRedirect(page, button, responsePromise, expectedPath, label) {
