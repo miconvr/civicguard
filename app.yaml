@@ -24,6 +24,12 @@ annotations:
 enableDatabase: true
 enable_email: true
 
+# Pre-warm Laravel on Wasmer so the first resident request avoids PHP's cold boot.
+capabilities:
+  instaboot:
+    requests:
+      - path: /
+
 env:
   APP_DEBUG: 'false'
   APP_ENV: production
