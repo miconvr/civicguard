@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-CALupkdU.css",
+    "file": "assets/app-yFRAH2U-.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -25,7 +25,7 @@
     "src": "resources/fonts/Figtree-700.woff2"
   },
   "resources/js/app.js": {
-    "file": "assets/app-CVVPKO0V.js",
+    "file": "assets/app-ChIzqZzk.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -36,7 +36,7 @@
     ]
   },
   "resources/js/pages/landing.js": {
-    "file": "assets/landing-m2gC3yn3.js",
+    "file": "assets/landing-CeRW4liU.js",
     "name": "landing",
     "src": "resources/js/pages/landing.js",
     "isDynamicEntry": true
