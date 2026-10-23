@@ -272,7 +272,7 @@
                 <p class="flex flex-wrap gap-x-5">
                     <a href="{{ route('privacy') }}" class="inline-block py-2 underline underline-offset-4 hover:text-stone-900" x-text="text('footerPrivacy')">Privacy Policy</a>
                     <a href="{{ route('terms') }}" class="inline-block py-2 underline underline-offset-4 hover:text-stone-900" x-text="text('footerTerms')">Terms of Use</a>
-                    <a href="https://github.com/miconvr/civicguard" target="_blank" rel="noopener noreferrer" class="inline-block py-2 underline underline-offset-4 hover:text-stone-900">GitHub repository <span aria-hidden="true">↗</span></a>
+                    <a href="https://github.com/miconvr/civicguard" target="_blank" rel="noopener noreferrer" class="inline-block py-2 underline underline-offset-4 hover:text-stone-900">GitHub Repository <span aria-hidden="true">↗</span></a>
                 </p>
                 <p class="mt-3 border-t border-stone-300/70 pt-4 text-center text-xs leading-6 text-stone-600 dark:text-stone-300 sm:basis-full"><span class="font-semibold text-stone-700 dark:text-stone-200" x-text="text('devKicker')">Developed by</span><span class="mx-2 hidden sm:inline" aria-hidden="true">·</span><span class="block sm:inline">Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, Adriann Enriquez</span></p>
             </footer>
