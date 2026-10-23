@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
         @include('partials.pwa-head')
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta property="csp-nonce" nonce="{{ Vite::cspNonce() }}">
 
         <title>{{ config('app.name', 'CivicGuard') }}</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
@@ -14,7 +15,7 @@
         <style>
             [x-cloak] { display: none !important; }
         </style>
-        <script>
+        <script nonce="{{ Vite::cspNonce() }}">
             try {
                 if (localStorage.getItem('darkMode') === 'true') {
                     document.documentElement.classList.add('dark');
