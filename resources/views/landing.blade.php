@@ -67,7 +67,7 @@
                             <a href="{{ route('login') }}" class="cg-hero-strip-link" x-text="text('navSignIn')">Sign in</a>
                         @endguest
                         @auth
-                            <a href="{{ route('dashboard') }}" class="cg-hero-strip-link" x-text="text('dashboard')">Go to your dashboard</a>
+                            <a href="{{ route('dashboard') }}" class="cg-hero-strip-link" x-text="text('dashboard')">Dashboard</a>
                         @endauth
                     </div>
                     <div class="cg-landing-hero-inner mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:py-20">
@@ -86,7 +86,7 @@
                                     </a>
                                 @else
                                     <a href="{{ route('dashboard') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 text-base lg:min-h-14 lg:px-8 lg:text-lg font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100">
-                                        <span x-text="text('dashboard')">Go to your dashboard</span>
+                                        <span x-text="text('dashboard')">Dashboard</span>
                                         <span class="cg-arrow" aria-hidden="true">→</span>
                                     </a>
                                 @endguest
@@ -258,7 +258,7 @@
                             </a>
                         @else
                             <a href="{{ route('dashboard') }}" class="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-md bg-white px-6 text-base font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100" data-cg-scroll>
-                                <span x-text="text('dashboard')">Go to your dashboard</span>
+                                <span x-text="text('dashboard')">Dashboard</span>
                                 <span class="cg-arrow" aria-hidden="true">→</span>
                             </a>
                         @endguest
