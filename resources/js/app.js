@@ -362,9 +362,16 @@ if ('serviceWorker' in navigator) {
     let ticking = false;
     const update = () => {
         ticking = false;
-        // Start the navbar transition after the Call 911 section has moved into view.
+        // On phones, reveal a little later so the header does not cover the
+        // emergency message as soon as it enters a short viewport.
         // Keep it visible after that point, and hide it again when scrolling above it.
-        root.classList.toggle('cg-nav-on', emergency.getBoundingClientRect().top <= window.innerHeight * 0.7);
+        const viewportHeight = window.innerHeight;
+        const isMobile = window.matchMedia('(max-width: 639px)').matches;
+        const revealLine = isMobile
+            ? Math.min(viewportHeight * 0.62, viewportHeight - 140)
+            : viewportHeight * 0.7;
+
+        root.classList.toggle('cg-nav-on', emergency.getBoundingClientRect().top <= revealLine);
     };
     const request = () => {
         if (!ticking) { ticking = true; requestAnimationFrame(update); }
