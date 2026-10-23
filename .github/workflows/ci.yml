@@ -64,7 +64,7 @@ jobs:
 
       - name: Start the local app
         run: |
-          APP_ENV=testing DB_CONNECTION=sqlite DB_DATABASE=/tmp/civicguard-e2e.sqlite SESSION_DRIVER=file CACHE_STORE=file PHOTO_DISK_ROOT=/tmp/civicguard-e2e-storage php artisan serve --host=127.0.0.1 --port=8000 > /tmp/civicguard-server.log 2>&1 &
+          APP_ENV=testing LOG_CHANNEL=stderr LOG_LEVEL=warning DB_CONNECTION=sqlite DB_DATABASE=/tmp/civicguard-e2e.sqlite SESSION_DRIVER=file CACHE_STORE=file PHOTO_DISK_ROOT=/tmp/civicguard-e2e-storage php artisan serve --host=127.0.0.1 --port=8000 > /tmp/civicguard-server.log 2>&1 &
           for attempt in $(seq 1 30); do
             if curl --silent --fail http://127.0.0.1:8000/ > /dev/null; then exit 0; fi
             sleep 1
