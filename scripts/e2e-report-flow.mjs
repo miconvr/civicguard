@@ -145,9 +145,21 @@ async function openAccountMenu(page) {
 
 async function switchToTagalog(page) {
     await openAccountMenu(page);
-    await page.locator('#account-menu').getByRole('link', { name: 'Tagalog' }).click();
-    await page.waitForLoadState('domcontentloaded');
-    await page.waitForFunction(() => document.documentElement.lang === 'tl');
+    const tagalogLink = page.locator('#account-menu').getByRole('link', { name: 'Tagalog' });
+    const localeUrl = new URL(await tagalogLink.getAttribute('href'), baseUrl).href;
+    const returnUrl = page.url();
+
+    await tagalogLink.click();
+
+    try {
+        await page.waitForFunction(() => document.documentElement.lang === 'tl', { timeout: 10000 });
+    } catch {
+        // A transient test-server restart can interrupt the locale redirect
+        // after the session update. Reapply the locale and reload the page.
+        await gotoWithRetry(page, localeUrl, { waitUntil: 'domcontentloaded', referer: returnUrl });
+        await gotoWithRetry(page, returnUrl);
+        await page.waitForFunction(() => document.documentElement.lang === 'tl', { timeout: 10000 });
+    }
 }
 
 async function inspectTagalogLayout(page) {
