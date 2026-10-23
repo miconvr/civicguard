@@ -20,10 +20,10 @@
 
 <h2 class="mt-8 text-xl font-semibold">Why we collect it</h2>
 <p>To let you report incidents, let barangay staff review and respond, show you the status of your reports, and keep an accountable record of how reports are handled.</p>
-<p>Resident verification is optional. We use the submitted image only to decide whether to show a Maimpis resident badge. Admins and barangay officials can review it. The image is deleted as soon as a decision is made; the result, consent time, and review record remain while your account exists.</p>
+<p>Resident verification is optional. We use the submitted image only to decide whether to show a Maimpis resident badge. You, admins, and barangay officials can review it. We retain the image with the decision until you replace it or delete your account; the result, consent time, and review record remain while your account exists.</p>
 
 <h2 class="mt-8 text-xl font-semibold">Who can see it</h2>
-<p>Your reports are visible to barangay officials and administrators. Tanods see only the reports assigned to them and curfew records they logged themselves. Other residents cannot see your reports. Only admins and barangay officials can view a pending residency proof image.</p>
+<p>Your reports are visible to barangay officials and administrators. Tanods see only the reports assigned to them and curfew records they logged themselves. Other residents cannot see your reports. Only you, admins, and barangay officials can view your private residency proof image.</p>
 
 <h2 class="mt-8 text-xl font-semibold">Services we use</h2>
 <ul class="list-disc space-y-1 pl-6">
