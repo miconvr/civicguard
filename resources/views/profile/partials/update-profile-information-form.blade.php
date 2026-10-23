@@ -25,9 +25,7 @@
                 @if ($user->avatarPath())
                     <img x-show="!removeExisting" src="{{ route('profile.photo', ['v' => basename($user->avatarPath())]) }}" alt="{{ __('Profile picture') }}" width="64" height="64" loading="eager" decoding="async" fetchpriority="high" class="h-16 w-16 rounded-full object-cover ring-2 ring-stone-200 dark:ring-gray-600">
                     <span x-show="removeExisting" x-cloak class="flex h-16 w-16 items-center justify-center rounded-full bg-maroon-100 text-xl font-semibold text-maroon-800 ring-2 ring-stone-200 dark:bg-white/10 dark:text-white dark:ring-gray-600" aria-hidden="true">{{ strtoupper(mb_substr($user->name, 0, 1)) }}</span>
-                    <button x-show="!removeExisting && !previewUrl" type="button" @click="markForRemoval()" aria-label="{{ __('Remove profile picture') }}" title="{{ __('Remove profile picture') }}" class="absolute -right-1 -top-1 inline-flex h-7 w-7 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-500 shadow-sm transition hover:border-red-300 hover:bg-red-50 hover:text-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-red-800 dark:hover:bg-red-950/40 dark:hover:text-red-300">
-                        <svg class="h-3 w-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="m5 5 10 10M15 5 5 15"/></svg>
-                    </button>
+                    <x-image-remove-button x-show="!removeExisting && !previewUrl" x-on:click="markForRemoval()" :label="__('Remove profile picture')" placement="absolute -right-1 -top-1" />
                 @else
                     <span x-show="!previewUrl" class="flex h-16 w-16 items-center justify-center rounded-full bg-maroon-100 text-xl font-semibold text-maroon-800 dark:bg-white/10 dark:text-white" aria-hidden="true">{{ strtoupper(mb_substr($user->name, 0, 1)) }}</span>
                 @endif
@@ -39,9 +37,7 @@
             </div>
             <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
             <div x-show="previewUrl" x-cloak class="relative mt-4 rounded-xl border border-stone-200 p-4 dark:border-gray-700" :class="shakePreview ? 'cg-pending-shake' : ''">
-                <button type="button" @click="clearSelection()" aria-label="{{ __('Remove selected image') }}" title="{{ __('Remove selected image') }}" class="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-500 shadow-sm transition hover:border-red-300 hover:bg-red-50 hover:text-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-red-800 dark:hover:bg-red-950/40 dark:hover:text-red-300">
-                    <svg class="h-3 w-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="m5 5 10 10M15 5 5 15"/></svg>
-                </button>
+                <x-image-remove-button x-on:click="clearSelection()" />
                 <p class="text-sm font-medium text-gray-800 dark:text-gray-100">{{ __('Preview profile picture') }}</p>
                 <div class="mt-3 flex flex-col items-center gap-4 sm:flex-row">
                     <div class="h-40 w-40 shrink-0 overflow-hidden rounded-full bg-stone-100 ring-2 ring-stone-200 dark:bg-gray-700 dark:ring-gray-600">
