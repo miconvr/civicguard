@@ -44,6 +44,13 @@ async function submitAndFollowRedirect(page, button, responsePromise, expectedPa
     const navigationPromise = page.waitForNavigation({ waitUntil: 'domcontentloaded' })
         .then(response => ({ response }))
         .catch(error => ({ error }));
+    const destinationResponsePromise = page.waitForResponse(response => {
+        const request = response.request();
+
+        return request.isNavigationRequest()
+            && request.method() === 'GET'
+            && new URL(response.url()).pathname === expectedPath;
+    }, { timeout: 5000 }).catch(() => null);
 
     const clickError = await button.click()
         .then(() => null)
@@ -55,10 +62,14 @@ async function submitAndFollowRedirect(page, button, responsePromise, expectedPa
     const navigation = await navigationPromise;
     let pageResponse = navigation.response;
 
-    // The PHP development server can drop the browser's redirect navigation
-    // after processing a valid POST. Follow the redirect target explicitly so
-    // the flow still checks the resulting page and does not fail on that drop.
-    if (navigation.error || clickError) {
+    // A form redirect may finish its page response even if Playwright reports
+    // an error while completing the click/navigation pair. Reuse that response
+    // before attempting a second GET, which can race the original navigation.
+    if (!pageResponse && (navigation.error || clickError)) {
+        pageResponse = await destinationResponsePromise;
+    }
+
+    if (!pageResponse && (navigation.error || clickError)) {
         const destination = response.headers().location;
         assert.ok(destination, `${label} response did not include a redirect location`);
         pageResponse = await gotoWithRetry(page, new URL(destination, baseUrl).href);
