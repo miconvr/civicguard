@@ -70,6 +70,8 @@ jobs:
           server_pid_file=/tmp/civicguard-server.pid
           server_stop_file=/tmp/civicguard-server.stop
           rm -f "$server_pid_file" "$server_stop_file"
+          command -v fuser >/dev/null || { echo "fuser is required to clean up a stale PHP test listener"; exit 1; }
+          fuser -k 8000/tcp >/dev/null 2>&1 || true
 
           # Keep Laravel's test server available if its child process exits
           # unexpectedly during the browser flow. Preserve the shared test DB,
@@ -85,6 +87,9 @@ jobs:
                 server_status=$?
               fi
               [ -e "$server_stop_file" ] && break
+              # artisan serve launches a separate PHP listener. If the Artisan
+              # process crashes, remove its orphan before restarting on port 8000.
+              fuser -k 8000/tcp >/dev/null 2>&1 || true
               echo "Laravel test server exited with status $server_status; restarting." >> /tmp/civicguard-server.log
               sleep 1
             done
@@ -98,6 +103,7 @@ jobs:
             if [ -f "$server_pid_file" ]; then
               kill "$(cat "$server_pid_file")" 2>/dev/null || true
             fi
+            fuser -k 8000/tcp >/dev/null 2>&1 || true
             wait "$supervisor_pid" 2>/dev/null || true
             if [ "$status" -ne 0 ]; then
               tail -n 80 /tmp/civicguard-server.log
