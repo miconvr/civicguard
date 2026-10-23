@@ -352,7 +352,7 @@ if ('serviceWorker' in navigator) {
     }
 })();
 
-// cgNavReveal: the public header hides over the landing hero, slides in after it, and slides out again when you return
+// cgNavReveal: show the public header as the emergency guidance section enters view.
 (function () {
     const emergency = document.querySelector('.cg-emergency-strip');
     const header = document.querySelector('.cg-public-header');
@@ -362,10 +362,9 @@ if ('serviceWorker' in navigator) {
     let ticking = false;
     const update = () => {
         ticking = false;
-        // Keep the public navbar hidden through the emergency guidance section.
-        // Showing it based on the hero boundary made it slide in too early,
-        // while the Call 911 strip was still on screen.
-        root.classList.toggle('cg-nav-on', emergency.getBoundingClientRect().bottom <= 0);
+        // Start the navbar transition as the Call 911 section reaches the viewport.
+        // Keep it visible after that point, and hide it again when scrolling above it.
+        root.classList.toggle('cg-nav-on', emergency.getBoundingClientRect().top <= window.innerHeight);
     };
     const request = () => {
         if (!ticking) { ticking = true; requestAnimationFrame(update); }
