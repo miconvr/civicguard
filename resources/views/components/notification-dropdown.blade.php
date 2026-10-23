@@ -15,20 +15,7 @@
 <div x-data="{
     open: false,
     unread: {{ $unreadCount }},
-    toggle() {
-        this.open = !this.open;
-        if (this.open && this.unread > 0) {
-            this.unread = 0;
-            fetch('{{ route('notifications.readAll') }}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            }).catch(() => {});
-        }
-    }
+    toggle() { this.open = !this.open; }
 }"
 @click.outside="open = false"
 @keydown.escape.window="open = false"
@@ -75,10 +62,10 @@ class="relative inline-flex items-center">
 
         <ul class="max-h-80 overflow-y-auto divide-y divide-stone-100 dark:divide-white/5 overscroll-contain">
             @forelse ($notifications as $notification)
-                <li>
-                    <form method="POST" action="{{ route('notifications.open', $notification) }}">
+                <li class="flex items-center gap-1 pr-2 {{ $notification->is_read ? '' : 'bg-maroon-50/40 dark:bg-maroon-900/10' }}">
+                    <form method="POST" action="{{ route('notifications.open', $notification) }}" class="min-w-0 flex-1">
                         @csrf
-                        <button type="submit" class="flex w-full min-h-[52px] items-start gap-3 p-3.5 text-left transition hover:bg-stone-50 dark:hover:bg-white/5 focus:outline-none focus:bg-stone-50 dark:focus:bg-white/5 {{ $notification->is_read ? '' : 'bg-maroon-50/40 dark:bg-maroon-900/10' }}">
+                        <button type="submit" class="flex w-full min-h-[52px] items-start gap-3 p-3.5 text-left transition hover:bg-stone-50 dark:hover:bg-white/5 focus:outline-none focus:bg-stone-50 dark:focus:bg-white/5">
                             @if (is_null($notification->report_id))
                                 <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300" aria-label="{{ __('Profile update') }}">
                                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
@@ -99,6 +86,12 @@ class="relative inline-flex items-center">
                             <span class="mt-1 text-stone-400 text-xs" aria-hidden="true">&rsaquo;</span>
                         </button>
                     </form>
+                    @unless ($notification->is_read)
+                        <form method="POST" action="{{ route('notifications.read', $notification) }}">
+                            @csrf
+                            <button type="submit" class="min-h-10 rounded-md px-2 text-[11px] font-semibold text-maroon-800 hover:bg-maroon-100 dark:text-[#e3aaa4] dark:hover:bg-white/10">{{ __('Mark read') }}</button>
+                        </form>
+                    @endunless
                 </li>
             @empty
                 <li class="px-4 py-8 text-center">

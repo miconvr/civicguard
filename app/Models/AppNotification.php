@@ -11,6 +11,7 @@ class AppNotification extends Model
     protected $fillable = [
         'user_id',
         'report_id',
+        'verification_id',
         'message',
         'is_read',
     ];
@@ -22,5 +23,10 @@ class AppNotification extends Model
     public function report()
     {
         return $this->belongsTo(Report::class);
+    }
+
+    public function verification()
+    {
+        return $this->belongsTo(ResidentVerification::class, 'verification_id');
     }
 }
