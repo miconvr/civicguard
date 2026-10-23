@@ -124,7 +124,7 @@
         </div>
     </div>
 
-    <script>
+    <script nonce="{{ Vite::cspNonce() }}">
         const msg = {{ Js::from([
             'unsupported' => __('Location is not supported by this browser. Please type the location above.'),
             'insecure' => __('Location access needs a secure connection (HTTPS). Please type the location above.'),
