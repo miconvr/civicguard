@@ -4,12 +4,22 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Vite;
 use Symfony\Component\HttpFoundation\Response;
 
 class SecurityHeaders
 {
     public function handle(Request $request, Closure $next): Response
     {
+        $nonce = null;
+
+        if (app()->environment('production')) {
+            // A fresh nonce per request allows the small inline scripts used by
+            // Blade while avoiding a site-wide script-src unsafe-inline grant.
+            $nonce = Vite::useCspNonce();
+            view()->share('cspNonce', $nonce);
+        }
+
         $response = $next($request);
 
         $response->headers->set('X-Content-Type-Options', 'nosniff');
@@ -33,7 +43,7 @@ class SecurityHeaders
                 "object-src 'none'",
                 "frame-ancestors 'none'",
                 "form-action 'self'",
-                "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+                "script-src 'self' 'nonce-{$nonce}' 'unsafe-eval'",
                 "style-src 'self' 'unsafe-inline'",
                 "font-src 'self' data:",
                 "img-src 'self' data: blob: https:",

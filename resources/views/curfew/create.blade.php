@@ -129,7 +129,7 @@
                         @error('apprehension_datetime') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                     </fieldset>
 
-                    <script>
+                    <script nonce="{{ Vite::cspNonce() }}">
                     (() => {
                         const hidden = document.getElementById('cf_apprehension_datetime');
                         const dateButton = document.getElementById('cf-date-display');

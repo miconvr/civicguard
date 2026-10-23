@@ -211,7 +211,7 @@
         </div>
     </div>
 
-    <script>
+    <script nonce="{{ Vite::cspNonce() }}">
         function fillList(id, items, bulletColor) {
 
             const list = document.getElementById(id);
