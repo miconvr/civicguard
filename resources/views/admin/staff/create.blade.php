@@ -19,26 +19,26 @@
                     @csrf
 
                     <div>
-                        <label class="cg-label">{{ __("Name") }}</label>
-                        <input type="text" name="name" value="{{ old('name') }}" class="cg-input">
+                        <label for="staff-name" class="cg-label">{{ __("Name") }}</label>
+                        <input id="staff-name" type="text" name="name" value="{{ old('name') }}" class="cg-input">
                         @error('name') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="cg-label">{{ __("Email") }}</label>
-                        <input type="email" name="email" value="{{ old('email') }}" class="cg-input">
+                        <label for="staff-email" class="cg-label">{{ __("Email") }}</label>
+                        <input id="staff-email" type="email" name="email" value="{{ old('email') }}" class="cg-input">
                         @error('email') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="cg-label">{{ __("Phone Number") }}</label>
-                        <input type="text" name="phone_number" value="{{ old('phone_number') }}" class="cg-input">
+                        <label for="staff-phone-number" class="cg-label">{{ __("Phone Number") }}</label>
+                        <input id="staff-phone-number" type="text" name="phone_number" value="{{ old('phone_number') }}" class="cg-input">
                         @error('phone_number') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="cg-label">{{ __("Role") }}</label>
-                        <select name="role" class="cg-input">
+                        <label for="staff-role" class="cg-label">{{ __("Role") }}</label>
+                        <select id="staff-role" name="role" class="cg-input">
                             <option value="tanod" {{ old('role') === 'tanod' ? 'selected' : '' }}>{{ __("Tanod") }}</option>
                             <option value="official" {{ old('role') === 'official' ? 'selected' : '' }}>{{ __("Barangay Official") }}</option>
                         </select>
@@ -46,8 +46,8 @@
                     </div>
 
                     <div>
-                        <label class="cg-label">{{ __("Temporary Password") }}</label>
-                        <input type="password" name="password" autocomplete="new-password" class="cg-input">
+                        <label for="staff-password" class="cg-label">{{ __("Temporary Password") }}</label>
+                        <input id="staff-password" type="password" name="password" autocomplete="new-password" class="cg-input">
                         @error('password') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
