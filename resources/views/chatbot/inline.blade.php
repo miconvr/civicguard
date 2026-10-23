@@ -163,7 +163,7 @@
         </div>
     </div>
 
-    <script>
+    <script nonce="{{ Vite::cspNonce() }}">
         let sessionId = null;
         let conversationHistory = '';
         const form = document.getElementById('chat-form');

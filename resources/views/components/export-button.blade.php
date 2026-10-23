@@ -10,7 +10,7 @@
 </a>
 
 @once
-    <script>
+    <script nonce="{{ Vite::cspNonce() }}">
         (function () {
             if (window.__cgExportInit) return;
             window.__cgExportInit = true;

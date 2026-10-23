@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
         @include('partials.pwa-head')
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta property="csp-nonce" nonce="{{ Vite::cspNonce() }}">
         <meta name="theme-color" content="#6d1c32">
         <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <meta name="description" content="CivicGuard helps Barangay Maimpis residents report incidents and follow updates from barangay staff.">
@@ -13,7 +14,7 @@
         <link rel="preload" href="{{ Vite::asset('resources/fonts/Figtree-400.woff2') }}" as="font" type="font/woff2" crossorigin>
         <link rel="preload" href="{{ Vite::asset('resources/fonts/Bitter-600.woff2') }}" as="font" type="font/woff2" crossorigin>
         <style>[x-cloak] { display: none !important; }</style>
-        <script>document.documentElement.classList.add('cg-nav-js');</script>
+        <script nonce="{{ Vite::cspNonce() }}">document.documentElement.classList.add('cg-nav-js');</script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body data-cg-route="home" class="min-h-[100dvh] bg-paper font-sans antialiased text-ink">
