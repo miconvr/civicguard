@@ -65,9 +65,13 @@ class NotificationController extends Controller
         return redirect()->route('notifications.index');
     }
 
-    public function clear()
+    public function clear(Request $request)
     {
         AppNotification::where('user_id', Auth::id())->delete();
+
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
 
         return redirect()->route('notifications.index')->with('status', __('Notifications cleared.'));
     }
