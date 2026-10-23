@@ -29,6 +29,12 @@ class NotificationController extends Controller
         $notification->update(['is_read' => true]);
 
         $report = $notification->report;
+        $verification = $notification->verification;
+
+        if ($verification && Auth::user()->role === 'resident' && (int) $verification->user_id === (int) Auth::id()) {
+            return redirect()->route('profile.verification.show');
+        }
+
         if (! $report) {
             return redirect()->route('notifications.index');
         }
@@ -51,6 +57,19 @@ class NotificationController extends Controller
         AppNotification::where('user_id', Auth::id())
             ->where('is_read', false)
             ->update(['is_read' => true]);
+
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->back();
+    }
+
+    public function read(Request $request, AppNotification $notification)
+    {
+        abort_unless((int) $notification->user_id === (int) Auth::id(), 403);
+
+        $notification->update(['is_read' => true]);
 
         if ($request->wantsJson()) {
             return response()->json(['success' => true]);

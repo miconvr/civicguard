@@ -41,9 +41,9 @@ class ResidentVerificationController extends Controller
             ->withQueryString();
 
         $descriptions = [
-            ResidentVerification::PENDING => __('Review submitted proof images. Verified residents receive a permanent badge. Submitted images are deleted after a decision.'),
-            ResidentVerification::VERIFIED => __('Previously verified residents are listed here. Their proof images were deleted after review.'),
-            ResidentVerification::REJECTED => __('Declined requests are kept here for review history. Their proof images were deleted after the decision.'),
+            ResidentVerification::PENDING => __('Review submitted proof images. Verified residents receive a permanent badge.'),
+            ResidentVerification::VERIFIED => __('Previously verified residents and their reviewed proof images are listed here.'),
+            ResidentVerification::REJECTED => __('Declined requests, proof images, and review reasons are kept here for reference.'),
         ];
 
         if ($request->expectsJson()) {
@@ -59,7 +59,6 @@ class ResidentVerificationController extends Controller
 
     public function document(ResidentVerification $verification): StreamedResponse
     {
-        abort_unless($verification->status === ResidentVerification::PENDING, 404);
         abort_unless($verification->document_path && Storage::disk('report_photos')->exists($verification->document_path), 404);
 
         return Storage::disk('report_photos')->response($verification->document_path, headers: [
@@ -90,11 +89,12 @@ class ResidentVerificationController extends Controller
     {
         $validated = $request->validate([
             'decision' => ['required', 'in:verified,rejected'],
+            'rejection_reason' => ['required_if:decision,rejected', 'nullable', 'string', 'max:500'],
         ]);
 
         $decision = $validated['decision'];
 
-        $documentPath = DB::transaction(function () use ($verification, $decision, $request) {
+        DB::transaction(function () use ($verification, $decision, $request, $validated) {
             $verification = ResidentVerification::query()
                 ->whereKey($verification->id)
                 ->lockForUpdate()
@@ -103,12 +103,11 @@ class ResidentVerificationController extends Controller
             abort_unless($verification->status === ResidentVerification::PENDING, 409, __('This request has already been reviewed.'));
 
             $user = $verification->user;
-            $documentPath = $verification->document_path;
-            abort_unless($documentPath && Storage::disk('report_photos')->exists($documentPath), 409, __('The proof image is no longer available.'));
+            abort_unless($verification->document_path && Storage::disk('report_photos')->exists($verification->document_path), 409, __('The proof image is no longer available.'));
 
             $verification->update([
                 'status' => $decision,
-                'document_path' => null,
+                'rejection_reason' => $decision === ResidentVerification::REJECTED ? trim($validated['rejection_reason']) : null,
                 'reviewed_by' => $request->user()->id,
                 'reviewed_at' => now(),
             ]);
@@ -126,15 +125,12 @@ class ResidentVerificationController extends Controller
             AppNotification::create([
                 'user_id' => $user->id,
                 'report_id' => null,
+                'verification_id' => $verification->id,
                 'message' => $decision === ResidentVerification::VERIFIED
                     ? __('Your Maimpis residence has been verified.')
-                    : __('Your verification could not be approved. You may submit another proof image.'),
+                    : __('Your residence verification was declined. Reason: :reason', ['reason' => trim($validated['rejection_reason'])]),
             ]);
-
-            return $documentPath;
         });
-
-        Storage::disk('report_photos')->deleteDirectory('verification-documents/'.$verification->user_id);
 
         return redirect()->route('admin.verifications.index')->with(
             'status',

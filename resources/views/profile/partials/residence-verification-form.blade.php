@@ -1,4 +1,4 @@
-<section>
+<section id="residence-verification">
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ __('Verify Maimpis residency') }}</h2>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('Submit proof that you live in Barangay Maimpis. A barangay ID or a document showing your name and Maimpis address can be used.') }}</p>
@@ -11,18 +11,19 @@
             </span>
             <div>
                 <p class="font-semibold text-green-900 dark:text-green-200">{{ __('Your Maimpis residency is verified.') }}</p>
-            <p class="mt-1 text-sm text-green-800 dark:text-green-300">{{ __('Your verified badge will stay on your account. The submitted proof image was deleted after review.') }}</p>
+                <p class="mt-1 text-sm text-green-800 dark:text-green-300">{{ __('Your verified badge will stay on your account. Your submitted proof remains private and is available on your verification result page.') }}</p>
             </div>
         </div>
     @elseif ($verification?->status === \App\Models\ResidentVerification::PENDING)
         <div class="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-200">
             <p class="font-semibold">{{ __('Your proof is waiting for review.') }}</p>
-            <p class="mt-1">{{ __('Barangay officials or administrators will review it. The image is private and will be deleted after a decision.') }}</p>
+            <p class="mt-1">{{ __('Barangay officials or administrators will review it. The image stays private and can be viewed by you and authorized reviewers.') }}</p>
         </div>
     @else
         @if ($verification?->status === \App\Models\ResidentVerification::REJECTED)
             <div class="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900 dark:border-red-900 dark:bg-red-900/20 dark:text-red-200">
                 {{ __('The previous proof was not approved. You can submit a different image.') }}
+                <a href="{{ route('profile.verification.show') }}" class="ml-1 font-semibold underline">{{ __('View decision and reason') }}</a>
             </div>
         @endif
 
@@ -37,8 +38,8 @@
             </div>
 
             <div x-show="previewUrl" x-cloak class="relative rounded-xl border border-stone-200 bg-stone-50 p-3 dark:border-gray-700 dark:bg-white/5" :class="shakePreview ? 'cg-pending-shake' : ''">
-                <button type="button" x-on:click="clearSelection()" aria-label="{{ __('Remove selected image') }}" title="{{ __('Remove selected image') }}" class="absolute right-2 top-2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-500 shadow-sm transition hover:border-red-300 hover:bg-red-50 hover:text-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-red-800 dark:hover:bg-red-950/40 dark:hover:text-red-300">
-                    <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="m5 5 10 10M15 5 5 15"/></svg>
+                <button type="button" x-on:click="clearSelection()" aria-label="{{ __('Remove selected image') }}" title="{{ __('Remove selected image') }}" class="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-500 shadow-sm transition hover:border-red-300 hover:bg-red-50 hover:text-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-red-800 dark:hover:bg-red-950/40 dark:hover:text-red-300">
+                    <svg class="h-3 w-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="m5 5 10 10M15 5 5 15"/></svg>
                 </button>
                 <p class="mb-2 text-sm font-medium text-gray-800 dark:text-gray-100">{{ __('Proof image preview') }}</p>
                 <img x-show="!previewError" :src="previewUrl" x-on:error="previewError = true" alt="{{ __('Preview of your proof image') }}" class="max-h-72 w-full rounded-lg object-contain">
@@ -47,11 +48,11 @@
                 <p class="mt-1 text-xs text-stone-600 dark:text-gray-400">{{ __('Your proof image is ready. Submit it for review.') }}</p>
             </div>
 
-            <p class="rounded-lg bg-stone-50 p-3 text-xs leading-5 text-stone-700 dark:bg-white/5 dark:text-gray-300">{{ __('Only admins and barangay officials can view this image for residency review. We delete it as soon as a decision is made. We keep the result, consent time, and review record while your account exists. Cover ID numbers, QR codes, birth dates, and details not needed to show your name and Maimpis residence.') }}</p>
+            <p class="rounded-lg bg-stone-50 p-3 text-xs leading-5 text-stone-700 dark:bg-white/5 dark:text-gray-300">{{ __('You and authorized admins and barangay officials can view this private image for residency review. We retain it with the decision until you replace it or delete your account. Cover ID numbers, QR codes, birth dates, and details not needed to show your name and Maimpis residence.') }}</p>
 
             <label for="verification_consent" class="flex min-h-11 items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                 <input id="verification_consent" name="consent" type="checkbox" value="1" required @checked(old('consent')) class="mt-1 rounded border-gray-300 text-maroon-700 shadow-sm focus:ring-maroon-500 dark:border-gray-600">
-                <span>{{ __('I agree to let admins and barangay officials review this image only to verify my Maimpis residency.') }}</span>
+                <span>{{ __('I agree that admins and barangay officials may review this image only to verify my Maimpis residency, and that it will be retained with the decision until I replace it or delete my account.') }}</span>
             </label>
             <x-input-error :messages="$errors->get('consent')" />
 
