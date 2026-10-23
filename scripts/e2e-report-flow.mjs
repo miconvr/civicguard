@@ -23,10 +23,11 @@ async function gotoWithRetry(page, url, options = { waitUntil: 'domcontentloaded
         try {
             return await page.goto(url, options);
         } catch (error) {
-            // The PHP test server or local runner can briefly reset a browser
-            // connection under E2E load. Retry only this transport error; real
+            // The PHP test server can briefly reset or refuse a browser
+            // connection under E2E load. Retry transport failures only; real
             // HTTP responses and other navigation failures stay visible.
-            if (!/net::ERR_EMPTY_RESPONSE/.test(error.message) || attempt >= 5) throw error;
+            const transientTransportError = /net::ERR_(?:EMPTY_RESPONSE|CONNECTION_REFUSED|CONNECTION_RESET)/.test(error.message);
+            if (!transientTransportError || attempt >= 8) throw error;
             await page.waitForTimeout(Math.min(250 * (2 ** (attempt - 1)), 2000));
         }
     }
