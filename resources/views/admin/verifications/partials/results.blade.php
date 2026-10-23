@@ -88,9 +88,6 @@
                     <p class="mt-1 text-xs text-gray-600 dark:text-gray-400">{{ __('Reviewed by :name', ['name' => $verification->reviewer->name]) }}</p>
                 @endif
             </div>
-            @if ($verification->document_path)
-                <a href="{{ route('admin.verifications.document', $verification) }}" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-stone-300 px-4 text-sm font-semibold text-stone-700 hover:bg-stone-100 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-white/10">{{ __('View submitted proof') }}</a>
-            @endif
         @endif
     </article>
 @empty

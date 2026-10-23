@@ -41,9 +41,9 @@ class ResidentVerificationController extends Controller
             ->withQueryString();
 
         $descriptions = [
-            ResidentVerification::PENDING => __('Review submitted proof images. Verified residents receive a permanent badge.'),
-            ResidentVerification::VERIFIED => __('Previously verified residents and their reviewed proof images are listed here.'),
-            ResidentVerification::REJECTED => __('Declined requests, proof images, and review reasons are kept here for reference.'),
+            ResidentVerification::PENDING => __('Review submitted proof images. Verified residents receive a permanent badge. Submitted images are deleted after a decision.'),
+            ResidentVerification::VERIFIED => __('Previously verified residents are listed here. Their proof images were deleted after review.'),
+            ResidentVerification::REJECTED => __('Declined requests are kept here for review history. Their proof images were deleted after the decision.'),
         ];
 
         if ($request->expectsJson()) {
@@ -59,6 +59,7 @@ class ResidentVerificationController extends Controller
 
     public function document(ResidentVerification $verification): StreamedResponse
     {
+        abort_unless($verification->status === ResidentVerification::PENDING, 404);
         abort_unless($verification->document_path && Storage::disk('report_photos')->exists($verification->document_path), 404);
 
         return Storage::disk('report_photos')->response($verification->document_path, headers: [
@@ -94,7 +95,7 @@ class ResidentVerificationController extends Controller
 
         $decision = $validated['decision'];
 
-        DB::transaction(function () use ($verification, $decision, $request, $validated) {
+        $documentPath = DB::transaction(function () use ($verification, $decision, $request, $validated) {
             $verification = ResidentVerification::query()
                 ->whereKey($verification->id)
                 ->lockForUpdate()
@@ -104,8 +105,10 @@ class ResidentVerificationController extends Controller
 
             $user = $verification->user;
             abort_unless($verification->document_path && Storage::disk('report_photos')->exists($verification->document_path), 409, __('The proof image is no longer available.'));
+            $documentPath = $verification->document_path;
 
             $verification->update([
+                'document_path' => null,
                 'status' => $decision,
                 'rejection_reason' => $decision === ResidentVerification::REJECTED ? trim($validated['rejection_reason']) : null,
                 'reviewed_by' => $request->user()->id,
@@ -130,7 +133,11 @@ class ResidentVerificationController extends Controller
                     ? __('Your Maimpis residence has been verified.')
                     : __('Your residence verification was declined. Reason: :reason', ['reason' => trim($validated['rejection_reason'])]),
             ]);
+
+            return $documentPath;
         });
+
+        Storage::disk('report_photos')->delete($documentPath);
 
         return redirect()->route('admin.verifications.index')->with(
             'status',
