@@ -24,10 +24,13 @@
                         <input type="hidden" name="decision" value="verified">
                         <x-primary-button>{{ __('Verify resident') }}</x-primary-button>
                     </form>
-                    <form method="post" action="{{ route('admin.verifications.decide', $verification) }}" onsubmit="return confirm('{{ __('Decline this verification request?') }}')">
+                    <form method="post" action="{{ route('admin.verifications.decide', $verification) }}" onsubmit="return confirm('{{ __('Decline this verification request?') }}')" class="space-y-2">
                         @csrf
                         @method('patch')
                         <input type="hidden" name="decision" value="rejected">
+                        <label for="rejection-reason-{{ $verification->id }}" class="sr-only">{{ __('Reason for decline') }}</label>
+                        <textarea id="rejection-reason-{{ $verification->id }}" name="rejection_reason" required maxlength="500" rows="2" placeholder="{{ __('Explain why this proof cannot be approved…') }}" class="cg-input min-h-20 w-full text-sm" aria-describedby="rejection-reason-hint-{{ $verification->id }}"></textarea>
+                        <p id="rejection-reason-hint-{{ $verification->id }}" class="text-xs text-gray-600 dark:text-gray-400">{{ __('This reason will be sent to the resident.') }}</p>
                         <button type="submit" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-800 transition hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-900/20">{{ __('Decline') }}</button>
                     </form>
                 </div>
@@ -78,10 +81,16 @@
                     {{ $status === 'verified' ? __('Verified') : __('Declined') }}
                 </span>
                 <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">{{ __('Reviewed') }} {{ \App\Support\LocalizedDate::relative($verification->reviewed_at) ?? '—' }}</p>
+                @if ($verification->rejection_reason)
+                    <p class="mt-2 break-words text-sm text-red-800 dark:text-red-300"><span class="font-semibold">{{ __('Reason for decline') }}:</span> {{ $verification->rejection_reason }}</p>
+                @endif
                 @if ($verification->reviewer)
                     <p class="mt-1 text-xs text-gray-600 dark:text-gray-400">{{ __('Reviewed by :name', ['name' => $verification->reviewer->name]) }}</p>
                 @endif
             </div>
+            @if ($verification->document_path)
+                <a href="{{ route('admin.verifications.document', $verification) }}" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-stone-300 px-4 text-sm font-semibold text-stone-700 hover:bg-stone-100 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-white/10">{{ __('View submitted proof') }}</a>
+            @endif
         @endif
     </article>
 @empty

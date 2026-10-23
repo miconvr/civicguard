@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/photo', [ProfilePhotoController::class, 'show'])->name('profile.photo');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/verification', [ResidentVerificationController::class, 'store'])->name('profile.verification.store')->middleware('throttle:5,1');
+    Route::get('/profile/verification', [ResidentVerificationController::class, 'show'])->name('profile.verification.show')->middleware('role:resident');
+    Route::get('/profile/verification/document', [ResidentVerificationController::class, 'document'])->name('profile.verification.document')->middleware('role:resident');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
@@ -103,6 +105,7 @@ Route::middleware(['auth', 'role:tanod,admin'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.readAll');
+    Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');
     Route::post('/notifications/{notification}/open', [NotificationController::class, 'open'])->name('notifications.open');
 });
 

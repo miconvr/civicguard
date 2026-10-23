@@ -17,6 +17,7 @@ class ResidentVerification extends Model
         'user_id',
         'document_path',
         'status',
+        'rejection_reason',
         'consented_at',
         'submitted_at',
         'reviewed_by',

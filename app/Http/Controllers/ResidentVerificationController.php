@@ -9,9 +9,33 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ResidentVerificationController extends Controller
 {
+    public function show(Request $request): View
+    {
+        abort_unless($request->user()->role === 'resident', 403);
+
+        $verification = $request->user()->residentVerification;
+
+        return view('profile.verification', compact('verification'));
+    }
+
+    public function document(Request $request): StreamedResponse
+    {
+        abort_unless($request->user()->role === 'resident', 403);
+
+        $verification = $request->user()->residentVerification;
+        abort_unless($verification?->document_path && Storage::disk('report_photos')->exists($verification->document_path), 404);
+
+        return Storage::disk('report_photos')->response($verification->document_path, headers: [
+            'Cache-Control' => 'private, no-store',
+            'X-Content-Type-Options' => 'nosniff',
+        ]);
+    }
+
     public function store(Request $request): RedirectResponse
     {
         abort_unless($request->user()->role === 'resident', 403);
@@ -50,6 +74,7 @@ class ResidentVerificationController extends Controller
                 $record->fill([
                     'document_path' => $path,
                     'status' => ResidentVerification::PENDING,
+                    'rejection_reason' => null,
                     'consented_at' => now(),
                     'submitted_at' => now(),
                     'reviewed_by' => null,

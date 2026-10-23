@@ -22,10 +22,10 @@
 
                 <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                     @forelse ($notifications as $notification)
-                        <li>
-                            <form method="POST" action="{{ route('notifications.open', $notification) }}">
+                        <li class="flex items-center gap-2 pr-3 {{ $notification->is_read ? '' : 'bg-maroon-50/40 dark:bg-white/[0.03]' }}">
+                            <form method="POST" action="{{ route('notifications.open', $notification) }}" class="min-w-0 flex-1">
                                 @csrf
-                                <button type="submit" class="flex w-full min-h-[56px] items-start gap-3 px-4 py-3 text-left transition hover:bg-black/5 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-maroon-600 {{ $notification->is_read ? '' : 'bg-maroon-50/60 dark:bg-white/[0.06]' }}">
+                                <button type="submit" class="flex w-full min-h-[56px] items-start gap-3 px-4 py-3 text-left transition hover:bg-black/5 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-maroon-600">
                                     @if (is_null($notification->report_id))
                                         <span class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300" aria-label="{{ __('Profile update') }}">
                                             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
@@ -45,6 +45,12 @@
                                     <span class="mt-1 text-gray-400" aria-hidden="true">&rsaquo;</span>
                                 </button>
                             </form>
+                            @unless ($notification->is_read)
+                                <form method="POST" action="{{ route('notifications.read', $notification) }}">
+                                    @csrf
+                                    <button type="submit" class="min-h-10 rounded-lg px-2 text-xs font-semibold text-maroon-800 hover:bg-maroon-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-maroon-700 dark:text-[#e3aaa4] dark:hover:bg-white/10">{{ __('Mark as read') }}</button>
+                                </form>
+                            @endunless
                         </li>
                     @empty
                         <li class="px-4 py-12 text-center">
