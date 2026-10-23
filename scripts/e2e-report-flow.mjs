@@ -26,6 +26,41 @@ async function signIn(page, email) {
     await page.waitForURL('**/dashboard');
 }
 
+async function submitAndFollowRedirect(page, button, responsePromise, expectedPath, label) {
+    const navigationPromise = page.waitForNavigation({ waitUntil: 'domcontentloaded' })
+        .then(response => ({ response }))
+        .catch(error => ({ error }));
+
+    const clickError = await button.click()
+        .then(() => null)
+        .catch(error => error);
+
+    const response = await responsePromise;
+    assert.equal(response.status(), 302, `${label} should redirect successfully, received HTTP ${response.status()}`);
+
+    const navigation = await navigationPromise;
+    let pageResponse = navigation.response;
+
+    // The PHP development server can drop the browser's redirect navigation
+    // after processing a valid POST. Follow the redirect target explicitly so
+    // the flow still checks the resulting page and does not fail on that drop.
+    if (navigation.error || clickError) {
+        const destination = response.headers().location;
+        assert.ok(destination, `${label} response did not include a redirect location`);
+        pageResponse = await page.goto(new URL(destination, baseUrl).href, { waitUntil: 'domcontentloaded' });
+    }
+
+    assert.equal(pageResponse?.status(), 200, `${label} redirect destination should return HTTP 200`);
+
+    assert.equal(
+        new URL(page.url()).pathname,
+        expectedPath,
+        `${label} should finish at ${expectedPath}, received ${page.url()}`,
+    );
+
+    return { response, pageResponse };
+}
+
 async function openAccountMenu(page) {
     const accountTrigger = page.locator('button[aria-controls="account-menu"]');
 
@@ -220,10 +255,13 @@ try {
         response.request().method() === 'POST'
             && /^\/admin\/reports\/[^/]+$/.test(new URL(response.url()).pathname),
     );
-    const officialSaveNavigation = officialPage.waitForNavigation({ waitUntil: 'domcontentloaded' });
-    await drawer.getByRole('button', { name: 'Save changes' }).click();
-    const [officialResponse] = await Promise.all([officialSaveResponse, officialSaveNavigation]);
-    assert.equal(officialResponse.status(), 302, `official report update should redirect successfully, received HTTP ${officialResponse.status()}`);
+    const { response: officialResponse } = await submitAndFollowRedirect(
+        officialPage,
+        drawer.getByRole('button', { name: 'Save changes' }),
+        officialSaveResponse,
+        '/admin/dashboard',
+        'official report update',
+    );
     await officialPage.getByRole('status').getByText(/Report changes saved\.|Na-save ang mga pagbabago sa ulat\./i).waitFor({ state: 'visible' });
     await officialPage.locator('table.cg-queue tbody tr').filter({ hasText: location }).getByText('E2E Tanod').waitFor({ state: 'visible' });
 
@@ -247,10 +285,13 @@ try {
         response.request().method() === 'POST'
             && /^\/admin\/reports\/[^/]+$/.test(new URL(response.url()).pathname),
     );
-    const tanodSaveNavigation = tanodPage.waitForNavigation({ waitUntil: 'domcontentloaded' });
-    await tanodDrawer.getByRole('button', { name: 'Save changes' }).click();
-    const [tanodResponse] = await Promise.all([tanodSaveResponse, tanodSaveNavigation]);
-    assert.equal(tanodResponse.status(), 302, `tanod report update should redirect successfully, received HTTP ${tanodResponse.status()}`);
+    const { response: tanodResponse } = await submitAndFollowRedirect(
+        tanodPage,
+        tanodDrawer.getByRole('button', { name: 'Save changes' }),
+        tanodSaveResponse,
+        '/admin/dashboard',
+        'tanod report update',
+    );
     await tanodPage.getByRole('status').getByText(/Report changes saved\.|Na-save ang mga pagbabago sa ulat\./i).waitFor({ state: 'visible' });
     await tanodPage.goto(`${baseUrl}/admin/dashboard?tab=resolved`);
     const resolvedReportRow = tanodPage.locator('table.cg-queue tbody tr').filter({ hasText: location });
@@ -260,10 +301,13 @@ try {
     const confirmationResponse = residentPage.waitForResponse(response =>
         response.request().method() === 'POST' && new URL(response.url()).pathname.endsWith('/confirm'),
     );
-    const confirmationNavigation = residentPage.waitForNavigation({ waitUntil: 'domcontentloaded' });
-    await residentPage.getByRole('button', { name: /yes, it's fixed/i }).click();
-    const [response, confirmationPageResponse] = await Promise.all([confirmationResponse, confirmationNavigation]);
-    assert.equal(response.status(), 302, `resident confirmation should redirect successfully, received HTTP ${response.status()}`);
+    const { response, pageResponse: confirmationPageResponse } = await submitAndFollowRedirect(
+        residentPage,
+        residentPage.getByRole('button', { name: /yes, it's fixed/i }),
+        confirmationResponse,
+        '/reports',
+        'resident confirmation',
+    );
     assert.equal(
         new URL(response.headers().location, baseUrl).pathname,
         '/reports',
