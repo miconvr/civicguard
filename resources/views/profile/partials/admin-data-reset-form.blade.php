@@ -8,7 +8,7 @@
         <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">{{ __('This permanently deletes all incident reports, assignments, curfew logs, notifications, chatbot history, residence verification records, audit logs, report photos, and verification documents. User accounts, profile pictures, and report categories are kept.') }}</p>
     </header>
 
-    <form method="POST" action="{{ route('admin.data.reset') }}" class="mt-5 grid gap-4 sm:grid-cols-2" onsubmit="return confirm('{{ __('This cannot be undone. Delete all test data now?') }}')">
+    <form method="POST" action="{{ route('admin.data.reset') }}" class="mt-5 grid gap-4 sm:grid-cols-2" data-confirm="{{ __('This cannot be undone. Delete all test data now?') }}">
         @csrf
         @method('DELETE')
 
