@@ -52,7 +52,7 @@
                         @endguest
                         @auth
                             <a href="{{ route('dashboard') }}" class="cg-btn ml-1 min-h-10 px-3 text-xs sm:px-4 sm:text-sm">
-                                <span x-text="text('dashboard')">Dashboard</span>
+                                <span x-text="text('dashboardShort')">Dashboard</span>
                             </a>
                         @endauth
                     </div>
