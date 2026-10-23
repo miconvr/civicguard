@@ -24,12 +24,12 @@
 
         <div class="min-h-[100dvh] overflow-hidden">
             <header class="cg-public-header">
-                <nav aria-label="Main navigation" :aria-label="text('navigation')" class="mx-auto flex min-h-[72px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+                <nav aria-label="Main navigation" :aria-label="text('navigation')" class="mx-auto flex min-h-[56px] max-w-7xl items-center justify-between gap-3 px-4 sm:min-h-[72px] sm:px-6 lg:px-8">
                     <a href="{{ url('/') }}" class="group flex min-w-0 items-center gap-2.5 rounded-md focus-visible:outline-offset-4" aria-label="CivicGuard, Barangay Maimpis home" :aria-label="text('homeLink')">
                         <span class="cg-brand-mark"><x-application-logo class="h-9 w-9 shrink-0" /></span>
                         <span class="min-w-0">
-                            <span class="block text-[15px] font-bold leading-tight tracking-tight text-maroon-900">CivicGuard</span>
-                            <span class="block text-[11px] uppercase tracking-wider text-stone-500">Brgy. Maimpis</span>
+                            <span class="block truncate text-[15px] font-bold leading-tight tracking-tight text-maroon-900">CivicGuard</span>
+                            <span class="block truncate whitespace-nowrap text-[11px] uppercase tracking-wider text-stone-500">Brgy. Maimpis</span>
                         </span>
                     </a>
 
@@ -51,8 +51,9 @@
                             </span>
                         @endguest
                         @auth
-                            <a href="{{ route('dashboard') }}" class="cg-btn ml-1 min-h-10 px-3 text-xs sm:px-4 sm:text-sm">
-                                <span x-text="text('dashboard')">Go to your dashboard</span>
+                            <a href="{{ route('dashboard') }}" class="cg-btn ml-1 min-h-10 whitespace-nowrap px-3 text-xs sm:px-4 sm:text-sm">
+                                <span class="sm:hidden" x-text="text('dashboardShort')">Dashboard</span>
+                                <span class="hidden sm:inline" x-text="text('dashboard')">Go to your dashboard</span>
                             </a>
                         @endauth
                     </div>
