@@ -18,8 +18,22 @@ function captureBrowserErrors(page) {
     });
 }
 
+async function gotoWithRetry(page, url, options = { waitUntil: 'domcontentloaded' }) {
+    for (let attempt = 1; ; attempt += 1) {
+        try {
+            return await page.goto(url, options);
+        } catch (error) {
+            // The single-process PHP development server occasionally resets a
+            // browser connection under the E2E request load. Retry only that
+            // transport error; real navigation and HTTP failures stay visible.
+            if (!/net::ERR_EMPTY_RESPONSE/.test(error.message) || attempt >= 3) throw error;
+            await page.waitForTimeout(attempt * 250);
+        }
+    }
+}
+
 async function signIn(page, email) {
-    await page.goto(`${baseUrl}/login`);
+    await gotoWithRetry(page, `${baseUrl}/login`);
     await page.locator('#email').fill(email);
     await page.locator('#password').fill(password);
     await page.getByRole('button', { name: /log in/i }).click();
@@ -47,7 +61,7 @@ async function submitAndFollowRedirect(page, button, responsePromise, expectedPa
     if (navigation.error || clickError) {
         const destination = response.headers().location;
         assert.ok(destination, `${label} response did not include a redirect location`);
-        pageResponse = await page.goto(new URL(destination, baseUrl).href, { waitUntil: 'domcontentloaded' });
+        pageResponse = await gotoWithRetry(page, new URL(destination, baseUrl).href);
     }
 
     assert.equal(pageResponse?.status(), 200, `${label} redirect destination should return HTTP 200`);
@@ -136,7 +150,7 @@ async function auditTagalogLayouts(page, paths, role) {
         await page.setViewportSize({ width, height: 900 });
 
         for (const path of paths) {
-            const response = await page.goto(`${baseUrl}${path}`, { waitUntil: 'domcontentloaded' });
+            const response = await gotoWithRetry(page, `${baseUrl}${path}`);
             if (!response || response.status() >= 400) {
                 failures.push(`${role} ${name} ${path}: returned HTTP ${response?.status() ?? 0}`);
                 continue;
@@ -185,7 +199,7 @@ try {
     captureBrowserErrors(residentPage);
     await signIn(residentPage, 'resident.e2e@civicguard.test');
 
-    await residentPage.goto(`${baseUrl}/reports/create`);
+    await gotoWithRetry(residentPage, `${baseUrl}/reports/create`);
     await residentPage.getByRole('button', { name: /fill out the form myself/i }).click();
     await residentPage.locator('section[aria-label="Incident report form"]').evaluate(element =>
         Promise.allSettled(element.getAnimations().map(animation => animation.finished)),
@@ -225,7 +239,7 @@ try {
     await signIn(officialPage, 'official.e2e@civicguard.test');
     // Use the all-reports tab so this flow doesn't depend on the dashboard's
     // default active filter when checking the freshly submitted report.
-    const staffDashboardResponse = await officialPage.goto(`${baseUrl}/admin/dashboard?tab=all`);
+    const staffDashboardResponse = await gotoWithRetry(officialPage, `${baseUrl}/admin/dashboard?tab=all`);
     assert.equal(staffDashboardResponse?.status(), 200, `staff dashboard should load, received HTTP ${staffDashboardResponse?.status() ?? 0}`);
     const staffAccessibility = await auditAccessibility(officialPage, 'official dashboard');
     assert.equal(staffAccessibility.blockingCount, 0, 'staff dashboard should have no serious/critical accessibility violations');
@@ -274,7 +288,7 @@ try {
     const tanodPage = await tanodContext.newPage();
     captureBrowserErrors(tanodPage);
     await signIn(tanodPage, 'tanod.e2e@civicguard.test');
-    await tanodPage.goto(`${baseUrl}/admin/dashboard`);
+    await gotoWithRetry(tanodPage, `${baseUrl}/admin/dashboard`);
     const tanodAccessibility = await auditAccessibility(tanodPage, 'tanod dashboard');
     assert.equal(tanodAccessibility.blockingCount, 0, 'tanod dashboard should have no serious/critical accessibility violations');
     await tanodPage.locator('table.cg-queue tbody tr').filter({ hasText: location }).click();
@@ -293,11 +307,11 @@ try {
         'tanod report update',
     );
     await tanodPage.getByRole('status').getByText(/Report changes saved\.|Na-save ang mga pagbabago sa ulat\./i).waitFor({ state: 'visible' });
-    await tanodPage.goto(`${baseUrl}/admin/dashboard?tab=resolved`);
+    await gotoWithRetry(tanodPage, `${baseUrl}/admin/dashboard?tab=resolved`);
     const resolvedReportRow = tanodPage.locator('table.cg-queue tbody tr').filter({ hasText: location });
     await resolvedReportRow.getByText('Resolved', { exact: true }).waitFor({ state: 'visible' });
 
-    await residentPage.goto(`${baseUrl}/reports`);
+    await gotoWithRetry(residentPage, `${baseUrl}/reports`);
     const confirmationResponse = residentPage.waitForResponse(response =>
         response.request().method() === 'POST' && new URL(response.url()).pathname.endsWith('/confirm'),
     );
@@ -342,7 +356,7 @@ try {
         'staff',
     );
 
-    await officialPage.goto(`${baseUrl}/`);
+    await gotoWithRetry(officialPage, `${baseUrl}/`);
     // The public header is intentionally hidden while the landing hero is in view.
     // Use the visible language toggle in the hero strip instead.
     await officialPage.locator('.cg-hero-strip button[aria-pressed]').click();
