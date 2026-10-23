@@ -187,5 +187,7 @@
     "Clear all": "Clear all",
     "Clear all notifications?": "Clear all notifications?",
     "Notifications cleared.": "Notifications cleared.",
+    "Clearing...": "Clearing...",
+    "Could not clear notifications. Please try again.": "Could not clear notifications. Please try again.",
     "Your residence verification was declined. Reason: :reason": "Your residence verification was declined. Reason: :reason"
 }

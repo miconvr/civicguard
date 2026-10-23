@@ -578,6 +578,8 @@
     "Clear all": "Burahin lahat",
     "Clear all notifications?": "Burahin ang lahat ng notification?",
     "Notifications cleared.": "Nabura na ang mga notification.",
+    "Clearing...": "Binubura...",
+    "Could not clear notifications. Please try again.": "Hindi mabura ang mga notification. Pakisubukan muli.",
     "Your residence verification was declined. Reason: :reason": "Tinanggihan ang beripikasyon ng iyong paninirahan. Dahilan: :reason",
     "Only admins and barangay officials can view a pending residency proof image; it is deleted after a decision.": "Mga admin at opisyal lamang ng barangay ang makakakita sa larawan ng patunay habang sinusuri ito; buburahin ito matapos magpasya."
 }
