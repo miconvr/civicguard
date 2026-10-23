@@ -15,8 +15,41 @@
 <div x-data="{
     open: false,
     unread: {{ $unreadCount }},
+    cleared: false,
+    clearing: false,
+    clearError: false,
+    async clearNotifications(event) {
+        if (!window.confirm(@js(__('Clear all notifications?')))) return;
+
+        this.clearing = true;
+        this.clearError = false;
+
+        try {
+            const form = event.currentTarget;
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                credentials: 'same-origin',
+                headers: {
+                    Accept: 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+
+            if (!response.ok) throw new Error('Could not clear notifications');
+
+            this.cleared = true;
+            this.unread = 0;
+            window.dispatchEvent(new CustomEvent('notifications-cleared'));
+        } catch {
+            this.clearError = true;
+        } finally {
+            this.clearing = false;
+        }
+    },
     toggle() { this.open = !this.open; }
 }"
+@notifications-cleared.window="cleared = true; unread = 0"
 @click.outside="open = false"
 @keydown.escape.window="open = false"
 class="relative inline-flex items-center">
@@ -60,7 +93,7 @@ class="relative inline-flex items-center">
             </a>
         </div>
 
-        <ul class="max-h-80 overflow-y-auto divide-y divide-stone-100 dark:divide-white/5 overscroll-contain">
+        <ul x-show="!cleared" class="max-h-80 overflow-y-auto divide-y divide-stone-100 dark:divide-white/5 overscroll-contain">
             @forelse ($notifications as $notification)
                 <li class="{{ $notification->is_read ? '' : 'bg-maroon-50/40 dark:bg-maroon-900/10' }}">
                     <form method="POST" action="{{ route('notifications.open', $notification) }}" class="min-w-0 flex-1">
@@ -100,8 +133,13 @@ class="relative inline-flex items-center">
             @endforelse
         </ul>
 
+        <div x-show="cleared" x-cloak class="px-4 py-8 text-center">
+            <p class="text-xs font-semibold text-stone-800 dark:text-stone-200">{{ __('You\'re all caught up.') }}</p>
+            <p class="mt-0.5 text-[11px] text-stone-600 dark:text-stone-400">{{ __('No notifications right now.') }}</p>
+        </div>
+
         @if ($notifications->isNotEmpty())
-            <div class="space-y-2 border-t border-stone-100 bg-stone-50/50 p-3 dark:border-white/10 dark:bg-white/[0.02]">
+            <div x-show="!cleared" class="space-y-2 border-t border-stone-100 bg-stone-50/50 p-3 dark:border-white/10 dark:bg-white/[0.02]">
                 <div class="flex gap-2">
                     @if ($unreadCount > 0)
                         <form method="POST" action="{{ route('notifications.readAll') }}" class="flex-1">
@@ -109,12 +147,16 @@ class="relative inline-flex items-center">
                             <button type="submit" class="min-h-10 w-full rounded-lg bg-maroon-700 px-3 text-xs font-semibold text-white transition hover:bg-maroon-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700">{{ __('Mark all as read') }}</button>
                         </form>
                     @endif
-                    <form method="POST" action="{{ route('notifications.clear') }}" class="{{ $unreadCount > 0 ? 'flex-1' : 'w-full' }}" onsubmit="return confirm(@js(__('Clear all notifications?')))">
+                    <form method="POST" action="{{ route('notifications.clear') }}" class="{{ $unreadCount > 0 ? 'flex-1' : 'w-full' }}" x-on:submit.prevent="clearNotifications($event)">
                         @csrf
                         @method('delete')
-                        <button type="submit" class="min-h-10 w-full rounded-lg border border-stone-300 px-3 text-xs font-semibold text-stone-700 transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-white/15 dark:text-stone-200 dark:hover:bg-white/10">{{ __('Clear all') }}</button>
+                        <button type="submit" :disabled="clearing" class="min-h-10 w-full rounded-lg border border-stone-300 px-3 text-xs font-semibold text-stone-700 transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 disabled:cursor-wait disabled:opacity-60 dark:border-white/15 dark:text-stone-200 dark:hover:bg-white/10">
+                            <span x-show="!clearing">{{ __('Clear all') }}</span>
+                            <span x-show="clearing" x-cloak>{{ __('Clearing...') }}</span>
+                        </button>
                     </form>
                 </div>
+                <p x-show="clearError" x-cloak role="alert" class="text-center text-xs font-medium text-red-700 dark:text-red-300">{{ __('Could not clear notifications. Please try again.') }}</p>
                 <a href="{{ route('notifications.index') }}" class="block w-full py-1 text-center text-xs font-semibold text-stone-600 hover:text-maroon-700 dark:text-stone-400 dark:hover:text-white transition">
                     {{ __('See all notification history') }} &rarr;
                 </a>
