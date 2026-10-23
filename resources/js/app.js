@@ -352,26 +352,19 @@ if ('serviceWorker' in navigator) {
     }
 })();
 
-// cgNavReveal: show the public header as the emergency guidance section enters view.
+// cgNavReveal: show the public header after the maroon hero has left the viewport.
 (function () {
-    const emergency = document.querySelector('.cg-emergency-strip');
+    const hero = document.querySelector('.cg-landing-hero');
     const header = document.querySelector('.cg-public-header');
-    if (!emergency || !header) return;
+    if (!hero || !header) return;
     const root = document.documentElement;
     root.classList.add('cg-nav-js');
     let ticking = false;
     const update = () => {
         ticking = false;
-        // On phones, reveal a little later so the header does not cover the
-        // emergency message as soon as it enters a short viewport.
-        // Keep it visible after that point, and hide it again when scrolling above it.
-        const viewportHeight = window.innerHeight;
-        const isMobile = window.matchMedia('(max-width: 639px)').matches;
-        const revealLine = isMobile
-            ? Math.min(viewportHeight * 0.62, viewportHeight - 140)
-            : viewportHeight * 0.7;
-
-        root.classList.toggle('cg-nav-on', emergency.getBoundingClientRect().top <= revealLine);
+        // Use the hero's actual bottom edge so the navbar waits until the
+        // maroon section has fully scrolled offscreen on both desktop and mobile.
+        root.classList.toggle('cg-nav-on', hero.getBoundingClientRect().bottom <= 0);
     };
     const request = () => {
         if (!ticking) { ticking = true; requestAnimationFrame(update); }
