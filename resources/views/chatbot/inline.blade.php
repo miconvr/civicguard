@@ -407,8 +407,21 @@
             photoFileLabel.title = '';
             const removePhotoBtn = document.createElement('button');
             removePhotoBtn.type = 'button';
-            removePhotoBtn.className = 'min-h-9 text-[13px] font-medium text-white/80 underline underline-offset-2 hover:text-white';
-            removePhotoBtn.textContent = reviewText.removePhoto;
+            removePhotoBtn.className = 'inline-flex h-6 w-6 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white/90 transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
+            removePhotoBtn.setAttribute('aria-label', reviewText.removePhoto);
+            removePhotoBtn.title = reviewText.removePhoto;
+            const removePhotoIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            removePhotoIcon.setAttribute('class', 'h-3 w-3');
+            removePhotoIcon.setAttribute('viewBox', '0 0 20 20');
+            removePhotoIcon.setAttribute('fill', 'none');
+            removePhotoIcon.setAttribute('stroke', 'currentColor');
+            removePhotoIcon.setAttribute('stroke-width', '1.8');
+            removePhotoIcon.setAttribute('aria-hidden', 'true');
+            const removePhotoPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            removePhotoPath.setAttribute('stroke-linecap', 'round');
+            removePhotoPath.setAttribute('d', 'm5 5 10 10M15 5 5 15');
+            removePhotoIcon.appendChild(removePhotoPath);
+            removePhotoBtn.appendChild(removePhotoIcon);
             removePhotoBtn.onclick = () => {
                 if (removePhotoBtn.disabled) return;
                 removePhotoBtn.disabled = true;

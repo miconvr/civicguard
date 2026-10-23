@@ -101,9 +101,7 @@
                         <p class="cg-error" role="alert" x-show="tooBig" x-cloak>{{ __('That photo is larger than 5 MB. Please choose a smaller one.') }}</p>
                         <div x-show="preview" x-cloak class="relative mt-3 inline-block">
                             <img :src="preview" alt="{{ __('Photo preview') }}" class="max-h-48 rounded-lg border border-gray-200 dark:border-gray-700">
-                            <button type="button" @click="clearPhoto()" aria-label="{{ __('Remove selected image') }}" title="{{ __('Remove selected image') }}" class="absolute -right-2 -top-2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-stone-700 text-white shadow transition hover:bg-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-600">
-                                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="m5 5 10 10M15 5 5 15"/></svg>
-                            </button>
+                            <x-image-remove-button x-on:click="clearPhoto()" placement="absolute -right-1 -top-1" />
                         </div>
                         @error('photo') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                     </div>
