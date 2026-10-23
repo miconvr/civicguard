@@ -36,7 +36,7 @@
                     @endif
                     <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Search by category, location, or report details…') }}"
                            class="cg-select w-full sm:w-80 lg:w-96" aria-label="{{ __('Search reports') }}">
-                    <select name="severity" onchange="this.form.submit()" class="cg-select w-full sm:w-auto" aria-label="{{ __("Filter by severity") }}">
+                    <select name="severity" data-submit-on-change class="cg-select w-full sm:w-auto" aria-label="{{ __("Filter by severity") }}">
                         <option value="">{{ __("All severities") }}</option>
                         @foreach (['critical', 'high', 'moderate', 'low'] as $s)
                             <option value="{{ $s }}" @selected(request('severity') === $s)>{{ __(ucfirst($s)) }}</option>

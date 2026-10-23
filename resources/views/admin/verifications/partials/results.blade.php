@@ -24,7 +24,7 @@
                         <input type="hidden" name="decision" value="verified">
                         <x-primary-button>{{ __('Verify resident') }}</x-primary-button>
                     </form>
-                    <form method="post" action="{{ route('admin.verifications.decide', $verification) }}" onsubmit="return confirm('{{ __('Decline this verification request?') }}')" class="space-y-2">
+                    <form method="post" action="{{ route('admin.verifications.decide', $verification) }}" data-confirm="{{ __('Decline this verification request?') }}" class="space-y-2">
                         @csrf
                         @method('patch')
                         <input type="hidden" name="decision" value="rejected">

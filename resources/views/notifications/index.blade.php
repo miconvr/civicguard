@@ -23,7 +23,7 @@
                                     <button class="min-h-10 rounded-lg px-3 text-sm font-semibold text-maroon-700 hover:bg-maroon-50 dark:text-[#e3aaa4] dark:hover:bg-white/5">{{ __('Mark all as read') }}</button>
                                 </form>
                             @endif
-                            <form method="POST" action="{{ route('notifications.clear') }}" onsubmit="return confirm(@js(__('Clear all notifications?')))">
+                            <form method="POST" action="{{ route('notifications.clear') }}" data-confirm="{{ __('Clear all notifications?') }}">
                                 @csrf
                                 @method('delete')
                                 <button class="min-h-10 rounded-lg border border-stone-300 px-3 text-sm font-semibold text-stone-700 hover:bg-stone-100 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-white/10">{{ __('Clear all') }}</button>
