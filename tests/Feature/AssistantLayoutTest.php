@@ -30,6 +30,7 @@ test('residents can choose between the AI assistant and the standard report form
         ->assertSee('id="use-location"', false)
         ->assertSee('id="use-location-label">Use current location</span>', false)
         ->assertSee('maximumAge: 120000', false)
+        ->assertSee('AI category suggestion is unavailable. Please choose a category yourself.')
         ->assertSee('CivicGuard AI');
 });
 
