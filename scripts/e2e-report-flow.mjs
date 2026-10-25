@@ -94,7 +94,7 @@ async function submitAndFollowRedirect(page, button, responsePromise, expectedPa
             && new URL(response.url()).pathname === expectedPath;
     }, { timeout: 5000 }).catch(() => null);
 
-    const clickError = await button.click()
+    const clickError = await button.evaluate(element => element.click())
         .then(() => null)
         .catch(error => error);
 
