@@ -215,5 +215,9 @@
     "Notifications cleared.": "Notifications cleared.",
     "Clearing...": "Clearing...",
     "Could not clear notifications. Please try again.": "Could not clear notifications. Please try again.",
+    "Mute notification sounds": "Mute notification sounds",
+    "Enable notification sounds": "Enable notification sounds",
+    "On": "On",
+    "Off": "Off",
     "Your residence verification was declined. Reason: :reason": "Your residence verification was declined. Reason: :reason"
 }
