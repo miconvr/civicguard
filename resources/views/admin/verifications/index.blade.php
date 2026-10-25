@@ -27,7 +27,7 @@
             <form method="get" action="{{ route('admin.verifications.index') }}" x-data="{ searching: false }" @submit="searching = true" class="cg-card flex flex-col gap-3 p-4 sm:flex-row">
                 <input type="hidden" name="status" value="{{ $status }}" x-bind:value="status">
                 <label for="verification-search" class="sr-only">{{ __('Search applicants') }}</label>
-                <input id="verification-search" type="search" name="search" value="{{ $search }}" maxlength="100" placeholder="{{ __('Search by name or email…') }}" class="cg-input min-h-11 flex-1 text-sm shadow-sm">
+                <input id="verification-search" type="search" name="search" value="{{ $search }}" maxlength="100" placeholder="{{ __('Search by name or email') }}" class="cg-input min-h-11 flex-1 text-sm shadow-sm">
                 <div class="flex gap-2">
                     <x-primary-button x-bind:disabled="searching" class="gap-2 disabled:cursor-wait disabled:opacity-80">
                         <span x-show="!searching">{{ __('Search') }}</span>
