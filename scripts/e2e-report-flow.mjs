@@ -264,8 +264,7 @@ try {
     captureBrowserErrors(residentPage);
     await signIn(residentPage, 'resident.e2e@civicguard.test');
 
-    await gotoWithRetry(residentPage, `${baseUrl}/reports/create`);
-    await residentPage.getByRole('button', { name: /fill out the form myself/i }).click({ force: true });
+    await gotoWithRetry(residentPage, `${baseUrl}/reports/create?report_mode=form`);
     const residentReportForm = residentPage.locator('section[aria-label="Incident report form"]');
     await residentReportForm.waitFor({ state: 'visible' });
     await residentReportForm.evaluate(element =>
