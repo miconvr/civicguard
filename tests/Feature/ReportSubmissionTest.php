@@ -27,7 +27,7 @@ test('residents see report writing guidance on the incident form', function () {
         ->assertSee('What happened?')
         ->assertSee('Say what happened, and when it happened.')
         ->assertSee('id="use-location"', false)
-        ->assertSee('id="use-location-label">Use current location</span>', false)
+        ->assertSee('id="use-location-label">Use current location</span>', false);
 });
 
 test('a resident can submit an incident report and is sent to my reports', function () {
