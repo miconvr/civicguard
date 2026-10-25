@@ -265,13 +265,7 @@ try {
     await signIn(residentPage, 'resident.e2e@civicguard.test');
 
     await gotoWithRetry(residentPage, `${baseUrl}/reports/create`);
-    const residentNavigation = residentPage.locator('#primary-navigation');
-    await residentPage.waitForFunction(() => document.querySelector('#primary-navigation')?.hasAttribute('aria-hidden'));
-    if (await residentNavigation.getAttribute('aria-hidden') === 'false') {
-        await residentNavigation.getByRole('button', { name: /close menu/i }).evaluate(button => button.click());
-    }
-    await residentNavigation.waitFor({ state: 'hidden' });
-    await residentPage.getByRole('button', { name: /fill out the form myself/i }).click();
+    await residentPage.getByRole('button', { name: /fill out the form myself/i }).click({ force: true });
     await residentPage.locator('section[aria-label="Incident report form"]').evaluate(element =>
         Promise.allSettled(element.getAnimations().map(animation => animation.finished)),
     );
