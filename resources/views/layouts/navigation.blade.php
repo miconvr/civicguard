@@ -122,36 +122,30 @@
                 <x-sidebar-link icon="list" :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard', 'admin.reports.details', 'admin.reports.curfewDetails')">
                     {{ __('Incident Queue') }}
                 </x-sidebar-link>
-                <x-sidebar-link icon="chart" :href="route(in_array($role, ['admin', 'official']) ? 'admin.analytics' : 'admin.consolidatedReports')" :active="request()->routeIs('admin.analytics', 'admin.consolidatedReports')">
-                    {{ in_array($role, ['admin', 'official']) ? __('Analytics') : __('Reports') }}
-                </x-sidebar-link>
                 @if (in_array($role, ['tanod', 'admin']))
                     <x-sidebar-link icon="moon" :href="route('curfew.create')" :active="request()->routeIs('curfew.create')">
                         {{ __('Log Curfew') }}
                     </x-sidebar-link>
                 @endif
+                <x-sidebar-link icon="chart" :href="route(in_array($role, ['admin', 'official']) ? 'admin.analytics' : 'admin.consolidatedReports')" :active="request()->routeIs('admin.analytics', 'admin.consolidatedReports')">
+                    {{ in_array($role, ['admin', 'official']) ? __('Analytics') : __('Reports') }}
+                </x-sidebar-link>
 
                 @if (in_array($role, ['admin', 'official']))
-                <h2 class="{{ $groupLabel }} pt-4">{{ __('Administration') }}</h2>
+                    <h2 class="{{ $groupLabel }} pt-4">{{ __('Administration') }}</h2>
+                <x-sidebar-link icon="shield" :href="route('admin.verifications.index')" :active="request()->routeIs('admin.verifications.*')">
+                    {{ __('Residence Verification') }}
+                </x-sidebar-link>
+                <x-sidebar-link icon="key" :href="route('admin.passwordResets.index')" :active="request()->routeIs('admin.passwordResets.*')">
+                    {{ __('Reset Resident Passwords') }}
+                </x-sidebar-link>
                 <x-sidebar-link icon="history" :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
                     {{ __('Audit Logs') }}
                 </x-sidebar-link>
-                @if (in_array($role, ['admin', 'official']))
-                    <x-sidebar-link icon="shield" :href="route('admin.verifications.index')" :active="request()->routeIs('admin.verifications.*')">
-                        {{ __('Residence Verification') }}
-                    </x-sidebar-link>
-                    <x-sidebar-link icon="user-plus" :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
-                        {{ __('Add Staff') }}
-                    </x-sidebar-link>
-                    @if (in_array($role, ['admin', 'official']))
-                        <x-sidebar-link icon="key" :href="route('admin.passwordResets.index')" :active="request()->routeIs('admin.passwordResets.*')">
-                            {{ __('Reset Resident Passwords') }}
-                        </x-sidebar-link>
-                    @endif
+                <x-sidebar-link icon="user-plus" :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
+                    {{ __('Add Staff') }}
+                </x-sidebar-link>
                 @endif
-                @endif
-
-            @endif
 
         </nav>
 

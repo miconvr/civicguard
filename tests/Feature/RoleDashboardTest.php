@@ -27,6 +27,10 @@ test('each user role can render its role-specific dashboard', function (string $
 
     if ($role === 'resident') {
         $response->assertSee('Track your reports and see the latest updates.');
+        $response->assertSeeInOrder([
+            'Report Incident',
+            'My Reports',
+        ]);
     }
 
     if (in_array($role, ['admin', 'official'])) {
@@ -35,6 +39,37 @@ test('each user role can render its role-specific dashboard', function (string $
 
     if ($role === 'tanod') {
         $response->assertSee('Reports');
+    }
+
+    if ($role === 'admin') {
+        $response->assertSeeInOrder([
+            'Incident Queue',
+            'Log Curfew',
+            'Analytics',
+            'Residence Verification',
+            'Reset Resident Passwords',
+            'Audit Logs',
+            'Add Staff',
+        ]);
+    }
+
+    if ($role === 'official') {
+        $response->assertSeeInOrder([
+            'Incident Queue',
+            'Analytics',
+            'Residence Verification',
+            'Reset Resident Passwords',
+            'Audit Logs',
+            'Add Staff',
+        ]);
+    }
+
+    if ($role === 'tanod') {
+        $response->assertSeeInOrder([
+            'Incident Queue',
+            'Log Curfew',
+            'Reports',
+        ]);
     }
 })->with(['resident', 'tanod', 'official', 'admin']);
 
