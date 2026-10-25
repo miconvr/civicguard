@@ -21,6 +21,20 @@
             </div>
 
             <div class="cg-card overflow-hidden">
+                <form method="GET" action="{{ route('admin.passwordResets.index') }}" class="flex flex-col gap-3 border-b border-gray-200 p-6 sm:flex-row sm:items-end dark:border-gray-700">
+                    <div class="flex-1">
+                        <label for="resident-search" class="cg-label">{{ __('Find a resident') }}</label>
+                        <input id="resident-search" type="search" name="search" value="{{ $search }}" maxlength="100" placeholder="{{ __('Search by name or email…') }}" class="cg-input min-h-11 w-full" autocomplete="off">
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="submit" class="cg-btn min-h-11">{{ __('Search') }}</button>
+                        @if ($search !== '')
+                            <a href="{{ route('admin.passwordResets.index') }}" class="inline-flex min-h-11 items-center rounded-lg border border-gray-300 px-4 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800">
+                                {{ __('Clear') }}
+                            </a>
+                        @endif
+                    </div>
+                </form>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <caption class="sr-only">{{ __('Registered residents and password reset forms') }}</caption>

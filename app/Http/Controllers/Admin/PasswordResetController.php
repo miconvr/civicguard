@@ -13,13 +13,22 @@ use Illuminate\View\View;
 
 class PasswordResetController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $residents = User::where('role', 'resident')
-            ->orderBy('name')
-            ->paginate(25);
+        $search = trim((string) $request->query('search', ''));
 
-        return view('admin.password-resets.index', compact('residents'));
+        $residents = User::where('role', 'resident')
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%'.$search.'%')
+                        ->orWhere('email', 'like', '%'.$search.'%');
+                });
+            })
+            ->orderBy('name')
+            ->paginate(25)
+            ->withQueryString();
+
+        return view('admin.password-resets.index', compact('residents', 'search'));
     }
 
     public function update(Request $request, User $user): RedirectResponse

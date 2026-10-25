@@ -72,6 +72,18 @@ test('admins and officials can reset resident passwords', function () {
         ->assertOk()
         ->assertSee($resident->email);
 
+    $otherResident = User::factory()->create([
+        'name' => 'Another Resident',
+        'email' => 'another@example.com',
+        'role' => 'resident',
+    ]);
+
+    $this->actingAs($admin)
+        ->get(route('admin.passwordResets.index', ['search' => 'another@example.com']))
+        ->assertOk()
+        ->assertSee($otherResident->email)
+        ->assertDontSee($resident->email);
+
     $tanod = User::factory()->create(['role' => 'tanod']);
 
     $this->actingAs($tanod)
