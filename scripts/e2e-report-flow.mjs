@@ -281,7 +281,7 @@ try {
     await residentPage.locator('#description').fill(description);
     await residentPage.locator('#category_id').selectOption({ label: 'Public Disturbance' });
     await residentPage.locator('#location_text').fill(location);
-    await residentPage.getByRole('button', { name: 'Pin' }).evaluate(button => button.click());
+    await residentPage.getByRole('button', { name: 'Use current location' }).evaluate(button => button.click());
     await residentPage.waitForFunction(() => document.querySelector('#location-status')?.textContent?.startsWith('Location saved.'));
     assert.equal(await residentPage.locator('input[name="latitude"]').inputValue(), '15.0612000');
     assert.equal(await residentPage.locator('input[name="longitude"]').inputValue(), '120.6570000');
