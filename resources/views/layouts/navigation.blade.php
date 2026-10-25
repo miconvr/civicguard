@@ -30,9 +30,9 @@
      })"
      @keydown.escape.window="open = false"
      @resize.window="if (window.innerWidth >= 1024) open = false"
-     class="lg:h-full">
+     class="pointer-events-none lg:pointer-events-auto lg:h-full">
     <!-- Mobile top bar -->
-    <div class="cg-sidebar-mobilebar lg:hidden flex items-center justify-between h-16 px-3 border-b border-stone-200 dark:border-gray-700">
+    <div class="cg-sidebar-mobilebar pointer-events-auto lg:hidden flex items-center justify-between h-16 px-3 border-b border-stone-200 dark:border-gray-700">
         <div class="flex items-center gap-2">
             <button x-ref="openButton" @click="open = true" :aria-expanded="open.toString()" aria-controls="primary-navigation" aria-label="{{ __('Open menu') }}" class="p-2.5 rounded-xl text-stone-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5 focus-visible:outline-offset-0">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
