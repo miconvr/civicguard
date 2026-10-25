@@ -1,12 +1,40 @@
-<div x-data="{ open: false }"
-     x-effect="document.body.classList.toggle('overflow-hidden', open)"
+<div x-data="{
+         open: false,
+         previousFocus: null,
+         trapFocus(event) {
+             if (!this.open || window.innerWidth >= 1024) return;
+
+             const focusable = Array.from(this.$refs.navigation.querySelectorAll('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+                 .filter(element => !element.disabled && element.offsetParent !== null);
+             const first = focusable[0];
+             const last = focusable[focusable.length - 1];
+
+             if (!first || !last) return;
+             if (event.shiftKey && document.activeElement === first) {
+                 event.preventDefault();
+                 last.focus();
+             } else if (!event.shiftKey && document.activeElement === last) {
+                 event.preventDefault();
+                 first.focus();
+             }
+         }
+     }"
+     x-effect="document.body.classList.toggle('overflow-hidden', open); document.getElementById('main-content')?.toggleAttribute('inert', open)"
+     x-init="$watch('open', value => {
+         if (value) {
+             previousFocus = document.activeElement;
+             $nextTick(() => $refs.closeButton?.focus());
+         } else if (previousFocus instanceof HTMLElement) {
+             $nextTick(() => previousFocus.focus());
+         }
+     })"
      @keydown.escape.window="open = false"
      @resize.window="if (window.innerWidth >= 1024) open = false"
      class="lg:h-full">
     <!-- Mobile top bar -->
     <div class="cg-sidebar-mobilebar lg:hidden flex items-center justify-between h-16 px-3 border-b border-stone-200 dark:border-gray-700">
         <div class="flex items-center gap-2">
-            <button @click="open = true" :aria-expanded="open.toString()" aria-controls="primary-navigation" aria-label="{{ __('Open menu') }}" class="p-2.5 rounded-xl text-stone-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5 focus-visible:outline-offset-0">
+            <button x-ref="openButton" @click="open = true" :aria-expanded="open.toString()" aria-controls="primary-navigation" aria-label="{{ __('Open menu') }}" class="p-2.5 rounded-xl text-stone-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5 focus-visible:outline-offset-0">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
@@ -20,7 +48,7 @@
     </div>
 
     <!-- Mobile overlay -->
-    <div x-show="open" x-cloak x-transition.opacity @click="open = false" class="fixed inset-0 bg-stone-950/45 backdrop-blur-[2px] z-40 lg:hidden"></div>
+    <div x-show="open" x-cloak x-transition.opacity @click.self="open = false" aria-hidden="true" class="fixed inset-0 bg-stone-950/45 backdrop-blur-[2px] z-40 lg:hidden"></div>
 
     <!-- Sidebar: hidden on mobile until opened, always visible on desktop -->
     <aside
@@ -32,7 +60,12 @@
         x-transition:leave="transition-transform duration-[var(--cg-motion-exit)] ease-[var(--cg-ease-in)]"
         x-transition:leave-start="translate-x-0"
         x-transition:leave-end="-translate-x-full"
+        x-ref="navigation"
+        @keydown.tab="trapFocus($event)"
         id="primary-navigation"
+        role="dialog"
+        aria-modal="true"
+        :aria-hidden="(!open).toString()"
         :class="collapsed ? 'lg:!w-[76px]' : 'lg:!w-64'"
         class="cg-app-sidebar fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] flex flex-col border-r border-white/10 lg:!flex lg:w-64 lg:max-w-none lg:sticky lg:top-0 lg:h-screen"
     >
@@ -57,7 +90,7 @@
                     <path stroke-linecap="round" d="M9.5 4.5v15" />
                 </svg>
             </button>
-            <button @click="open = false" aria-label="Close menu" class="lg:hidden p-2 -mr-2 text-white/70 hover:text-white">
+            <button x-ref="closeButton" @click="open = false" aria-label="{{ __('Close menu') }}" class="lg:hidden p-2 -mr-2 text-white/70 hover:text-white">
                 <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
                 </svg>
