@@ -28,6 +28,14 @@ test('each user role can render its role-specific dashboard', function (string $
     if ($role === 'resident') {
         $response->assertSee('Track your reports and see the latest updates.');
     }
+
+    if (in_array($role, ['admin', 'official'])) {
+        $response->assertSee('Analytics');
+    }
+
+    if ($role === 'tanod') {
+        $response->assertSee('Reports');
+    }
 })->with(['resident', 'tanod', 'official', 'admin']);
 
 test('staff roles can render the incident queue', function (string $role) {
