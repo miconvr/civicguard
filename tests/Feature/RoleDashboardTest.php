@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 test('each user role can render its role-specific dashboard', function (string $role) {
     $user = User::factory()->create(['role' => $role]);
@@ -53,6 +54,47 @@ test('admin analytics and staff creation titles support dark mode', function () 
         ->assertOk()
         ->assertSee('Add Tanod / Official Account')
         ->assertSee('<h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">', false);
+});
+
+test('admins and officials can reset resident passwords', function () {
+    $resident = User::factory()->create(['role' => 'resident']);
+    $admin = User::factory()->create(['role' => 'admin']);
+    $official = User::factory()->create(['role' => 'official']);
+
+    $this->actingAs($admin)
+        ->get(route('admin.passwordResets.index'))
+        ->assertOk()
+        ->assertSee('Reset Resident Passwords')
+        ->assertSee($resident->email);
+
+    $this->actingAs($official)
+        ->get(route('admin.passwordResets.index'))
+        ->assertOk()
+        ->assertSee($resident->email);
+
+    $tanod = User::factory()->create(['role' => 'tanod']);
+
+    $this->actingAs($tanod)
+        ->get(route('admin.passwordResets.index'))
+        ->assertForbidden();
+
+    $this->actingAs($admin)
+        ->patch(route('admin.passwordResets.update', $resident), [
+            'password' => 'new-password',
+            'password_confirmation' => 'new-password',
+        ])
+        ->assertRedirect(route('admin.passwordResets.index'));
+
+    expect(Hash::check('new-password', $resident->refresh()->password))->toBeTrue();
+
+    $staff = User::factory()->create(['role' => 'official']);
+
+    $this->actingAs($admin)
+        ->patch(route('admin.passwordResets.update', $staff), [
+            'password' => 'new-password',
+            'password_confirmation' => 'new-password',
+        ])
+        ->assertNotFound();
 });
 
 test('staff report views are grouped under one reports section with tabs', function () {
