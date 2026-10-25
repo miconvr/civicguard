@@ -30,7 +30,7 @@
             {{ __('Skip to content') }}
         </a>
         <div x-data="appShell" :class="{ 'cg-sidebar-collapsed': collapsed }" class="cg-app-shell min-h-screen flex flex-col lg:flex-row">
-            <div class="cg-app-sidebar pointer-events-none lg:pointer-events-auto lg:sticky lg:top-0 lg:z-30 lg:shrink-0" :class="collapsed ? 'lg:w-[76px]' : 'lg:w-64'">
+            <div class="contents lg:flex lg:pointer-events-auto lg:sticky lg:top-0 lg:z-30 lg:shrink-0" :class="collapsed ? 'lg:w-[76px]' : 'lg:w-64'">
                 @include('layouts.navigation')
             </div>
 
