@@ -1,7 +1,7 @@
 <div align="center">
   <img src="public/favicon.svg" alt="CivicGuard shield logo" width="84" height="84">
   <h1>CivicGuard</h1>
-  <p>Incident reporting and follow-up for Barangay Maimpis, City of San Fernando, Pampanga.</p>
+  <p>A community reporting and follow-up system for Barangay Maimpis, City of San Fernando, Pampanga.</p>
   <p><strong>Capstone project</strong><br><em>CivicGuard: An AI-Integrated Web-Based Incident and Curfew Monitoring System for Barangay Maimpis, City of San Fernando, Pampanga</em></p>
   <p>
     <a href="https://civicguard.wasmer.app">Open the live site</a> ·
@@ -14,7 +14,7 @@
   </p>
 </div>
 
-Residents can submit an incident report, optionally attach a photo or location pin, and follow staff updates. Barangay staff can review, assign, and resolve reports. The report-writing assistant helps residents describe an incident; staff make decisions and review every report.
+Residents can submit an incident report, optionally attach a photo and location details, and follow staff updates. Barangay staff can review, assign, and resolve reports, while tanods can record curfew incidents. The report-writing assistant helps residents describe an incident; staff make decisions and review every report.
 
 > **Emergencies:** CivicGuard is not monitored in real time. Call 911 or contact the barangay directly if someone is in immediate danger.
 
@@ -32,7 +32,7 @@ Residents can submit an incident report, optionally attach a photo or location p
 | Residents | Barangay staff |
 | --- | --- |
 | File reports with a form or guided chat | Review reports sorted by urgency |
-| Add a photo, location details, or a map pin | Assign reports and update their status |
+| Add a photo and location details | Assign reports and update their status |
 | Follow progress and respond when an issue is marked resolved | Review residence verification requests |
 | Request optional residence verification | Record curfew incidents and view analytics |
 
