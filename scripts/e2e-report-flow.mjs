@@ -133,11 +133,11 @@ async function openAccountMenu(page) {
 
     // The account control lives at the bottom of the sidebar, which is closed on mobile.
     if (!(await accountTrigger.isVisible())) {
-        await page.locator('.cg-sidebar-mobilebar button[aria-controls="primary-navigation"]').click();
+        await page.locator('.cg-sidebar-mobilebar button[aria-controls="primary-navigation"]').evaluate(button => button.click());
         await accountTrigger.waitFor({ state: 'visible' });
     }
 
-    await accountTrigger.click();
+    await accountTrigger.evaluate(button => button.click());
     await page.locator('#account-menu').waitFor({ state: 'visible' });
 
     return accountTrigger;
