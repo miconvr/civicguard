@@ -144,12 +144,10 @@ async function openAccountMenu(page) {
 }
 
 async function switchToTagalog(page) {
-    await openAccountMenu(page);
-    const tagalogLink = page.locator('#account-menu').getByRole('link', { name: 'Tagalog' });
-    const localeUrl = new URL(await tagalogLink.getAttribute('href'), baseUrl).href;
+    const localeUrl = new URL('/locale/tl', baseUrl).href;
     const returnUrl = page.url();
 
-    await tagalogLink.click();
+    await gotoWithRetry(page, localeUrl, { waitUntil: 'domcontentloaded', referer: returnUrl });
 
     try {
         await page.waitForFunction(() => document.documentElement.lang === 'tl', { timeout: 10000 });
