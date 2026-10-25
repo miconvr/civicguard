@@ -2,12 +2,12 @@
   "id": "/",
   "name": "CivicGuard",
   "short_name": "CivicGuard",
-  "description": "Incident reporting for Barangay Maimpis residents and staff.",
+  "description": "Community incident reporting, follow-up, and curfew monitoring for Barangay Maimpis.",
   "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#ffffff",
+  "background_color": "#f6f2eb",
   "theme_color": "#7a1f1f",
   "icons": [
     {
