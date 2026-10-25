@@ -24,7 +24,7 @@
                 <form method="GET" action="{{ route('admin.passwordResets.index') }}" class="flex flex-col gap-3 border-b border-gray-200 p-6 sm:flex-row sm:items-end dark:border-gray-700">
                     <div class="flex-1">
                         <label for="resident-search" class="cg-label">{{ __('Find a resident') }}</label>
-                        <input id="resident-search" type="search" name="search" value="{{ $search }}" maxlength="100" placeholder="{{ __('Search by name or email…') }}" class="cg-input min-h-11 w-full" autocomplete="off">
+                        <input id="resident-search" type="search" name="search" value="{{ $search }}" maxlength="100" placeholder="{{ __('Name or email…') }}" class="cg-input min-h-11 w-full" autocomplete="off">
                     </div>
                     <div class="flex gap-2">
                         <button type="submit" class="cg-btn min-h-11">{{ __('Search') }}</button>
