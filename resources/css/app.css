@@ -131,6 +131,10 @@
         -moz-osx-font-smoothing: grayscale;
     }
 
+    body[data-cg-route="app"] {
+        background-color: var(--cg-canvas);
+    }
+
     ::selection {
         color: var(--cg-canvas);
         background: var(--cg-primary);
@@ -1232,6 +1236,12 @@
 html { scroll-padding-bottom: 7rem; }
 body { padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
 .cg-app-sidebar { padding-top: env(safe-area-inset-top, 0px); }
+@media (display-mode: standalone) {
+    html,
+    body[data-cg-route="app"] {
+        background-color: var(--cg-canvas);
+    }
+}
 @supports (min-height: 100dvh) { .min-h-screen { min-height: 100dvh; } }
 .cg-sticky-actions {
     position: static;

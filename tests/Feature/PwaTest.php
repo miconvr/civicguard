@@ -1,7 +1,10 @@
 <?php
 
 test('public pages link the web app manifest', function () {
-    $this->get('/')->assertOk()->assertSee('rel="manifest"', false);
+    $this->get('/')
+        ->assertOk()
+        ->assertSee('rel="manifest"', false)
+        ->assertSee('apple-mobile-web-app-status-bar-style', false);
     $this->get('/login')->assertOk()->assertSee('rel="manifest"', false);
 });
 
@@ -10,6 +13,7 @@ test('the manifest is valid and its icons exist', function () {
 
     expect($manifest['name'])->toBe('CivicGuard');
     expect($manifest['display'])->toBe('standalone');
+    expect($manifest['background_color'])->toBe('#f6f2eb');
 
     foreach ($manifest['icons'] as $icon) {
         expect(file_exists(public_path(ltrim($icon['src'], '/'))))->toBeTrue();
