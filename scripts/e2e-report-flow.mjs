@@ -266,8 +266,9 @@ try {
 
     await gotoWithRetry(residentPage, `${baseUrl}/reports/create`);
     const residentNavigation = residentPage.locator('#primary-navigation');
-    if (await residentNavigation.isVisible()) {
-        await residentNavigation.getByRole('button', { name: /close menu/i }).click();
+    await residentPage.waitForFunction(() => document.querySelector('#primary-navigation')?.hasAttribute('aria-hidden'));
+    if (await residentNavigation.getAttribute('aria-hidden') === 'false') {
+        await residentNavigation.getByRole('button', { name: /close menu/i }).click({ force: true });
     }
     await residentNavigation.waitFor({ state: 'hidden' });
     await residentPage.getByRole('button', { name: /fill out the form myself/i }).click();
