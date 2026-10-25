@@ -35,38 +35,40 @@
                         @endif
                     </div>
                 </form>
-                <div class="overflow-x-auto">
+                <div>
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <caption class="sr-only">{{ __('Registered residents and password reset forms') }}</caption>
-                        <thead class="bg-gray-50 dark:bg-gray-900/40">
+                        <thead class="hidden bg-gray-50 dark:bg-gray-900/40 sm:table-header-group">
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300">{{ __('Resident') }}</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300">{{ __('New temporary password') }}</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-300">{{ __('Action') }}</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-transparent">
+                        <tbody class="block divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-transparent sm:table-row-group">
                             @forelse ($residents as $resident)
-                                <tr>
-                                    <th scope="row" class="px-6 py-4 text-left align-top">
+                                <tr class="block p-4 sm:table-row sm:p-0">
+                                    <th scope="row" class="block px-0 py-2 text-left align-top sm:table-cell sm:px-6 sm:py-4">
                                         <div class="font-semibold text-gray-900 dark:text-gray-100">{{ $resident->name }}</div>
-                                        <div class="mt-1 text-sm font-normal text-gray-600 dark:text-gray-300">{{ $resident->email }}</div>
+                                        <div class="mt-1 break-all text-sm font-normal text-gray-600 dark:text-gray-300">{{ $resident->email }}</div>
                                     </th>
-                                    <td class="px-6 py-4 align-top">
+                                    <td class="block px-0 py-2 align-top sm:table-cell sm:px-6 sm:py-4">
                                         <form id="reset-resident-{{ $resident->id }}" method="POST" action="{{ route('admin.passwordResets.update', $resident) }}" class="space-y-2" data-confirm="{{ __('Reset this resident’s password? Confirm their identity first.') }}">
                                             @csrf
                                             @method('PATCH')
                                             <label class="sr-only" for="password-{{ $resident->id }}">{{ __('New temporary password for :name', ['name' => $resident->name]) }}</label>
-                                            <input id="password-{{ $resident->id }}" type="password" name="password" minlength="8" required autocomplete="new-password" class="cg-input min-w-56" placeholder="{{ __('At least 8 characters') }}">
+                                            <span class="mb-1 block text-xs font-semibold text-gray-600 dark:text-gray-300 sm:hidden">{{ __('New temporary password') }}</span>
+                                            <input id="password-{{ $resident->id }}" type="password" name="password" minlength="8" required autocomplete="new-password" class="cg-input w-full sm:min-w-56" placeholder="{{ __('At least 8 characters') }}">
                                             <label class="sr-only" for="password-confirmation-{{ $resident->id }}">{{ __('Confirm temporary password for :name', ['name' => $resident->name]) }}</label>
-                                            <input id="password-confirmation-{{ $resident->id }}" type="password" name="password_confirmation" minlength="8" required autocomplete="new-password" class="cg-input min-w-56" placeholder="{{ __('Confirm password') }}">
+                                            <span class="mb-1 block text-xs font-semibold text-gray-600 dark:text-gray-300 sm:hidden">{{ __('Confirm password') }}</span>
+                                            <input id="password-confirmation-{{ $resident->id }}" type="password" name="password_confirmation" minlength="8" required autocomplete="new-password" class="cg-input w-full sm:min-w-56" placeholder="{{ __('Confirm password') }}">
                                             @error('password', 'reset-'.$resident->id)
                                                 <p class="cg-error">{{ $message }}</p>
                                             @enderror
                                         </form>
                                     </td>
-                                    <td class="px-6 py-4 align-top">
-                                        <button type="submit" form="reset-resident-{{ $resident->id }}" class="cg-btn whitespace-nowrap">
+                                    <td class="block px-0 py-2 align-top sm:table-cell sm:px-6 sm:py-4">
+                                        <button type="submit" form="reset-resident-{{ $resident->id }}" class="cg-btn w-full whitespace-nowrap sm:w-auto">
                                             {{ __('Reset password') }}
                                         </button>
                                     </td>
