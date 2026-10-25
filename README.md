@@ -14,7 +14,7 @@
   </p>
 </div>
 
-Residents can submit an incident report, optionally attach a photo and location details, and follow staff updates. Barangay staff can review, assign, and resolve reports, while tanods can record curfew incidents. The report-writing assistant helps residents describe an incident; staff make decisions and review every report.
+CivicGuard is a capstone project designed to improve incident reporting and curfew monitoring in Barangay Maimpis. It connects residents with barangay staff through a web platform for submitting reports, tracking updates, and managing incidents. Its AI-assisted reporting feature helps residents describe incidents, while staff retain responsibility for reviewing reports and making decisions.
 
 > **Emergencies:** CivicGuard is not monitored in real time. Call 911 or contact the barangay directly if someone is in immediate danger.
 
