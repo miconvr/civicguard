@@ -146,6 +146,7 @@
                     {{ __('Add Staff') }}
                 </x-sidebar-link>
                 @endif
+            @endif
 
         </nav>
 
