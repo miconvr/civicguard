@@ -10,6 +10,8 @@ test('login screen can be rendered', function () {
         ->assertSee('cg-auth-layout', false)
         ->assertSee('cg-auth-card', false)
         ->assertSee('cg-page-enter-late', false)
+        ->assertSee('Forgot your password?')
+        ->assertSee(route('password.request', absolute: false))
         ->assertDontSee('Switch to dark mode')
         ->assertDontSee('darkMode');
 });
