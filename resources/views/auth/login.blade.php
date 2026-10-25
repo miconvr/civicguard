@@ -41,7 +41,11 @@
         </x-primary-button>
     </form>
 
-    <p class="cg-forgot-note mt-4 text-center text-sm text-gray-600 dark:text-gray-400">{{ __('Forgot your password? Please ask the barangay to reset it for you.') }}</p>
+    <p class="cg-forgot-note mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+        <a href="{{ route('password.request') }}" class="font-semibold text-maroon-700 underline-offset-2 hover:underline dark:text-gray-200">
+            {{ __('Forgot your password?') }}
+        </a>
+    </p>
 
     <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700 text-center">
         <p class="text-sm text-gray-600 dark:text-gray-400">

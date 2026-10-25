@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\ConsolidatedReportController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DataResetController;
+use App\Http\Controllers\Admin\PasswordResetController;
 use App\Http\Controllers\Admin\ResidentVerificationController as AdminResidentVerificationController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\ChatbotController;
@@ -58,6 +59,13 @@ Route::middleware(['auth', 'role:admin,official'])->prefix('admin')->name('admin
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
     Route::get('/analytics/insights', [AnalyticsController::class, 'insights'])->name('analytics.insights');
     Route::get('/analytics/export/pdf', [AnalyticsController::class, 'exportPdf'])->name('analytics.exportPdf');
+});
+
+Route::middleware(['auth', 'role:admin,official'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/password-resets', [PasswordResetController::class, 'index'])->name('passwordResets.index');
+    Route::patch('/password-resets/{user}', [PasswordResetController::class, 'update'])
+        ->middleware('throttle:10,1')
+        ->name('passwordResets.update');
 });
 
 Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name('admin.')->group(function () {

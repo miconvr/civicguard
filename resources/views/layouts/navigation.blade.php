@@ -143,6 +143,11 @@
                     <x-sidebar-link icon="user-plus" :href="route('admin.staff.create')" :active="request()->routeIs('admin.staff.create')">
                         {{ __('Add Staff') }}
                     </x-sidebar-link>
+                    @if (in_array($role, ['admin', 'official']))
+                        <x-sidebar-link icon="key" :href="route('admin.passwordResets.index')" :active="request()->routeIs('admin.passwordResets.*')">
+                            {{ __('Reset Resident Passwords') }}
+                        </x-sidebar-link>
+                    @endif
                 @endif
                 @endif
 
