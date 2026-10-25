@@ -268,7 +268,7 @@ try {
     const residentNavigation = residentPage.locator('#primary-navigation');
     await residentPage.waitForFunction(() => document.querySelector('#primary-navigation')?.hasAttribute('aria-hidden'));
     if (await residentNavigation.getAttribute('aria-hidden') === 'false') {
-        await residentPage.keyboard.press('Escape');
+        await residentNavigation.getByRole('button', { name: /close menu/i }).evaluate(button => button.click());
     }
     await residentNavigation.waitFor({ state: 'hidden' });
     await residentPage.getByRole('button', { name: /fill out the form myself/i }).click();
