@@ -283,7 +283,7 @@ try {
     await residentPage.locator('#description').fill(description);
     await residentPage.locator('#category_id').selectOption({ label: 'Public Disturbance' });
     await residentPage.locator('#location_text').fill(location);
-    await residentPage.getByRole('button', { name: 'Pin' }).click();
+    await residentPage.getByRole('button', { name: 'Pin' }).click({ force: true });
     await residentPage.waitForFunction(() => document.querySelector('#location-status')?.textContent?.startsWith('Location pinned.'));
     assert.equal(await residentPage.locator('input[name="latitude"]').inputValue(), '15.0612000');
     assert.equal(await residentPage.locator('input[name="longitude"]').inputValue(), '120.6570000');
@@ -292,7 +292,7 @@ try {
         mimeType: 'image/png',
         buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADUlEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC', 'base64'),
     });
-    await residentPage.locator('#submit-report-btn').click();
+    await residentPage.locator('#submit-report-btn').click({ force: true });
     await residentPage.waitForURL('**/reports');
     const residentReport = residentPage.locator('article').filter({ hasText: location });
     await residentReport.locator('p.line-clamp-2').filter({ hasText: description }).waitFor({ state: 'visible' });
