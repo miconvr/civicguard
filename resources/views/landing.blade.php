@@ -3,11 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-        @include('partials.pwa-head')
+        @include('partials.pwa-head', ['pwaThemeColor' => '#f6f2eb', 'pwaStatusBarStyle' => 'default'])
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta property="csp-nonce" nonce="{{ Vite::cspNonce() }}">
-        <meta name="theme-color" content="#f6f2eb">
-        <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <meta name="description" content="CivicGuard helps Barangay Maimpis residents report incidents and follow updates from barangay staff.">
         <title>{{ config('app.name', 'CivicGuard') }}</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
