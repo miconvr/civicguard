@@ -6,6 +6,8 @@
         @include('partials.pwa-head')
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta property="csp-nonce" nonce="{{ Vite::cspNonce() }}">
+        <meta name="theme-color" content="#f6f2eb">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <meta name="description" content="CivicGuard helps Barangay Maimpis residents report incidents and follow updates from barangay staff.">
         <title>{{ config('app.name', 'CivicGuard') }}</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
@@ -22,7 +24,7 @@
 
         <div class="min-h-[100dvh] overflow-hidden">
             <header class="cg-public-header">
-                <nav aria-label="Main navigation" :aria-label="text('navigation')" class="mx-auto flex min-h-[72px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+                <nav aria-label="Main navigation" :aria-label="text('navigation')" class="mx-auto flex min-h-[72px] max-w-5xl items-center gap-5 px-4 sm:px-6 lg:gap-8 lg:px-8">
                     <a href="{{ url('/') }}" class="group flex min-w-0 items-center gap-2.5 rounded-md focus-visible:outline-offset-4" aria-label="CivicGuard, Barangay Maimpis home" :aria-label="text('homeLink')">
                         <span class="cg-brand-mark"><x-application-logo class="h-9 w-9 shrink-0" /></span>
                         <span class="min-w-0">
@@ -31,7 +33,7 @@
                         </span>
                     </a>
 
-                    <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
+                    <div class="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
                         <button type="button" x-cloak x-show="!installed" @click="showGuide()" :aria-label="text('installNav')" class="cg-language-toggle inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-stone-300 px-2.5 text-xs font-semibold tracking-wide text-stone-700 transition-colors hover:bg-white/70"><svg class="h-4 w-4 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg><span class="hidden sm:inline" x-text="text('installNav')">Install app</span></button>
                         <button type="button"
                                 @click="toggleLanguage()"
