@@ -1,12 +1,16 @@
 <?php
 
 test('public pages link the web app manifest', function () {
-    $this->get('/')
+    $response = $this->get('/');
+
+    $response
         ->assertOk()
         ->assertSee('rel="manifest"', false)
         ->assertSee('viewport-fit=cover', false)
         ->assertSee('meta name="theme-color" content="#f6f2eb"', false)
         ->assertSee('apple-mobile-web-app-status-bar-style" content="default"', false);
+    expect(substr_count($response->getContent(), 'name="theme-color"'))->toBe(1);
+    expect(substr_count($response->getContent(), 'name="apple-mobile-web-app-status-bar-style"'))->toBe(1);
     $this->get('/login')->assertOk()->assertSee('rel="manifest"', false);
 });
 
