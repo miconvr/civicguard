@@ -48,10 +48,10 @@
                         {{ __('Choose another way to report') }}
                     </button>
                 <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-6"
-                      x-data="{ cat: {{ Js::from((string) old('category_id', '')) }}, descs: {{ Js::from($categories->pluck('description', 'id')) }}, len: {{ strlen(old('description', '')) }}, preview: null, tooBig: false, suggested: false, timer: null,
+                      x-data="{ cat: {{ Js::from((string) old('category_id', '')) }}, descs: {{ Js::from($categories->pluck('description', 'id')) }}, len: {{ strlen(old('description', '')) }}, preview: null, tooBig: false, suggested: false, suggestionError: false, timer: null,
                           pick(e) { const f = e.target.files[0]; this.tooBig = f ? f.size > 5242880 : false; this.preview = f && !this.tooBig ? URL.createObjectURL(f) : null; if (this.tooBig) e.target.value = ''; },
                           clearPhoto() { if (this.preview) URL.revokeObjectURL(this.preview); this.preview = null; this.tooBig = false; const i = document.getElementById('photo'); if (i) i.value = ''; },
-                          suggest(text) { if (this.cat || text.length < 20) return; clearTimeout(this.timer); this.timer = setTimeout(async () => { try { const r = await fetch('{{ route('reports.suggestCategory') }}', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' }, body: JSON.stringify({ description: text }) }); const d = await r.json(); if (d.category_id && !this.cat) { this.cat = String(d.category_id); this.suggested = true; } } catch (e) {} }, 1200); } }">
+                          suggest(text) { if (this.cat || text.length < 20) return; clearTimeout(this.timer); this.suggestionError = false; this.timer = setTimeout(async () => { try { const r = await fetch('{{ route('reports.suggestCategory') }}', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' }, body: JSON.stringify({ description: text }) }); if (!r.ok) throw new Error('Category suggestion request failed'); const d = await r.json(); if (d.category_id && !this.cat) { this.cat = String(d.category_id); this.suggested = true; } } catch (e) { this.suggestionError = true; } }, 1200); } }">
                     @csrf
 
                     <div>
@@ -71,6 +71,7 @@
                         </select>
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400" x-show="cat && descs[cat]" x-text="descs[cat]"></p>
                         <p class="mt-1 text-sm font-medium text-maroon-700 dark:text-[#c27872]" x-show="suggested" x-cloak>{{ __('Suggested from your description. Change it if it is not right.') }}</p>
+                        <p class="mt-1 text-sm text-amber-700 dark:text-amber-300" x-show="suggestionError" x-cloak role="status">{{ __('AI category suggestion is unavailable. Please choose a category yourself.') }}</p>
                         @error('category_id') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                     </div>
 
