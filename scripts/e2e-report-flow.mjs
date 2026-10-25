@@ -292,7 +292,7 @@ try {
         mimeType: 'image/png',
         buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADUlEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC', 'base64'),
     });
-    await residentPage.locator('#submit-report-btn').click({ force: true });
+    await residentPage.locator('#submit-report-btn').evaluate(button => button.click());
     await residentPage.waitForURL('**/reports');
     const residentReport = residentPage.locator('article').filter({ hasText: location });
     await residentReport.locator('p.line-clamp-2').filter({ hasText: description }).waitFor({ state: 'visible' });
