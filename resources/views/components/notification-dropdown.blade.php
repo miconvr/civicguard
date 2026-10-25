@@ -15,14 +15,9 @@
 <div x-data="{
     open: false,
     unread: {{ $unreadCount }},
-    soundEnabled: window.CivicGuardSound?.isEnabled() ?? false,
     cleared: false,
     clearing: false,
     clearError: false,
-    toggleSound() {
-        this.soundEnabled = !this.soundEnabled;
-        window.CivicGuardSound?.setEnabled(this.soundEnabled);
-    },
     async clearNotifications(event) {
         if (!window.confirm(@js(__('Clear all notifications?')))) return;
 
@@ -93,16 +88,9 @@ class="relative inline-flex items-center">
             <div class="flex items-center gap-2">
                 <h3 class="text-sm font-bold text-stone-900 dark:text-stone-100">{{ __('Notifications') }}</h3>
             </div>
-            <div class="flex items-center gap-2">
-                <button type="button" @click="toggleSound()" class="inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2 text-xs font-semibold text-stone-600 hover:bg-stone-100 hover:text-maroon-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-maroon-700 dark:text-stone-300 dark:hover:bg-white/10 dark:hover:text-white" :aria-label="soundEnabled ? @js(__('Mute notification sounds')) : @js(__('Enable notification sounds'))" :title="soundEnabled ? @js(__('Mute notification sounds')) : @js(__('Enable notification sounds'))">
-                    <svg x-show="soundEnabled" x-cloak class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5 6.5 9H3v6h3.5L11 19V5Zm5.5 3.5a5 5 0 0 1 0 7M19 5.5a10 10 0 0 1 0 13"/></svg>
-                    <svg x-show="!soundEnabled" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5 6.5 9H3v6h3.5L11 19V5Zm8 6-4 4m0-4 4 4"/></svg>
-                    <span class="sr-only" x-text="soundEnabled ? @js(__('On')) : @js(__('Off'))"></span>
-                </button>
-                <a href="{{ route('notifications.index') }}" class="text-xs font-semibold text-maroon-700 hover:text-maroon-800 dark:text-[#c27872] dark:hover:text-white">
-                    {{ __('View all') }}
-                </a>
-            </div>
+            <a href="{{ route('notifications.index') }}" class="text-xs font-semibold text-maroon-700 hover:text-maroon-800 dark:text-[#c27872] dark:hover:text-white">
+                {{ __('View all') }}
+            </a>
         </div>
 
         <ul x-show="!cleared" class="max-h-80 overflow-y-auto divide-y divide-stone-100 dark:divide-white/5 overscroll-contain">
@@ -177,3 +165,4 @@ class="relative inline-flex items-center">
 
     </div>
 </div>
+
