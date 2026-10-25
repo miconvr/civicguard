@@ -2,6 +2,61 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
+const CG_SOUND_STORAGE_KEY = 'notificationSounds';
+
+function createNotificationSound() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    try {
+        const context = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(660, context.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(520, context.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.0001, context.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.045, context.currentTime + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.12);
+        oscillator.connect(gain);
+        gain.connect(context.destination);
+        oscillator.start();
+        oscillator.stop(context.currentTime + 0.12);
+        oscillator.addEventListener('ended', () => context.close(), { once: true });
+    } catch {
+        // Audio is an optional enhancement and may be unavailable in some browsers.
+    }
+}
+
+window.CivicGuardSound = {
+    isEnabled() {
+        try {
+            return localStorage.getItem(CG_SOUND_STORAGE_KEY) === 'true';
+        } catch {
+            return false;
+        }
+    },
+    setEnabled(enabled) {
+        try {
+            localStorage.setItem(CG_SOUND_STORAGE_KEY, enabled ? 'true' : 'false');
+        } catch {
+            return;
+        }
+        if (enabled) createNotificationSound();
+    },
+    play() {
+        if (this.isEnabled()) createNotificationSound();
+    },
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.querySelector('[role="status"]')) window.CivicGuardSound.play();
+    }, { once: true });
+} else if (document.querySelector('[role="status"]')) {
+    window.CivicGuardSound.play();
+}
+
 // Sample page timings without collecting URLs, account identifiers, or form data.
 (function initializeSampledWebVitals() {
     if (Math.random() >= 0.1 || !('PerformanceObserver' in window)) return;
