@@ -4,7 +4,7 @@
          trapFocus(event) {
              if (!this.open || window.innerWidth >= 1024) return;
 
-             const focusable = Array.from(this.$refs.navigation.querySelectorAll('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+             const focusable = Array.from(this.$refs.navigation.querySelectorAll('a, button, input, select, textarea, [tabindex]:not([tabindex=-1])'))
                  .filter(element => !element.disabled && element.offsetParent !== null);
              const first = focusable[0];
              const last = focusable[focusable.length - 1];
