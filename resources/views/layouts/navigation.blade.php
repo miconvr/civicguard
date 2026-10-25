@@ -66,8 +66,8 @@
         role="dialog"
         aria-modal="true"
         :aria-hidden="(!open).toString()"
-        :class="collapsed ? 'lg:!w-[76px]' : 'lg:!w-64'"
-        class="cg-app-sidebar fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] flex flex-col border-r border-white/10 lg:!flex lg:w-64 lg:max-w-none lg:sticky lg:top-0 lg:h-screen"
+        :class="[collapsed ? 'lg:!w-[76px]' : 'lg:!w-64', open ? 'pointer-events-auto' : 'pointer-events-none']"
+        class="cg-app-sidebar fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] flex flex-col border-r border-white/10 lg:!flex lg:pointer-events-auto lg:w-64 lg:max-w-none lg:sticky lg:top-0 lg:h-screen"
     >
         <!-- Brand -->
         <div class="h-16 flex items-center justify-between border-b border-white/15 px-5 shrink-0 cg-sidebar-brand">
