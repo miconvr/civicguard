@@ -118,12 +118,12 @@
             @endif
 
             @if ($isStaff)
-                <p class="{{ $groupLabel }} pt-4">{{ __('Incidents') }}</p>
+                <h2 class="{{ $groupLabel }} pt-4">{{ __('Incidents') }}</h2>
                 <x-sidebar-link icon="list" :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard', 'admin.reports.details', 'admin.reports.curfewDetails')">
                     {{ __('Incident Queue') }}
                 </x-sidebar-link>
                 <x-sidebar-link icon="chart" :href="route(in_array($role, ['admin', 'official']) ? 'admin.analytics' : 'admin.consolidatedReports')" :active="request()->routeIs('admin.analytics', 'admin.consolidatedReports')">
-                    {{ __('Reports') }}
+                    {{ in_array($role, ['admin', 'official']) ? __('Analytics') : __('Reports') }}
                 </x-sidebar-link>
                 @if (in_array($role, ['tanod', 'admin']))
                     <x-sidebar-link icon="moon" :href="route('curfew.create')" :active="request()->routeIs('curfew.create')">
@@ -132,7 +132,7 @@
                 @endif
 
                 @if (in_array($role, ['admin', 'official']))
-                <p class="{{ $groupLabel }} pt-4">{{ __('Administration') }}</p>
+                <h2 class="{{ $groupLabel }} pt-4">{{ __('Administration') }}</h2>
                 <x-sidebar-link icon="history" :href="route('admin.auditLogs')" :active="request()->routeIs('admin.auditLogs')">
                     {{ __('Audit Logs') }}
                 </x-sidebar-link>
