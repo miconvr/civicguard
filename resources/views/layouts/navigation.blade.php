@@ -34,7 +34,7 @@
     <!-- Mobile top bar -->
     <div class="cg-sidebar-mobilebar lg:hidden flex items-center justify-between h-16 px-3 border-b border-stone-200 dark:border-gray-700">
         <div class="flex items-center gap-2">
-            <button x-ref="openButton" @click="open = true" :aria-expanded="open.toString()" aria-controls="primary-navigation" aria-label="{{ __('Open menu') }}" class="p-2.5 rounded-xl text-stone-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5 focus-visible:outline-offset-0">
+            <button x-ref="openButton" @click="open = true" :aria-expanded="open ? 'true' : 'false'" aria-controls="primary-navigation" aria-label="{{ __('Open menu') }}" class="p-2.5 rounded-xl text-stone-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5 focus-visible:outline-offset-0">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
