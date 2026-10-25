@@ -265,6 +265,7 @@ try {
     await signIn(residentPage, 'resident.e2e@civicguard.test');
 
     await gotoWithRetry(residentPage, `${baseUrl}/reports/create`);
+    await residentPage.locator('#primary-navigation').waitFor({ state: 'hidden' });
     await residentPage.getByRole('button', { name: /fill out the form myself/i }).click();
     await residentPage.locator('section[aria-label="Incident report form"]').evaluate(element =>
         Promise.allSettled(element.getAnimations().map(animation => animation.finished)),
