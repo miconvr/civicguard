@@ -767,12 +767,6 @@
         background: var(--cg-surface);
     }
 
-    @media (max-width: 1023px) {
-        #primary-navigation[aria-hidden="true"] {
-            display: none !important;
-        }
-    }
-
     .cg-sidebar-link {
         transition: color var(--cg-motion-interaction) var(--cg-ease-out), background-color var(--cg-motion-interaction) var(--cg-ease-out), transform var(--cg-motion-interaction) var(--cg-ease-out);
     }
