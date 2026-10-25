@@ -266,13 +266,16 @@ try {
 
     await gotoWithRetry(residentPage, `${baseUrl}/reports/create`);
     await residentPage.getByRole('button', { name: /fill out the form myself/i }).click({ force: true });
-    await residentPage.locator('section[aria-label="Incident report form"]').evaluate(element =>
+    const residentReportForm = residentPage.locator('section[aria-label="Incident report form"]');
+    await residentReportForm.waitFor({ state: 'visible' });
+    await residentReportForm.evaluate(element =>
         Promise.allSettled(element.getAnimations().map(animation => animation.finished)),
     );
     await residentPage.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     await residentPage.waitForFunction(() => {
         const panel = document.querySelector('section[aria-label="Incident report form"]');
         return panel
+            && getComputedStyle(panel).display !== 'none'
             && Number(getComputedStyle(panel).opacity) >= 0.999
             && panel.getAnimations().every(animation => animation.playState === 'finished');
     });
