@@ -107,7 +107,7 @@
                                     </div>
                                     <ol class="cg-flow-list mt-5">
 <li class="cg-flow-row cg-flow-row-1"><span class="cg-flow-node" aria-hidden="true">1</span><div class="min-w-0"><p class="text-sm font-semibold text-stone-950" x-text="text('flow1Title')">You spot a problem</p><p class="mt-0.5 text-xs leading-5 text-stone-600 sm:text-sm" x-text="text('flow1Desc')">Something in the barangay that needs attention.</p></div></li>
-<li class="cg-flow-row cg-flow-row-2"><span class="cg-flow-node" aria-hidden="true">2</span><div class="min-w-0"><p class="text-sm font-semibold text-stone-950" x-text="text('flow2Title')">You send a report</p><p class="mt-0.5 text-xs leading-5 text-stone-600 sm:text-sm" x-text="text('flow2Desc')">Add a photo and a location pin.</p></div></li>
+<li class="cg-flow-row cg-flow-row-2"><span class="cg-flow-node" aria-hidden="true">2</span><div class="min-w-0"><p class="text-sm font-semibold text-stone-950" x-text="text('flow2Title')">You send a report</p><p class="mt-0.5 text-xs leading-5 text-stone-600 sm:text-sm" x-text="text('flow2Desc')">Add a photo and location details.</p></div></li>
 <li class="cg-flow-row cg-flow-row-3"><span class="cg-flow-node" aria-hidden="true">3</span><div class="min-w-0"><p class="text-sm font-semibold text-stone-950" x-text="text('flow3Title')">Received by tanods and officials</p><p class="mt-0.5 text-xs leading-5 text-stone-600 sm:text-sm" x-text="text('flow3Desc')">Staff see it, sorted by urgency.</p></div></li>
 <li class="cg-flow-row cg-flow-row-4"><span class="cg-flow-node" aria-hidden="true">4</span><div class="min-w-0"><p class="text-sm font-semibold text-stone-950" x-text="text('flow4Title')">In progress</p><p class="mt-0.5 text-xs leading-5 text-stone-600 sm:text-sm" x-text="text('flow4Desc')">A tanod is assigned and works on it.</p></div></li>
 <li class="cg-flow-row cg-flow-row-5"><span class="cg-flow-node" aria-hidden="true">5</span><div class="min-w-0"><p class="text-sm font-semibold text-stone-950" x-text="text('flow5Title')">Check if it is resolved</p><p class="mt-0.5 text-xs leading-5 text-stone-600 sm:text-sm" x-text="text('flow5Desc')">Confirm it is fixed, or reopen it.</p></div></li>
@@ -179,7 +179,7 @@
                     <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                             <li class="rounded-xl border border-stone-200 bg-white p-6" data-cg-scroll>
                                 <h3 class="text-base font-semibold text-stone-950" x-text="text('feat1Title')">Add a photo and location</h3>
-                                <p class="mt-2 text-sm leading-6 text-stone-700" x-text="text('feat1Text')">Attach a photo and drop a pin so staff can find the problem.</p>
+                                <p class="mt-2 text-sm leading-6 text-stone-700" x-text="text('feat1Text')">Attach a photo and add location details so staff can find the problem.</p>
                             </li>
                             <li class="rounded-xl border border-stone-200 bg-white p-6" data-cg-scroll>
                                 <h3 class="text-base font-semibold text-stone-950" x-text="text('feat2Title')">Follow every update</h3>
