@@ -84,7 +84,7 @@
                             <svg class="h-4 w-4 text-maroon-700 dark:text-[#c27872]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
                             <span id="use-location-label">{{ __('Use current location') }}</span>
                         </button>
-                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('Optional. Helps staff find the spot.') }}</p>
+                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('Required. Helps staff find the spot.') }}</p>
                         <p id="location-status" class="mt-1 text-sm text-gray-600 dark:text-gray-400" aria-live="polite"></p>
                         @error('latitude') <p class="cg-error" role="alert">{{ $message }}</p> @enderror
                         @error('longitude') <p class="cg-error" role="alert">{{ $message }}</p> @enderror

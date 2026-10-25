@@ -124,7 +124,7 @@
     "Location permission was denied. Allow location access in your browser settings, then try again.": "Hindi pinayagan ang paggamit ng lokasyon. Payagan ito sa settings ng browser at subukan muli.",
     "Your location is unavailable. Turn on location services and try again.": "Hindi makuha ang iyong lokasyon. I-on ang location services at subukan muli.",
     "Finding your location took too long. Move to an open area and try again.": "Masyadong matagal hanapin ang iyong lokasyon. Pumunta sa lugar na mas bukas at subukan muli.",
-    "Optional. Helps staff find the spot.": "Opsyonal. Nakakatulong ito sa staff na mahanap ang lugar.",
+    "Required. Helps staff find the spot.": "Kinakailangan. Nakakatulong ito sa staff na mahanap ang lugar.",
     "Prefer to just talk it through?": "Mas gusto bang ikuwento na lang?",
     "Profile Information": "Impormasyon ng Profile",
     "Profile picture": "Larawan sa profile",
