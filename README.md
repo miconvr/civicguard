@@ -94,24 +94,9 @@ GROQ_API_KEY=
 
 The request order is controlled by `AI_PROVIDERS` (default: `gemini,groq`). Chat messages and report descriptions may be sent to the configured AI provider. Review the [privacy policy](https://civicguard.wasmer.app/privacy) before enabling AI for real users.
 
-### Password reset email (optional)
+### Password recovery
 
-The password reset flow is built into the application and is available at `/forgot-password`. Local development defaults to Laravel's `log` mailer, which records the reset message in the application log instead of sending an email.
-
-For production, configure an SMTP provider in the hosting provider's secret settings. This does not require CivicGuard to use a paid plan; choose an SMTP service with a free tier or use an existing mailbox that supports SMTP. Never commit the mailbox password or SMTP credentials.
-
-```dotenv
-MAIL_MAILER=smtp
-MAIL_SCHEME=tls
-MAIL_HOST=smtp.example.com
-MAIL_PORT=587
-MAIL_USERNAME=reset@example.com
-MAIL_PASSWORD=your-smtp-password
-MAIL_FROM_ADDRESS=reset@example.com
-MAIL_FROM_NAME="CivicGuard"
-```
-
-After configuring mail, request a reset from `/forgot-password` and confirm that the message arrives before announcing the feature to residents. If email is not configured, the form should not be treated as a working production reset channel. Administrators and barangay officials can instead use the authorized-staff **Reset Resident Passwords** page to set a temporary password after confirming the resident's identity. The new password is never stored in audit logs; give it to the resident privately and ask them to change it after signing in.
+CivicGuard does not send password-reset emails. The `/forgot-password` page directs residents to a barangay administrator or official, who can use the authorized-staff **Reset Resident Passwords** page to set a temporary password after confirming the resident's identity. The new password is never stored in audit logs; give it to the resident privately and ask them to change it after signing in.
 
 ## Development checks
 
