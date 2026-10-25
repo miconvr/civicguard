@@ -4,6 +4,7 @@ test('public pages link the web app manifest', function () {
     $this->get('/')
         ->assertOk()
         ->assertSee('rel="manifest"', false)
+        ->assertSee('viewport-fit=cover', false)
         ->assertSee('apple-mobile-web-app-status-bar-style', false);
     $this->get('/login')->assertOk()->assertSee('rel="manifest"', false);
 });
