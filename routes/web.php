@@ -81,6 +81,8 @@ Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name(
     Route::get('/reports/consolidated', [ConsolidatedReportController::class, 'index'])->name('consolidatedReports');
     Route::get('/reports/consolidated/export/pdf', [ConsolidatedReportController::class, 'exportPdf'])->name('consolidatedReports.exportPdf');
     Route::get('/reports/{report}/details', [DashboardController::class, 'showDetails'])->name('reports.details');
+    Route::get('/reports/{report}/summary/pdf', [DashboardController::class, 'summaryPdf'])->name('reports.summary.pdf');
+    Route::patch('/reports/{report}/summary/review', [DashboardController::class, 'reviewSummary'])->name('reports.summary.review')->middleware('role:admin,official');
     Route::get('/reports/{report}/photo', [ReportPhotoController::class, 'show'])->name('reports.photo');
     Route::get('/reports/{report}/curfew-details', [DashboardController::class, 'showCurfewDetails'])->name('reports.curfewDetails');
 });
