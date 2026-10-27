@@ -16,7 +16,7 @@
         h2 { font-size: 12px; color: #7f1d1d; border-bottom: 1px solid #d1d5db; padding-bottom: 2px; margin: 14px 0 5px; }
         p { margin: 0 0 4px; white-space: pre-line; }
         .sign { width: 100%; margin-top: 38px; border-collapse: collapse; }
-        .sign td { width: 50%; text-align: center; padding: 0 14px; vertical-align: bottom; }
+        .sign td { width: 50%; text-align: center; padding: 0 14px; vertical-align: top; }
         .line { border-top: 1px solid #1f2937; margin-top: 30px; padding-top: 3px; font-weight: bold; }
         .role { color: #6b7280; font-size: 10px; }
         .foot { margin-top: 22px; color: #6b7280; font-size: 9px; text-align: center; }
@@ -64,11 +64,11 @@
     <table class="sign">
         <tr>
             <td>
-                <div class="line">{{ $summary->writer->name ?? '' }}</div>
+                <div class="line">{{ $summary->writer->name ?? '' }}&nbsp;</div>
                 <div class="role">{{ __('Prepared by') }} &middot; {{ \App\Support\LocalizedDate::format($summary->updated_at, 'M d, Y') }}</div>
             </td>
             <td>
-                <div class="line">{{ $summary->reviewer->name ?? '' }}</div>
+                <div class="line">{{ $summary->reviewer->name ?? '' }}&nbsp;</div>
                 <div class="role">{{ __('Reviewed by (barangay official)') }}@if ($summary->reviewed_at) &middot; {{ \App\Support\LocalizedDate::format($summary->reviewed_at, 'M d, Y') }}@endif</div>
             </td>
         </tr>
