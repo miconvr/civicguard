@@ -27,7 +27,14 @@
             'followUp' => (bool) old('summary_follow_up_needed', $summary?->follow_up_needed ?? false),
             'followUpNotes' => old('summary_follow_up_notes', $summary?->follow_up_notes ?? ''),
         ];
-        $formState = ['status' => old('status', $report->status), 's' => $summaryState, 'wasResolved' => $report->status === 'resolved'];
+        $formState = [
+            'status' => old('status', $report->status),
+            's' => $summaryState,
+            'wasResolved' => $report->status === 'resolved',
+            'hasSummary' => (bool) $summary,
+            'editing' => $errors->any(),
+            'checkOn' => (int) session('summary_saved', 0) === (int) $report->id,
+        ];
     @endphp
 
     <div class="py-8">
@@ -113,7 +120,7 @@
 
             @if (in_array(auth()->user()->role, ['admin', 'official'], true))
             <div class="cg-card">
-                <form method="POST" action="{{ route('admin.reports.update', $report) }}" x-data="{{ Js::from($formState) }}" class="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-start">
+                <form method="POST" action="{{ route('admin.reports.update', $report) }}" x-data="{{ Js::from($formState) }}" x-init="if (checkOn) setTimeout(() => checkOn = false, 2600)" class="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-start">
                     @csrf
                     @method('PATCH')
                     <div>
@@ -147,17 +154,21 @@
                         'model' => 's',
                         'showExpr' => "status === 'resolved'",
                         'requiredExpr' => "status === 'resolved' && !wasResolved",
+                        'lockedExpr' => 'wasResolved && hasSummary && !editing',
+                        'editingExpr' => 'wasResolved && hasSummary && editing',
+                        'unlockStmt' => 'editing = true',
                         'idPrefix' => 'details-summary',
                         'wrapperClass' => 'sm:col-span-3',
                     ])
-                    <div class="sm:col-span-3">
+                    <div class="sm:col-span-3 flex flex-wrap items-center gap-3">
                         <button type="submit" class="cg-btn">{{ __('Save changes') }}</button>
+                        <x-save-check when="checkOn" />
                     </div>
                 </form>
             </div>
             @else
             <div class="cg-card">
-                <form method="POST" action="{{ route('admin.reports.updateStatus', $report) }}" x-data="{{ Js::from($formState) }}" class="flex flex-col gap-3">
+                <form method="POST" action="{{ route('admin.reports.updateStatus', $report) }}" x-data="{{ Js::from($formState) }}" x-init="if (checkOn) setTimeout(() => checkOn = false, 2600)" class="flex flex-col gap-3">
                     <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
                     @csrf
                     @method('PATCH')
@@ -169,12 +180,18 @@
                             <option value="resolved" @selected($report->status === 'resolved')>{{ __('Resolved') }}</option>
                         </select>
                     </div>
-                    <button type="submit" class="cg-btn">{{ __('Save') }}</button>
+                    <div class="flex items-center gap-3">
+                        <button type="submit" class="cg-btn">{{ __('Save') }}</button>
+                        <x-save-check when="checkOn" />
+                    </div>
                     </div>
                     @include('admin.partials.resolution-summary-fields', [
                         'model' => 's',
                         'showExpr' => "status === 'resolved'",
                         'requiredExpr' => "status === 'resolved' && !wasResolved",
+                        'lockedExpr' => 'wasResolved && hasSummary && !editing',
+                        'editingExpr' => 'wasResolved && hasSummary && editing',
+                        'unlockStmt' => 'editing = true',
                         'idPrefix' => 'details-summary',
                     ])
                 </form>

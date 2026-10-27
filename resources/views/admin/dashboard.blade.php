@@ -3,11 +3,20 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">{{ __("Incident Queue") }}</h2>
     </x-slot>
 
-    <div class="py-12" x-data="{ open: false, r: null }" @keydown.escape.window="open = false">
+    <div class="py-12" x-data="{ open: false, r: null, checkOn: false, savedId: {{ (int) session('summary_saved', 0) }} }"
+         x-init="if (savedId) { $nextTick(() => { const row = [...document.querySelectorAll('tr[data-report-id]')].find(el => el.dataset.reportId == savedId); if (row) { row.click(); checkOn = true; setTimeout(() => checkOn = false, 2600); } }); }"
+         @keydown.escape.window="open = false">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             @if (session('status'))
-                <div role="status" class="font-medium text-sm text-green-700 bg-green-50 dark:bg-green-900/30 dark:text-green-300 px-4 py-3 rounded-lg">
+                <div role="status" class="flex items-center gap-2 font-medium text-sm text-green-700 bg-green-50 dark:bg-green-900/30 dark:text-green-300 px-4 py-3 rounded-lg">
+                    @if (session('summary_saved'))
+                        <span class="t-success-check shrink-0" data-state="in" aria-hidden="true">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m5 12.5 4 4L19 7" />
+                            </svg>
+                        </span>
+                    @endif
                     {{ session('status') }}
                 </div>
             @endif
@@ -108,6 +117,8 @@
                                         'status' => __(ucwords(str_replace('_', ' ', $report->status))),
                                         'statusValue' => $report->status,
                                         'wasResolved' => $report->status === 'resolved',
+                                        'hasSummary' => (bool) $report->resolutionSummary,
+                                        'editing' => false,
                                         'summary' => [
                                             'type' => $report->resolutionSummary?->resolution_type ?? '',
                                             'narrative' => $report->resolutionSummary?->narrative ?? '',
@@ -124,7 +135,7 @@
                                         'details' => route('admin.reports.details', $report),
                                     ];
                                 @endphp
-                                <tr class="cursor-pointer hover:bg-black/5 dark:hover:bg-white/5" tabindex="0"
+                                <tr class="cursor-pointer hover:bg-black/5 dark:hover:bg-white/5" tabindex="0" data-report-id="{{ $report->id }}"
                                     @click="r = {{ Js::from($payload) }}; open = true"
                                     @keydown.enter="r = {{ Js::from($payload) }}; open = true">
                                     <td data-label="Severity"><span class="cg-sev cg-sev-{{ $report->severity }}">{{ __(ucfirst($report->severity)) }}</span></td>
@@ -249,6 +260,9 @@
                             'model' => 'r.summary',
                             'showExpr' => "r.statusValue === 'resolved'",
                             'requiredExpr' => "r.statusValue === 'resolved' && !r.wasResolved",
+                            'lockedExpr' => 'r.wasResolved && r.hasSummary && !r.editing',
+                            'editingExpr' => 'r.wasResolved && r.hasSummary && r.editing',
+                            'unlockStmt' => 'r.editing = true',
                             'idPrefix' => 'drawer-summary',
                         ])
 
@@ -265,9 +279,12 @@
                             </div>
                         @endif
 
-                        <button type="submit" class="min-h-11 w-full rounded-lg bg-maroon-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-maroon-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon-600 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900">
-                            Save changes
-                        </button>
+                        <div class="flex items-center gap-3">
+                            <button type="submit" class="min-h-11 flex-1 rounded-lg bg-maroon-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-maroon-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon-600 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900">
+                                Save changes
+                            </button>
+                            <x-save-check when="checkOn" />
+                        </div>
                     </form>
 
                     <p x-show="!r.canStatus" x-cloak class="text-sm text-gray-500 dark:text-gray-400">{{ __("Only the assigned tanod or an admin can update this report.") }}</p>
