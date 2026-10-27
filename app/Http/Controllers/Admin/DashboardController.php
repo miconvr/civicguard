@@ -132,7 +132,9 @@ class DashboardController extends Controller
             ]);
         });
 
-        return redirect()->back()->with('status', __('Report status updated.'));
+        $redirect = redirect()->back()->with('status', __('Report status updated.'));
+
+        return $withSummary ? $redirect->with('summary_saved', $report->id) : $redirect;
     }
 
     public function updateQueueReport(Request $request, Report $report)
@@ -247,7 +249,9 @@ class DashboardController extends Controller
             $report->save();
         });
 
-        return redirect()->back()->with('status', __('Report changes saved.'));
+        $redirect = redirect()->back()->with('status', __('Report changes saved.'));
+
+        return $withSummary ? $redirect->with('summary_saved', $report->id) : $redirect;
     }
 
     public function updateSeverity(Request $request, Report $report)
