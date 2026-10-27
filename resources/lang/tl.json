@@ -646,5 +646,9 @@
     "What did you find on arrival, and what happened?": "Ano ang inabutan mo pagdating, at ano ang nangyari?",
     "What did you or the barangay do about it?": "Ano ang ginawa mo o ng barangay tungkol dito?",
     "What still needs to be done, and by whom?": "Ano pa ang kailangang gawin, at sino ang gagawa?",
-    "Written by :name": "Isinulat ni :name"
+    "Written by :name": "Isinulat ni :name",
+    "Edit summary": "I-edit ang buod",
+    "Saved and locked. Click Edit to change it.": "Nai-save at naka-lock. I-click ang Edit para baguhin.",
+    "You are editing a saved summary. Save to lock it again.": "Ine-edit mo ang naka-save na buod. I-save para i-lock muli.",
+    "Saved": "Nai-save"
 }

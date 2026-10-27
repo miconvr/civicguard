@@ -176,3 +176,35 @@ test('staff can download the summary pdf', function () {
         ->assertOk()
         ->assertHeader('content-type', 'application/pdf');
 });
+
+test('saving a summary flags the save so the green check can show', function () {
+    $tanod = User::factory()->create(['role' => 'tanod']);
+    $report = summaryTestReport(['assigned_to' => $tanod->id]);
+
+    $this->actingAs($tanod)
+        ->patch(route('admin.reports.update', $report), ['status' => 'resolved'] + validSummary())
+        ->assertSessionHas('summary_saved', $report->id);
+
+    $this->actingAs($tanod)
+        ->patch(route('admin.reports.update', $report), ['status' => 'resolved'])
+        ->assertSessionMissing('summary_saved');
+});
+
+test('a saved summary is shown locked with an edit button and can still be changed', function () {
+    $tanod = User::factory()->create(['role' => 'tanod']);
+    $report = summaryTestReport(['assigned_to' => $tanod->id]);
+
+    $this->actingAs($tanod)
+        ->patch(route('admin.reports.update', $report), ['status' => 'resolved'] + validSummary());
+
+    $this->actingAs($tanod)
+        ->get(route('admin.reports.details', $report))
+        ->assertOk()
+        ->assertSee('Edit summary');
+
+    $this->actingAs($tanod)
+        ->patch(route('admin.reports.update', $report), ['status' => 'resolved'] + validSummary(['summary_action_taken' => 'Updated the action after a follow-up visit.']))
+        ->assertSessionHasNoErrors();
+
+    expect($report->fresh()->resolutionSummary->action_taken)->toBe('Updated the action after a follow-up visit.');
+});
