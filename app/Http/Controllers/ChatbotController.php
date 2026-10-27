@@ -45,7 +45,7 @@ class ChatbotController extends Controller
             ."- How do I report an incident? Choose a category, describe what happened, provide the location, and optionally attach a photo.\n"
             ."- How can I track my report? Open My Reports after signing in to see whether it is Pending, In Progress, or Resolved.\n"
             ."- What do the urgency levels mean? Low, Moderate, High, and Critical help officials prioritize responses.\n"
-            ."- What should I do during an emergency? Contact barangay officials or emergency authorities immediately; do not wait for the app.\n"
+            ."- What should I do during an emergency? Call 911 or contact barangay officials immediately; do not wait for the app.\n"
             ."- How are curfew violations recorded? Authorized tanods log the minor's details, guardian information, apprehension location, prior violations, and notes.";
 
         $systemPrompt = "You are CivicGuard's AI chatbot, helping residents file incident reports through conversation. "
@@ -56,7 +56,7 @@ class ChatbotController extends Controller
             .'2) a description of what happened, '
             .'3) the location. '
             .'Infer the category from the meaning of the resident\'s description in English, Tagalog, or Taglish; do not ask the resident to name a category when the incident clearly identifies one. For example, a fight or argument between people, including "may nag-away dito", "nag-aaway sila", or "may nag-away sa amin", is Dispute. Loud neighbors, "maingay dito", "may nagingay dito", "may nag-iingay dito", loud music, or repeated noise is Noise Complaint. Loud public commotion or people causing a broader public disturbance is Public Disturbance; a roaming/stray dog or cat is Stray Animal; a curfew violation is Curfew Violation; damaging property or graffiti is Vandalism. Use only categories that exist in the list above, keep the exact English category name in the hidden JSON, and ask one short clarifying question if the meaning is genuinely unclear. Treat the category as a suggestion for the resident to review. '
-            .'Keep every message short and friendly. For example, after a resident describes a fight in English, say "Thanks for the details. I’ll classify this as **"Dispute"**. Where exactly did it happen?". If they describe it in Tagalog, reply naturally in Tagalog, such as "Salamat po sa detalye. Iuuri ko ito bilang **"Dispute"**. Saan eksaktong nangyari ang insidente?" If it sounds like an active emergency, tell them to contact barangay officials or authorities immediately instead of continuing the form. '
+            .'Keep every message short and friendly. For example, after a resident describes a fight in English, say "Thanks for the details. I’ll classify this as **"Dispute"**. Where exactly did it happen?". If they describe it in Tagalog, reply naturally in Tagalog, such as "Salamat po sa detalye. Iuuri ko ito bilang **"Dispute"**. Saan eksaktong nangyari ang insidente?" If it sounds like an active emergency, tell them to call 911 or contact barangay officials immediately instead of continuing the form, and begin that reply with the hidden marker ###EMERGENCY### (the resident will not see it). Use the marker only when someone may be in immediate danger, never for ordinary reports or FAQ answers. '
             .'For the location stored in report JSON, extract the place name itself and omit leading location words or prepositions such as "sa", "nasa", "doon sa", "at", "in", or "on". For example, if the resident says "sa Rizal", store "Rizal"; if they say "sa Rizal Street", store "Rizal Street". Keep all words that belong to the place name, and do not guess or add details. '
             .'Once you have all three required pieces of information clearly, tell the resident in their language that the report details are ready and ask whether they would like to attach an optional photo. Tell them they can add it with the upload button in the review card. Do not wait for their answer about the photo; immediately after that short message, on a new line append exactly this hidden marker with the collected data as JSON (the resident will not see this marker, only your normal message): '
             .'###REPORT_DATA###{"category":"exact category name from the list","description":"what happened","location":"the location"}###END### '
@@ -64,8 +64,8 @@ class ChatbotController extends Controller
             ."Answer FAQ questions using this approved context:\n{$faqContext}";
 
         if ($emergencyAcknowledged) {
-            $systemPrompt .= "\n\nThe resident has confirmed they are safe and wants to continue filing a report. "
-                .'Do not repeat the emergency warning. Continue gathering the three pieces of information.';
+            $systemPrompt .= "\n\nThe resident saw the emergency guidance and chose to continue filing a report. "
+                .'Do not repeat the emergency warning or the ###EMERGENCY### marker. Continue gathering the three pieces of information.';
         }
 
         $tagalogResponse = $languageHint !== 'English';
@@ -78,6 +78,13 @@ class ChatbotController extends Controller
 
         $modelNote = $this->modelNote($ai, (bool) $rawReply);
         $rawReply = $rawReply ?: $this->faqFallback($validated['message'], $tagalogResponse);
+
+        // The AI (or the built-in fallback) can also tell the resident to call 911.
+        // Flag that too, so the chat always offers "Continue with my report".
+        $aiFlaggedEmergency = str_contains($rawReply, '###EMERGENCY###');
+        $rawReply = trim(str_replace('###EMERGENCY###', '', $rawReply));
+        $showEmergencyActions = ! $emergencyAcknowledged
+            && ($aiFlaggedEmergency || $this->replyPointsToEmergencyHelp($rawReply));
 
         $reportData = null;
         if (preg_match('/###REPORT_DATA###(.*?)###END###/s', $rawReply, $matches)) {
@@ -104,7 +111,12 @@ class ChatbotController extends Controller
             'session_id' => $sessionId,
             'report_data' => $reportData,
             'model_note' => $modelNote,
-        ]);
+        ] + ($showEmergencyActions ? ['emergency' => true] : []));
+    }
+
+    private function replyPointsToEmergencyHelp(string $reply): bool
+    {
+        return (bool) preg_match('/\b911\b/u', $reply);
     }
 
     private function modelNote(AiRouter $ai, bool $answeredByAi): ?string
@@ -124,7 +136,7 @@ class ChatbotController extends Controller
 
     private function looksLikeEmergency(string $message): bool
     {
-        $pattern = '/\b(gun|gunshot|firearm|knife|machete|weapon|stab|stabbed|stabbing|shot|shooting|fire|unconscious|not breathing|bleeding|kidnap|kidnapped|dying|attacked|baril|binaril|patalim|kutsilyo|sinaksak|sunog|walang malay|dumudugo)\b/iu';
+        $pattern = '/\b(gun|gunshot|firearm|knife|machete|weapon|stab|stabbed|stabbing|shot|shooting|fire|unconscious|not breathing|bleeding|kidnap|kidnapped|dying|attacked|baril|binaril|pinagbabaril|nagbabaril|patalim|kutsilyo|sinaksak|sunog|walang malay|dumudugo|hostage|bomb|bomba|rape|raped|ginahasa|drowning|nalulunod|heart attack|inaatake|overdose|suicide|suicidal|kill myself|magpakamatay|magpapakamatay|papatayin)\b/iu';
 
         return (bool) preg_match($pattern, $message);
     }
@@ -135,8 +147,8 @@ class ChatbotController extends Controller
 
         if (str_contains($message, 'emergency') || str_contains($message, 'urgent')) {
             return $tagalog
-                ? 'Kung may agarang emergency, makipag-ugnayan agad sa mga opisyal ng barangay o awtoridad. Huwag hintayin ang app.'
-                : 'For an active emergency, contact barangay officials or emergency authorities immediately. Do not wait for the app.';
+                ? 'Kung may agarang emergency, tumawag sa 911 o makipag-ugnayan agad sa mga opisyal ng barangay. Huwag hintayin ang app.'
+                : 'For an active emergency, call 911 or contact barangay officials immediately. Do not wait for the app.';
         }
 
         if (str_contains($message, 'status') || str_contains($message, 'track')) {

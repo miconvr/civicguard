@@ -12,6 +12,17 @@
                 </div>
             @endif
 
+            @if ($errors->any())
+                <div role="alert" class="text-sm text-red-800 bg-red-50 dark:bg-red-900/30 dark:text-red-200 px-4 py-3 rounded-lg">
+                    <p class="font-semibold">{{ __('The report was not saved. Open it again and complete the incident summary.') }}</p>
+                    <ul class="mt-1 list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             {{-- Summary cards (each one is a filter) --}}
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach ([
@@ -95,6 +106,16 @@
                                         'canStatus' => auth()->user()->role !== 'tanod' || (int) $report->assigned_to === (int) auth()->id(),
                                         'sevClass' => 'cg-sev-' . $report->severity,
                                         'status' => __(ucwords(str_replace('_', ' ', $report->status))),
+                                        'statusValue' => $report->status,
+                                        'wasResolved' => $report->status === 'resolved',
+                                        'summary' => [
+                                            'type' => $report->resolutionSummary?->resolution_type ?? '',
+                                            'narrative' => $report->resolutionSummary?->narrative ?? '',
+                                            'action' => $report->resolutionSummary?->action_taken ?? '',
+                                            'persons' => $report->resolutionSummary?->persons_involved ?? '',
+                                            'followUp' => (bool) $report->resolutionSummary?->follow_up_needed,
+                                            'followUpNotes' => $report->resolutionSummary?->follow_up_notes ?? '',
+                                        ],
                                         'assigned_to' => (string) $report->assigned_to,
                                         'filed' => \App\Support\LocalizedDate::format($report->created_at, 'M d, Y g:i A'),
                                         'photo' => $report->photo_path ? route('admin.reports.photo', $report) : null,
@@ -216,12 +237,20 @@
                         {{-- Status --}}
                         <div class="space-y-2">
                             <label for="report-status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __("Status") }}</label>
-                            <select id="report-status" name="status" x-model="r.status" :disabled="!r.canStatus" class="cg-select w-full">
+                            <select id="report-status" name="status" x-model="r.statusValue" :disabled="!r.canStatus" class="cg-select w-full">
                                 <option value="pending">{{ __("Pending") }}</option>
                                 <option value="in_progress">{{ __("In progress") }}</option>
                                 <option value="resolved">{{ __("Resolved") }}</option>
                             </select>
                         </div>
+
+                        {{-- Incident summary (required when resolving) --}}
+                        @include('admin.partials.resolution-summary-fields', [
+                            'model' => 'r.summary',
+                            'showExpr' => "r.statusValue === 'resolved'",
+                            'requiredExpr' => "r.statusValue === 'resolved' && !r.wasResolved",
+                            'idPrefix' => 'drawer-summary',
+                        ])
 
                         {{-- Assignment --}}
                         @if (in_array(auth()->user()->role, ['admin', 'official']))
