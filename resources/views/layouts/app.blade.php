@@ -54,7 +54,7 @@
                     {{ $slot }}
                 </main>
 
-                <footer class="py-6 text-center text-xs text-stone-600 dark:text-gray-400">
+                <footer class="cg-app-footer py-6 text-center text-xs text-stone-600 dark:text-gray-400">
                     CivicGuard &middot; Barangay Maimpis Incident Management System
                 </footer>
             </div>

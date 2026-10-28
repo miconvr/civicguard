@@ -578,7 +578,7 @@
     "Dark": "Madilim",
     "What you can see": "Mga makikita mo",
     "Your report summary includes reports assigned to you or filed under your account. Curfew Monitoring includes only records you logged.": "Kasama sa buod mo ang mga ulat na nakatalaga sa iyo o naisumite gamit ang account mo. Ipinapakita sa Pagsubaybay sa Curfew ang mga tala na ikaw ang nag-log lamang.",
-    "Residence verification result": "Resulta ng beripikasyon ng paninirahan",
+    "Resident Verification Result": "Resulta ng Beripikasyon ng Residente",
     "Your Maimpis residency verification": "Beripikasyon ng paninirahan mo sa Maimpis",
     "Approved": "Naaprubahan",
     "Reason for decline": "Dahilan ng pagtanggi",
@@ -650,5 +650,6 @@
     "Edit summary": "I-edit ang buod",
     "Saved and locked. Click Edit to change it.": "Nai-save at naka-lock. I-click ang Edit para baguhin.",
     "You are editing a saved summary. Save to lock it again.": "Ine-edit mo ang naka-save na buod. I-save para i-lock muli.",
-    "Saved": "Nai-save"
+    "Saved": "Nai-save",
+    "Update report": "I-update ang ulat"
 }
