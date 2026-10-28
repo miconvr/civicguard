@@ -2263,10 +2263,8 @@ html.cg-theme-switching *::after {
     backdrop-filter: blur(2px);
 }
 
-@media (min-width: 1024px) {
-    .cg-drawer-backdrop { left: 16rem; }
-    .cg-sidebar-collapsed .cg-drawer-backdrop { left: 76px; }
-}
+/* Keep the left nav under the backdrop so it blurs with the rest of the page */
+.cg-drawer-open .cg-app-sidebar { z-index: 30; }
 
 .cg-drawer-panel {
     background-color: var(--cg-surface-raised);
@@ -2282,16 +2280,16 @@ html:has(body.cg-drawer-open) { scrollbar-gutter: stable; }
     z-index: 41;
 }
 
-/* Shared motion recipe for panel content: rise 8px using the standard enter timing, 50ms stagger.
+/* Shared motion recipe for panel content: rise 4px using the interaction timing, 30ms stagger.
    Movement only, so text is never half-faded when read by people or contrast audits. */
 @media (prefers-reduced-motion: no-preference) {
     .cg-drawer-section {
-        animation: cg-drawer-rise var(--cg-motion-enter) var(--cg-ease-out) both;
-        animation-delay: calc(var(--i, 0) * 50ms);
+        animation: cg-drawer-rise var(--cg-motion-interaction) var(--cg-ease-out) both;
+        animation-delay: calc(var(--i, 0) * 30ms);
     }
 }
 
 @keyframes cg-drawer-rise {
-    from { transform: translateY(8px); }
+    from { transform: translateY(4px); }
     to { transform: none; }
 }
