@@ -206,7 +206,7 @@
                     </div>
 
                     @if ($summary)
-                        <div class="cg-card" id="resolution-summary">
+                        <div class="cg-card" id="resolution-summary" data-reveal>
                             <div class="flex flex-wrap items-start justify-between gap-3">
                                 <div>
                                     <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __('Incident summary') }}</h3>

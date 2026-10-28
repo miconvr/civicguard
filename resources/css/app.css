@@ -2252,3 +2252,39 @@ html.cg-theme-switching *::after {
         color: #e7e5e4;
     }
 }
+
+/* Report drawer: blur the page behind it (not the left sidebar) and keep header/footer text sharp */
+.cg-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background-color: rgb(27 25 25 / 38%);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+
+@media (min-width: 1024px) {
+    .cg-drawer-backdrop { left: 16rem; }
+    .cg-sidebar-collapsed .cg-drawer-backdrop { left: 76px; }
+}
+
+.cg-drawer-panel {
+    background-color: var(--cg-surface-raised);
+    border-left: 1px solid var(--cg-border);
+}
+
+/* Lift header and footer content above the backdrop so only their background is blurred */
+.cg-drawer-open { overflow: hidden; }
+html:has(body.cg-drawer-open) { scrollbar-gutter: stable; }
+.cg-drawer-open .cg-app-header > div,
+.cg-drawer-open .cg-app-footer {
+    position: relative;
+    z-index: 41;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .cg-drawer-section {
+        animation: cg-rise var(--cg-motion-emphasis) var(--cg-ease-out) both;
+        animation-delay: calc(var(--i, 0) * 55ms + 90ms);
+    }
+}
