@@ -2252,26 +2252,3 @@ html.cg-theme-switching *::after {
         color: #e7e5e4;
     }
 }
-
-/* Report drawer: blur the page behind it (not the left sidebar) and keep header/footer text sharp */
-.cg-drawer-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 90;
-    background-color: rgb(28 25 23 / 30%);
-}
-
-/* Keep the left nav under the backdrop so it blurs with the rest of the page */
-
-.cg-drawer-panel {
-    background-color: var(--cg-surface-raised);
-    border-left: 1px solid var(--cg-border);
-}
-
-/* Lift header and footer content above the backdrop so only their background is blurred */
-.cg-drawer-open { overflow: hidden; }
-html:has(body.cg-drawer-open) { scrollbar-gutter: stable; }
-
-/* Shared motion recipe for panel content: rise 4px using the interaction timing, 30ms stagger.
-   Movement only, so text is never half-faded when read by people or contrast audits. */
-
