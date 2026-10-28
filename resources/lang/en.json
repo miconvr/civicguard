@@ -192,7 +192,7 @@
     "Search reports": "Search reports",
     "What you can see": "What you can see",
     "Your report summary includes reports assigned to you or filed under your account. Curfew Monitoring includes only records you logged.": "Your report summary includes reports assigned to you or filed under your account. Curfew Monitoring includes only records you logged.",
-    "Residence verification result": "Residence verification result",
+    "Resident Verification Result": "Resident Verification Result",
     "Your Maimpis residency verification": "Your Maimpis residency verification",
     "Approved": "Approved",
     "Reason for decline": "Reason for decline",
@@ -215,5 +215,6 @@
     "Notifications cleared.": "Notifications cleared.",
     "Clearing...": "Clearing...",
     "Could not clear notifications. Please try again.": "Could not clear notifications. Please try again.",
-    "Your residence verification was declined. Reason: :reason": "Your residence verification was declined. Reason: :reason"
+    "Your residence verification was declined. Reason: :reason": "Your residence verification was declined. Reason: :reason",
+    "Update report": "Update report"
 }
