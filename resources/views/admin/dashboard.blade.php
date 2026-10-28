@@ -184,15 +184,15 @@
             </div>
         </div>
 
-        {{-- Report sidebar: slides in from the right over the queue. A light dim sits behind it; the left nav stays untouched. --}}
+        {{-- Report sidebar: eases in from the right. A light dim and 2px blur cover the whole page behind it. --}}
         <div x-show="open" x-cloak
-             x-transition:enter="transition-opacity ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+             x-transition:enter="transition-opacity ease-[var(--cg-ease-out)] duration-[var(--cg-motion-interaction)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
              x-transition:leave="transition-opacity ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
              class="cg-drawer-backdrop" aria-hidden="true" @click="open = false"></div>
         <aside x-show="open" x-cloak
                x-effect="if (open) $nextTick(() => $refs.drawerClose && $refs.drawerClose.focus())"
-               x-transition:enter="transition-transform ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
-               x-transition:leave="transition-transform ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
+               x-transition:enter="transition-transform ease-[var(--cg-ease-out)] duration-[var(--cg-motion-interaction)]" x-transition:enter-start="translate-x-6" x-transition:enter-end="translate-x-0"
+               x-transition:leave="transition-transform ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-6"
                role="dialog" aria-modal="true" aria-label="{{ __("Report details") }}"
                class="cg-drawer-panel fixed inset-y-0 right-0 z-50 flex w-full max-w-lg flex-col shadow-xl">
             <template x-if="r">
