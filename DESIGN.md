@@ -49,12 +49,12 @@ Use this document as visual guidance, not as permission to change routes, roles,
 Pick one of these instead of inventing a new animation. Timings are the tokens in `resources/css/app.css` (`:root`).
 
 - **Page and card entrance:** `data-reveal` on cards (staggered fade and 12px rise) and `cg-page-enter` on `<main>`.
-- **Side panel (staff report sidebar):** slides in from the right with `--cg-motion-enter` and out with `--cg-motion-exit`. The dim behind it fades with the same timings. Its sections rise 8px with `.cg-drawer-section` and `style="--i: n"`, 50ms apart.
+- **Side panel (staff report sidebar):** eases in 24px from the right with `--cg-motion-interaction` and out with `--cg-motion-exit`. The dim behind it fades with the same timings. Its sections rise 4px with `.cg-drawer-section` and `style="--i: n"`, 30ms apart.
 - **Show or hide a block (summary banner, follow-up notes):** `x-transition` fade plus 4px rise, `--cg-motion-enter` in and `--cg-motion-exit` out.
 - **Dropdown that expands in place (decline reason):** grid-rows `0fr` to `1fr` with `--cg-motion-interaction`, plus a chevron that rotates with the same timing.
 - **Buttons and hover:** `--cg-motion-interaction`, 1px lift on `.cg-btn`, `.cg-btn-secondary` and `.cg-motion-lift`.
 - **Contrast audits:** content inside a panel that opens on click must move with `transform` only. Fading text is read mid-fade by the accessibility check and fails it.
-- **Overlay dim:** a light dim with a 2px blur, the same recipe as the mobile menu overlay. Keep the left sidebar uncovered on desktop.
+- **Overlay dim:** a light dim with a 2px blur, the same recipe as the mobile menu overlay. It covers the whole page, including the left nav.
 
 ## Accessibility and responsive behavior
 
