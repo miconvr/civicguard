@@ -2268,9 +2268,29 @@ html.cg-theme-switching *::after {
     .cg-sidebar-collapsed .cg-drawer-backdrop { left: 76px; }
 }
 
-.cg-drawer-panel {
+.cg-modal-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    pointer-events: none;
+}
+
+@media (min-width: 640px) {
+    .cg-modal-wrap { padding: 1.5rem; }
+}
+
+@media (min-width: 1024px) {
+    .cg-modal-wrap { left: 16rem; }
+    .cg-sidebar-collapsed .cg-modal-wrap { left: 76px; }
+}
+
+.cg-modal-panel {
     background-color: var(--cg-surface-raised);
-    border-left: 1px solid var(--cg-border);
+    border: 1px solid var(--cg-border);
 }
 
 /* Lift header and footer content above the backdrop so only their background is blurred */
@@ -2280,17 +2300,4 @@ html:has(body.cg-drawer-open) { scrollbar-gutter: stable; }
 .cg-drawer-open .cg-app-footer {
     position: relative;
     z-index: 41;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    /* Movement only: fading text would be sampled mid-opacity by contrast audits. */
-    .cg-drawer-section {
-        animation: cg-drawer-rise var(--cg-motion-emphasis) var(--cg-ease-out) both;
-        animation-delay: calc(var(--i, 0) * 55ms);
-    }
-}
-
-@keyframes cg-drawer-rise {
-    from { transform: translateY(10px); }
-    to { transform: none; }
 }
