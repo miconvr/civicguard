@@ -216,5 +216,6 @@
     "Clearing...": "Clearing...",
     "Could not clear notifications. Please try again.": "Could not clear notifications. Please try again.",
     "Your residence verification was declined. Reason: :reason": "Your residence verification was declined. Reason: :reason",
-    "Update report": "Update report"
+    "Update report": "Update report",
+    "Confirm decline": "Confirm decline"
 }
