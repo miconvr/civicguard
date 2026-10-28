@@ -27,12 +27,12 @@
                         </form>
                         <button type="button" @click="declining = !declining; if (declining) $nextTick(() => $refs.reason.focus())" :aria-expanded="declining.toString()" aria-expanded="false" aria-controls="decline-panel-{{ $verification->id }}" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-800 transition-colors hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-900/20">
                             {{ __('Decline') }}
-                            <svg class="h-4 w-4 transition-transform duration-[var(--cg-motion-fast)] motion-reduce:transition-none" :class="declining ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 7.22a.75.75 0 0 1 1.06 0L10 10.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+                            <svg class="h-4 w-4 transition-transform duration-[var(--cg-motion-interaction)] motion-reduce:transition-none" :class="declining ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 7.22a.75.75 0 0 1 1.06 0L10 10.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
                         </button>
                     </div>
 
                     {{-- Decline dropdown: the reason is written here --}}
-                    <div id="decline-panel-{{ $verification->id }}" inert x-bind:inert="!declining" class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--cg-motion-fast)] ease-[var(--cg-ease-out)] motion-reduce:transition-none" :style="declining ? 'grid-template-rows: 1fr' : ''">
+                    <div id="decline-panel-{{ $verification->id }}" inert x-bind:inert="!declining" class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--cg-motion-interaction)] ease-[var(--cg-ease-out)] motion-reduce:transition-none" :style="declining ? 'grid-template-rows: 1fr' : ''">
                         <div class="overflow-hidden">
                             <form method="post" action="{{ route('admin.verifications.decide', $verification) }}" data-confirm="{{ __('Decline this verification request?') }}" class="space-y-3 rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950/30">
                                 @csrf
