@@ -2258,9 +2258,9 @@ html.cg-theme-switching *::after {
     position: fixed;
     inset: 0;
     z-index: 40;
-    background-color: rgb(27 25 25 / 38%);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
+    background-color: rgb(28 25 23 / 30%);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
 }
 
 @media (min-width: 1024px) {
@@ -2268,29 +2268,9 @@ html.cg-theme-switching *::after {
     .cg-sidebar-collapsed .cg-drawer-backdrop { left: 76px; }
 }
 
-.cg-modal-wrap {
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    pointer-events: none;
-}
-
-@media (min-width: 640px) {
-    .cg-modal-wrap { padding: 1.5rem; }
-}
-
-@media (min-width: 1024px) {
-    .cg-modal-wrap { left: 16rem; }
-    .cg-sidebar-collapsed .cg-modal-wrap { left: 76px; }
-}
-
-.cg-modal-panel {
+.cg-drawer-panel {
     background-color: var(--cg-surface-raised);
-    border: 1px solid var(--cg-border);
+    border-left: 1px solid var(--cg-border);
 }
 
 /* Lift header and footer content above the backdrop so only their background is blurred */
@@ -2300,4 +2280,18 @@ html:has(body.cg-drawer-open) { scrollbar-gutter: stable; }
 .cg-drawer-open .cg-app-footer {
     position: relative;
     z-index: 41;
+}
+
+/* Shared motion recipe for panel content: rise 8px using the standard enter timing, 50ms stagger.
+   Movement only, so text is never half-faded when read by people or contrast audits. */
+@media (prefers-reduced-motion: no-preference) {
+    .cg-drawer-section {
+        animation: cg-drawer-rise var(--cg-motion-enter) var(--cg-ease-out) both;
+        animation-delay: calc(var(--i, 0) * 50ms);
+    }
+}
+
+@keyframes cg-drawer-rise {
+    from { transform: translateY(8px); }
+    to { transform: none; }
 }

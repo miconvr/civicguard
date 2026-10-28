@@ -184,76 +184,77 @@
             </div>
         </div>
 
-        {{-- Report dialog: opens over the queue, blurs the page behind it (not the left sidebar). --}}
+        {{-- Report sidebar: slides in from the right over the queue. A light dim sits behind it; the left nav stays untouched. --}}
         <div x-show="open" x-cloak
-             x-transition:enter="transition-opacity ease-[var(--cg-ease-out)] duration-[var(--cg-motion-fast)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+             x-transition:enter="transition-opacity ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
              x-transition:leave="transition-opacity ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
              class="cg-drawer-backdrop" aria-hidden="true" @click="open = false"></div>
-        <div class="cg-modal-wrap">
-            <section x-show="open" x-cloak
-                   x-effect="if (open) $nextTick(() => $refs.drawerClose && $refs.drawerClose.focus())"
-                   x-transition:enter="transition-transform ease-[var(--cg-ease-out)] duration-[var(--cg-motion-fast)]" x-transition:enter-start="translate-y-2" x-transition:enter-end="translate-y-0"
-                   x-transition:leave="transition-transform ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="translate-y-0" x-transition:leave-end="translate-y-2"
-                   role="dialog" aria-modal="true" aria-label="{{ __("Report details") }}"
-                   class="cg-modal-panel pointer-events-auto flex max-h-full w-full max-w-4xl flex-col overflow-hidden rounded-2xl shadow-xl">
-                <template x-if="r">
-                    <div class="flex min-h-0 flex-1 flex-col">
-                        {{-- Header --}}
-                        <div class="flex shrink-0 items-start justify-between gap-4 border-b border-[var(--cg-border)] px-4 py-4 sm:px-6">
+        <aside x-show="open" x-cloak
+               x-effect="if (open) $nextTick(() => $refs.drawerClose && $refs.drawerClose.focus())"
+               x-transition:enter="transition-transform ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+               x-transition:leave="transition-transform ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
+               role="dialog" aria-modal="true" aria-label="{{ __("Report details") }}"
+               class="cg-drawer-panel fixed inset-y-0 right-0 z-50 flex w-full max-w-lg flex-col shadow-xl">
+            <template x-if="r">
+                <div class="flex min-h-0 flex-1 flex-col">
+                    {{-- Header: what this report is, always visible --}}
+                    <div class="shrink-0 border-b border-[var(--cg-border)] px-4 py-4 sm:px-6">
+                        <div class="flex items-start justify-between gap-4">
                             <div class="min-w-0">
                                 <p class="text-xs font-semibold cg-muted">{{ __('Report') }} <span x-text="'#' + r.id"></span></p>
                                 <h3 class="mt-0.5 text-lg font-semibold leading-snug text-gray-900 dark:text-gray-100" x-text="r.category"></h3>
                                 <p class="mt-0.5 text-sm text-gray-700 dark:text-gray-300" x-text="r.location"></p>
                             </div>
-                            <button type="button" x-ref="drawerClose" @click="open = false" aria-label="{{ __('Close') }}" class="-mr-2 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-black/5 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-white/10 dark:hover:text-white">
+                            <button type="button" x-ref="drawerClose" @click="open = false" aria-label="{{ __('Close') }}" class="-mr-2 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-lg text-gray-500 transition-colors duration-[var(--cg-motion-interaction)] hover:bg-black/5 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-white/10 dark:hover:text-white">
                                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L8.94 10l-4.72 4.72a.75.75 0 1 0 1.06 1.06L10 11.06l4.72 4.72a.75.75 0 1 0 1.06-1.06L11.06 10l4.72-4.72a.75.75 0 0 0-1.06-1.06L10 8.94 5.28 4.22Z"/></svg>
                             </button>
                         </div>
+                        <div class="mt-3 flex flex-wrap items-center gap-2">
+                            <span class="cg-sev shrink-0" :class="r.sevClass" x-text="r.severity"></span>
+                            <span class="cg-pill" :class="'cg-pill-' + r.statusValue" x-text="r.status"></span>
+                            <span x-show="r.reporterVerified" class="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold leading-none text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200">
+                                <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.13a1 1 0 0 1-1.42.006L3.29 8.71a1 1 0 1 1 1.42-1.407l4.217 4.26 6.363-6.414a1 1 0 0 1 1.414-.006Z" clip-rule="evenodd"/></svg>
+                                {{ __('Verified') }}
+                            </span>
+                        </div>
+                    </div>
 
-                        {{-- Body: details on the left, update form on the right (stacked on small screens) --}}
-                        <div class="grid min-h-0 flex-1 grid-cols-1 overflow-y-auto overscroll-contain md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
-                            <div class="space-y-5 px-4 py-5 sm:px-6">
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <span class="cg-sev shrink-0" :class="r.sevClass" x-text="r.severity"></span>
-                                    <span class="cg-pill" :class="'cg-pill-' + r.statusValue" x-text="r.status"></span>
-                                    <span x-show="r.reporterVerified" class="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold leading-none text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200">
-                                        <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.07 7.13a1 1 0 0 1-1.42.006L3.29 8.71a1 1 0 1 1 1.42-1.407l4.217 4.26 6.363-6.414a1 1 0 0 1 1.414-.006Z" clip-rule="evenodd"/></svg>
-                                        {{ __('Verified') }}
-                                    </span>
+                    {{-- Scrollable body: details first, then the update form --}}
+                    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+                        <div class="cg-drawer-section space-y-5 px-4 py-5 sm:px-6" style="--i: 0">
+                            <dl class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                                <div class="min-w-0">
+                                    <dt class="text-xs cg-muted">{{ __('Reported by') }}</dt>
+                                    <dd class="truncate font-medium text-gray-900 dark:text-gray-100" x-text="r.user"></dd>
                                 </div>
-
-                                <dl class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
-                                    <div class="min-w-0">
-                                        <dt class="text-xs cg-muted">{{ __('Reported by') }}</dt>
-                                        <dd class="truncate font-medium text-gray-900 dark:text-gray-100" x-text="r.user"></dd>
-                                    </div>
-                                    <div class="min-w-0">
-                                        <dt class="text-xs cg-muted">{{ __('Filed') }}</dt>
-                                        <dd class="font-medium text-gray-900 dark:text-gray-100" x-text="r.filed"></dd>
-                                    </div>
-                                </dl>
-
-                                <div>
-                                    <h4 class="mb-2 text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('What happened') }}</h4>
-                                    <p class="whitespace-pre-line break-words text-sm leading-6 text-gray-800 dark:text-gray-200" x-text="r.description"></p>
+                                <div class="min-w-0">
+                                    <dt class="text-xs cg-muted">{{ __('Filed') }}</dt>
+                                    <dd class="font-medium text-gray-900 dark:text-gray-100" x-text="r.filed"></dd>
                                 </div>
+                            </dl>
 
-                                <template x-if="r.photo">
-                                    <a :href="r.photo" target="_blank" rel="noopener" class="block overflow-hidden rounded-xl border border-[var(--cg-border)]">
-                                        <img :src="r.photo" alt="{{ __('Incident photo') }}" class="max-h-64 w-full object-cover">
-                                    </a>
-                                </template>
-
-                                <template x-if="r.lat && r.lng">
-                                    <a :href="`https://www.google.com/maps?q=${r.lat},${r.lng}`" target="_blank" rel="noopener" class="cg-btn-secondary w-full sm:w-auto">{{ __('Open in Maps →') }}</a>
-                                </template>
+                            <div>
+                                <h4 class="mb-2 text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('What happened') }}</h4>
+                                <p class="whitespace-pre-line break-words text-sm leading-6 text-gray-800 dark:text-gray-200" x-text="r.description"></p>
                             </div>
 
-                            <div class="border-t border-[var(--cg-border)] bg-black/[0.03] px-4 py-5 sm:px-6 md:border-l md:border-t-0 dark:bg-white/[0.03]">
-                                <form id="drawer-report-form" method="POST" :action="'{{ url('/admin/reports') }}/' + r.id" x-show="r.canStatus" class="space-y-4">
-                                    @csrf @method('PATCH')
-                                    <h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('Update report') }}</h4>
+                            <template x-if="r.photo">
+                                <a :href="r.photo" target="_blank" rel="noopener" class="block overflow-hidden rounded-xl border border-[var(--cg-border)]">
+                                    <img :src="r.photo" alt="{{ __('Incident photo') }}" class="max-h-64 w-full object-cover">
+                                </a>
+                            </template>
 
+                            <template x-if="r.lat && r.lng">
+                                <a :href="`https://www.google.com/maps?q=${r.lat},${r.lng}`" target="_blank" rel="noopener" class="cg-btn-secondary w-full sm:w-auto">{{ __('Open in Maps →') }}</a>
+                            </template>
+                        </div>
+
+                        <div class="cg-drawer-section border-t border-[var(--cg-border)] px-4 py-5 sm:px-6" style="--i: 1">
+                            <form id="drawer-report-form" method="POST" :action="'{{ url('/admin/reports') }}/' + r.id" x-show="r.canStatus" class="space-y-4">
+                                @csrf @method('PATCH')
+                                <h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('Update report') }}</h4>
+
+                                <div class="grid grid-cols-1 gap-4 {{ in_array(auth()->user()->role, ['admin', 'official']) ? 'sm:grid-cols-2' : '' }}">
                                     @if (in_array(auth()->user()->role, ['admin', 'official']))
                                         <div class="space-y-2">
                                             <label for="report-severity" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __("Severity") }}</label>
@@ -274,46 +275,46 @@
                                             <option value="resolved">{{ __("Resolved") }}</option>
                                         </select>
                                     </div>
+                                </div>
 
-                                    @if (in_array(auth()->user()->role, ['admin', 'official']))
-                                        <div class="space-y-2">
-                                            <label for="report-assigned-to" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __("Assigned tanod") }}</label>
-                                            <select id="report-assigned-to" name="assigned_to" x-model="r.assigned_to" class="cg-select w-full">
-                                                <option value="" disabled :hidden="r.assigned_to !== ''">{{ __("Select a tanod") }}</option>
-                                                @foreach ($tanods as $tanod)
-                                                    <option value="{{ $tanod->id }}">{{ $tanod->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endif
+                                @if (in_array(auth()->user()->role, ['admin', 'official']))
+                                    <div class="space-y-2">
+                                        <label for="report-assigned-to" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __("Assigned tanod") }}</label>
+                                        <select id="report-assigned-to" name="assigned_to" x-model="r.assigned_to" class="cg-select w-full">
+                                            <option value="" disabled :hidden="r.assigned_to !== ''">{{ __("Select a tanod") }}</option>
+                                            @foreach ($tanods as $tanod)
+                                                <option value="{{ $tanod->id }}">{{ $tanod->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
 
-                                    {{-- Incident summary (required when resolving) --}}
-                                    @include('admin.partials.resolution-summary-fields', [
-                                        'model' => 'r.summary',
-                                        'showExpr' => "r.statusValue === 'resolved'",
-                                        'requiredExpr' => "r.statusValue === 'resolved' && !r.wasResolved",
-                                        'lockedExpr' => 'r.wasResolved && r.hasSummary && !r.editing',
-                                        'editingExpr' => 'r.wasResolved && r.hasSummary && r.editing',
-                                        'unlockStmt' => 'r.editing = true',
-                                        'idPrefix' => 'drawer-summary',
-                                    ])
-                                </form>
+                                {{-- Incident summary (required when resolving) --}}
+                                @include('admin.partials.resolution-summary-fields', [
+                                    'model' => 'r.summary',
+                                    'showExpr' => "r.statusValue === 'resolved'",
+                                    'requiredExpr' => "r.statusValue === 'resolved' && !r.wasResolved",
+                                    'lockedExpr' => 'r.wasResolved && r.hasSummary && !r.editing',
+                                    'editingExpr' => 'r.wasResolved && r.hasSummary && r.editing',
+                                    'unlockStmt' => 'r.editing = true',
+                                    'idPrefix' => 'drawer-summary',
+                                ])
+                            </form>
 
-                                <p x-show="!r.canStatus" x-cloak class="text-sm text-gray-600 dark:text-gray-400">{{ __("Only the assigned tanod or an admin can update this report.") }}</p>
-                            </div>
-                        </div>
-
-                        {{-- Footer: Save stays in reach while the body scrolls --}}
-                        <div class="flex shrink-0 flex-col-reverse gap-3 border-t border-[var(--cg-border)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-                            <a :href="r.details" class="inline-flex min-h-11 items-center justify-center text-sm font-semibold text-maroon-700 hover:underline dark:text-[#e3aaa4]">{{ __("Open full details page") }} &rarr;</a>
-                            <div x-show="r.canStatus" class="flex items-center gap-3">
-                                <x-save-check when="checkOn" />
-                                <button type="submit" form="drawer-report-form" class="cg-btn flex-1 sm:flex-none">{{ __('Save changes') }}</button>
-                            </div>
+                            <p x-show="!r.canStatus" x-cloak class="text-sm text-gray-600 dark:text-gray-400">{{ __("Only the assigned tanod or an admin can update this report.") }}</p>
                         </div>
                     </div>
-                </template>
-            </section>
-        </div>
+
+                    {{-- Footer: Save stays in reach while the body scrolls --}}
+                    <div class="flex shrink-0 flex-col gap-2 border-t border-[var(--cg-border)] px-4 py-3 sm:px-6">
+                        <div x-show="r.canStatus" class="flex items-center gap-3">
+                            <button type="submit" form="drawer-report-form" class="cg-btn flex-1">{{ __('Save changes') }}</button>
+                            <x-save-check when="checkOn" />
+                        </div>
+                        <a :href="r.details" class="inline-flex min-h-11 items-center justify-center text-sm font-semibold text-maroon-700 hover:underline dark:text-[#e3aaa4]">{{ __("Open full details page") }} &rarr;</a>
+                    </div>
+                </div>
+            </template>
+        </aside>
     </div>
 </x-app-layout>
