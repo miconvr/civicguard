@@ -2283,8 +2283,14 @@ html:has(body.cg-drawer-open) { scrollbar-gutter: stable; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
+    /* Movement only: fading text would be sampled mid-opacity by contrast audits. */
     .cg-drawer-section {
-        animation: cg-rise var(--cg-motion-emphasis) var(--cg-ease-out) both;
-        animation-delay: calc(var(--i, 0) * 55ms + 90ms);
+        animation: cg-drawer-rise var(--cg-motion-emphasis) var(--cg-ease-out) both;
+        animation-delay: calc(var(--i, 0) * 55ms);
     }
+}
+
+@keyframes cg-drawer-rise {
+    from { transform: translateY(10px); }
+    to { transform: none; }
 }
