@@ -7,7 +7,6 @@ use App\Models\AppNotification;
 use App\Models\AuditLog;
 use App\Models\CaseAssignment;
 use App\Models\Report;
-use App\Models\ResolutionSummary;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -21,7 +20,7 @@ class DashboardController extends Controller
         $tab = $request->query('tab', 'active');
         $open = ['pending', 'in_progress'];
 
-        $query = Report::with(['category', 'user.residentVerification', 'assignedTo', 'resolutionSummary'])
+        $query = Report::with(['category', 'user.residentVerification', 'assignedTo'])
             ->visibleTo($request->user())
             ->when($request->filled('search'), function ($q) use ($request) {
                 $s = $request->search;
@@ -83,58 +82,41 @@ class DashboardController extends Controller
 
     public function updateStatus(Request $request, Report $report)
     {
+        $validated = $request->validate([
+            'status' => ['required', 'in:pending,in_progress,resolved'],
+        ]);
+
         if (auth()->user()->role === 'tanod' && (int) $report->assigned_to !== (int) auth()->id()) {
             abort(403, 'You can only update reports assigned to you.');
         }
 
-        $rules = ['status' => ['required', 'in:pending,in_progress,resolved']];
-
-        // Resolving a report needs the incident summary; a summary can also be
-        // added or edited later on a report that is already resolved.
-        $resolving = $request->input('status') === 'resolved' && $report->status !== 'resolved';
-        $withSummary = $request->input('status') === 'resolved'
-            && ($resolving || ResolutionSummary::requestHasInput($request));
-        if ($withSummary) {
-            $rules += ResolutionSummary::rules();
-        }
-
-        $validated = $request->validate($rules);
-
         $from = $report->status;
 
-        DB::transaction(function () use ($report, $validated, $from, $withSummary) {
-            $report->update([
+        $report->update([
+            'status' => $validated['status'],
+            'resolved_at' => $validated['status'] === 'resolved' ? now() : null,
+            'confirmed_at' => null,
+        ]);
+
+        AuditLog::create([
+            'user_id' => auth()->id(),
+            'action' => $validated['status'] === 'resolved' ? 'report_resolved' : 'report_status_changed',
+            'auditable_type' => Report::class,
+            'auditable_id' => $report->id,
+            'description' => 'Report status changed to '.str_replace('_', ' ', $validated['status']).'.',
+            'metadata' => [
+                'from' => $from,
                 'status' => $validated['status'],
-                'resolved_at' => $validated['status'] === 'resolved' ? now() : null,
-                'confirmed_at' => null,
-            ]);
+            ],
+        ]);
 
-            AuditLog::create([
-                'user_id' => auth()->id(),
-                'action' => $validated['status'] === 'resolved' ? 'report_resolved' : 'report_status_changed',
-                'auditable_type' => Report::class,
-                'auditable_id' => $report->id,
-                'description' => 'Report status changed to '.str_replace('_', ' ', $validated['status']).'.',
-                'metadata' => [
-                    'from' => $from,
-                    'status' => $validated['status'],
-                ],
-            ]);
+        AppNotification::create([
+            'user_id' => $report->user_id,
+            'report_id' => $report->id,
+            'message' => "Your report (\"{$report->category->name}\") status changed to ".ucfirst(str_replace('_', ' ', $validated['status'])).'.',
+        ]);
 
-            if ($withSummary) {
-                $report->recordResolutionSummary(auth()->user(), $validated);
-            }
-
-            AppNotification::create([
-                'user_id' => $report->user_id,
-                'report_id' => $report->id,
-                'message' => "Your report (\"{$report->category->name}\") status changed to ".ucfirst(str_replace('_', ' ', $validated['status'])).'.',
-            ]);
-        });
-
-        $redirect = redirect()->back()->with('status', __('Report status updated.'));
-
-        return $withSummary ? $redirect->with('summary_saved', $report->id) : $redirect;
+        return redirect()->back()->with('status', __('Report status updated.'));
     }
 
     public function updateQueueReport(Request $request, Report $report)
@@ -147,19 +129,9 @@ class DashboardController extends Controller
         abort_unless($canManage || $canUpdateStatus, 403);
 
         $rules = [];
-        $withSummary = false;
         if ($request->exists('status')) {
             abort_unless($canUpdateStatus, 403);
             $rules['status'] = ['required', 'in:pending,in_progress,resolved'];
-
-            // Resolving needs the incident summary; one can also be added or
-            // edited later on a report that is already resolved.
-            $resolving = $request->input('status') === 'resolved' && $report->status !== 'resolved';
-            $withSummary = $request->input('status') === 'resolved'
-                && ($resolving || ResolutionSummary::requestHasInput($request));
-            if ($withSummary) {
-                $rules += ResolutionSummary::rules();
-            }
         }
         if ($request->exists('severity')) {
             abort_unless($canManage, 403);
@@ -173,7 +145,7 @@ class DashboardController extends Controller
         $validated = $request->validate($rules);
         $report->loadMissing('category');
 
-        DB::transaction(function () use ($actor, $canManage, $report, $validated, $withSummary) {
+        DB::transaction(function () use ($actor, $canManage, $report, $validated) {
             if (isset($validated['severity']) && $report->severity !== $validated['severity']) {
                 $from = $report->severity;
                 $report->severity = $validated['severity'];
@@ -205,10 +177,6 @@ class DashboardController extends Controller
                     'report_id' => $report->id,
                     'message' => "Your report (\"{$report->category->name}\") status changed to ".ucfirst(str_replace('_', ' ', $validated['status'])).'.',
                 ]);
-            }
-
-            if ($withSummary) {
-                $report->recordResolutionSummary($actor, $validated);
             }
 
             if ($canManage && ! empty($validated['assigned_to'])) {
@@ -249,9 +217,7 @@ class DashboardController extends Controller
             $report->save();
         });
 
-        $redirect = redirect()->back()->with('status', __('Report changes saved.'));
-
-        return $withSummary ? $redirect->with('summary_saved', $report->id) : $redirect;
+        return redirect()->back()->with('status', __('Report changes saved.'));
     }
 
     public function updateSeverity(Request $request, Report $report)
@@ -333,7 +299,7 @@ class DashboardController extends Controller
     {
         abort_unless($report->isVisibleTo(auth()->user()), 403);
 
-        $report->load(['category', 'user', 'assignedTo', 'curfewLog', 'resolutionSummary.writer', 'resolutionSummary.reviewer']);
+        $report->load(['category', 'user', 'assignedTo', 'curfewLog']);
 
         $history = AuditLog::with('user:id,name')
             ->where('auditable_type', Report::class)
@@ -346,42 +312,6 @@ class DashboardController extends Controller
             : collect();
 
         return view('admin.report-details', compact('report', 'history', 'tanods'));
-    }
-
-    public function reviewSummary(Report $report)
-    {
-        $summary = $report->resolutionSummary;
-        abort_unless($summary, 404);
-
-        if (! $summary->reviewed_at) {
-            $summary->update([
-                'reviewed_by' => auth()->id(),
-                'reviewed_at' => now(),
-            ]);
-
-            AuditLog::create([
-                'user_id' => auth()->id(),
-                'action' => 'report_summary_reviewed',
-                'auditable_type' => Report::class,
-                'auditable_id' => $report->id,
-                'description' => 'Resolution summary reviewed.',
-                'metadata' => ['reviewed_by' => auth()->id()],
-            ]);
-        }
-
-        return redirect()->back()->with('status', __('Resolution summary marked as reviewed.'));
-    }
-
-    public function summaryPdf(Report $report)
-    {
-        abort_unless($report->isVisibleTo(auth()->user()), 403);
-
-        $report->load(['category', 'user', 'assignedTo', 'resolutionSummary.writer', 'resolutionSummary.reviewer']);
-        abort_unless($report->resolutionSummary, 404);
-
-        $pdf = Pdf::loadView('admin.resolution-summary-pdf', compact('report'));
-
-        return $pdf->download('civicguard-incident-summary-'.$report->id.'.pdf');
     }
 
     public function showCurfewDetails(Report $report)

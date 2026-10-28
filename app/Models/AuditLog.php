@@ -33,8 +33,6 @@ class AuditLog extends Model
     {
         return match ($this->action) {
             'report_resolved' => __('Report resolved'),
-            'report_summary_recorded' => __('Resolution summary recorded'),
-            'report_summary_reviewed' => __('Resolution summary reviewed'),
             'report_status_changed' => __('Status changed'),
             'report_confirmed_fixed' => __('Confirmed fixed'),
             'report_assigned' => __('Report assigned'),
@@ -72,8 +70,6 @@ class AuditLog extends Model
                     ? __('automated rules')
                     : ($metadata['severity_source'] ?? $this->legacySeveritySource($description) ?? __('automated rules')),
             ]),
-            'report_summary_recorded' => ($metadata['updated'] ?? false) ? __('Resolution summary updated.') : __('Resolution summary recorded.'),
-            'report_summary_reviewed' => __('Resolution summary reviewed.'),
             'report_confirmed_fixed' => __('Resident confirmed the issue was fixed.'),
             'report_reopened' => __('Resident said the issue is not fixed. Report reopened.'),
             'report_deleted' => __('Resident removed pending incident report #:id.', ['id' => $this->auditable_id]),
