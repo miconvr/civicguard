@@ -17,40 +17,22 @@
             <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{{ __('Submitted') }} {{ \App\Support\LocalizedDate::relative($verification->submitted_at) }}</p>
 
             @if ($status === 'pending')
-                <div x-data="{ declining: false, reason: '' }" class="mt-5 space-y-3">
-                    <div class="flex flex-wrap items-center gap-3">
-                        <form method="post" action="{{ route('admin.verifications.decide', $verification) }}">
-                            @csrf
-                            @method('patch')
-                            <input type="hidden" name="decision" value="verified">
-                            <x-primary-button>{{ __('Verify resident') }}</x-primary-button>
-                        </form>
-                        <button type="button" @click="declining = !declining; if (declining) $nextTick(() => $refs.reason.focus())" :aria-expanded="declining.toString()" aria-expanded="false" aria-controls="decline-panel-{{ $verification->id }}" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-800 transition-colors hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-900/20">
-                            {{ __('Decline') }}
-                            <svg class="h-4 w-4 transition-transform duration-[var(--cg-motion-interaction)] motion-reduce:transition-none" :class="declining ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 7.22a.75.75 0 0 1 1.06 0L10 10.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
-                        </button>
-                    </div>
-
-                    {{-- Decline dropdown: the reason is written here --}}
-                    <div id="decline-panel-{{ $verification->id }}" inert x-bind:inert="!declining" class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--cg-motion-interaction)] ease-[var(--cg-ease-out)] motion-reduce:transition-none" :style="declining ? 'grid-template-rows: 1fr' : ''">
-                        <div class="overflow-hidden">
-                            <form method="post" action="{{ route('admin.verifications.decide', $verification) }}" data-confirm="{{ __('Decline this verification request?') }}" class="space-y-3 rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950/30">
-                                @csrf
-                                @method('patch')
-                                <input type="hidden" name="decision" value="rejected">
-                                <label for="rejection-reason-{{ $verification->id }}" class="block text-sm font-semibold text-red-900 dark:text-red-200">{{ __('Reason for decline') }}</label>
-                                <textarea id="rejection-reason-{{ $verification->id }}" x-ref="reason" x-model="reason" name="rejection_reason" required maxlength="500" rows="3" placeholder="{{ __('Explain why this proof cannot be approved…') }}" class="cg-input min-h-24 w-full text-sm" aria-describedby="rejection-reason-hint-{{ $verification->id }}"></textarea>
-                                <div class="flex items-start justify-between gap-3 text-xs text-gray-700 dark:text-gray-300">
-                                    <p id="rejection-reason-hint-{{ $verification->id }}">{{ __('This reason will be sent to the resident.') }}</p>
-                                    <span x-text="reason.length + '/500'" class="shrink-0 tabular-nums">0/500</span>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    <button type="submit" class="cg-btn-danger">{{ __('Confirm decline') }}</button>
-                                    <button type="button" @click="declining = false" class="cg-btn-secondary">{{ __('Cancel') }}</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                <div class="mt-5 flex flex-wrap gap-3">
+                    <form method="post" action="{{ route('admin.verifications.decide', $verification) }}">
+                        @csrf
+                        @method('patch')
+                        <input type="hidden" name="decision" value="verified">
+                        <x-primary-button>{{ __('Verify resident') }}</x-primary-button>
+                    </form>
+                    <form method="post" action="{{ route('admin.verifications.decide', $verification) }}" data-confirm="{{ __('Decline this verification request?') }}" class="space-y-2">
+                        @csrf
+                        @method('patch')
+                        <input type="hidden" name="decision" value="rejected">
+                        <label for="rejection-reason-{{ $verification->id }}" class="sr-only">{{ __('Reason for decline') }}</label>
+                        <textarea id="rejection-reason-{{ $verification->id }}" name="rejection_reason" required maxlength="500" rows="2" placeholder="{{ __('Explain why this proof cannot be approved…') }}" class="cg-input min-h-20 w-full text-sm" aria-describedby="rejection-reason-hint-{{ $verification->id }}"></textarea>
+                        <p id="rejection-reason-hint-{{ $verification->id }}" class="text-xs text-gray-600 dark:text-gray-400">{{ __('This reason will be sent to the resident.') }}</p>
+                        <button type="submit" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-800 transition hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-900/20">{{ __('Decline') }}</button>
+                    </form>
                 </div>
             @endif
         </div>
@@ -100,10 +82,7 @@
                 </span>
                 <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">{{ __('Reviewed') }} {{ \App\Support\LocalizedDate::relative($verification->reviewed_at) ?? '—' }}</p>
                 @if ($verification->rejection_reason)
-                    <div class="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-900 dark:bg-red-950/30">
-                        <p class="text-xs font-semibold text-red-900 dark:text-red-200">{{ __('Reason for decline') }}</p>
-                        <p class="mt-1 whitespace-pre-line break-words text-sm text-red-800 dark:text-red-300">{{ $verification->rejection_reason }}</p>
-                    </div>
+                    <p class="mt-2 break-words text-sm text-red-800 dark:text-red-300"><span class="font-semibold">{{ __('Reason for decline') }}:</span> {{ $verification->rejection_reason }}</p>
                 @endif
                 @if ($verification->reviewer)
                     <p class="mt-1 text-xs text-gray-600 dark:text-gray-400">{{ __('Reviewed by :name', ['name' => $verification->reviewer->name]) }}</p>

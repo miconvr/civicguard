@@ -17,45 +17,10 @@
         ];
         $statusUpdates = $history->filter(fn ($log) => in_array($log->action, ['report_status_changed', 'report_resolved', 'report_reopened'], true));
         $hasCoords = $report->latitude !== null && $report->longitude !== null;
-        $summary = $report->resolutionSummary;
-        $canReviewSummary = in_array(auth()->user()->role, ['admin', 'official'], true);
-        $summaryState = [
-            'type' => old('summary_resolution_type', $summary?->resolution_type ?? ''),
-            'narrative' => old('summary_narrative', $summary?->narrative ?? ''),
-            'action' => old('summary_action_taken', $summary?->action_taken ?? ''),
-            'persons' => old('summary_persons_involved', $summary?->persons_involved ?? ''),
-            'followUp' => (bool) old('summary_follow_up_needed', $summary?->follow_up_needed ?? false),
-            'followUpNotes' => old('summary_follow_up_notes', $summary?->follow_up_notes ?? ''),
-        ];
-        $formState = [
-            'status' => old('status', $report->status),
-            's' => $summaryState,
-            'wasResolved' => $report->status === 'resolved',
-            'hasSummary' => (bool) $summary,
-            'editing' => $errors->any(),
-            'checkOn' => (int) session('summary_saved', 0) === (int) $report->id,
-        ];
     @endphp
 
     <div class="py-8">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
-
-            @if (session('status'))
-                <div role="status" class="font-medium text-sm text-green-700 bg-green-50 dark:bg-green-900/30 dark:text-green-300 px-4 py-3 rounded-lg">
-                    {{ session('status') }}
-                </div>
-            @endif
-
-            @if ($errors->any())
-                <div role="alert" class="text-sm text-red-800 bg-red-50 dark:bg-red-900/30 dark:text-red-200 px-4 py-3 rounded-lg">
-                    <p class="font-semibold">{{ __('The report was not saved. Please fix the following:') }}</p>
-                    <ul class="mt-1 list-disc pl-5">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
 
             <div class="cg-card">
                 <div class="flex flex-wrap items-start justify-between gap-3">
@@ -120,7 +85,7 @@
 
             @if (in_array(auth()->user()->role, ['admin', 'official'], true))
             <div class="cg-card">
-                <form method="POST" action="{{ route('admin.reports.update', $report) }}" x-data="{{ Js::from($formState) }}" x-init="if (checkOn) setTimeout(() => checkOn = false, 2600)" class="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-start">
+                <form method="POST" action="{{ route('admin.reports.update', $report) }}" class="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-start">
                     @csrf
                     @method('PATCH')
                     <div>
@@ -133,7 +98,7 @@
                     </div>
                     <div>
                         <label for="report-status" class="mb-1.5 block text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('Status') }}</label>
-                        <select id="report-status" name="status" x-model="status" class="cg-select w-full">
+                        <select id="report-status" name="status" class="cg-select w-full">
                             <option value="pending" @selected($report->status === 'pending')>{{ __('Pending') }}</option>
                             <option value="in_progress" @selected($report->status === 'in_progress')>{{ __('In Progress') }}</option>
                             <option value="resolved" @selected($report->status === 'resolved')>{{ __('Resolved') }}</option>
@@ -150,50 +115,25 @@
                             @endforeach
                         </select>
                     </div>
-                    @include('admin.partials.resolution-summary-fields', [
-                        'model' => 's',
-                        'showExpr' => "status === 'resolved'",
-                        'requiredExpr' => "status === 'resolved' && !wasResolved",
-                        'lockedExpr' => 'wasResolved && hasSummary && !editing',
-                        'editingExpr' => 'wasResolved && hasSummary && editing',
-                        'unlockStmt' => 'editing = true',
-                        'idPrefix' => 'details-summary',
-                        'wrapperClass' => 'sm:col-span-3',
-                    ])
-                    <div class="sm:col-span-3 flex flex-wrap items-center gap-3">
+                    <div class="sm:col-span-3">
                         <button type="submit" class="cg-btn">{{ __('Save changes') }}</button>
-                        <x-save-check when="checkOn" />
                     </div>
                 </form>
             </div>
             @else
             <div class="cg-card">
-                <form method="POST" action="{{ route('admin.reports.updateStatus', $report) }}" x-data="{{ Js::from($formState) }}" x-init="if (checkOn) setTimeout(() => checkOn = false, 2600)" class="flex flex-col gap-3">
-                    <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
+                <form method="POST" action="{{ route('admin.reports.updateStatus', $report) }}" class="flex flex-col gap-3 sm:flex-row sm:items-end">
                     @csrf
                     @method('PATCH')
                     <div class="w-full sm:max-w-xs">
                         <label for="report-status" class="mb-1.5 block text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('Update status') }}</label>
-                        <select id="report-status" name="status" x-model="status" class="cg-select w-full">
+                        <select id="report-status" name="status" class="cg-select w-full">
                             <option value="pending" @selected($report->status === 'pending')>{{ __('Pending') }}</option>
                             <option value="in_progress" @selected($report->status === 'in_progress')>{{ __('In Progress') }}</option>
                             <option value="resolved" @selected($report->status === 'resolved')>{{ __('Resolved') }}</option>
                         </select>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <button type="submit" class="cg-btn">{{ __('Save') }}</button>
-                        <x-save-check when="checkOn" />
-                    </div>
-                    </div>
-                    @include('admin.partials.resolution-summary-fields', [
-                        'model' => 's',
-                        'showExpr' => "status === 'resolved'",
-                        'requiredExpr' => "status === 'resolved' && !wasResolved",
-                        'lockedExpr' => 'wasResolved && hasSummary && !editing',
-                        'editingExpr' => 'wasResolved && hasSummary && editing',
-                        'unlockStmt' => 'editing = true',
-                        'idPrefix' => 'details-summary',
-                    ])
+                    <button type="submit" class="cg-btn">{{ __('Save') }}</button>
                 </form>
             </div>
             @endif
@@ -204,61 +144,6 @@
                         <h3 class="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __('What happened') }}</h3>
                         <p class="whitespace-pre-line text-sm text-gray-800 dark:text-gray-200">{{ $report->description }}</p>
                     </div>
-
-                    @if ($summary)
-                        <div class="cg-card" id="resolution-summary" data-reveal>
-                            <div class="flex flex-wrap items-start justify-between gap-3">
-                                <div>
-                                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __('Incident summary') }}</h3>
-                                    <p class="text-xs cg-muted">{{ __('Seen by barangay officials and admins only.') }}</p>
-                                </div>
-                                <div class="flex flex-wrap items-center gap-3">
-                                    @if ($summary->reviewed_at)
-                                        <span class="rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-950 dark:bg-green-900/40 dark:text-green-200">{{ __('Reviewed') }}</span>
-                                    @else
-                                        <span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-950 dark:bg-amber-900/40 dark:text-amber-200">{{ __('Awaiting review') }}</span>
-                                    @endif
-                                    <a href="{{ route('admin.reports.summary.pdf', $report) }}" class="inline-flex min-h-11 items-center text-sm font-semibold text-maroon-700 hover:underline dark:text-[#c27872]">{{ __('Download PDF') }}</a>
-                                </div>
-                            </div>
-                            <dl class="mt-4 space-y-4 text-sm">
-                                <div><dt class="cg-muted">{{ __('Outcome') }}</dt><dd class="font-medium text-gray-900 dark:text-gray-100">{{ $summary->typeLabel() }}</dd></div>
-                                <div><dt class="cg-muted">{{ __('Summary of what happened') }}</dt><dd class="whitespace-pre-line text-gray-800 dark:text-gray-200">{{ $summary->narrative }}</dd></div>
-                                <div><dt class="cg-muted">{{ __('Action taken') }}</dt><dd class="whitespace-pre-line text-gray-800 dark:text-gray-200">{{ $summary->action_taken }}</dd></div>
-                                @if ($summary->persons_involved)
-                                    <div><dt class="cg-muted">{{ __('Persons involved or witnesses') }}</dt><dd class="whitespace-pre-line text-gray-800 dark:text-gray-200">{{ $summary->persons_involved }}</dd></div>
-                                @endif
-                                <div>
-                                    <dt class="cg-muted">{{ __('Follow-up') }}</dt>
-                                    <dd class="text-gray-800 dark:text-gray-200">
-                                        @if ($summary->follow_up_needed)
-                                            <span class="font-medium text-amber-700 dark:text-amber-400">{{ __('Still needed') }}</span>
-                                            @if ($summary->follow_up_notes)<span class="block whitespace-pre-line">{{ $summary->follow_up_notes }}</span>@endif
-                                        @else
-                                            {{ __('None needed') }}
-                                        @endif
-                                    </dd>
-                                </div>
-                            </dl>
-                            <p class="mt-4 text-xs cg-muted">
-                                {{ __('Written by :name', ['name' => $summary->writer->name ?? __('Unknown')]) }} &middot; {{ \App\Support\LocalizedDate::format($summary->updated_at, 'M d, Y g:i A') }}
-                                @if ($summary->reviewed_at)
-                                    <br>{{ __('Reviewed by :name', ['name' => $summary->reviewer->name ?? __('Unknown')]) }} &middot; {{ \App\Support\LocalizedDate::format($summary->reviewed_at, 'M d, Y g:i A') }}
-                                @endif
-                            </p>
-                            @if ($canReviewSummary && ! $summary->reviewed_at)
-                                <form method="POST" action="{{ route('admin.reports.summary.review', $report) }}" class="mt-4">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="cg-btn">{{ __('Mark as reviewed') }}</button>
-                                </form>
-                            @endif
-                        </div>
-                    @elseif ($report->status === 'resolved')
-                        <div class="cg-card">
-                            <p class="text-sm text-amber-800 dark:text-amber-300">{{ __('No incident summary has been written for this resolved report yet. Set the status to Resolved above and fill in the summary.') }}</p>
-                        </div>
-                    @endif
 
                     @if ($report->photo_path)
                         <div class="cg-card">
