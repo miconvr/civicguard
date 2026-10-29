@@ -12,12 +12,12 @@
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/postcss": "^4.3.3",
-        "alpinejs": "^3.4.2",
+        "alpinejs": "^3.17.5",
         "axe-core": "^4.14.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^1.2.0",
         "playwright": "^1.64.1",
-        "postcss": "^8.4.31",
+        "postcss": "^8.5.31",
         "tailwindcss": "^4.3.3",
         "vite": "^6.4.5"
     }
