@@ -218,7 +218,8 @@
     }
 
     .cg-report-drawer {
-        color: var(--cg-ink) !important;
+        color: #281d20 !important;
+        background-color: #eee8df !important;
     }
 
     .cg-report-drawer :where(.text-gray-400, .text-gray-500, .text-gray-600, .text-gray-700, .text-gray-800, .text-gray-900, .text-stone-500, .text-stone-600, .text-stone-700) {
@@ -243,6 +244,11 @@
     }
 
     :root.dark .cg-report-drawer .cg-report-map-link {
+        color: #f4efeb !important;
+        background-color: #302b29 !important;
+    }
+
+    :root.dark .cg-report-drawer {
         color: #f4efeb !important;
         background-color: #302b29 !important;
     }
