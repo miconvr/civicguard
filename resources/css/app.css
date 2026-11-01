@@ -1398,11 +1398,11 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
 .cg-ph-appwrap em { color: #fff; font-size: .42rem; }
 .cg-ph-dock { position: absolute; left: .5rem; right: .5rem; bottom: .6rem; height: 2.6rem; border-radius: 1rem; background: rgba(255,255,255,.22); }
 .cg-tap { position: absolute; top: 50%; left: 50%; z-index: 15; width: 1.8rem; height: 1.8rem; margin: -.9rem 0 0 -.9rem; border: 2px solid rgba(122,31,31,.65); border-radius: 50%; background: rgba(122,31,31,.25); opacity: 0; pointer-events: none; animation: cg-tap 12s infinite both; }
-.cg-install-step { display: grid; grid-template-columns: 2.25rem 1fr; gap: .8rem; padding: 1rem; border: 1px solid #dec2c8; border-radius: .75rem; animation: cg-hl 12s linear infinite both; }
+.cg-install-step { display: grid; grid-template-columns: 2.25rem 1fr; gap: .8rem; padding: 1rem; border: 1px solid #dec2c8; border-radius: .75rem; background-color: #fff; animation: cg-hl 12s linear infinite both; }
 .cg-install-num { display: inline-flex; width: 2rem; height: 2rem; align-items: center; justify-content: center; border-radius: 9999px; background: #7a1f1f; color: #fff; font-weight: 700; }
 @keyframes cg-phone-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-.5rem); } }
 @keyframes cg-tap { 0%, 1% { opacity: 0; transform: scale(.4); } 3% { opacity: 1; transform: scale(.7); } 6%, 100% { opacity: 0; transform: scale(1.5); } }
-@keyframes cg-hl { 0% { opacity: .45; background-color: transparent; } 1%, 32% { opacity: 1; background-color: #fbeff0; } 34%, 100% { opacity: .45; background-color: transparent; } }
+@keyframes cg-hl { 0% { opacity: .45; background-color: #fff; } 1%, 32% { opacity: 1; background-color: #fff; } 34%, 100% { opacity: .45; background-color: #fff; } }
 @keyframes cg-page { 0%, 76% { opacity: 1; } 79%, 97% { opacity: 0; } 100% { opacity: 1; } }
 @keyframes cg-ios-dim { 0%, 17% { opacity: 0; } 24%, 74% { opacity: .35; } 77%, 100% { opacity: 0; } }
 @keyframes cg-ios-sheet { 0%, 17% { transform: translateY(100%); } 24%, 44% { transform: translateY(0); } 48%, 100% { transform: translateY(100%); } }
@@ -1432,8 +1432,8 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
 .cg-install-step { animation: cg-hl 10s linear infinite both; }
 .cg-install-step-last { animation-name: cg-hl-last; }
 @keyframes cg-tap { 0%, 1% { opacity: 0; transform: scale(.4); } 4% { opacity: 1; transform: scale(.8); } 10%, 100% { opacity: 0; transform: scale(1.5); } }
-@keyframes cg-hl { 0% { opacity: .45; background-color: transparent; } 1%, 26% { opacity: 1; background-color: #fbeff0; } 29%, 100% { opacity: .45; background-color: transparent; } }
-@keyframes cg-hl-last { 0% { opacity: .45; background-color: transparent; } 1%, 46% { opacity: 1; background-color: #fbeff0; } 49%, 100% { opacity: .45; background-color: transparent; } }
+@keyframes cg-hl { 0% { opacity: .45; background-color: #fff; } 1%, 26% { opacity: 1; background-color: #fff; } 29%, 100% { opacity: .45; background-color: #fff; } }
+@keyframes cg-hl-last { 0% { opacity: .45; background-color: #fff; } 1%, 46% { opacity: 1; background-color: #fff; } 49%, 100% { opacity: .45; background-color: #fff; } }
 @keyframes cg-page { 0%, 60% { opacity: 1; } 63%, 96% { opacity: 0; } 100% { opacity: 1; } }
 @keyframes cg-ios-dim { 0%, 12% { opacity: 0; } 18%, 58% { opacity: .35; } 62%, 100% { opacity: 0; } }
 @keyframes cg-ios-sheet { 0%, 12% { transform: translateY(100%); } 18%, 36% { transform: translateY(0); } 41%, 100% { transform: translateY(100%); } }
