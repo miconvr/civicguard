@@ -158,8 +158,8 @@
         {{-- Drawer: all editing lives in the document's top layer. --}}
         <template x-teleport="body">
             <div x-show="open" x-cloak
-                 x-transition:enter="transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                 x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                 x-transition:enter="transition-opacity ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition-opacity ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                  class="fixed inset-0 z-[100]">
                 <div class="absolute inset-0 bg-stone-950/60" @click="open = false"></div>
                 <aside
@@ -259,7 +259,7 @@
                             </div>
                         @endif
 
-                        <button type="submit" class="cg-report-save min-h-11 w-full rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon-600 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900">
+                        <button type="submit" class="cg-report-save min-h-11 w-full rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon-600 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900">
                             Save changes
                         </button>
                     </form>
