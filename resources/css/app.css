@@ -217,11 +217,6 @@
         overflow: hidden;
     }
 
-    body.cg-report-drawer-open .cg-app-header,
-    body.cg-report-drawer-open footer {
-        display: none;
-    }
-
     .cg-chat-log {
         overscroll-behavior-y: contain;
         scrollbar-gutter: stable;
