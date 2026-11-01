@@ -228,13 +228,13 @@
                                     <option value="critical">{{ __("Critical") }}</option>
                                 </select>
                             </div>
-
-                            <div class="space-y-2">
-                                <label for="incident-summary" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Incident summary') }}</label>
-                                <textarea id="incident-summary" name="incident_summary" rows="4" maxlength="2000" x-model="r.incident_summary" x-show="!r.incident_summary || summaryEditing" :required="r.status === 'resolved'" class="cg-input w-full" placeholder="{{ __('Describe what was done and the outcome.') }}"></textarea>
-                                <p class="text-xs text-gray-700 dark:text-gray-300">{{ __('Add a concise summary when resolving this report. Officials and admins can review it.') }}</p>
-                            </div>
                         @endif
+
+                        <div class="space-y-2">
+                            <label for="incident-summary" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Incident summary') }}</label>
+                            <textarea id="incident-summary" name="incident_summary" rows="4" maxlength="2000" x-model="r.incident_summary" x-show="!r.incident_summary || summaryEditing" :required="r.status === 'resolved'" class="cg-input w-full" placeholder="{{ __('Describe what was done and the outcome.') }}"></textarea>
+                            <p class="text-xs text-gray-700 dark:text-gray-300">{{ __('Add a concise summary when resolving this report. Officials and admins can review it.') }}</p>
+                        </div>
 
                         {{-- Status --}}
                         <div class="space-y-2">

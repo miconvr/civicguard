@@ -359,6 +359,7 @@ try {
     await tanodPage.locator('table.cg-queue tbody tr').filter({ hasText: location }).evaluate(row => row.click());
     const tanodDrawer = tanodPage.getByRole('dialog', { name: 'Report details' });
     await tanodDrawer.waitFor({ state: 'visible' });
+    await tanodDrawer.locator('textarea[name="incident_summary"]').fill('Tanod verified the report, addressed the disturbance, and recorded the outcome.');
     await tanodDrawer.locator('select[name="status"]').selectOption('resolved');
     const tanodSaveResponse = tanodPage.waitForResponse(response =>
         response.request().method() === 'POST'
