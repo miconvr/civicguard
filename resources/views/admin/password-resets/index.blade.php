@@ -49,8 +49,18 @@
                             @forelse ($residents as $resident)
                                 <tr class="block p-4 sm:table-row sm:p-0">
                                     <th scope="row" class="block px-0 py-2 text-left align-top sm:table-cell sm:px-6 sm:py-4">
-                                        <div class="font-semibold text-gray-900 dark:text-gray-100">{{ $resident->name }}</div>
-                                        <div class="mt-1 break-all text-sm font-normal text-gray-600 dark:text-gray-300">{{ $resident->email }}</div>
+                                        <div class="flex items-center gap-3">
+                                            @php($residentAvatar = $resident->avatarPath())
+                                            @if ($residentAvatar)
+                                                <img src="{{ route('admin.users.avatar', ['user' => $resident, 'v' => basename($residentAvatar)]) }}" alt="{{ __('Profile picture of :name', ['name' => $resident->name]) }}" width="44" height="44" loading="lazy" decoding="async" class="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-stone-200 dark:ring-gray-700">
+                                            @else
+                                                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fffaf5] text-sm font-semibold text-maroon-800 ring-1 ring-stone-200 dark:bg-gray-800 dark:text-[#f0c7d0]" aria-hidden="true">{{ strtoupper(mb_substr($resident->name, 0, 1)) }}</span>
+                                            @endif
+                                            <div class="min-w-0">
+                                                <div class="font-semibold text-gray-900 dark:text-gray-100">{{ $resident->name }}</div>
+                                                <div class="mt-1 break-all text-sm font-normal text-gray-600 dark:text-gray-300">{{ $resident->email }}</div>
+                                            </div>
+                                        </div>
                                     </th>
                                     <td class="block px-0 py-2 align-top sm:table-cell sm:px-6 sm:py-4">
                                         <form id="reset-resident-{{ $resident->id }}" method="POST" action="{{ route('admin.passwordResets.update', $resident) }}" class="space-y-2" data-confirm="{{ __('Reset this resident’s password? Confirm their identity first.') }}">

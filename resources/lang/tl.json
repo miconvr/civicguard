@@ -602,5 +602,16 @@
     "Clearing...": "Binubura...",
     "Could not clear notifications. Please try again.": "Hindi mabura ang mga notification. Pakisubukan muli.",
     "Your residence verification was declined. Reason: :reason": "Tinanggihan ang beripikasyon ng iyong paninirahan. Dahilan: :reason",
-    "Only admins and barangay officials can view a pending residency proof image; it is deleted after a decision.": "Mga admin at opisyal lamang ng barangay ang makakakita sa larawan ng patunay habang sinusuri ito; buburahin ito matapos magpasya."
+    "Only admins and barangay officials can view a pending residency proof image; it is deleted after a decision.": "Mga admin at opisyal lamang ng barangay ang makakakita sa larawan ng patunay habang sinusuri ito; buburahin ito matapos magpasya.",
+    "Continue my report": "Ituloy ang aking ulat",
+    "Incident summary": "Buod ng insidente",
+    "No resolution summary has been saved yet.": "Wala pang nai-save na buod ng paglutas.",
+    "Saved and locked": "Nai-save at naka-lock",
+    "Edit summary": "I-edit ang buod",
+    "Describe what was done and the outcome.": "Ilarawan ang ginawa at naging resulta.",
+    "Add a concise summary when resolving this report. Officials and admins can review it.": "Maglagay ng maikling buod kapag nilulutas ang ulat na ito. Makikita ito ng mga opisyal at admin.",
+    "Choose a reason": "Pumili ng dahilan",
+    "The document does not show a Maimpis address.": "Hindi ipinapakita ng dokumento ang address sa Maimpis.",
+    "The document is not readable.": "Hindi mabasa ang dokumento.",
+    "Please submit a clearer or more recent document.": "Magsumite ng mas malinaw o mas bagong dokumento."
 }

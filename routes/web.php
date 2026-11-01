@@ -63,6 +63,7 @@ Route::middleware(['auth', 'role:admin,official'])->prefix('admin')->name('admin
 
 Route::middleware(['auth', 'role:admin,official'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/password-resets', [PasswordResetController::class, 'index'])->name('passwordResets.index');
+    Route::get('/users/{user}/avatar', [ProfilePhotoController::class, 'showUser'])->name('users.avatar');
     Route::patch('/password-resets/{user}', [PasswordResetController::class, 'update'])
         ->middleware('throttle:10,1')
         ->name('passwordResets.update');

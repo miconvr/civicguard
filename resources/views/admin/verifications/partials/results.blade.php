@@ -29,7 +29,12 @@
                         @method('patch')
                         <input type="hidden" name="decision" value="rejected">
                         <label for="rejection-reason-{{ $verification->id }}" class="sr-only">{{ __('Reason for decline') }}</label>
-                        <textarea id="rejection-reason-{{ $verification->id }}" name="rejection_reason" required maxlength="500" rows="2" placeholder="{{ __('Explain why this proof cannot be approved…') }}" class="cg-input min-h-20 w-full text-sm" aria-describedby="rejection-reason-hint-{{ $verification->id }}"></textarea>
+                        <select id="rejection-reason-{{ $verification->id }}" name="rejection_reason" required class="cg-select w-full text-sm" aria-describedby="rejection-reason-hint-{{ $verification->id }}">
+                            <option value="">{{ __('Choose a reason') }}</option>
+                            <option value="{{ __('The document does not show a Maimpis address.') }}">{{ __('The document does not show a Maimpis address.') }}</option>
+                            <option value="{{ __('The document is not readable.') }}">{{ __('The document is not readable.') }}</option>
+                            <option value="{{ __('Please submit a clearer or more recent document.') }}">{{ __('Please submit a clearer or more recent document.') }}</option>
+                        </select>
                         <p id="rejection-reason-hint-{{ $verification->id }}" class="text-xs text-gray-600 dark:text-gray-400">{{ __('This reason will be sent to the resident.') }}</p>
                         <button type="submit" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-800 transition hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-900/20">{{ __('Decline') }}</button>
                     </form>
