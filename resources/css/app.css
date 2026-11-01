@@ -219,7 +219,7 @@
 
     body.cg-report-drawer-open .cg-app-header,
     body.cg-report-drawer-open footer {
-        visibility: hidden;
+        display: none;
     }
 
     .cg-chat-log {
