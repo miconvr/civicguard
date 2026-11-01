@@ -209,7 +209,7 @@
 
                     <template x-if="r.lat && r.lng">
                         <a :href="`https://www.google.com/maps?q=${r.lat},${r.lng}`" target="_blank" rel="noopener"
-                           class="text-sm text-maroon-700 dark:text-[#c27872] font-semibold hover:underline">{{ __("Open in Maps →") }}</a>
+                           class="cg-report-map-link text-sm font-semibold hover:underline">{{ __("Open in Maps →") }}</a>
                     </template>
 
                     <hr class="border-gray-200 dark:border-gray-700">

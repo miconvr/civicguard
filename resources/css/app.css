@@ -229,6 +229,10 @@
         color: #6b1c32 !important;
     }
 
+    .cg-report-drawer .cg-report-map-link {
+        color: #6b1c32 !important;
+    }
+
     .cg-report-drawer .text-emerald-800 {
         color: #065f46 !important;
     }
@@ -237,14 +241,18 @@
         color: #f0c7d0 !important;
     }
 
+    .dark .cg-report-drawer .cg-report-map-link {
+        color: #f0c7d0 !important;
+    }
+
     .cg-report-drawer .cg-report-save {
         color: #fff !important;
-        background-color: #7f1d35 !important;
+        background-color: #5c162a !important;
     }
 
     .cg-report-drawer .cg-report-save:hover {
         color: #fff !important;
-        background-color: #68162c !important;
+        background-color: #4a1121 !important;
     }
 
     .cg-chat-log {
