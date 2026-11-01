@@ -31,7 +31,7 @@
                         <span class="mt-1 block text-lg font-bold text-stone-950 dark:text-white sm:text-xl">{{ __('Report an incident') }}</span>
                         <span class="mt-0.5 block text-sm text-stone-600 dark:text-gray-300">{{ __('It takes about a minute. You can follow the response here.') }}</span>
                     </span>
-                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-xl text-white shadow-sm transition-all duration-[var(--cg-motion-interaction)] group-hover:bg-maroon-800 group-hover:translate-x-[3px]" aria-hidden="true">&rarr;</span>
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-maroon-700 text-xl text-white shadow-sm transition-[background-color,transform] duration-[var(--cg-motion-interaction)] group-hover:bg-maroon-800 group-hover:translate-x-[3px]" aria-hidden="true">&rarr;</span>
                 </a>
 
                 @if ($needsFeedback > 0)

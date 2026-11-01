@@ -141,16 +141,14 @@
     }
 
     :focus-visible {
-        outline: none;
+        outline: 2px solid transparent;
+        outline-offset: 2px;
         box-shadow: 0 0 0 2px var(--cg-canvas), 0 0 0 4px color-mix(in srgb, var(--cg-focus) 62%, transparent);
     }
 
     .dark :focus-visible {
+        outline: 2px solid transparent;
         box-shadow: 0 0 0 2px var(--cg-surface), 0 0 0 4px color-mix(in srgb, var(--cg-focus) 72%, transparent);
-    }
-
-    :focus:not(:focus-visible) {
-        outline: none;
     }
 }
 
@@ -813,7 +811,8 @@
     }
 
     .cg-app-sidebar :focus-visible {
-        outline: none;
+        outline: 2px solid transparent;
+        outline-offset: 2px;
         box-shadow: 0 0 0 2px #6d1c32, 0 0 0 4px rgb(255 250 245 / 88%);
     }
 
@@ -1336,7 +1335,7 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
 
 /* cg-checkbox-focus: no ring or outline on mouse/touch click, keep it for keyboard focus */
 input[type="checkbox"]:focus, input[type="radio"]:focus {
-    outline: none;
+    outline: 2px solid transparent;
     box-shadow: none;
 }
 input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
@@ -1399,7 +1398,7 @@ input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible {
 .cg-ph-appwrap em { color: #fff; font-size: .42rem; }
 .cg-ph-dock { position: absolute; left: .5rem; right: .5rem; bottom: .6rem; height: 2.6rem; border-radius: 1rem; background: rgba(255,255,255,.22); }
 .cg-tap { position: absolute; top: 50%; left: 50%; z-index: 15; width: 1.8rem; height: 1.8rem; margin: -.9rem 0 0 -.9rem; border: 2px solid rgba(122,31,31,.65); border-radius: 50%; background: rgba(122,31,31,.25); opacity: 0; pointer-events: none; animation: cg-tap 12s infinite both; }
-.cg-install-step { display: grid; grid-template-columns: 2.25rem 1fr; gap: .8rem; padding: 1rem; border-left: 3px solid #7a1f1f; border-radius: .75rem; animation: cg-hl 12s linear infinite both; }
+.cg-install-step { display: grid; grid-template-columns: 2.25rem 1fr; gap: .8rem; padding: 1rem; border: 1px solid #dec2c8; border-radius: .75rem; animation: cg-hl 12s linear infinite both; }
 .cg-install-num { display: inline-flex; width: 2rem; height: 2rem; align-items: center; justify-content: center; border-radius: 9999px; background: #7a1f1f; color: #fff; font-weight: 700; }
 @keyframes cg-phone-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-.5rem); } }
 @keyframes cg-tap { 0%, 1% { opacity: 0; transform: scale(.4); } 3% { opacity: 1; transform: scale(.7); } 6%, 100% { opacity: 0; transform: scale(1.5); } }
@@ -1826,7 +1825,8 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 .cg-calendar-day:focus-visible {
     background: #f5e8ec;
     color: #6b1d35;
-    outline: none;
+    outline: 2px solid var(--cg-focus);
+    outline-offset: 2px;
 }
 
 .cg-calendar-day.is-selected,
@@ -1989,7 +1989,8 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 .cg-time-option:focus-visible {
     background: #f5e8ec;
     color: #6b1d35;
-    outline: none;
+    outline: 2px solid var(--cg-focus);
+    outline-offset: 2px;
 }
 
 .cg-time-option.is-selected {
@@ -2069,7 +2070,8 @@ html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 .cg-time-option:focus-visible {
     background: #f5e8ec;
     color: #6b1d35;
-    outline: none;
+    outline: 2px solid var(--cg-focus);
+    outline-offset: 2px;
 }
 
 .cg-time-option.is-selected {
