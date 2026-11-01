@@ -324,7 +324,10 @@ try {
     await reportRow.click();
     const drawer = officialPage.getByRole('dialog', { name: 'Report details' });
     await drawer.waitFor({ state: 'visible' });
-    await drawer.evaluate(element => Promise.allSettled(element.getAnimations().map(animation => animation.finished)));
+    await drawer.evaluate(element => Promise.allSettled([
+        ...element.getAnimations(),
+        ...(element.parentElement?.getAnimations() ?? []),
+    ].map(animation => animation.finished)));
     await drawer.locator('img[alt="Incident photo"]').evaluate(image => image.decode());
     const drawerAccessibility = await auditAccessibility(officialPage, 'official report drawer');
     assert.equal(drawerAccessibility.blockingCount, 0, 'report drawer should have no serious/critical accessibility violations');
