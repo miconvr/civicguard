@@ -155,16 +155,17 @@
             </div>
         </div>
 
-        {{-- Drawer: all editing lives here --}}
-        <div x-show="open" x-cloak
-             x-transition:enter="transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-             x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-             class="fixed inset-0 z-40 bg-black/40" @click="open = false"></div>
-        <aside x-show="open" x-cloak
-               x-transition:enter="transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-               x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-               role="dialog" aria-modal="true" aria-label="{{ __("Report details") }}"
-               class="fixed inset-y-0 right-0 z-50 w-full max-w-md overflow-y-auto cg-surface-raised p-4 shadow-xl sm:p-6">
+        {{-- Drawer: all editing lives in the document's top layer. --}}
+        <template x-teleport="body">
+            <div x-show="open" x-cloak
+                 x-transition:enter="transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 z-[100] bg-stone-950/60 backdrop-blur-[2px]" @click="open = false"></div>
+            <aside x-show="open" x-cloak
+                   x-transition:enter="transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                   x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                   role="dialog" aria-modal="true" aria-label="{{ __("Report details") }}"
+                   class="fixed inset-y-0 right-0 z-[110] w-full max-w-md overflow-y-auto cg-surface-raised p-4 shadow-xl sm:p-6">
             <template x-if="r">
                 <div class="space-y-5">
                     <div class="flex items-start justify-between gap-4">
@@ -269,6 +270,7 @@
                     <a :href="r.details" class="block text-sm text-gray-700 dark:text-gray-300 hover:underline">{{ __("Open full details page") }}</a>
                 </div>
             </template>
-        </aside>
+            </aside>
+        </template>
     </div>
 </x-app-layout>
