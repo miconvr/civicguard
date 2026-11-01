@@ -160,12 +160,11 @@
             <div x-show="open" x-cloak
                  x-transition:enter="transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                  x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                 class="fixed inset-0 z-[100] bg-stone-950/60 backdrop-blur-[2px]" @click="open = false"></div>
-            <aside x-show="open" x-cloak
-                   x-transition:enter="transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                   x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                   role="dialog" aria-modal="true" aria-label="{{ __("Report details") }}"
-                   class="fixed inset-y-0 right-0 z-[110] w-full max-w-md overflow-y-auto cg-surface-raised p-4 shadow-xl sm:p-6">
+                 class="fixed inset-0 z-[100]">
+                <div class="absolute inset-0 bg-stone-950/60 backdrop-blur-[2px]" @click="open = false"></div>
+                <aside
+                       role="dialog" aria-modal="true" aria-label="{{ __("Report details") }}"
+                       class="absolute inset-y-0 right-0 z-10 w-full max-w-md overflow-y-auto cg-surface-raised p-4 shadow-xl sm:p-6">
             <template x-if="r">
                 <div class="space-y-5">
                     <div class="flex items-start justify-between gap-4">
@@ -270,7 +269,8 @@
                     <a :href="r.details" class="block text-sm text-gray-700 dark:text-gray-300 hover:underline">{{ __("Open full details page") }}</a>
                 </div>
             </template>
-            </aside>
+                </aside>
+            </div>
         </template>
     </div>
 </x-app-layout>
