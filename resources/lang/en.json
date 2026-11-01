@@ -215,5 +215,16 @@
     "Notifications cleared.": "Notifications cleared.",
     "Clearing...": "Clearing...",
     "Could not clear notifications. Please try again.": "Could not clear notifications. Please try again.",
-    "Your residence verification was declined. Reason: :reason": "Your residence verification was declined. Reason: :reason"
+    "Your residence verification was declined. Reason: :reason": "Your residence verification was declined. Reason: :reason",
+    "Continue my report": "Continue my report",
+    "Incident summary": "Incident summary",
+    "No resolution summary has been saved yet.": "No resolution summary has been saved yet.",
+    "Saved and locked": "Saved and locked",
+    "Edit summary": "Edit summary",
+    "Describe what was done and the outcome.": "Describe what was done and the outcome.",
+    "Add a concise summary when resolving this report. Officials and admins can review it.": "Add a concise summary when resolving this report. Officials and admins can review it.",
+    "Choose a reason": "Choose a reason",
+    "The document does not show a Maimpis address.": "The document does not show a Maimpis address.",
+    "The document is not readable.": "The document is not readable.",
+    "Please submit a clearer or more recent document.": "Please submit a clearer or more recent document."
 }

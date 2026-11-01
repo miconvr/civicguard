@@ -20,6 +20,7 @@ class Report extends Model
         'status',
         'assigned_to',
         'resolved_at',
+        'incident_summary',
         'confirmed_at',
         'reopen_count',
     ];

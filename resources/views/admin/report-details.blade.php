@@ -116,6 +116,10 @@
                         </select>
                     </div>
                     <div class="sm:col-span-3">
+                        <label for="incident-summary" class="mb-1.5 block text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('Incident summary') }}</label>
+                        <textarea id="incident-summary" name="incident_summary" rows="3" maxlength="2000" class="cg-input mt-2 w-full" placeholder="{{ __('Describe what was done and the outcome.') }}">{{ old('incident_summary', $report->incident_summary) }}</textarea>
+                    </div>
+                    <div class="sm:col-span-3">
                         <button type="submit" class="cg-btn">{{ __('Save changes') }}</button>
                     </div>
                 </form>
@@ -133,6 +137,10 @@
                             <option value="resolved" @selected($report->status === 'resolved')>{{ __('Resolved') }}</option>
                         </select>
                     </div>
+                    <div class="w-full sm:max-w-md">
+                        <label for="incident-summary" class="mb-1.5 block text-sm font-semibold text-gray-800 dark:text-gray-200">{{ __('Incident summary') }}</label>
+                        <textarea id="incident-summary" name="incident_summary" rows="3" maxlength="2000" class="cg-input w-full" placeholder="{{ __('Describe what was done and the outcome.') }}">{{ old('incident_summary', $report->incident_summary) }}</textarea>
+                    </div>
                     <button type="submit" class="cg-btn">{{ __('Save') }}</button>
                 </form>
             </div>
@@ -140,6 +148,19 @@
 
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 <div class="space-y-6 lg:col-span-2">
+                    <div class="cg-card">
+                        <div class="flex items-start justify-between gap-3">
+                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __('Incident summary') }}</h3>
+                            @if ($report->incident_summary)
+                                <span class="inline-flex items-center gap-1 text-xs font-semibold text-green-700 dark:text-green-400"><span aria-hidden="true">✓</span> {{ __('Saved and locked') }}</span>
+                            @endif
+                        </div>
+                        @if ($report->incident_summary)
+                            <p class="mt-2 whitespace-pre-line text-sm text-gray-800 dark:text-gray-200">{{ $report->incident_summary }}</p>
+                        @else
+                            <p class="mt-2 text-sm cg-muted">{{ __('No resolution summary has been saved yet.') }}</p>
+                        @endif
+                    </div>
                     <div class="cg-card">
                         <h3 class="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __('What happened') }}</h3>
                         <p class="whitespace-pre-line text-sm text-gray-800 dark:text-gray-200">{{ $report->description }}</p>

@@ -740,7 +740,7 @@
             'rate' => __('You are sending messages too quickly. Please wait a moment.'),
             'retry' => __('Try again'),
             'call911' => __('Call 911'),
-            'safeContinue' => __("I'm safe, continue my report"),
+            'safeContinue' => __('Continue my report'),
             'safeMessage' => __("I'm safe, and I would like to continue with a report."),
         ]) }};
         let lastMessage = '';
