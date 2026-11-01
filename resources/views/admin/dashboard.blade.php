@@ -97,7 +97,7 @@
                                         'sev' => $report->severity,
                                         'canStatus' => auth()->user()->role !== 'tanod' || (int) $report->assigned_to === (int) auth()->id(),
                                         'sevClass' => 'cg-sev-' . $report->severity,
-                                        'status' => __(ucwords(str_replace('_', ' ', $report->status))),
+                                        'status' => $report->status,
                                         'assigned_to' => (string) $report->assigned_to,
                                         'filed' => \App\Support\LocalizedDate::format($report->created_at, 'M d, Y g:i A'),
                                         'photo' => $report->photo_path ? route('admin.reports.photo', $report) : null,
