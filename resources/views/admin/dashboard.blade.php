@@ -161,7 +161,7 @@
                  x-transition:enter="transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                  x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                  class="fixed inset-0 z-[100]">
-                <div class="absolute inset-0 bg-stone-950/60 backdrop-blur-[2px]" @click="open = false"></div>
+                <div class="absolute inset-0 bg-stone-950/60" @click="open = false"></div>
                 <aside
                        role="dialog" aria-modal="true" aria-label="{{ __("Report details") }}"
                        class="absolute inset-y-0 right-0 z-10 w-full max-w-md overflow-y-auto cg-surface-raised p-4 shadow-xl sm:p-6">
