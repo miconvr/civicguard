@@ -164,7 +164,7 @@
                 <div class="absolute inset-0 bg-stone-950/60" @click="open = false"></div>
                 <aside
                        role="dialog" aria-modal="true" aria-label="{{ __("Report details") }}"
-                       class="absolute inset-y-0 right-0 z-10 w-full max-w-md overflow-y-auto cg-surface-raised p-4 shadow-xl sm:p-6">
+                       class="cg-report-drawer absolute inset-y-0 right-0 z-10 w-full max-w-md overflow-y-auto cg-surface-raised p-4 shadow-xl sm:p-6">
             <template x-if="r">
                 <div class="space-y-5">
                     <div class="flex items-start justify-between gap-4">
@@ -194,7 +194,7 @@
                             <div>
                                 <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('Incident summary') }}</h4>
                                 <p x-show="r.incident_summary" x-text="r.incident_summary" class="mt-1 whitespace-pre-line text-sm text-gray-700 dark:text-gray-300"></p>
-                                <p x-show="!r.incident_summary" class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ __('No resolution summary has been saved yet.') }}</p>
+                                <p x-show="!r.incident_summary" class="mt-1 text-sm text-gray-700 dark:text-gray-300">{{ __('No resolution summary has been saved yet.') }}</p>
                             </div>
                             <span x-show="r.incident_summary && !summaryEditing" class="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-green-700 dark:text-green-400">
                                 <span aria-hidden="true">✓</span> {{ __('Saved and locked') }}
@@ -232,7 +232,7 @@
                             <div class="space-y-2">
                                 <label for="incident-summary" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Incident summary') }}</label>
                                 <textarea id="incident-summary" name="incident_summary" rows="4" maxlength="2000" x-model="r.incident_summary" x-show="!r.incident_summary || summaryEditing" :required="r.status === 'resolved'" class="cg-input w-full" placeholder="{{ __('Describe what was done and the outcome.') }}"></textarea>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('Add a concise summary when resolving this report. Officials and admins can review it.') }}</p>
+                                <p class="text-xs text-gray-700 dark:text-gray-300">{{ __('Add a concise summary when resolving this report. Officials and admins can review it.') }}</p>
                             </div>
                         @endif
 
