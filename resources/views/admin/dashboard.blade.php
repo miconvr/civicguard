@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">{{ __("Incident Queue") }}</h2>
     </x-slot>
 
-    <div class="py-12" x-data="{ open: false, r: null }" @keydown.escape.window="open = false">
+    <div class="py-12" x-data="{ open: false, r: null, summaryEditing: false }" @keydown.escape.window="open = false">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             @if (session('status'))
@@ -90,6 +90,7 @@
                                         'reporterVerified' => $reporterVerified,
                                         'location' => $report->location_text,
                                         'description' => $report->description,
+                                        'incident_summary' => $report->incident_summary,
                                         'severity' => __(ucfirst($report->severity)),
                                         'sev' => $report->severity,
                                         'canStatus' => auth()->user()->role !== 'tanod' || (int) $report->assigned_to === (int) auth()->id(),
@@ -104,8 +105,8 @@
                                     ];
                                 @endphp
                                 <tr class="cursor-pointer hover:bg-black/5 dark:hover:bg-white/5" tabindex="0"
-                                    @click="r = {{ Js::from($payload) }}; open = true"
-                                    @keydown.enter="r = {{ Js::from($payload) }}; open = true">
+                                    @click="r = {{ Js::from($payload) }}; summaryEditing = false; open = true"
+                                    @keydown.enter="r = {{ Js::from($payload) }}; summaryEditing = false; open = true">
                                     <td data-label="Severity"><span class="cg-sev cg-sev-{{ $report->severity }}">{{ __(ucfirst($report->severity)) }}</span></td>
                                     <td data-label="Report">
                                         <div class="font-medium">{{ __($report->category->name) }}</div>
@@ -158,10 +159,10 @@
              x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
              class="fixed inset-0 z-40 bg-black/40" @click="open = false"></div>
         <aside x-show="open" x-cloak
-               x-transition:enter="transform transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100"
-               x-transition:leave="transform transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="translate-x-0 opacity-100" x-transition:leave-end="translate-x-full opacity-0"
+               x-transition:enter="transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+               x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                role="dialog" aria-modal="true" aria-label="{{ __("Report details") }}"
-               class="fixed inset-y-0 right-0 z-50 w-full max-w-md overflow-y-auto cg-surface-raised p-4 sm:p-6 shadow-xl">
+               class="fixed inset-0 z-50 w-full overflow-y-auto cg-surface-raised p-4 sm:p-6 shadow-xl">
             <template x-if="r">
                 <div class="space-y-5">
                     <div class="flex items-start justify-between gap-4">
@@ -185,6 +186,20 @@
                     <p class="text-xs text-gray-700 dark:text-gray-300" x-text="'Filed ' + r.filed"></p>
 
                     <p class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line" x-text="r.description"></p>
+
+                    <div class="rounded-xl border border-gray-200 bg-white/60 p-4 dark:border-gray-700 dark:bg-black/10">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ __('Incident summary') }}</h4>
+                                <p x-show="r.incident_summary" x-text="r.incident_summary" class="mt-1 whitespace-pre-line text-sm text-gray-700 dark:text-gray-300"></p>
+                                <p x-show="!r.incident_summary" class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ __('No resolution summary has been saved yet.') }}</p>
+                            </div>
+                            <span x-show="r.incident_summary && !summaryEditing" class="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-green-700 dark:text-green-400">
+                                <span aria-hidden="true">✓</span> {{ __('Saved and locked') }}
+                            </span>
+                            <button type="button" x-show="r.incident_summary && !summaryEditing" @click="summaryEditing = true" class="text-xs font-semibold text-maroon-700 underline-offset-2 hover:underline dark:text-[#d59690]">{{ __('Edit summary') }}</button>
+                        </div>
+                    </div>
 
                     <template x-if="r.photo">
                         <img :src="r.photo" alt="Incident photo" class="rounded-lg max-w-full h-auto border border-gray-200 dark:border-gray-700">
@@ -210,6 +225,12 @@
                                     <option value="high">{{ __("High") }}</option>
                                     <option value="critical">{{ __("Critical") }}</option>
                                 </select>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="incident-summary" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Incident summary') }}</label>
+                                <textarea id="incident-summary" name="incident_summary" rows="4" maxlength="2000" x-model="r.incident_summary" x-show="!r.incident_summary || summaryEditing" :required="r.status === 'resolved'" class="cg-input w-full" placeholder="{{ __('Describe what was done and the outcome.') }}"></textarea>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('Add a concise summary when resolving this report. Officials and admins can review it.') }}</p>
                             </div>
                         @endif
 

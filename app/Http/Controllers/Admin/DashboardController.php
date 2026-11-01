@@ -84,6 +84,12 @@ class DashboardController extends Controller
     {
         $validated = $request->validate([
             'status' => ['required', 'in:pending,in_progress,resolved'],
+            'incident_summary' => [
+                'nullable',
+                'string',
+                'max:2000',
+                Rule::requiredIf(fn () => $request->input('status') === 'resolved' && blank($report->incident_summary)),
+            ],
         ]);
 
         if (auth()->user()->role === 'tanod' && (int) $report->assigned_to !== (int) auth()->id()) {
@@ -95,6 +101,9 @@ class DashboardController extends Controller
         $report->update([
             'status' => $validated['status'],
             'resolved_at' => $validated['status'] === 'resolved' ? now() : null,
+            'incident_summary' => array_key_exists('incident_summary', $validated)
+                ? trim((string) $validated['incident_summary'])
+                : $report->incident_summary,
             'confirmed_at' => null,
         ]);
 
@@ -141,6 +150,17 @@ class DashboardController extends Controller
             abort_unless($canManage, 403);
             $rules['assigned_to'] = ['nullable', Rule::exists('users', 'id')->where('role', 'tanod')];
         }
+        if ($request->exists('incident_summary')) {
+            abort_unless($canUpdateStatus, 403);
+            $rules['incident_summary'] = [
+                'nullable',
+                'string',
+                'max:2000',
+                Rule::requiredIf(fn () => $request->input('status') === 'resolved' && blank($report->incident_summary)),
+            ];
+        } elseif ($request->input('status') === 'resolved' && blank($report->incident_summary)) {
+            $rules['incident_summary'] = ['required', 'string', 'max:2000'];
+        }
 
         $validated = $request->validate($rules);
         $report->loadMissing('category');
@@ -177,6 +197,20 @@ class DashboardController extends Controller
                     'report_id' => $report->id,
                     'message' => "Your report (\"{$report->category->name}\") status changed to ".ucfirst(str_replace('_', ' ', $validated['status'])).'.',
                 ]);
+            }
+
+            if (array_key_exists('incident_summary', $validated)) {
+                $summary = trim((string) $validated['incident_summary']);
+                if ($summary !== $report->incident_summary) {
+                    $report->incident_summary = $summary;
+                    AuditLog::create([
+                        'user_id' => $actor->id,
+                        'action' => 'report_summary_updated',
+                        'auditable_type' => Report::class,
+                        'auditable_id' => $report->id,
+                        'description' => 'Incident resolution summary updated.',
+                    ]);
+                }
             }
 
             if ($canManage && ! empty($validated['assigned_to'])) {
