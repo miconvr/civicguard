@@ -259,7 +259,7 @@
                             </div>
                         @endif
 
-                        <button type="submit" class="min-h-11 w-full rounded-lg bg-maroon-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-maroon-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon-600 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900">
+                        <button type="submit" class="cg-report-save min-h-11 w-full rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon-600 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900">
                             Save changes
                         </button>
                     </form>
