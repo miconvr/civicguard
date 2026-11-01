@@ -162,7 +162,7 @@
                x-transition:enter="transition ease-[var(--cg-ease-out)] duration-[var(--cg-motion-enter)]" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                x-transition:leave="transition ease-[var(--cg-ease-in)] duration-[var(--cg-motion-exit)]" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                role="dialog" aria-modal="true" aria-label="{{ __("Report details") }}"
-               class="fixed inset-0 z-50 w-full overflow-y-auto cg-surface-raised p-4 sm:p-6 shadow-xl">
+               class="fixed inset-y-0 right-0 z-50 w-full max-w-md overflow-y-auto cg-surface-raised p-4 shadow-xl sm:p-6">
             <template x-if="r">
                 <div class="space-y-5">
                     <div class="flex items-start justify-between gap-4">
