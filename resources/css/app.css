@@ -217,6 +217,22 @@
         overflow: hidden;
     }
 
+    .cg-report-drawer .text-gray-500 {
+        color: var(--cg-muted);
+    }
+
+    .cg-report-drawer :where(.text-gray-700, .text-gray-800, .text-gray-900) {
+        color: var(--cg-ink);
+    }
+
+    .cg-report-drawer button[type="submit"] {
+        background-color: #7f1d35;
+    }
+
+    .cg-report-drawer button[type="submit"]:hover {
+        background-color: #68162c;
+    }
+
     .cg-chat-log {
         overscroll-behavior-y: contain;
         scrollbar-gutter: stable;
