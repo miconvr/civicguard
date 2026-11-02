@@ -21,7 +21,7 @@
                     <div class="border-b border-stone-200 pb-4 dark:border-gray-700">
                         <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-gray-400">{{ __('Decision') }}</p>
                         <div class="flex flex-wrap gap-3">
-                            <form method="post" action="{{ route('admin.verifications.decide', $verification) }}">
+                            <form method="post" action="{{ route('admin.verifications.decide', $verification) }}" data-confirm="{{ __('Verify this resident?') }}">
                                 @csrf
                                 @method('patch')
                                 <input type="hidden" name="decision" value="verified">
