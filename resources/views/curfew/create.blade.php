@@ -37,7 +37,7 @@
 
                     <div>
                         <label for="cf_guardian_contact" class="cg-label">{{ __("Guardian's Contact Number") }}</label>
-                        <input id="cf_guardian_contact" type="text" name="guardian_contact" value="{{ old('guardian_contact') }}" placeholder="{{ __('09XX XXX XXXX') }}" class="cg-input">
+                        <input id="cf_guardian_contact" type="text" name="guardian_contact" value="{{ old('guardian_contact') }}" placeholder="{{ __('Enter contact number') }}" class="cg-input">
                     </div>
 
                     <label class="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
