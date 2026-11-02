@@ -17,22 +17,29 @@
             <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{{ __('Submitted') }} {{ \App\Support\LocalizedDate::relative($verification->submitted_at) }}</p>
 
             @if ($status === 'pending')
-                <div x-data="{ declineOpen: false }" class="mt-5">
-                    <div class="flex flex-wrap gap-3">
-                    <form method="post" action="{{ route('admin.verifications.decide', $verification) }}">
-                        @csrf
-                        @method('patch')
-                        <input type="hidden" name="decision" value="verified">
-                        <x-primary-button>{{ __('Verify resident') }}</x-primary-button>
-                    </form>
-                    <button type="button" @click="declineOpen = !declineOpen" :aria-expanded="declineOpen" aria-controls="rejection-panel-{{ $verification->id }}" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-stone-300 px-4 py-2 text-sm font-semibold text-stone-700 transition hover:border-stone-400 hover:bg-stone-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-gray-600 dark:text-gray-200 dark:hover:border-gray-500 dark:hover:bg-white/5">
-                        {{ __('Decline') }}
-                    </button>
+                <div x-data="{ declineOpen: false }" class="mt-5 space-y-4">
+                    <div class="border-b border-stone-200 pb-4 dark:border-gray-700">
+                        <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-gray-400">{{ __('Decision') }}</p>
+                        <div class="flex flex-wrap gap-3">
+                            <form method="post" action="{{ route('admin.verifications.decide', $verification) }}">
+                                @csrf
+                                @method('patch')
+                                <input type="hidden" name="decision" value="verified">
+                                <x-primary-button>{{ __('Verify resident') }}</x-primary-button>
+                            </form>
+                            <button type="button" @click="declineOpen = !declineOpen" :aria-expanded="declineOpen" aria-controls="rejection-panel-{{ $verification->id }}" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-stone-300 px-4 py-2 text-sm font-semibold text-stone-700 transition hover:border-stone-400 hover:bg-stone-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-gray-600 dark:text-gray-200 dark:hover:border-gray-500 dark:hover:bg-white/5">
+                                {{ __('Decline') }}
+                            </button>
+                        </div>
                     </div>
-                    <form x-show="declineOpen" x-cloak x-transition.opacity id="rejection-panel-{{ $verification->id }}" method="post" action="{{ route('admin.verifications.decide', $verification) }}" data-confirm="{{ __('Submit this decline decision?') }}" class="mt-3 max-w-md space-y-2 rounded-xl border border-amber-200 bg-amber-50/70 p-3 dark:border-amber-900/60 dark:bg-amber-950/20">
+                    <form x-show="declineOpen" x-cloak x-transition.opacity id="rejection-panel-{{ $verification->id }}" method="post" action="{{ route('admin.verifications.decide', $verification) }}" data-confirm="{{ __('Submit this decline decision?') }}" class="space-y-3 rounded-xl border border-amber-200 bg-amber-50/70 p-4 dark:border-amber-900/60 dark:bg-amber-950/20" aria-labelledby="rejection-title-{{ $verification->id }}">
                         @csrf
                         @method('patch')
                         <input type="hidden" name="decision" value="rejected">
+                        <div>
+                            <h4 id="rejection-title-{{ $verification->id }}" class="text-sm font-semibold text-amber-950 dark:text-amber-200">{{ __('Decline verification') }}</h4>
+                            <p class="mt-1 text-xs text-amber-900/80 dark:text-amber-200/80">{{ __('Choose the reason to send to the resident.') }}</p>
+                        </div>
                         <label for="rejection-reason-{{ $verification->id }}" class="text-sm font-semibold text-amber-950 dark:text-amber-200">{{ __('Reason for decline') }}</label>
                         <select id="rejection-reason-{{ $verification->id }}" name="rejection_reason" required class="cg-select w-full text-sm" aria-describedby="rejection-reason-hint-{{ $verification->id }}">
                             <option value="">{{ __('Choose a reason') }}</option>
