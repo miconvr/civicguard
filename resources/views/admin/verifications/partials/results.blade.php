@@ -27,8 +27,11 @@
                                 <input type="hidden" name="decision" value="verified">
                                 <x-primary-button>{{ __('Verify resident') }}</x-primary-button>
                             </form>
-                            <button type="button" @click="declineOpen = !declineOpen" :aria-expanded="declineOpen" aria-controls="rejection-panel-{{ $verification->id }}" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-stone-300 px-4 py-2 text-sm font-semibold text-stone-700 transition hover:border-stone-400 hover:bg-stone-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-gray-600 dark:text-gray-200 dark:hover:border-gray-500 dark:hover:bg-white/5">
+                            <button type="button" @click="declineOpen = !declineOpen" :aria-expanded="declineOpen" aria-controls="rejection-panel-{{ $verification->id }}" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-stone-300 px-4 py-2 text-sm font-semibold text-stone-700 transition hover:border-stone-400 hover:bg-stone-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:border-gray-600 dark:text-gray-200 dark:hover:border-gray-500 dark:hover:bg-white/5">
                                 {{ __('Decline') }}
+                                <svg class="h-4 w-4 transition-transform duration-[var(--cg-motion-interaction)] ease-[var(--cg-ease-out)]" :class="{ 'rotate-180': declineOpen }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.51a.75.75 0 0 1-1.08 0l-4.25-4.51a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"/>
+                                </svg>
                             </button>
                         </div>
                     </div>
