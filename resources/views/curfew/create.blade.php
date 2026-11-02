@@ -20,24 +20,24 @@
 
                     <div>
                         <label for="cf_minor_name" class="cg-label">{{ __("Minor's Name") }}</label>
-                        <input id="cf_minor_name" type="text" name="minor_name" required value="{{ old('minor_name') }}" class="cg-input">
+                        <input id="cf_minor_name" type="text" name="minor_name" required value="{{ old('minor_name') }}" placeholder="{{ __('e.g. Juan Dela Cruz') }}" class="cg-input">
                         @error('minor_name') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label for="cf_minor_age" class="cg-label">{{ __("Age") }}</label>
-                        <input id="cf_minor_age" type="number" name="minor_age" value="{{ old('minor_age') }}" min="0" max="17" class="cg-input">
+                        <input id="cf_minor_age" type="number" name="minor_age" value="{{ old('minor_age') }}" min="0" max="17" placeholder="{{ __('e.g. 16') }}" class="cg-input">
                         @error('minor_age') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label for="cf_guardian_name" class="cg-label">{{ __("Guardian's Name") }}</label>
-                        <input id="cf_guardian_name" type="text" name="guardian_name" value="{{ old('guardian_name') }}" class="cg-input">
+                        <input id="cf_guardian_name" type="text" name="guardian_name" value="{{ old('guardian_name') }}" placeholder="{{ __('e.g. Maria Dela Cruz') }}" class="cg-input">
                     </div>
 
                     <div>
                         <label for="cf_guardian_contact" class="cg-label">{{ __("Guardian's Contact Number") }}</label>
-                        <input id="cf_guardian_contact" type="text" name="guardian_contact" value="{{ old('guardian_contact') }}" class="cg-input">
+                        <input id="cf_guardian_contact" type="text" name="guardian_contact" value="{{ old('guardian_contact') }}" placeholder="{{ __('e.g. 0917 123 4567') }}" class="cg-input">
                     </div>
 
                     <label class="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
@@ -328,19 +328,19 @@
 
                     <div>
                         <label for="cf_apprehension_location" class="cg-label">{{ __("Location") }}</label>
-                        <input id="cf_apprehension_location" type="text" name="apprehension_location" required value="{{ old('apprehension_location') }}" class="cg-input">
+                        <input id="cf_apprehension_location" type="text" name="apprehension_location" required value="{{ old('apprehension_location') }}" placeholder="{{ __('e.g. Purok 2, Maimpis') }}" class="cg-input">
                         @error('apprehension_location') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label for="cf_prior_violations_count" class="cg-label">{{ __("Number of Prior Violations") }}</label>
-                        <input id="cf_prior_violations_count" type="number" name="prior_violations_count" required value="{{ old('prior_violations_count', 0) }}" min="0" class="cg-input">
+                        <input id="cf_prior_violations_count" type="number" name="prior_violations_count" required value="{{ old('prior_violations_count', 0) }}" min="0" placeholder="{{ __('e.g. 0') }}" class="cg-input">
                         @error('prior_violations_count') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label for="cf_notes" class="cg-label">{{ __("Notes") }}</label>
-                        <textarea id="cf_notes" name="notes" rows="3" class="cg-input">{{ old('notes') }}</textarea>
+                        <textarea id="cf_notes" name="notes" rows="3" placeholder="{{ __('e.g. Guardian contacted and minor released safely.') }}" class="cg-input">{{ old('notes') }}</textarea>
                     </div>
 
                     <div class="pt-2">
