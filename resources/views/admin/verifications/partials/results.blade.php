@@ -41,7 +41,7 @@
                             <option value="{{ __('Please submit a clearer or more recent document.') }}">{{ __('Please submit a clearer or more recent document.') }}</option>
                         </select>
                         <p id="rejection-reason-hint-{{ $verification->id }}" class="text-xs text-gray-600 dark:text-gray-400">{{ __('This reason will be sent to the resident.') }}</p>
-                        <button type="submit" class="inline-flex min-h-11 items-center justify-center rounded-lg bg-maroon-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-maroon-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:bg-maroon-700 dark:hover:bg-maroon-600">{{ __('Submit decline') }}</button>
+                        <x-primary-button>{{ __('Submit decline') }}</x-primary-button>
                     </form>
                 </div>
             @endif
