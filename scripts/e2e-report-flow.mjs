@@ -428,7 +428,14 @@ try {
     await gotoWithRetry(officialPage, `${baseUrl}/`);
     // The public header is intentionally hidden while the landing hero is in view.
     // Use the visible language toggle in the hero strip instead.
-    await officialPage.locator('.cg-hero-strip button[aria-pressed]').click();
+    await officialPage.waitForFunction(() => {
+        const root = document.documentElement;
+        return Boolean(window.Alpine && window.Alpine.$data(root)?.toggleLanguage);
+    });
+    const publicLanguageToggle = officialPage.locator('.cg-hero-strip button[aria-pressed]');
+    await publicLanguageToggle.click();
+    await publicLanguageToggle.waitFor({ state: 'visible' });
+    await officialPage.waitForFunction(() => document.querySelector('.cg-hero-strip button[aria-pressed]')?.getAttribute('aria-pressed') === 'true');
     await officialPage.waitForFunction(() => document.documentElement.lang === 'tl');
     const publicTagalogFailures = await auditTagalogLayouts(officialPage, ['/'], 'public');
 
