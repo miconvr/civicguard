@@ -328,7 +328,7 @@
 
                     <div>
                         <label for="cf_apprehension_location" class="cg-label">{{ __("Location") }}</label>
-                        <input id="cf_apprehension_location" type="text" name="apprehension_location" required value="{{ old('apprehension_location') }}" placeholder="{{ __('e.g. Purok 2, Maimpis') }}" class="cg-input">
+                        <input id="cf_apprehension_location" type="text" name="apprehension_location" required value="{{ old('apprehension_location') }}" placeholder="{{ __('e.g. Purok 1') }}" class="cg-input">
                         @error('apprehension_location') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
