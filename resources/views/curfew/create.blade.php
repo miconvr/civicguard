@@ -26,7 +26,7 @@
 
                     <div>
                         <label for="cf_minor_age" class="cg-label">{{ __("Age") }}</label>
-                        <input id="cf_minor_age" type="number" name="minor_age" value="{{ old('minor_age') }}" min="0" max="17" placeholder="{{ __('e.g. 16') }}" class="cg-input">
+                        <input id="cf_minor_age" type="number" name="minor_age" value="{{ old('minor_age') }}" min="0" max="17" placeholder="{{ __('Enter age') }}" class="cg-input">
                         @error('minor_age') <p class="cg-error">{{ $message }}</p> @enderror
                     </div>
 
@@ -37,7 +37,7 @@
 
                     <div>
                         <label for="cf_guardian_contact" class="cg-label">{{ __("Guardian's Contact Number") }}</label>
-                        <input id="cf_guardian_contact" type="text" name="guardian_contact" value="{{ old('guardian_contact') }}" placeholder="{{ __('e.g. 0917 123 4567') }}" class="cg-input">
+                        <input id="cf_guardian_contact" type="text" name="guardian_contact" value="{{ old('guardian_contact') }}" placeholder="{{ __('09XX XXX XXXX') }}" class="cg-input">
                     </div>
 
                     <label class="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
