@@ -29,7 +29,7 @@
             <div class="cg-card p-6">
                 {{-- Filter bar --}}
                 <form method="GET" class="mb-4 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                    <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Search by actor, action, or description…') }}"
+                    <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Search actor, action, or description') }}"
                            class="cg-select w-full min-w-0 sm:min-w-[18rem] sm:flex-1" aria-label="{{ __('Search audit logs') }}">
                     <select name="action" data-submit-on-change class="cg-select w-full min-w-0 sm:w-auto sm:max-w-[22rem]" aria-label="{{ __("Filter by action") }}">
                         <option value="">{{ __("All actions") }}</option>
