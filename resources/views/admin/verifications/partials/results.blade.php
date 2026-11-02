@@ -17,18 +17,23 @@
             <p class="mt-2 text-xs text-gray-600 dark:text-gray-400">{{ __('Submitted') }} {{ \App\Support\LocalizedDate::relative($verification->submitted_at) }}</p>
 
             @if ($status === 'pending')
-                <div class="mt-5 flex flex-wrap gap-3">
+                <div x-data="{ declineOpen: false }" class="mt-5">
+                    <div class="flex flex-wrap gap-3">
                     <form method="post" action="{{ route('admin.verifications.decide', $verification) }}">
                         @csrf
                         @method('patch')
                         <input type="hidden" name="decision" value="verified">
                         <x-primary-button>{{ __('Verify resident') }}</x-primary-button>
                     </form>
-                    <form method="post" action="{{ route('admin.verifications.decide', $verification) }}" data-confirm="{{ __('Decline this verification request?') }}" class="space-y-2">
+                    <button type="button" @click="declineOpen = !declineOpen" :aria-expanded="declineOpen" aria-controls="rejection-panel-{{ $verification->id }}" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-800 transition hover:bg-red-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-900/20">
+                        {{ __('Decline') }}
+                    </button>
+                    </div>
+                    <form x-show="declineOpen" x-cloak x-transition.opacity id="rejection-panel-{{ $verification->id }}" method="post" action="{{ route('admin.verifications.decide', $verification) }}" data-confirm="{{ __('Submit this decline decision?') }}" class="mt-3 max-w-md space-y-2 rounded-xl border border-red-200 bg-red-50/60 p-3 dark:border-red-900/60 dark:bg-red-950/20">
                         @csrf
                         @method('patch')
                         <input type="hidden" name="decision" value="rejected">
-                        <label for="rejection-reason-{{ $verification->id }}" class="sr-only">{{ __('Reason for decline') }}</label>
+                        <label for="rejection-reason-{{ $verification->id }}" class="text-sm font-semibold text-red-900 dark:text-red-200">{{ __('Reason for decline') }}</label>
                         <select id="rejection-reason-{{ $verification->id }}" name="rejection_reason" required class="cg-select w-full text-sm" aria-describedby="rejection-reason-hint-{{ $verification->id }}">
                             <option value="">{{ __('Choose a reason') }}</option>
                             <option value="{{ __('The document does not show a Maimpis address.') }}">{{ __('The document does not show a Maimpis address.') }}</option>
@@ -36,7 +41,7 @@
                             <option value="{{ __('Please submit a clearer or more recent document.') }}">{{ __('Please submit a clearer or more recent document.') }}</option>
                         </select>
                         <p id="rejection-reason-hint-{{ $verification->id }}" class="text-xs text-gray-600 dark:text-gray-400">{{ __('This reason will be sent to the resident.') }}</p>
-                        <button type="submit" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-800 transition hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-900/20">{{ __('Decline') }}</button>
+                        <button type="submit" class="inline-flex min-h-11 items-center justify-center rounded-lg bg-red-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 dark:bg-red-700 dark:hover:bg-red-600">{{ __('Submit decline') }}</button>
                     </form>
                 </div>
             @endif
