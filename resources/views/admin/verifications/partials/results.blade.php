@@ -58,7 +58,7 @@
         </div>
 
         @if ($status === 'pending')
-            <div x-data="{ revealed: false, viewerOpen: false }" @keydown.escape.window="viewerOpen = false" class="group relative min-h-48 self-center overflow-hidden rounded-xl border border-stone-200 bg-stone-100 dark:border-gray-700 dark:bg-black/20">
+            <div x-data="{ revealed: false, viewerOpen: false }" @keydown.escape.window="viewerOpen = false" class="group relative min-h-48 self-start overflow-hidden rounded-xl border border-stone-200 bg-stone-100 dark:border-gray-700 dark:bg-black/20">
                 <div x-show="!revealed" class="absolute inset-0 flex items-center justify-center bg-[repeating-linear-gradient(135deg,#e7e5e4_0px,#e7e5e4_10px,#f5f5f4_10px,#f5f5f4_20px)] p-4 dark:bg-[repeating-linear-gradient(135deg,#292524_0px,#292524_10px,#1c1917_10px,#1c1917_20px)]">
                     <span class="pointer-events-none absolute text-xs font-medium text-stone-600 transition-opacity group-hover:opacity-0 dark:text-gray-300">{{ __('Submission hidden') }}</span>
                     <button type="button" @click="revealed = true" :aria-expanded="revealed" class="z-10 rounded-lg bg-stone-900/85 px-4 py-3 text-sm font-semibold text-white opacity-0 shadow-lg transition duration-[var(--cg-motion-interaction)] group-hover:scale-[1.02] group-hover:bg-maroon-800 group-hover:opacity-100 group-focus-within:opacity-100 [@media(hover:none)]:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 dark:bg-black/80">
