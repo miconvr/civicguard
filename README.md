@@ -24,7 +24,10 @@ CivicGuard is a capstone project designed to improve incident reporting and curf
   <img src="docs/screenshots/home-desktop.png" alt="CivicGuard landing page on a desktop screen" width="760">
 </p>
 <p align="center">
-  <img src="docs/screenshots/home-mobile.png" alt="CivicGuard landing page on a mobile screen" width="300">
+  <img src="docs/screenshots/civicguard-install.png" alt="CivicGuard install page with steps for adding the app to a phone's home screen" width="760">
+</p>
+<p align="center">
+  <img src="docs/screenshots/civicguard-report.png" alt="CivicGuard Report an Incident page offering the AI assistant or a form" width="760">
 </p>
 
 ## Features
