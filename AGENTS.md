@@ -106,5 +106,5 @@ Details in `docs/OPERATIONS.md`.
 
 ## Other notes
 
-- Repo has no open-source license. Authors: Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, Adriann Enriquez.
+- Repo has no open-source license; all rights reserved (see README). Authors: Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, Adriann Enriquez.
 - Chat text and report descriptions may be sent to Gemini or Groq when keys are configured; the app works without AI keys.
