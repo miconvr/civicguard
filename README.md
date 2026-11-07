@@ -144,4 +144,4 @@ For privacy requests, use the contact details in the [privacy policy](https://ci
 
 CivicGuard was developed as a capstone project by Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, and Adriann Enriquez.
 
-**License:** The repository does not currently include an open-source license.
+**License:** Copyright (c) 2026 Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, and Adriann Enriquez. All rights reserved. The repository does not include an open-source license, and no permission is granted to use, copy, modify or distribute the code without written permission from the authors. Bundled fonts keep their own SIL Open Font License.
