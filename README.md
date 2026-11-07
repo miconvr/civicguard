@@ -5,8 +5,8 @@
   <p><strong>Capstone project</strong><br><em>CivicGuard: An AI-Integrated Web-Based Incident and Curfew Monitoring System for Barangay Maimpis, City of San Fernando, Pampanga</em></p>
   <p>
     <a href="https://civicguard.wasmer.app">Live Site</a> ·
-    <a href="https://civicguard.wasmer.app/privacy">Privacy policy</a> ·
-    <a href="https://civicguard.wasmer.app/terms">Terms of use</a>
+    <a href="https://civicguard.wasmer.app/privacy">Privacy Policy</a> ·
+    <a href="https://civicguard.wasmer.app/terms">Terms of Use</a>
   </p>
   <p>
     <a href="https://github.com/miconvr/civicguard/actions/workflows/ci.yml"><img src="https://github.com/miconvr/civicguard/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI status"></a>
