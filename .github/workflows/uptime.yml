@@ -1,4 +1,4 @@
-name: Website uptime
+name: Website Uptime
 
 on:
   schedule:
