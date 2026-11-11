@@ -60,7 +60,13 @@ jobs:
           APP_ENV=testing DB_CONNECTION=sqlite DB_DATABASE=/tmp/civicguard-e2e.sqlite SESSION_DRIVER=file CACHE_STORE=file PHOTO_DISK_ROOT=/tmp/civicguard-e2e-storage CIVICGUARD_E2E=1 php artisan migrate:fresh --seed --seeder=Database\\Seeders\\E2eTestSeeder
 
       - name: Install Chromium for mobile checks
-        run: npx playwright install --with-deps chromium
+        run: |
+          for attempt in 1 2 3; do
+            npx playwright install --with-deps chromium && exit 0
+            echo "Attempt $attempt failed; retrying in 20s..."
+            sleep 20
+          done
+          exit 1
 
       - name: Check mobile layout and resident report flow
         env:
