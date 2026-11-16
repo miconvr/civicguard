@@ -26,7 +26,7 @@ CivicGuard is an AI-integrated incident and curfew monitoring system for Baranga
 - `tests/Feature`, `tests/Unit`
 - `scripts/`: performance, mobile, accessibility, production-audit and end-to-end Playwright scripts
 - `docs/`: `OPERATIONS.md`, `RA-9344-CURFEW-GUIDANCE.md`, screenshots
-- `.github/workflows/`: `ci.yml`
+- `.github/workflows/`: `checks.yml`
 
 ## Commands
 
@@ -50,7 +50,7 @@ npm run audit:production                   # live-site audit; set PERF_URL for a
 npm run e2e:reports                        # resident-to-staff journey; isolated CI database only
 ```
 
-CI (`ci.yml`) runs on pushes to `main` and pull requests: Pint check, tests, asset build, performance budgets, mobile and desktop layout checks, axe WCAG A/AA scans, and the e2e report journey.
+CI (`checks.yml`) runs on pushes to `main` and pull requests: Pint check, tests, asset build, performance budgets, mobile and desktop layout checks, axe WCAG A/AA scans, and the e2e report journey.
 
 ## Workflow
 

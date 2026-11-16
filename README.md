@@ -9,7 +9,7 @@
     <a href="https://civicguard.wasmer.app/terms">Terms of Use</a>
   </p>
   <p>
-    <a href="https://github.com/miconvr/civicguard/actions/workflows/ci.yml"><img src="https://github.com/miconvr/civicguard/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI status"></a>
+    <a href="https://github.com/miconvr/civicguard/actions/workflows/checks.yml"><img src="https://github.com/miconvr/civicguard/actions/workflows/checks.yml/badge.svg?branch=main" alt="CI status"></a>
   </p>
 </div>
 
