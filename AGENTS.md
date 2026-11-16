@@ -108,3 +108,9 @@ Details in `docs/OPERATIONS.md`.
 
 - Repo has no open-source license; all rights reserved (see README). Authors: Mico Gerard Navarro, Franz Mikey Reyes, Carl Spencer Talon, Adriann Enriquez.
 - Chat text and report descriptions may be sent to Gemini or Groq when keys are configured; the app works without AI keys.
+
+## Commit messages
+
+Every commit subject is `type: short summary`, all lowercase (brand names and acronyms too), under 80 characters, in the imperative ("add", "fix", not "added"). Types: feat new behavior, fix bug fix, style visual or css change, docs agents.md or readme, refactor no behavior change, perf speed, chore tooling or cleanup, copy wording, content data or text on the site, test, build, ci. One change per commit. Do not use `git add -A`; add specific files. Do not bypass the `.githooks/commit-msg` hook with `--no-verify`. The hook skips `Merge`, `Revert`, `fixup!` and `squash!` subjects. Pull requests are squash-merged only, so the PR title must follow the same format. Dependabot commits use the `chore:` prefix through `.github/dependabot.yml`. History was normalized to this format once, so commit hashes from before that rewrite no longer exist.
+
+After a fresh clone, run `git config core.hooksPath .githooks` so the hook is active.
