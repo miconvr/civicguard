@@ -10,7 +10,6 @@
   </p>
   <p>
     <a href="https://github.com/miconvr/civicguard/actions/workflows/ci.yml"><img src="https://github.com/miconvr/civicguard/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI status"></a>
-    <a href="https://github.com/miconvr/civicguard/actions/workflows/uptime.yml"><img src="https://github.com/miconvr/civicguard/actions/workflows/uptime.yml/badge.svg?branch=main" alt="Website uptime check status"></a>
   </p>
 </div>
 

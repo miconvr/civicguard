@@ -26,7 +26,7 @@ CivicGuard is an AI-integrated incident and curfew monitoring system for Baranga
 - `tests/Feature`, `tests/Unit`
 - `scripts/`: performance, mobile, accessibility, production-audit and end-to-end Playwright scripts
 - `docs/`: `OPERATIONS.md`, `RA-9344-CURFEW-GUIDANCE.md`, screenshots
-- `.github/workflows/`: `ci.yml`, `uptime.yml`; `.github/dependabot.yml`
+- `.github/workflows/`: `ci.yml`
 
 ## Commands
 
@@ -50,7 +50,7 @@ npm run audit:production                   # live-site audit; set PERF_URL for a
 npm run e2e:reports                        # resident-to-staff journey; isolated CI database only
 ```
 
-CI (`ci.yml`) runs on pushes to `main` and pull requests: Pint check, tests, asset build, performance budgets, mobile and desktop layout checks, axe WCAG A/AA scans, and the e2e report journey. `uptime.yml` checks the production `/up` endpoint every 15 minutes.
+CI (`ci.yml`) runs on pushes to `main` and pull requests: Pint check, tests, asset build, performance budgets, mobile and desktop layout checks, axe WCAG A/AA scans, and the e2e report journey.
 
 ## Workflow
 
@@ -65,7 +65,7 @@ CI (`ci.yml`) runs on pushes to `main` and pull requests: Pint check, tests, ass
 
 ## Conventions
 
-- Commits follow Conventional Commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`. Lowercase, imperative, no trailing period.
+- Commit subjects follow the format in the Commit messages section below.
 - Indent 4 spaces, LF line endings (see `.editorconfig`). Run Pint before committing.
 - All user-facing text must exist in both English and Tagalog (`resources/lang`).
 - Every UI change must support light and dark mode (signed-in pages only; public and guest pages stay light), mobile layouts, accessibility, and role-based authorization.
@@ -100,7 +100,7 @@ The full guide is `DESIGN.md`. Do not use it as permission to change routes, rol
 
 Details in `docs/OPERATIONS.md`.
 
-- Health endpoint: `/up`. Slow requests are logged (threshold `SLOW_REQUEST_THRESHOLD_MS`, default 1500). Slack uptime alerts use the Actions secret `UPTIME_ALERT_WEBHOOK`.
+- Health endpoint: `/up`. Slow requests are logged (threshold `SLOW_REQUEST_THRESHOLD_MS`, default 1500).
 - `app.yaml` holds Wasmer build and runtime settings, the persistent `/data` volume, and the post-deploy `php artisan migrate --force --no-interaction` job. View logs with `wasmer app logs miconvr/civicguard`.
 - Back up the database and `/data` before schema or storage changes, and rehearse restores on a private staging environment.
 
@@ -111,6 +111,6 @@ Details in `docs/OPERATIONS.md`.
 
 ## Commit messages
 
-Every commit subject is `type: short summary`, all lowercase (brand names and acronyms too), under 80 characters, in the imperative ("add", "fix", not "added"). Types: feat new behavior, fix bug fix, style visual or css change, docs agents.md or readme, refactor no behavior change, perf speed, chore tooling or cleanup, copy wording, content data or text on the site, test, build, ci. One change per commit. Do not use `git add -A`; add specific files. Do not bypass the `.githooks/commit-msg` hook with `--no-verify`. The hook skips `Merge`, `Revert`, `fixup!` and `squash!` subjects. Pull requests are squash-merged only, so the PR title must follow the same format. Dependabot commits use the `chore:` prefix through `.github/dependabot.yml`. History was normalized to this format once, so commit hashes from before that rewrite no longer exist.
+Every commit subject is `type: short summary`, all lowercase (brand names and acronyms too), under 80 characters, in the imperative ("add", "fix", not "added"). Types: feat new behavior, fix bug fix, style visual or css change, docs agents.md or readme, refactor no behavior change, perf speed, chore tooling or cleanup, copy wording, content data or text on the site, test, build, ci. One change per commit. Do not use `git add -A`; add specific files. Do not bypass the `.githooks/commit-msg` hook with `--no-verify`. The hook skips `Merge`, `Revert`, `fixup!` and `squash!` subjects. Pull requests are squash-merged only, so the PR title must follow the same format. History was normalized to this format once, so commit hashes from before that rewrite no longer exist.
 
 After a fresh clone, run `git config core.hooksPath .githooks` so the hook is active.
