@@ -143,11 +143,6 @@
                             {{ __('Hi! Tell me what happened and I can help you put together a clear incident report.') }}
                         </span>
                     </div>
-                    <div id="chat-chips" class="flex flex-wrap gap-2" aria-label="{{ __('Quick replies') }}">
-                        @foreach ([__('Flooding'), __('Noise complaint'), __('Garbage'), __('Broken streetlight')] as $chip)
-                            <button type="button" data-chip class="min-h-10 rounded-full border border-maroon-700/30 bg-white px-3.5 py-1.5 text-sm font-medium text-maroon-800 transition hover:bg-stone-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-maroon-700 dark:border-white/20 dark:bg-gray-800 dark:text-gray-100">{{ $chip }}</button>
-                        @endforeach
-                    </div>
                 </div>
 
                 <div class="cg-chat-composer border-t border-stone-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900 sm:px-5 sm:py-4">
@@ -806,7 +801,6 @@
             if (!message || isSending) return;
             isSending = true;
             lastMessage = message;
-            document.getElementById('chat-chips')?.remove();
             document.querySelectorAll('[data-emergency-actions]').forEach(el => el.remove());
 
             if (!isRetry) {
@@ -864,10 +858,6 @@
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             sendMessage(input.value);
-        });
-        document.getElementById('chat-chips')?.addEventListener('click', (e) => {
-            const chip = e.target.closest('[data-chip]');
-            if (chip) sendMessage(chip.textContent);
         });
         input.addEventListener('input', resizeChatInput);
         input.addEventListener('keydown', (e) => {
