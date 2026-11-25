@@ -133,7 +133,7 @@
                     </span>
                     <div class="min-w-0 flex-1">
                         <p class="text-sm font-semibold tracking-wide">{{ __('CivicGuard AI') }}</p>
-                        <p class="mt-0.5 flex items-center gap-1.5 text-xs text-white/75"><span class="h-1.5 w-1.5 rounded-full bg-emerald-300" aria-hidden="true"></span>{{ __('Your report-writing assistant') }}</p>
+                        <p class="mt-0.5 text-xs text-white/75">{{ __('Your report-writing assistant') }}</p>
                     </div>
                 </div>
 
