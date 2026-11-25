@@ -135,9 +135,6 @@
                         <p class="text-sm font-semibold tracking-wide">{{ __('CivicGuard AI') }}</p>
                         <p class="mt-0.5 flex items-center gap-1.5 text-xs text-white/75"><span class="h-1.5 w-1.5 rounded-full bg-emerald-300" aria-hidden="true"></span>{{ __('Your report-writing assistant') }}</p>
                     </div>
-                    <button id="chat-close" type="button" @click="document.getElementById('chat-input')?.blur(); chatOpen = false; $nextTick(() => $refs.chatToggle.focus())" aria-label="{{ __('Close chat') }}" title="{{ __('Close chat') }}" class="cg-motion-lift inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 text-white/90 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="m6 6 12 12M18 6 6 18"/></svg>
-                    </button>
                 </div>
 
                 <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="cg-chat-log min-h-56 space-y-4 px-3 py-5 sm:px-6">
