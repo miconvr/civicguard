@@ -271,9 +271,9 @@
 
     @media (max-width: 639px) {
         .cg-chat-log {
-            height: clamp(12rem, 32vh, 18rem);
-            height: clamp(12rem, 32dvh, 18rem);
-            min-height: 12rem;
+            height: clamp(14rem, 44vh, 26rem);
+            height: clamp(14rem, 44dvh, 26rem);
+            min-height: 14rem;
             overflow-y: auto;
         }
     }
