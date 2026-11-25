@@ -28,7 +28,9 @@ class SecurityHeaders
         $response->headers->set('Permissions-Policy', 'camera=(), geolocation=(self), microphone=()');
         $response->headers->remove('X-Powered-By');
 
-        if ($request->user()) {
+        // Authenticated pages must never be stored, but routes that explicitly opt in
+        // with an immutable, private, versioned response (profile photos) keep their header.
+        if ($request->user() && ! str_contains((string) $response->headers->get('Cache-Control'), 'immutable')) {
             $response->headers->set('Cache-Control', 'private, no-store, max-age=0');
         }
 
