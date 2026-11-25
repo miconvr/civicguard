@@ -2304,3 +2304,5 @@ html.cg-theme-switching *::after {
         color: #e7e5e4;
     }
 }
+
+html { scrollbar-gutter: stable; }
