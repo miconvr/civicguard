@@ -139,14 +139,14 @@
 
                 <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="cg-chat-log min-h-56 space-y-4 px-3 py-5 sm:px-6">
                     <div class="flex justify-start text-sm">
-                        <span class="inline-block max-w-[88%] rounded-2xl rounded-bl-md border border-stone-200/80 bg-white px-4 py-3 text-left leading-6 text-gray-800 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
+                        <span class="inline-block max-w-[88%] rounded-2xl rounded-bl-md border border-stone-200/80 bg-white px-4 py-3 text-left leading-6 text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
                             {{ __('Hi! Tell me what happened and I can help you put together a clear incident report.') }}
                         </span>
                     </div>
                 </div>
 
                 <div class="cg-chat-composer border-t border-stone-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900 sm:px-5 sm:py-4">
-                    <form id="chat-form" class="flex items-end gap-2 rounded-2xl border border-stone-300 bg-stone-50 p-1.5 shadow-inner transition focus-within:border-maroon-700 focus-within:ring-2 focus-within:ring-maroon-700/15 dark:border-gray-600 dark:bg-gray-800 dark:focus-within:border-[#d28b9b]">
+                    <form id="chat-form" class="flex items-end gap-2 rounded-2xl border border-stone-300 bg-stone-50 p-1.5 transition focus-within:border-maroon-700 focus-within:ring-2 focus-within:ring-maroon-700/15 dark:border-gray-600 dark:bg-gray-800 dark:focus-within:border-[#d28b9b]">
                     <textarea id="chat-input" rows="1" maxlength="1000" enterkeyhint="send" aria-label="{{ __('Describe your concern or ask a question') }}" placeholder="{{ __('Type your message...') }}" class="min-h-[48px] max-h-32 min-w-0 flex-1 resize-none overflow-y-hidden border-0 bg-transparent px-3 py-3 leading-5 text-gray-900 outline-none ring-0 placeholder:text-gray-500 focus:border-0 focus:ring-0 dark:text-gray-100 dark:placeholder:text-gray-400" style="height:48px" autocomplete="off"></textarea>
                     <button type="submit" id="chat-send" class="cg-motion-lift inline-flex h-11 w-11 min-h-[44px] shrink-0 items-center justify-center rounded-xl bg-maroon-800 p-0 text-white shadow-sm transition duration-[var(--cg-motion-interaction)] hover:bg-maroon-900 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maroon-700 disabled:cursor-wait disabled:opacity-60" aria-label="{{ __('Send') }}" aria-busy="false">
                         <span id="chat-send-label" class="sr-only">{{ __('Send') }}</span>
@@ -251,7 +251,7 @@
                 ? 'flex justify-end text-sm chat-message-enter-user'
                 : 'flex flex-col items-start text-sm chat-message-enter-bot';
             const bubble = document.createElement('span');
-            bubble.className = 'inline-block max-w-[88%] rounded-2xl px-4 py-3 text-left leading-6 whitespace-pre-wrap shadow-sm ' +
+            bubble.className = 'inline-block max-w-[88%] rounded-2xl px-4 py-3 text-left leading-6 whitespace-pre-wrap ' +
                 (who === 'user'
                     ? 'rounded-br-md bg-maroon-800 text-white'
                     : 'rounded-bl-md border border-stone-200/80 bg-white text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100');
