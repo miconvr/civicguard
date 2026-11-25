@@ -110,7 +110,7 @@
     </style>
 
     <div id="chat-widget" @keydown.escape.window="if (chatOpen) { document.getElementById('chat-input')?.blur(); chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="cg-chat-shell mt-1 mb-0 sm:mb-6 overflow-hidden rounded-2xl border border-maroon-900/10 cg-surface-raised shadow-lg shadow-maroon-950/5 dark:border-white/10 dark:shadow-black/20">
-        <div x-show="!chatOpen" x-cloak class="flex flex-col gap-4 bg-gradient-to-br from-maroon-800 via-maroon-700 to-[#9a3450] px-5 py-5 text-white sm:flex-row sm:items-center sm:px-7">
+        <div x-show="!chatOpen" x-cloak class="flex flex-col gap-4 bg-maroon-800 px-5 py-5 text-white sm:flex-row sm:items-center sm:px-7">
             <div class="flex min-w-0 flex-1 items-center gap-3">
                 <span class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/25 bg-white/95 shadow-sm" aria-hidden="true">
                     @include('chatbot.mascot')
@@ -127,7 +127,7 @@
         </div>
 
         <div x-show="chatOpen" x-cloak id="report-ai-chat" role="region" aria-label="{{ __('CivicGuard AI') }}" class="cg-chat-panel-enter cg-chat-panel border-t border-maroon-950/10 bg-white dark:border-white/10 dark:bg-gray-900">
-                <div class="cg-chat-header flex items-center gap-3 bg-gradient-to-r from-maroon-900 to-maroon-700 px-4 py-3.5 text-white sm:px-6">
+                <div class="cg-chat-header flex items-center gap-3 bg-maroon-800 px-4 py-3.5 text-white sm:px-6">
                     <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/25 bg-white/95 shadow-sm" aria-hidden="true">
                         @include('chatbot.mascot')
                     </span>
