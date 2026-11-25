@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="motion">off</x-slot>
     @php
         $initialReportMode = $errors->any()
             ? 'form'
