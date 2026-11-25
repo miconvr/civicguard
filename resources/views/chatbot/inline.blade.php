@@ -154,8 +154,7 @@
                         <span id="chat-send-spinner" class="hidden items-center justify-center gap-1" role="status"><span class="inline-flex items-center gap-1" aria-hidden="true"><span class="send-loading-dot"></span><span class="send-loading-dot"></span><span class="send-loading-dot"></span></span><span class="sr-only">{{ __('Sending...') }}</span></span>
                     </button>
                     </form>
-                    <p class="mt-2 flex items-center justify-between gap-2 px-1 text-[11px] text-stone-500 dark:text-gray-400"><span>{{ __('Enter to send') }} · {{ __('Shift+Enter for a new line') }}</span><span class="shrink-0">{{ __('1000 character limit') }}</span></p>
-                    <p class="mt-1 px-1 text-xs cg-muted">{{ __('Reports are reviewed by staff and are not answered instantly.') }}</p>
+                    <p class="mt-2 px-1 text-[11px] leading-4 text-stone-500 dark:text-gray-400"><span class="hidden sm:inline">{{ __('Enter to send') }} · {{ __('Shift+Enter for a new line') }} · </span>{{ __('Reports are reviewed by staff and are not answered instantly.') }}</p>
                 </div>
         </div>
     </div>
