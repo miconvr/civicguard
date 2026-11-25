@@ -109,7 +109,7 @@
         }
     </style>
 
-    <div id="chat-widget" @keydown.escape.window="if (chatOpen) { document.getElementById('chat-input')?.blur(); chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="cg-chat-shell my-6 overflow-hidden rounded-2xl border border-maroon-900/10 cg-surface-raised shadow-lg shadow-maroon-950/5 dark:border-white/10 dark:shadow-black/20">
+    <div id="chat-widget" @keydown.escape.window="if (chatOpen) { document.getElementById('chat-input')?.blur(); chatOpen = false; $nextTick(() => $refs.chatToggle.focus()); }" class="cg-chat-shell mt-1 mb-6 overflow-hidden rounded-2xl border border-maroon-900/10 cg-surface-raised shadow-lg shadow-maroon-950/5 dark:border-white/10 dark:shadow-black/20">
         <div x-show="!chatOpen" x-cloak class="flex flex-col gap-4 bg-gradient-to-br from-maroon-800 via-maroon-700 to-[#9a3450] px-5 py-5 text-white sm:flex-row sm:items-center sm:px-7">
             <div class="flex min-w-0 flex-1 items-center gap-3">
                 <span class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/25 bg-white/95 shadow-sm" aria-hidden="true">
