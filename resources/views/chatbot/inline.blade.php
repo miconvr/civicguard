@@ -97,8 +97,8 @@
             50% { transform: scale(.985); box-shadow: 0 0 0 4px rgb(149 31 61 / 18%); }
         }
         @keyframes cg-chat-panel-enter {
-            from { opacity: 0; transform: translateY(10px) scale(.99); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         @keyframes typing-bounce {
             0%, 80%, 100% { transform: translateY(0); opacity: 0.35; }
@@ -138,7 +138,7 @@
                 </div>
 
                 <div id="chat-log" role="log" aria-live="polite" aria-label="{{ __('Conversation') }}" class="cg-chat-log min-h-56 space-y-4 px-3 py-5 sm:px-6">
-                    <div class="flex justify-start text-sm chat-message-enter-bot">
+                    <div class="flex justify-start text-sm">
                         <span class="inline-block max-w-[88%] rounded-2xl rounded-bl-md border border-stone-200/80 bg-white px-4 py-3 text-left leading-6 text-gray-800 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
                             {{ __('Hi! Tell me what happened and I can help you put together a clear incident report.') }}
                         </span>
