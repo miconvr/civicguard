@@ -3,8 +3,8 @@ msg=$(head -n1 "$1")
 case "$msg" in
   Merge\ *|Revert\ *|fixup!\ *|squash!\ *) exit 0 ;;
 esac
-if ! printf '%s' "$msg" | grep -Eq '^(feat|fix|style|docs|refactor|perf|chore|copy|content|test|build|ci)(\([a-z0-9._/-]+\))?!?: .{4,}$'; then
-  echo "Commit message must look like 'type: short summary' (optional scope: 'type(scope): summary')."
+if ! printf '%s' "$msg" | grep -Eq '^(feat|fix|style|docs|refactor|perf|chore|copy|content|test|build|ci)!?: .{4,}$'; then
+  echo "Commit message must look like 'type: short summary' (no scope in parentheses)."
   echo "Types: feat fix style docs refactor perf chore copy content test build ci"
   exit 1
 fi
