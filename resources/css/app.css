@@ -2410,3 +2410,15 @@ html:not(.dark) .cg-report-mode-panel .cg-chat-composer {
 .cg-report-mode-panel .cg-chat-shell span.h-14.w-14.rounded-2xl {
     border-radius: 9999px;
 }
+
+/* Report page (light mode): chat panel gets its own cream, distinct from the page */
+html:not(.dark) .cg-report-mode-panel {
+    --cg-chat-cream: #fbf8f2;
+}
+
+html:not(.dark) .cg-report-mode-panel .cg-chat-shell,
+html:not(.dark) .cg-report-mode-panel .cg-chat-panel,
+html:not(.dark) .cg-report-mode-panel .cg-chat-log,
+html:not(.dark) .cg-report-mode-panel .cg-chat-composer {
+    background-color: var(--cg-chat-cream);
+}
