@@ -20,6 +20,10 @@
                 </p>
             </div>
 
+            <p class="text-sm">
+                <a href="{{ route('admin.staffPasswordResets.index') }}" class="font-semibold text-maroon-700 hover:underline dark:text-gray-200">{{ __('Reset a staff password') }}</a>
+            </p>
+
             <div class="cg-card overflow-hidden">
                 <form method="GET" action="{{ route('admin.passwordResets.index') }}" class="flex flex-col gap-3 border-b border-gray-200 p-6 sm:flex-row sm:items-end dark:border-gray-700">
                     <div class="flex-1">

@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DataResetController;
 use App\Http\Controllers\Admin\PasswordResetController;
 use App\Http\Controllers\Admin\ResidentVerificationController as AdminResidentVerificationController;
 use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Admin\StaffPasswordResetController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CurfewLogController;
 use App\Http\Controllers\HomeController;
@@ -67,6 +68,10 @@ Route::middleware(['auth', 'role:admin,official'])->prefix('admin')->name('admin
     Route::patch('/password-resets/{user}', [PasswordResetController::class, 'update'])
         ->middleware('throttle:10,1')
         ->name('passwordResets.update');
+    Route::get('/staff-password-resets', [StaffPasswordResetController::class, 'index'])->name('staffPasswordResets.index');
+    Route::patch('/staff-password-resets/{user}', [StaffPasswordResetController::class, 'update'])
+        ->middleware('throttle:10,1')
+        ->name('staffPasswordResets.update');
 });
 
 Route::middleware(['auth', 'role:tanod,admin,official'])->prefix('admin')->name('admin.')->group(function () {

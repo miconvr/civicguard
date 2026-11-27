@@ -254,5 +254,16 @@
     "Confirm new password": "Confirm new password",
     "Change password": "Change password",
     "Log out": "Log out",
-    "Your password has been changed.": "Your password has been changed."
+    "Your password has been changed.": "Your password has been changed.",
+    "Reset Staff Passwords": "Reset Staff Passwords",
+    "Staff password reset": "Staff password reset",
+    "Use this only after confirming the staff member in person. Give the temporary password privately. They must choose a new password the next time they sign in.": "Use this only after confirming the staff member in person. Give the temporary password privately. They must choose a new password the next time they sign in.",
+    "Reset a resident password": "Reset a resident password",
+    "Reset a staff password": "Reset a staff password",
+    "Find a staff member": "Find a staff member",
+    "Tanod": "Tanod",
+    "Official": "Official",
+    "No staff found.": "No staff found.",
+    "Staff password reset by authorized staff.": "Staff password reset by authorized staff.",
+    "Staff password reset successfully.": "Staff password reset successfully."
 }

@@ -641,5 +641,15 @@
     "Confirm new password": "Kumpirmahin ang bagong password",
     "Change password": "Palitan ang password",
     "Log out": "Mag-log out",
-    "Your password has been changed.": "Napalitan na ang iyong password."
+    "Your password has been changed.": "Napalitan na ang iyong password.",
+    "Reset Staff Passwords": "I-reset ang mga Password ng Kawani",
+    "Staff password reset": "Pag-reset ng password ng kawani",
+    "Use this only after confirming the staff member in person. Give the temporary password privately. They must choose a new password the next time they sign in.": "Gamitin lamang ito pagkatapos makumpirma nang personal ang kawani. Ibigay nang pribado ang pansamantalang password. Kailangan nilang pumili ng bagong password sa susunod nilang pag-sign in.",
+    "Reset a resident password": "I-reset ang password ng residente",
+    "Reset a staff password": "I-reset ang password ng kawani",
+    "Find a staff member": "Maghanap ng kawani",
+    "Official": "Opisyal",
+    "No staff found.": "Walang nahanap na kawani.",
+    "Staff password reset by authorized staff.": "Na-reset ang password ng kawani ng awtorisadong kawani.",
+    "Staff password reset successfully.": "Matagumpay na na-reset ang password ng kawani."
 }
