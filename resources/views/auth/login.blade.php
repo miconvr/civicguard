@@ -1,5 +1,4 @@
-<x-guest-layout>
-    <x-auth-role-badge role="resident" />
+<x-guest-layout :title="__('Resident Login')">
     <x-auth-role-switch current="resident" />
     <div class="mb-6">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ __('Welcome back') }}</h2>

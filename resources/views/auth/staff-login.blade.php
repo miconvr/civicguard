@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-guest-layout :title="__('Staff Login')">
     <x-auth-role-badge role="staff" />
     <x-auth-role-switch current="staff" />
     <div class="mb-6">
@@ -35,4 +35,5 @@
         </x-primary-button>
     </form>
 
+    <p class="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">{{ __('Forgot your password? Ask an administrator to reset it.') }}</p>
 </x-guest-layout>

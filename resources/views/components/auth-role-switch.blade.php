@@ -1,6 +1,6 @@
 @props(['current' => 'resident'])
 
-<nav aria-label="{{ __('Choose login type') }}" class="mb-6 grid grid-cols-2 gap-1 rounded-lg bg-stone-100 p-1 dark:bg-stone-800">
+<nav aria-label="{{ __('Choose login type') }}" class="mb-6 grid grid-cols-2 gap-1 rounded-lg bg-stone-200/60 p-1 ring-1 ring-stone-300 dark:bg-stone-800 dark:ring-stone-600">
     @foreach ([['resident', route('login'), __('Resident')], ['staff', route('staff.login'), __('Staff')]] as [$key, $url, $label])
         <a href="{{ $url }}"
            @if ($current === $key) aria-current="page" @endif

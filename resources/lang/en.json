@@ -278,5 +278,8 @@
     "Staff": "Staff",
     "Staff only": "Staff only",
     "Sign-ins to this page are recorded.": "Sign-ins to this page are recorded.",
-    "Choose login type": "Choose login type"
+    "Choose login type": "Choose login type",
+    "Resident Login": "Resident Login",
+    "Create Account": "Create Account",
+    "Forgot your password? Ask an administrator to reset it.": "Forgot your password? Ask an administrator to reset it."
 }

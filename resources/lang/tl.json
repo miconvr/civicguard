@@ -664,5 +664,7 @@
     "Staff": "Kawani",
     "Staff only": "Para sa kawani lamang",
     "Sign-ins to this page are recorded.": "Naitatala ang mga pag-sign in sa pahinang ito.",
-    "Choose login type": "Pumili ng uri ng login"
+    "Choose login type": "Pumili ng uri ng login",
+    "Resident Login": "Login ng Residente",
+    "Forgot your password? Ask an administrator to reset it.": "Nakalimutan ang password? Magpatulong sa administrator na i-reset ito."
 }
