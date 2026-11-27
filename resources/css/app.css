@@ -2374,3 +2374,8 @@ html { scrollbar-gutter: stable; }
 .cg-report-mode-panel .cg-chat-log [class*="rounded-br-md"] {
     border-bottom-right-radius: 0.375rem;
 }
+
+/* Report page: summary card stays square */
+.cg-report-mode-panel .cg-chat-log [class*="bg-maroon-800"][class*="rounded-2xl"] {
+    border-radius: 0;
+}
