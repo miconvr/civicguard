@@ -78,7 +78,7 @@ Alpine.data('landingPage', () => ({
             tlResolvedDesc: 'You confirm whether it is fixed.',
             staffQuestion: 'Barangay staff? Sign in',
             devKicker: 'Developed by',
-            navSignIn: 'Sign in',
+            navSignIn: 'Resident sign in',
             navCreateAccount: 'Create account',
             footerEmergency: 'For emergencies, call 911.',
             footerPrivacy: 'Privacy Policy',

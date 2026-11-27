@@ -1635,6 +1635,9 @@ html.cg-nav-js:not(.cg-nav-on) .cg-public-header:focus-within { transform: none;
 .cg-hero-strip-btn { min-width: 2.75rem; border: 1px solid rgba(255,255,255,.45); letter-spacing: .04em; }
 .cg-hero-strip-btn:hover, .cg-hero-strip-link:hover { background: rgba(255,255,255,.14); }
 .cg-hero-strip-btn:focus-visible, .cg-hero-strip-link:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.cg-hero-strip-link--quiet { position: relative; color: rgba(255,255,255,.8); }
+.cg-hero-strip-link--quiet::before { content: ""; position: absolute; left: -.2rem; top: 30%; height: 40%; width: 1px; background: rgba(255,255,255,.35); }
+.cg-hero-strip-link--quiet:hover { color: #fff; }
 html:not(.cg-nav-js) .cg-hero-strip { display: none; }
 .cg-hero-brand-name { font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif; font-weight: 700; letter-spacing: -.015em; }
 .cg-hero-brand-mark { width: 3.3rem; height: 3.3rem; border-radius: 0; background: transparent; box-shadow: none; animation: cg-brand-float 6s ease-in-out infinite; }
