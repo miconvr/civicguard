@@ -42,6 +42,7 @@
                         </button>
                         @guest
                             <a href="{{ route('login') }}" class="inline-flex min-h-10 items-center rounded-md px-2.5 text-sm font-semibold text-maroon-800 transition-colors hover:bg-white/70 hover:text-maroon-950" x-text="text('navSignIn')">Sign in</a>
+                            <a href="{{ route('staff.login') }}" class="hidden min-h-10 items-center rounded-md px-2.5 text-sm font-semibold text-maroon-800 transition-colors hover:bg-white/70 hover:text-maroon-950 sm:inline-flex" x-text="text('staffAction')">Staff sign in</a>
                             <span class="hidden sm:inline-flex">
                                 <a href="{{ route('register') }}" class="cg-btn min-h-10 px-4 text-sm">
                                     <span x-text="text('navCreateAccount')">Create account</span>
@@ -63,6 +64,7 @@
                         <button type="button" @click="toggleLanguage()" :aria-label="language === 'en' ? 'EN, Switch language to Tagalog' : 'TL, Switch language to English'" :aria-pressed="(language === 'tl').toString()" class="cg-hero-strip-btn"><span x-text="language === 'en' ? 'EN' : 'TL'">EN</span></button>
                         @guest
                             <a href="{{ route('login') }}" class="cg-hero-strip-link" x-text="text('navSignIn')">Sign in</a>
+                            <a href="{{ route('staff.login') }}" class="cg-hero-strip-link" x-text="text('staffAction')">Staff sign in</a>
                         @endguest
                         @auth
                             <a href="{{ route('dashboard') }}" class="cg-hero-strip-link" x-text="text('dashboard')">Dashboard</a>

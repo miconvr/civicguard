@@ -626,5 +626,12 @@
     "Choose a reason": "Pumili ng dahilan",
     "The document does not show a Maimpis address.": "Hindi ipinapakita ng dokumento ang address sa Maimpis.",
     "The document is not readable.": "Hindi mabasa ang dokumento.",
-    "Please submit a clearer or more recent document.": "Magsumite ng mas malinaw o mas bagong dokumento."
+    "Please submit a clearer or more recent document.": "Magsumite ng mas malinaw o mas bagong dokumento.",
+    "Staff sign-in": "Pagpasok ng kawani",
+    "For barangay tanods, officials and administrators.": "Para sa mga tanod, opisyal, at tagapangasiwa ng barangay.",
+    "Sign in": "Mag-sign in",
+    "Signing in...": "Nagsa-sign in...",
+    "Not staff?": "Hindi kawani?",
+    "Residents, use this login": "Mga residente, dito mag-log in",
+    "Staff accounts must sign in on the staff login page.": "Dapat mag-sign in ang mga account ng kawani sa pahina ng pagpasok ng kawani."
 }
