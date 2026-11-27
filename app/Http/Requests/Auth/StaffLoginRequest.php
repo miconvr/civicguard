@@ -5,6 +5,7 @@ namespace App\Http\Requests\Auth;
 use App\Models\AuditLog;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Throwable;
@@ -32,6 +33,16 @@ class StaffLoginRequest extends LoginRequest
                 ->first();
 
             $this->record('staff_login_failed', __('Failed staff sign-in attempt.'), null, $known);
+
+            $resident = User::whereNotIn('role', User::STAFF_ROLES)
+                ->where('email', (string) $this->input('email'))
+                ->first();
+
+            if ($resident && Hash::check((string) $this->input('password'), $resident->password)) {
+                throw ValidationException::withMessages([
+                    'email' => __('Resident accounts must sign in on the resident login page.'),
+                ]);
+            }
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),

@@ -20,7 +20,7 @@ test('residents cannot sign in on the staff page', function () {
     $user = User::factory()->create(['role' => 'resident']);
 
     $this->post('/staff/login', ['email' => $user->email, 'password' => 'password'])
-        ->assertSessionHasErrors(['email' => trans('auth.failed')]);
+        ->assertSessionHasErrors(['email' => __('Resident accounts must sign in on the resident login page.')]);
 
     $this->assertGuest();
 });
