@@ -134,7 +134,7 @@ Alpine.data('landingPage', () => ({
             startTitle: 'Ano ang nais ninyong gawin?',
             residentPathTitle: 'Nakatira ako sa Maimpis',
             residentPathDescription: 'Gumawa ng account ng residente upang mag-ulat ng problema at subaybayan ang mga update.',
-            residentAction: 'Gumawa ng account ng residente',
+            residentAction: 'Gumawa ng account',
             existingAccount: 'May account na? Mag-sign in',
             staffPathTitle: 'Kawani ako ng barangay',
             staffPathDescription: 'Mag-sign in upang suriin ang mga ulat at magbahagi ng mga update sa mga residente.',
