@@ -63,7 +63,7 @@
                     <div class="cg-hero-strip">
                         <button type="button" @click="toggleLanguage()" :aria-label="language === 'en' ? 'EN, Switch language to Tagalog' : 'TL, Switch language to English'" :aria-pressed="(language === 'tl').toString()" class="cg-hero-strip-btn"><span x-text="language === 'en' ? 'EN' : 'TL'">EN</span></button>
                         @guest
-                            <a href="{{ route('login') }}" class="cg-hero-strip-link" x-text="text('navSignIn')">Resident Login</a>
+                            <a href="{{ route('login') }}" class="cg-hero-strip-link" x-text="text('stripSignIn')">Resident Login</a>
                             <a href="{{ route('staff.login') }}" class="cg-hero-strip-link cg-hero-strip-link--quiet" x-text="text('staffAction')">Staff Login</a>
                         @endguest
                         @auth
