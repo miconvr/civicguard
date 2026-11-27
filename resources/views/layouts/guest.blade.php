@@ -14,7 +14,6 @@
 
         <style>
             [x-cloak] { display: none !important; }
-            @view-transition { navigation: auto; }
             html { background: #6d1c32; }
         </style>
         <!-- Scripts -->
