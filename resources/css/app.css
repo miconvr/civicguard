@@ -2354,12 +2354,6 @@ html { scrollbar-gutter: stable; }
     padding: 0;
 }
 
-/* Report page: boxy corners inside the AI and form panels (keeps fully round elements) */
-.cg-report-mode-panel .cg-card,
-.cg-report-mode-panel [class*="rounded-"]:not(.rounded-full) {
-    border-radius: 0;
-}
-
 /* Report page: keep chat message bubbles rounded */
 .cg-report-mode-panel .cg-chat-log [class*="rounded-2xl"],
 .cg-report-mode-panel .cg-chat-log [class*="rounded-bl-md"],
@@ -2373,11 +2367,6 @@ html { scrollbar-gutter: stable; }
 
 .cg-report-mode-panel .cg-chat-log [class*="rounded-br-md"] {
     border-bottom-right-radius: 0.375rem;
-}
-
-/* Report page: summary card stays square */
-.cg-report-mode-panel .cg-chat-log [class*="bg-maroon-800"][class*="rounded-2xl"] {
-    border-radius: 0;
 }
 
 /* Report page: user bubble and send button keep their rounding */
