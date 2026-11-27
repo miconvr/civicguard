@@ -2345,3 +2345,11 @@ html { scrollbar-gutter: stable; }
         transform: none;
     }
 }
+
+/* Report page: no outer card while the AI or form panel is open */
+.cg-card.cg-report-card-bare {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    padding: 0;
+}
