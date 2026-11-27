@@ -2388,3 +2388,20 @@ html { scrollbar-gutter: stable; }
 .cg-report-mode-panel #chat-send {
     border-radius: 0.75rem;
 }
+
+/* Report page (light mode): chat panel blends into the cream page */
+html:not(.dark) .cg-report-mode-panel .cg-chat-shell,
+html:not(.dark) .cg-report-mode-panel .cg-chat-panel,
+html:not(.dark) .cg-report-mode-panel .cg-chat-log,
+html:not(.dark) .cg-report-mode-panel .cg-chat-composer {
+    background-color: var(--cg-canvas);
+}
+
+html:not(.dark) .cg-report-mode-panel .cg-chat-shell {
+    box-shadow: none;
+    border-color: color-mix(in srgb, var(--cg-accent) 18%, transparent);
+}
+
+html:not(.dark) .cg-report-mode-panel .cg-chat-composer {
+    border-color: color-mix(in srgb, var(--cg-accent) 14%, transparent);
+}
