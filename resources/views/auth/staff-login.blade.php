@@ -1,4 +1,6 @@
 <x-guest-layout>
+    <x-auth-role-badge role="staff" />
+    <x-auth-role-switch current="staff" />
     <div class="mb-6">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ __('Staff Login') }}</h2>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('For barangay tanods, officials and administrators.') }}</p>
@@ -33,12 +35,4 @@
         </x-primary-button>
     </form>
 
-    <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700 text-center">
-        <p class="text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Not staff?') }}
-            <a href="{{ route('login') }}" class="font-semibold text-maroon-700 dark:text-gray-200 hover:underline">
-                {{ __('Residents, use this login') }}
-            </a>
-        </p>
-    </div>
 </x-guest-layout>

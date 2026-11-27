@@ -660,5 +660,9 @@
     "Log In": "Mag-sign in",
     "Logging In...": "Nagsa-sign in...",
     "Create an Account": "Gumawa ng account",
-    "Log In Here": "Mag-log in dito"
+    "Log In Here": "Mag-log in dito",
+    "Staff": "Kawani",
+    "Staff only": "Para sa kawani lamang",
+    "Sign-ins to this page are recorded.": "Naitatala ang mga pag-sign in sa pahinang ito.",
+    "Choose login type": "Pumili ng uri ng login"
 }

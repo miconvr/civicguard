@@ -274,5 +274,9 @@
     "Log In": "Log In",
     "Logging In...": "Logging In...",
     "Create an Account": "Create an Account",
-    "Log In Here": "Log In Here"
+    "Log In Here": "Log In Here",
+    "Staff": "Staff",
+    "Staff only": "Staff only",
+    "Sign-ins to this page are recorded.": "Sign-ins to this page are recorded.",
+    "Choose login type": "Choose login type"
 }

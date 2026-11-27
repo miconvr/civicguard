@@ -1,4 +1,6 @@
 <x-guest-layout>
+    <x-auth-role-badge role="resident" />
+    <x-auth-role-switch current="resident" />
     <div class="mb-6">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ __('Create your account') }}</h2>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('Sign up to report incidents and follow their progress.') }}</p>
