@@ -2405,3 +2405,8 @@ html:not(.dark) .cg-report-mode-panel .cg-chat-shell {
 html:not(.dark) .cg-report-mode-panel .cg-chat-composer {
     border-color: color-mix(in srgb, var(--cg-accent) 14%, transparent);
 }
+
+/* Report page: AI avatar in the chat header is a circle */
+.cg-report-mode-panel .cg-chat-shell span.h-14.w-14.rounded-2xl {
+    border-radius: 9999px;
+}
