@@ -14,6 +14,7 @@
 
         <style>
             [x-cloak] { display: none !important; }
+            @view-transition { navigation: auto; }
         </style>
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
