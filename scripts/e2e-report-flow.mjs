@@ -34,7 +34,8 @@ async function gotoWithRetry(page, url, options = { waitUntil: 'domcontentloaded
 }
 
 async function signIn(page, email) {
-    await gotoWithRetry(page, `${baseUrl}/login`);
+    const loginPath = /^(official|tanod|admin)\./.test(email) ? '/staff/login' : '/login';
+    await gotoWithRetry(page, `${baseUrl}${loginPath}`);
     await page.locator('#email').fill(email);
     await page.locator('#password').fill(password);
 
@@ -46,7 +47,7 @@ async function signIn(page, email) {
         const request = response.request();
 
         return request.method() === 'POST'
-            && new URL(response.url()).pathname === '/login';
+            && new URL(response.url()).pathname === loginPath;
     }, { timeout: 15000 });
     const navigationPromise = page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 8000 })
         .then(response => ({ response }))
@@ -59,7 +60,7 @@ async function signIn(page, email) {
             && new URL(response.url()).pathname === '/dashboard';
     }, { timeout: 5000 }).catch(() => null);
 
-    const clickError = await page.getByRole('button', { name: /log in/i }).click()
+    const clickError = await page.getByRole('button', { name: /log in|sign in/i }).click()
         .then(() => null)
         .catch(error => error);
     const loginResponse = await loginResponsePromise;

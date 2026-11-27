@@ -17,7 +17,7 @@ try {
         const page = await context.newPage();
         page.on('pageerror', error => browserErrors.push(error.message));
 
-        for (const path of ['/', '/login', '/register', '/privacy', '/terms']) {
+        for (const path of ['/', '/login', '/staff/login', '/register', '/privacy', '/terms']) {
             const response = await page.goto(`${baseUrl}${path}`, { waitUntil: 'domcontentloaded' });
             const status = response?.status() ?? 0;
 
