@@ -35,5 +35,9 @@
         </x-primary-button>
     </form>
 
-    <p class="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">{{ __('Forgot your password? Ask an administrator to reset it.') }}</p>
+    <p class="cg-forgot-note mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+        <a href="{{ route('password.request') }}" class="font-semibold text-maroon-700 underline-offset-2 hover:underline dark:text-gray-200">
+            {{ __('Forgot your password?') }}
+        </a>
+    </p>
 </x-guest-layout>
