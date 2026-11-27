@@ -246,5 +246,13 @@
     "Signing in...": "Signing in...",
     "Not staff?": "Not staff?",
     "Residents, use this login": "Residents, use this login",
-    "Staff accounts must sign in on the staff login page.": "Staff accounts must sign in on the staff login page."
+    "Staff accounts must sign in on the staff login page.": "Staff accounts must sign in on the staff login page.",
+    "Change your password": "Change your password",
+    "You must choose a new password before you can continue.": "You must choose a new password before you can continue.",
+    "Current password": "Current password",
+    "New password": "New password",
+    "Confirm new password": "Confirm new password",
+    "Change password": "Change password",
+    "Log out": "Log out",
+    "Your password has been changed.": "Your password has been changed."
 }

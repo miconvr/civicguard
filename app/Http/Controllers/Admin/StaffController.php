@@ -33,6 +33,8 @@ class StaffController extends Controller
             'phone_number' => $validated['phone_number'] ?? null,
         ]);
 
+        $staff->forceFill(['must_change_password' => true])->save();
+
         AuditLog::create([
             'user_id' => auth()->id(),
             'action' => 'staff_created',

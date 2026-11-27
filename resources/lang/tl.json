@@ -633,5 +633,13 @@
     "Signing in...": "Nagsa-sign in...",
     "Not staff?": "Hindi kawani?",
     "Residents, use this login": "Mga residente, dito mag-log in",
-    "Staff accounts must sign in on the staff login page.": "Dapat mag-sign in ang mga account ng kawani sa pahina ng pagpasok ng kawani."
+    "Staff accounts must sign in on the staff login page.": "Dapat mag-sign in ang mga account ng kawani sa pahina ng pagpasok ng kawani.",
+    "Change your password": "Palitan ang iyong password",
+    "You must choose a new password before you can continue.": "Kailangan mong pumili ng bagong password bago magpatuloy.",
+    "Current password": "Kasalukuyang password",
+    "New password": "Bagong password",
+    "Confirm new password": "Kumpirmahin ang bagong password",
+    "Change password": "Palitan ang password",
+    "Log out": "Mag-log out",
+    "Your password has been changed.": "Napalitan na ang iyong password."
 }
