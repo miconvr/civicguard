@@ -16,6 +16,13 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    public const STAFF_ROLES = ['tanod', 'official', 'admin'];
+
+    public function isStaff(): bool
+    {
+        return in_array($this->role, self::STAFF_ROLES, true);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
