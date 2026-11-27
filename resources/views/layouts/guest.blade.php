@@ -16,6 +16,7 @@
             [x-cloak] { display: none !important; }
             html { background: #6d1c32; }
             @keyframes cg-auth-swap { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+            body .cg-auth-card:has(.cg-staff-band) { border-color: #6d1c32; }
             .cg-auth-swap { animation: cg-auth-swap 160ms ease-out both; }
             @media (prefers-reduced-motion: reduce) { .cg-auth-swap { animation: none; } }
         </style>
@@ -33,7 +34,7 @@
                             <span class="block text-[11px] uppercase tracking-wider text-stone-600 dark:text-stone-300">Brgy. Maimpis</span>
                         </span>
                     </a>
-                    <div class="cg-auth-swap">{{ $slot }}</div>
+                    <div @class(['cg-auth-swap' => ! request()->routeIs('password.request')])>{{ $slot }}</div>
                 </div>
             </section>
 
