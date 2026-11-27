@@ -128,7 +128,7 @@
 
         <div x-show="chatOpen" x-cloak id="report-ai-chat" role="region" aria-label="{{ __('CivicGuard AI') }}" class="cg-chat-panel-enter cg-chat-panel border-t border-maroon-950/10 bg-white dark:border-white/10 dark:bg-gray-900">
                 <div class="cg-chat-header flex items-center gap-3 bg-maroon-800 px-4 py-3.5 text-white sm:px-6">
-                    <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/25 bg-white/95 shadow-sm" aria-hidden="true">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/25 bg-white/95 shadow-sm" aria-hidden="true">
                         @include('chatbot.mascot')
                     </span>
                     <div class="min-w-0 flex-1">
