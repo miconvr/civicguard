@@ -17,7 +17,7 @@ test('residents can choose between the AI assistant and the standard report form
         ->assertSee('Fill out the form myself')
         ->assertSee('sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]', false)
         ->assertSee('min-h-11', false)
-        ->assertDontSee('cg-page-enter', false)
+        ->assertSee('cg-page-enter', false)
         ->assertSee('cg-report-panel-transition', false)
         ->assertSee('x-transition:enter="cg-report-panel-transition"', false)
         ->assertSee('@transitionend.self="if ($event.propertyName === \'opacity\') finishPanelExit()"', false)

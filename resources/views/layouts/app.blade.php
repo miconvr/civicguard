@@ -11,6 +11,9 @@
         <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
         <link rel="preload" href="{{ Vite::asset('resources/fonts/Figtree-400.woff2') }}" as="font" type="font/woff2" crossorigin>
         <link rel="preload" href="{{ Vite::asset('resources/fonts/Bitter-600.woff2') }}" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="{{ Vite::asset('resources/fonts/Figtree-500.woff2') }}" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="{{ Vite::asset('resources/fonts/Figtree-600.woff2') }}" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="{{ Vite::asset('resources/fonts/Figtree-700.woff2') }}" as="font" type="font/woff2" crossorigin>
 
         <style>
             [x-cloak] { display: none !important; }
