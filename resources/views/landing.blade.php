@@ -78,7 +78,7 @@
                                 <span class="cg-landing-accent" x-text="text('headlineAccent')"> Barangay Maimpis.</span>
                             </h1></div>
                             <p class="cg-intro-enter cg-intro-enter-2 mt-6 max-w-xl text-base leading-7 text-white/85 sm:text-lg sm:leading-8 lg:text-xl lg:leading-9" x-text="text('introduction')">Report an incident, then follow its progress here. CivicGuard connects residents with barangay staff.</p>
-                            <div class="cg-intro-enter cg-intro-enter-3 mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-3">
+                            <div class="cg-intro-enter cg-intro-enter-3 mt-9 flex flex-col items-stretch gap-3 sm:max-w-sm">
                                 @guest
                                     <a href="{{ route('register') }}" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 text-base lg:min-h-14 lg:px-8 lg:text-lg font-semibold text-maroon-900 shadow-sm transition-colors hover:bg-stone-100">
                                         <span x-text="text('residentAction')">Create a resident account</span>
