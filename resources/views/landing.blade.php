@@ -41,7 +41,7 @@
                             <span x-text="language === 'en' ? 'EN' : 'TL'"></span>
                         </button>
                         @guest
-                            <a href="{{ route('login') }}" class="inline-flex min-h-10 items-center rounded-md px-2.5 text-sm font-semibold text-maroon-800 transition-colors hover:bg-white/70 hover:text-maroon-950" x-text="text('navSignIn')">Resident Login</a>
+                            <a href="{{ route('login') }}" class="inline-flex min-h-10 items-center rounded-md px-2.5 text-sm font-semibold text-maroon-800 transition-colors hover:bg-white/70 hover:text-maroon-950" ><span class="sm:hidden" x-text="text('navSignIn')">Resident Login</span><span class="hidden sm:inline" x-text="text('stripSignIn')">Resident Login</span></a>
                             <a href="{{ route('staff.login') }}" class="hidden min-h-10 items-center rounded-md px-2.5 text-sm font-semibold text-maroon-800 transition-colors hover:bg-white/70 hover:text-maroon-950 sm:inline-flex" x-text="text('staffAction')">Staff Login</a>
                             <span class="hidden sm:inline-flex">
                                 <a href="{{ route('register') }}" class="cg-btn min-h-10 px-4 text-sm">
