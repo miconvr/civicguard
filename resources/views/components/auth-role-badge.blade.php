@@ -1,7 +1,7 @@
 @props(['role' => 'resident'])
 
 @if ($role === 'staff')
-    <div class="-mx-6 -mt-7 mb-6 flex items-center gap-3 bg-maroon-800 px-6 py-3 text-white sm:-mx-8 sm:px-8">
+    <div class="-mx-[calc(1.5rem+1px)] -mt-7 mb-6 flex items-center gap-3 bg-maroon-800 px-6 py-3 text-white sm:-mx-[calc(2rem+1px)] sm:px-8">
         <svg class="h-6 w-6 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l8 3v6c0 4.5-3.2 8.2-8 9-4.8-.8-8-4.5-8-9V6l8-3z"/></svg>
         <div class="leading-tight">
             <p class="text-sm font-bold uppercase tracking-wide">{{ __('Staff only') }}</p>

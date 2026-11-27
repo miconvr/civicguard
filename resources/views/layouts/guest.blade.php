@@ -15,6 +15,9 @@
         <style>
             [x-cloak] { display: none !important; }
             html { background: #6d1c32; }
+            @keyframes cg-auth-swap { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+            .cg-auth-swap { animation: cg-auth-swap 160ms ease-out both; }
+            @media (prefers-reduced-motion: reduce) { .cg-auth-swap { animation: none; } }
         </style>
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -30,7 +33,7 @@
                             <span class="block text-[11px] uppercase tracking-wider text-stone-600 dark:text-stone-300">Brgy. Maimpis</span>
                         </span>
                     </a>
-                    {{ $slot }}
+                    <div class="cg-auth-swap">{{ $slot }}</div>
                 </div>
             </section>
 
