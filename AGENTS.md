@@ -69,6 +69,7 @@ CI (`checks.yml`) runs on pushes to `main` and pull requests: Pint check, tests,
 - Indent 4 spaces, LF line endings (see `.editorconfig`). Run Pint before committing.
 - All user-facing text must exist in both English and Tagalog (`resources/lang`).
 - Every UI change must support light and dark mode (signed-in pages only; public and guest pages stay light), mobile layouts, accessibility, and role-based authorization.
+- `public/build` is tracked and the live site serves it. After any JS, CSS or Blade class change, run `npm run build` and commit the rebuilt files with the change (`git add resources public/build`).
 - Never commit `.env`, API keys or secrets. Add new variables to `.env.example`. In production, secrets live in the hosting provider's settings and `APP_DEBUG=false`.
 
 ## Domain rules
@@ -91,6 +92,7 @@ The full guide is `DESIGN.md`. Do not use it as permission to change routes, rol
 - Use red, amber, blue and green only for real severity, warning, info or success states. Avoid gradients, glows, glass effects and large shadows.
 - Figtree for body, navigation, controls, data and signed-in headings; Bitter only for public editorial headings.
 - 4px spacing base. Cards 12 to 14px radius, inputs and buttons 8px. Prefer whitespace and thin dividers over nested cards.
+- Exception: the report page's AI and form panels are deliberately square-cornered, with no outer card. Chat bubbles and the send button stay rounded, the avatar is a circle, and the light-mode chat panel uses its own cream (`--cg-chat-cream`). These overrides sit at the end of `resources/css/app.css`, scoped to `.cg-report-mode-panel`; do not round them back.
 - Controls at least 44px high where practical, with visible keyboard focus and clear disabled, loading, error and success states.
 - Use the shared motion tokens in `resources/css/app.css` (180ms feedback, 240ms enter, 140ms exit, 280ms page/reveal, `--cg-ease-out` / `--cg-ease-in`). Animate transform and opacity only, and respect `prefers-reduced-motion`.
 - Keep semantic HTML, labels, skip links, live status messaging and sufficient contrast in both themes. Avoid horizontal page overflow at narrow widths. Keep the signed-in sidebar's tooltips, accessible names and mobile drawer.
