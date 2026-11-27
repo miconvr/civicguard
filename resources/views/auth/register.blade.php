@@ -59,7 +59,7 @@
         <p class="text-sm text-gray-600 dark:text-gray-400">
             {{ __('Already have an account?') }}
             <a href="{{ route('login') }}" class="font-semibold text-maroon-700 dark:text-gray-200 hover:underline">
-                {{ __('Log in here') }}
+                {{ __('Log In Here') }}
             </a>
         </p>
     </div>

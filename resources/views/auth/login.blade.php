@@ -30,13 +30,13 @@
         </div>
 
         <x-primary-button class="mt-6 w-full justify-center min-h-[44px]" ::disabled="submitting" ::aria-busy="submitting">
-            <span x-show="!submitting">{{ __('Log in') }}</span>
+            <span x-show="!submitting">{{ __('Log In') }}</span>
             <span x-cloak x-show="submitting" class="inline-flex items-center gap-2" role="status">
                 <svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
                 </svg>
-                {{ __('Logging in...') }}
+                {{ __('Logging In...') }}
             </span>
         </x-primary-button>
     </form>
@@ -51,7 +51,7 @@
         <p class="text-sm text-gray-600 dark:text-gray-400">
             {{ __('New to CivicGuard?') }}
             <a href="{{ route('register') }}" class="font-semibold text-maroon-700 dark:text-gray-200 hover:underline">
-                {{ __('Create an account') }}
+                {{ __('Create an Account') }}
             </a>
         </p>
     </div>

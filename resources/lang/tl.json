@@ -655,5 +655,10 @@
     "Staff signed in": "Nag-sign in ang kawani",
     "Staff signed in.": "Nag-sign in ang kawani.",
     "Failed staff sign-in": "Nabigong pag-sign in ng kawani",
-    "Failed staff sign-in attempt.": "Nabigong pagtatangkang mag-sign in ng kawani."
+    "Failed staff sign-in attempt.": "Nabigong pagtatangkang mag-sign in ng kawani.",
+    "Staff Login": "Pagpasok ng kawani",
+    "Log In": "Mag-sign in",
+    "Logging In...": "Nagsa-sign in...",
+    "Create an Account": "Gumawa ng account",
+    "Log In Here": "Mag-log in dito"
 }
