@@ -2359,3 +2359,18 @@ html { scrollbar-gutter: stable; }
 .cg-report-mode-panel [class*="rounded-"]:not(.rounded-full) {
     border-radius: 0;
 }
+
+/* Report page: keep chat message bubbles rounded */
+.cg-report-mode-panel .cg-chat-log [class*="rounded-2xl"],
+.cg-report-mode-panel .cg-chat-log [class*="rounded-bl-md"],
+.cg-report-mode-panel .cg-chat-log [class*="rounded-br-md"] {
+    border-radius: 1rem;
+}
+
+.cg-report-mode-panel .cg-chat-log [class*="rounded-bl-md"] {
+    border-bottom-left-radius: 0.375rem;
+}
+
+.cg-report-mode-panel .cg-chat-log [class*="rounded-br-md"] {
+    border-bottom-right-radius: 0.375rem;
+}
