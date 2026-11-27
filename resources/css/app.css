@@ -2309,3 +2309,39 @@ html.cg-theme-switching *::after {
 }
 
 html { scrollbar-gutter: stable; }
+
+/* Report panels: short rise-in on enter, sink-out on exit */
+.cg-report-mode-panel {
+    transition: opacity var(--cg-motion-exit) var(--cg-ease-in), transform var(--cg-motion-exit) var(--cg-ease-in);
+}
+
+.cg-report-panel-transition {
+    transition: opacity var(--cg-motion-page) var(--cg-ease-out), transform var(--cg-motion-page) var(--cg-ease-out);
+}
+
+.cg-report-panel-enter-start {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+}
+
+.cg-report-panel-enter-end {
+    opacity: 1;
+    transform: none;
+}
+
+.cg-report-mode-panel.is-leaving {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cg-report-mode-panel,
+    .cg-report-panel-transition {
+        transition: none;
+    }
+
+    .cg-report-panel-enter-start,
+    .cg-report-mode-panel.is-leaving {
+        transform: none;
+    }
+}
