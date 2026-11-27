@@ -2353,3 +2353,9 @@ html { scrollbar-gutter: stable; }
     box-shadow: none;
     padding: 0;
 }
+
+/* Report page: boxy corners inside the AI and form panels (keeps fully round elements) */
+.cg-report-mode-panel .cg-card,
+.cg-report-mode-panel [class*="rounded-"]:not(.rounded-full) {
+    border-radius: 0;
+}
