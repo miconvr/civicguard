@@ -197,7 +197,7 @@ Alpine.data('landingPage', () => ({
             tlResolvedDesc: 'Kukumpirmahin mo kung naayos na.',
             staffQuestion: 'Kawani ng barangay? Mag-sign in',
             devKicker: 'Binuo nina',
-            navSignIn: 'Login ng Residente',
+            navSignIn: 'Login',
             navCreateAccount: 'Gumawa ng account',
             footerEmergency: 'Sa oras ng kagipitan, tumawag sa 911.',
             footerPrivacy: 'Patakaran sa Privacy',

@@ -25,7 +25,7 @@
     "src": "resources/fonts/Figtree-700.woff2"
   },
   "resources/js/app.js": {
-    "file": "assets/app-Du5mpvYz.js",
+    "file": "assets/app-JYwKp5ak.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -36,7 +36,7 @@
     ]
   },
   "resources/js/pages/landing.js": {
-    "file": "assets/landing-D8Kp-Vmk.js",
+    "file": "assets/landing-C_kJmRPt.js",
     "name": "landing",
     "src": "resources/js/pages/landing.js",
     "isDynamicEntry": true
