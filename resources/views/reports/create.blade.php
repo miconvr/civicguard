@@ -5,6 +5,7 @@
             : (in_array(request()->query('report_mode'), ['assistant', 'form'], true) ? request()->query('report_mode') : null);
     @endphp
 
+    <x-slot name="motion">off</x-slot>
     <x-slot name="headerWidth">max-w-6xl</x-slot>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
