@@ -650,6 +650,7 @@
             row.appendChild(card);
             log.appendChild(row);
             scrollChatToLatest();
+            window.setTimeout(() => row.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }), 300);
         }
         function showSuccessCard() {
             const row = document.createElement('div');
@@ -684,6 +685,7 @@
             row.appendChild(card);
             log.appendChild(row);
             scrollChatToLatest();
+            window.setTimeout(() => row.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }), 300);
         }
 
         async function submitReport(data, btn) {
