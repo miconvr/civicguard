@@ -44,6 +44,9 @@ class AuditLog extends Model
             'report_deleted' => __('Report deleted'),
             'staff_created' => __('Staff account created'),
             'resident_password_reset' => __('Resident password reset'),
+            'staff_login' => __('Staff signed in'),
+            'staff_login_failed' => __('Failed staff sign-in'),
+            'staff_password_reset' => __('Staff password reset'),
             'curfew_logged' => __('Curfew violation logged'),
             default => __(ucwords(str_replace('_', ' ', $this->action))),
         };
@@ -77,6 +80,9 @@ class AuditLog extends Model
             'residence_verification_rejected' => $this->legacyVerificationDescription($description, false) ?? __('Residence verification declined.'),
             'staff_created' => __('Staff account created.'),
             'resident_password_reset' => __('Resident password reset by authorized staff.'),
+            'staff_login' => __('Staff signed in.'),
+            'staff_login_failed' => __('Failed staff sign-in attempt.'),
+            'staff_password_reset' => __('Staff password reset by authorized staff.'),
             'curfew_logged' => __('Curfew violation logged.'),
             default => $description ? __($description) : null,
         };

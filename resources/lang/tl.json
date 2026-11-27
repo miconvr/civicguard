@@ -651,5 +651,9 @@
     "Official": "Opisyal",
     "No staff found.": "Walang nahanap na kawani.",
     "Staff password reset by authorized staff.": "Na-reset ang password ng kawani ng awtorisadong kawani.",
-    "Staff password reset successfully.": "Matagumpay na na-reset ang password ng kawani."
+    "Staff password reset successfully.": "Matagumpay na na-reset ang password ng kawani.",
+    "Staff signed in": "Nag-sign in ang kawani",
+    "Staff signed in.": "Nag-sign in ang kawani.",
+    "Failed staff sign-in": "Nabigong pag-sign in ng kawani",
+    "Failed staff sign-in attempt.": "Nabigong pagtatangkang mag-sign in ng kawani."
 }

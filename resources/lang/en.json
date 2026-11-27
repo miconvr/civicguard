@@ -265,5 +265,9 @@
     "Official": "Official",
     "No staff found.": "No staff found.",
     "Staff password reset by authorized staff.": "Staff password reset by authorized staff.",
-    "Staff password reset successfully.": "Staff password reset successfully."
+    "Staff password reset successfully.": "Staff password reset successfully.",
+    "Staff signed in": "Staff signed in",
+    "Staff signed in.": "Staff signed in.",
+    "Failed staff sign-in": "Failed staff sign-in",
+    "Failed staff sign-in attempt.": "Failed staff sign-in attempt."
 }
