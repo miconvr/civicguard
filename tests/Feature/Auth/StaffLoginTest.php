@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 test('staff login page renders', function () {
     $this->get('/staff/login')->assertOk();
@@ -39,4 +40,31 @@ test('residents can still sign in on the resident login page', function () {
     $this->post('/login', ['email' => $user->email, 'password' => 'password']);
 
     $this->assertAuthenticatedAs($user);
+});
+
+test('staff login page offers an unchecked remember me box', function () {
+    $this->get('/staff/login')
+        ->assertOk()
+        ->assertSee('name="remember"', false)
+        ->assertDontSee('name="remember" checked', false);
+});
+
+test('staff who tick remember me get a remember cookie', function () {
+    $user = User::factory()->create(['role' => 'tanod']);
+
+    $response = $this->post('/staff/login', [
+        'email' => $user->email,
+        'password' => 'password',
+        'remember' => 'on',
+    ]);
+
+    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertCookie(Auth::guard('web')->getRecallerName());
+});
+
+test('staff who do not tick remember me get no remember cookie', function () {
+    $user = User::factory()->create(['role' => 'tanod']);
+
+    $this->post('/staff/login', ['email' => $user->email, 'password' => 'password'])
+        ->assertCookieMissing(Auth::guard('web')->getRecallerName());
 });

@@ -24,7 +24,7 @@ class StaffLoginRequest extends LoginRequest
         $credentials = $this->only('email', 'password')
             + [fn ($query) => $query->whereIn('role', User::STAFF_ROLES)];
 
-        if (! Auth::attempt($credentials)) {
+        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             $known = User::whereIn('role', User::STAFF_ROLES)

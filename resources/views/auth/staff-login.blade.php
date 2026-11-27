@@ -23,6 +23,13 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
+        <div class="mt-4 flex items-center justify-between gap-3">
+            <label for="remember_me" class="inline-flex min-h-[44px] items-center">
+                <input id="remember_me" type="checkbox" class="rounded border-gray-300 dark:border-gray-700 text-maroon-600 shadow-sm focus:ring-maroon-500" name="remember">
+                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
+            </label>
+        </div>
+
         <x-primary-button class="mt-6 w-full justify-center min-h-[44px]" ::disabled="submitting" ::aria-busy="submitting">
             <span x-show="!submitting">{{ __('Log In') }}</span>
             <span x-cloak x-show="submitting" class="inline-flex items-center gap-2" role="status">
